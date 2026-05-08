@@ -1,6 +1,5 @@
 const navToggle = document.querySelector("[data-nav-toggle]");
 const siteNav = document.querySelector("[data-site-nav]");
-const requestForm = document.querySelector("[data-request-form]");
 
 if (navToggle && siteNav) {
   navToggle.addEventListener("click", () => {
@@ -23,15 +22,3 @@ if (navToggle && siteNav) {
     document.body.classList.remove("is-nav-open");
   });
 }
-
-if (requestForm) {
-  requestForm.addEventListener("submit", (event) => {
-    event.preventDefault();
-
-    const status = requestForm.querySelector("[data-form-status]");
-    if (status) {
-      status.textContent = "Заявка заполнена. Подключим отправку формы на следующем этапе.";
-    }
-  });
-}
-

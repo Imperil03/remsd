@@ -345,7 +345,7 @@ button {
   font-weight: 700;
 }
 
-.request-card {
+.hero-dispatch {
   padding: 28px;
   color: var(--color-ink);
   background: rgba(255, 255, 255, 0.96);
@@ -354,7 +354,7 @@ button {
   box-shadow: var(--shadow-panel);
 }
 
-.request-card__label {
+.hero-dispatch__label {
   margin: 0 0 8px;
   color: var(--color-blue);
   font-size: 13px;
@@ -363,71 +363,103 @@ button {
   text-transform: uppercase;
 }
 
-.request-card h2 {
-  margin: 0 0 20px;
+.hero-dispatch h2 {
+  margin: 0;
   font-size: 28px;
   line-height: 1.1;
 }
 
-.request-card label {
+.hero-dispatch__list {
   display: grid;
-  gap: 7px;
-  margin-top: 14px;
-  color: #26354c;
-  font-size: 14px;
-  font-weight: 800;
+  gap: 10px;
+  margin-top: 22px;
 }
 
-.request-card input,
-.request-card textarea {
-  width: 100%;
+.dispatch-link {
+  position: relative;
+  display: grid;
+  gap: 6px;
+  min-height: 92px;
+  align-content: center;
+  padding: 18px 48px 18px 18px;
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
-  color: var(--color-ink);
   background: #f8fafc;
-  outline: none;
-  transition: border-color 180ms var(--ease), box-shadow 180ms var(--ease), background 180ms var(--ease);
+  transition: background 180ms var(--ease), border-color 180ms var(--ease), box-shadow 180ms var(--ease), color 180ms var(--ease), transform 180ms var(--ease);
 }
 
-.request-card input {
-  min-height: 50px;
-  padding: 0 14px;
+.dispatch-link::before {
+  position: absolute;
+  top: 18px;
+  bottom: 18px;
+  left: 0;
+  width: 4px;
+  background: var(--color-yellow);
+  border-radius: 0 8px 8px 0;
+  content: "";
 }
 
-.request-card textarea {
-  min-height: 96px;
-  padding: 12px 14px;
-  resize: vertical;
+.dispatch-link::after {
+  position: absolute;
+  top: 50%;
+  right: 18px;
+  width: 10px;
+  height: 10px;
+  border-top: 2px solid currentColor;
+  border-right: 2px solid currentColor;
+  content: "";
+  transform: translateY(-50%) rotate(45deg);
 }
 
-.request-card input:focus,
-.request-card textarea:focus {
-  background: #ffffff;
-  border-color: var(--color-blue);
-  box-shadow: 0 0 0 4px rgba(47, 88, 168, 0.12);
+.dispatch-link span {
+  color: var(--color-ink);
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 1.2;
 }
 
-.request-card__submit {
-  width: 100%;
-  margin-top: 18px;
-  border: 0;
-}
-
-.request-card__note {
-  margin: 14px 0 0;
+.dispatch-link small {
   color: var(--color-muted);
   font-size: 14px;
+  font-weight: 700;
+  line-height: 1.35;
 }
 
-.request-card__note a {
+.dispatch-link:focus-visible {
+  outline: 3px solid rgba(245, 162, 26, 0.34);
+  outline-offset: 3px;
+}
+
+.dispatch-link:hover,
+.dispatch-link:focus-visible {
   color: var(--color-blue);
+  background: #ffffff;
+  border-color: rgba(47, 88, 168, 0.36);
+  box-shadow: 0 14px 32px rgba(16, 32, 51, 0.12);
+  transform: translateY(-1px);
+}
+
+.hero-dispatch__contact {
+  display: grid;
+  gap: 6px;
+  margin-top: 22px;
+  padding-top: 20px;
+  border-top: 1px solid var(--color-border);
+}
+
+.hero-dispatch__contact a {
+  color: var(--color-blue);
+  font-size: 22px;
   font-weight: 900;
 }
 
-.form-status {
-  min-height: 22px;
-  margin: 10px 0 0;
-  color: #0f6f42;
+.hero-dispatch__contact a:focus-visible {
+  outline: 3px solid rgba(245, 162, 26, 0.34);
+  outline-offset: 3px;
+}
+
+.hero-dispatch__contact span {
+  color: var(--color-muted);
   font-size: 14px;
   font-weight: 800;
 }
@@ -505,7 +537,7 @@ button {
     grid-template-columns: 1fr;
   }
 
-  .request-card {
+  .hero-dispatch {
     max-width: 520px;
   }
 }
@@ -575,8 +607,12 @@ button {
     width: 100%;
   }
 
-  .request-card {
+  .hero-dispatch {
     padding: 22px;
+  }
+
+  .dispatch-link {
+    min-height: 88px;
   }
 
   .site-footer__inner {
