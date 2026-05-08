@@ -5,18 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>РемСД — ремонт грузовых автомобилей и спецтехники в Сургуте</title>
     <meta name="description" content="РемСД: ремонт грузовых автомобилей и спецтехники в Сургуте и ХМАО. Официальный сервисный центр МАЗ, КАМАЗ, УРАЛ.">
-    <link rel="preload" as="image" href="assets/img/hero-service.png">
+    <link rel="preload" as="image" href="assets/img/hero-service.webp" type="image/webp" fetchpriority="high">
     <link rel="stylesheet" href="assets/css/styles.css">
   </head>
   <body>
     <header class="site-header" data-site-header>
-  <div class="topbar">
-    <div class="container topbar__inner">
-      <span>Сургут, ул. Производственная, 36</span>
-      <a href="tel:+73462260504">+7 (3462) 26-05-04</a>
-    </div>
-  </div>
-
   <div class="container header-main">
     <a class="logo" href="/" aria-label="РемСД — на главную">
       <img src="assets/img/logo-remsd.png" width="132" height="64" alt="РемСД">
@@ -36,16 +29,21 @@
       <a href="/kontakty/">Контакты</a>
     </nav>
 
-    <a class="header-cta" href="tel:+73462260504">Позвонить</a>
+    <a class="header-contact" href="tel:+73462260504">
+      <span>Сургут</span>
+      <strong>+7 (3462) 26-05-04</strong>
+    </a>
   </div>
 </header>
-
 
 
     <main>
       <section class="hero">
   <div class="hero__media" aria-hidden="true">
-    <img src="assets/img/hero-service.png" width="1680" height="945" alt="">
+    <picture>
+      <source srcset="assets/img/hero-service.webp" type="image/webp">
+      <img src="assets/img/hero-service.png" width="1680" height="945" alt="" fetchpriority="high">
+    </picture>
   </div>
 
   <div class="container hero__inner">
@@ -67,8 +65,8 @@
           <dd>МАЗ, КАМАЗ, УРАЛ</dd>
         </div>
         <div>
-          <dt>Работы</dt>
-          <dd>двигатели, КПП, ходовая, гидравлика</dd>
+          <dt>База</dt>
+          <dd>Сургут, Производственная, 36</dd>
         </div>
         <div>
           <dt>Регион</dt>
@@ -76,31 +74,30 @@
         </div>
       </dl>
     </div>
+  </div>
+</section>
 
-    <aside class="hero-dispatch" aria-labelledby="dispatch-title">
-      <p class="hero-dispatch__label">Диспетчерская</p>
-      <h2 id="dispatch-title">Что нужно сделать с техникой?</h2>
+      <section class="quick-routes" aria-labelledby="quick-routes-title">
+  <div class="container quick-routes__inner">
+    <div class="quick-routes__intro">
+      <p class="section-kicker">Быстрый выбор</p>
+      <h2 id="quick-routes-title">Что нужно сделать с техникой?</h2>
+    </div>
 
-      <div class="hero-dispatch__list">
-        <a class="dispatch-link" href="/remont/">
-          <span>Ремонт грузового автомобиля</span>
-          <small>МАЗ, КАМАЗ, УРАЛ и другие грузовые Т/С</small>
-        </a>
-        <a class="dispatch-link" href="/remont/">
-          <span>Ремонт спецтехники</span>
-          <small>двигатели, КПП, ходовая, гидравлика</small>
-        </a>
-        <a class="dispatch-link" href="/arenda/">
-          <span>Аренда спецтехники</span>
-          <small>техника для работ в Сургуте и ХМАО</small>
-        </a>
-      </div>
-
-      <div class="hero-dispatch__contact">
-        <a href="tel:+73462260504">+7 (3462) 26-05-04</a>
-        <span>Сургут, ул. Производственная, 36</span>
-      </div>
-    </aside>
+    <div class="quick-routes__list">
+      <a class="route-card" href="/remont/">
+        <span>Ремонт грузового автомобиля</span>
+        <small>МАЗ, КАМАЗ, УРАЛ и другие грузовые Т/С</small>
+      </a>
+      <a class="route-card" href="/remont/">
+        <span>Ремонт спецтехники</span>
+        <small>двигатели, КПП, ходовая, гидравлика</small>
+      </a>
+      <a class="route-card" href="/arenda/">
+        <span>Аренда спецтехники</span>
+        <small>техника для работ в Сургуте и ХМАО</small>
+      </a>
+    </div>
   </div>
 </section>
 
@@ -118,4 +115,3 @@
     <script src="assets/js/main.js"></script>
   </body>
 </html>
-

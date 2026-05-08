@@ -1,6 +1,9 @@
 <section class="hero">
   <div class="hero__media" aria-hidden="true">
-    <img src="assets/img/hero-service.png" width="1680" height="945" alt="">
+    <picture>
+      <source srcset="assets/img/hero-service.webp" type="image/webp">
+      <img src="assets/img/hero-service.png" width="1680" height="945" alt="" fetchpriority="high">
+    </picture>
   </div>
 
   <div class="container hero__inner">
@@ -22,8 +25,8 @@
           <dd>МАЗ, КАМАЗ, УРАЛ</dd>
         </div>
         <div>
-          <dt>Работы</dt>
-          <dd>двигатели, КПП, ходовая, гидравлика</dd>
+          <dt>База</dt>
+          <dd>Сургут, Производственная, 36</dd>
         </div>
         <div>
           <dt>Регион</dt>
@@ -31,30 +34,5 @@
         </div>
       </dl>
     </div>
-
-    <aside class="hero-dispatch" aria-labelledby="dispatch-title">
-      <p class="hero-dispatch__label">Диспетчерская</p>
-      <h2 id="dispatch-title">Что нужно сделать с техникой?</h2>
-
-      <div class="hero-dispatch__list">
-        <a class="dispatch-link" href="/remont/">
-          <span>Ремонт грузового автомобиля</span>
-          <small>МАЗ, КАМАЗ, УРАЛ и другие грузовые Т/С</small>
-        </a>
-        <a class="dispatch-link" href="/remont/">
-          <span>Ремонт спецтехники</span>
-          <small>двигатели, КПП, ходовая, гидравлика</small>
-        </a>
-        <a class="dispatch-link" href="/arenda/">
-          <span>Аренда спецтехники</span>
-          <small>техника для работ в Сургуте и ХМАО</small>
-        </a>
-      </div>
-
-      <div class="hero-dispatch__contact">
-        <a href="tel:+73462260504">+7 (3462) 26-05-04</a>
-        <span>Сургут, ул. Производственная, 36</span>
-      </div>
-    </aside>
   </div>
 </section>
