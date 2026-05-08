@@ -1,0 +1,7 @@
+{
+  "scripts": {
+    "build": "node tools/build.js"
+  },
+  "devDependencies": {}
+}
+

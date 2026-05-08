@@ -1,0 +1,56 @@
+<section class="hero">
+  <div class="hero__media" aria-hidden="true">
+    <img src="assets/img/hero-service.png" width="1680" height="945" alt="">
+  </div>
+
+  <div class="container hero__inner">
+    <div class="hero__content">
+      <p class="eyebrow">Официальный сервисный центр МАЗ, КАМАЗ, УРАЛ</p>
+      <h1>Ремонт грузовых автомобилей и спецтехники в Сургуте</h1>
+      <p class="hero__lead">
+        РемСД обслуживает грузовые автомобили, спецтехнику, полуприцепы и тралы для компаний в Сургуте и ХМАО.
+      </p>
+
+      <div class="hero__actions" aria-label="Основные действия">
+        <a class="button button--primary" href="#request">Получить консультацию</a>
+        <a class="button button--ghost" href="/remont/">Смотреть услуги</a>
+      </div>
+
+      <dl class="hero__facts" aria-label="Ключевые направления">
+        <div>
+          <dt>Сервис</dt>
+          <dd>МАЗ, КАМАЗ, УРАЛ</dd>
+        </div>
+        <div>
+          <dt>Работы</dt>
+          <dd>двигатели, КПП, ходовая, гидравлика</dd>
+        </div>
+        <div>
+          <dt>Регион</dt>
+          <dd>Сургут и ХМАО</dd>
+        </div>
+      </dl>
+    </div>
+
+    <form class="request-card" id="request" data-request-form>
+      <p class="request-card__label">Заявка мастеру</p>
+      <h2>Опишите технику и неисправность</h2>
+      <label>
+        <span>Имя</span>
+        <input type="text" name="name" autocomplete="name" placeholder="Иван" required>
+      </label>
+      <label>
+        <span>Телефон</span>
+        <input type="tel" name="phone" autocomplete="tel" placeholder="+7 900 000-00-00" required>
+      </label>
+      <label>
+        <span>Что нужно отремонтировать</span>
+        <textarea name="message" rows="3" placeholder="Например: КАМАЗ, диагностика КПП"></textarea>
+      </label>
+      <button class="button button--primary request-card__submit" type="submit">Отправить заявку</button>
+      <p class="request-card__note">Для срочного ремонта звоните: <a href="tel:+73462260504">+7 (3462) 26-05-04</a></p>
+      <p class="form-status" role="status" aria-live="polite" data-form-status></p>
+    </form>
+  </div>
+</section>
+
