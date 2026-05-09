@@ -6,6 +6,8 @@
 
 - `src/pages/` — страницы с подключаемыми partials.
 - `src/partials/` — общие блоки: шапка, hero, плитки услуг, футер, мобильная CTA-плашка.
+- `src/data/seo-pages.json` — контент SEO-страниц услуг и служебных разделов.
+- `src/templates/seo-page.html` — шаблон генерируемых SEO-страниц.
 - `assets/css/styles.css` — дизайн-система и стили.
 - `assets/js/main.js` — поведение мобильного меню и нижней CTA-плашки.
 - `docs/design-guideline.md` — короткий дизайн-гайд.
