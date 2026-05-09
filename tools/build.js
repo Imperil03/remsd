@@ -102,8 +102,15 @@ function buildPages() {
   }
 }
 
-function renderList(items) {
-  return items.map((item) => `          <li>${item}</li>`).join("\n");
+function renderList(items, rootPath = "") {
+  return items
+    .map((item) => {
+      if (typeof item === "string") return `          <li>${item}</li>`;
+
+      const suffix = item.text ? ` ${item.text}` : "";
+      return `          <li><a href="${rootPath}${item.href}">${item.label}</a>${suffix}</li>`;
+    })
+    .join("\n");
 }
 
 function renderBrands(items) {
@@ -137,12 +144,12 @@ function buildSeoPages() {
       h1: page.h1,
       lead: page.lead,
       worksTitle: page.worksTitle,
-      works: renderList(page.works),
+      works: renderList(page.works, rootPath),
       techTitle: page.techTitle,
       techText: page.techText,
       brands: renderBrands(page.brands),
       processTitle: page.processTitle,
-      process: renderList(page.process),
+      process: renderList(page.process, rootPath),
       ctaTitle: page.ctaTitle,
       ctaText: page.ctaText,
       related: renderRelated(page.related, rootPath),
