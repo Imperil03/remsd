@@ -13,6 +13,7 @@
 - `docs/design-guideline.md` — короткий дизайн-гайд.
 - `docs/project-handoff.md` — текущий контекст, решения и ближайшие шаги.
 - `tools/build.js` — сборка готового сайта в `dist/`.
+- `.agent/` — только проектные инструкции. Локальные копии agent skills в репозиторий не добавлять.
 
 ## Сборка
 
@@ -24,6 +25,18 @@ node tools/build.js
 
 В PowerShell `npm run build` может блокироваться системной политикой. В этом случае используйте `node tools/build.js` или `npm.cmd run build`.
 
+Версия CSS/JS задается в `tools/build.js` через `assetVersion`. При необходимости можно переопределить:
+
+```bash
+ASSET_VERSION=20260509 node tools/build.js
+```
+
+В PowerShell:
+
+```powershell
+$env:ASSET_VERSION = "20260509"; node tools/build.js
+```
+
 ## Текущий статус
 
 - Главная страница собрана из partials: шапка, hero, блок официального сервиса КАМАЗ/МАЗ/УРАЛ, плитка направлений ремонта, перечень услуг, строка доверия, футер.
@@ -31,3 +44,15 @@ node tools/build.js
 - На мобильных ширинах телефон убран из шапки, а CTA `Позвонить` появляется в нижней фиксированной плашке после начала скролла.
 - Форма заявки пока не добавлена: ее планируем поставить ниже блоков услуг/доверия на следующем этапе.
 - Основная SEO-структура страниц хранится в `.agent/SEO_STRUCTURE.md`, правила контента — в `.agent/CONTENT_GUIDE.md`.
+
+## Деплой
+
+GitHub Pages забирает собранный `dist/` из workflow. После изменения исходников нужно запускать сборку и коммитить обновленный `dist/`.
+
+Проверить прод:
+
+- https://imperil03.github.io/remsd/
+- https://imperil03.github.io/remsd/remont/kamaz/
+- https://imperil03.github.io/remsd/remont/maz/
+- https://imperil03.github.io/remsd/remont/ural/
+- https://imperil03.github.io/remsd/remont-gbc/

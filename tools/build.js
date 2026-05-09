@@ -9,6 +9,7 @@ const dataDir = path.join(srcDir, "data");
 const templatesDir = path.join(srcDir, "templates");
 const assetsDir = path.join(root, "assets");
 const distDir = path.join(root, "dist");
+const assetVersion = process.env.ASSET_VERSION || "20260509-brand-pages";
 
 function cleanDir(dir) {
   fs.rmSync(dir, { recursive: true, force: true });
@@ -95,6 +96,7 @@ function buildPages() {
     const html = fs.readFileSync(source, "utf8");
     const context = {
       rootPath: getRootPath(relativeFile),
+      assetVersion,
     };
 
     fs.mkdirSync(path.dirname(target), { recursive: true });
@@ -136,6 +138,7 @@ function buildSeoPages() {
     const rootPath = getRootPath(relativeFile);
     const context = {
       rootPath,
+      assetVersion,
       title: page.title,
       description: page.description,
       breadcrumbLabel: page.breadcrumbLabel || "Ремонт",
