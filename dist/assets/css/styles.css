@@ -700,7 +700,15 @@ button {
   content: "";
 }
 
+.official-brand-card__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+}
+
 .official-brand-card__kicker {
+  align-self: flex-start;
   width: fit-content;
   max-width: 100%;
   padding: 7px 10px;
@@ -711,6 +719,23 @@ button {
   font-weight: 900;
   letter-spacing: 0;
   text-transform: uppercase;
+}
+
+.official-brand-card__logo {
+  display: grid;
+  flex: 0 0 88px;
+  min-height: 64px;
+  place-items: center;
+  padding: 8px;
+  background: #ffffff;
+  border-radius: var(--radius);
+  box-shadow: 0 12px 30px rgba(5, 12, 25, 0.18);
+}
+
+.official-brand-card__logo img {
+  width: 100%;
+  height: 48px;
+  object-fit: contain;
 }
 
 .official-brand-card h3 {
@@ -737,6 +762,73 @@ button {
   outline: 3px solid rgba(245, 162, 26, 0.34);
   outline-offset: 3px;
   transform: translateY(-2px);
+}
+
+.brand-logos {
+  margin-top: 24px;
+  padding: 24px;
+  background: var(--color-panel-soft);
+  border: 1px solid rgba(16, 32, 51, 0.1);
+  border-radius: var(--radius);
+}
+
+.brand-logos__head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 18px;
+}
+
+.brand-logos__head h3 {
+  margin: 0;
+  color: var(--color-ink);
+  font-size: 26px;
+  line-height: 1.16;
+}
+
+.brand-logos__head p:not(.section-kicker) {
+  max-width: 410px;
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.brand-logos__grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.brand-logo {
+  display: grid;
+  min-height: 108px;
+  place-items: center;
+  gap: 8px;
+  padding: 12px;
+  text-align: center;
+  background: #ffffff;
+  border: 1px solid rgba(16, 32, 51, 0.08);
+  border-radius: var(--radius);
+}
+
+.brand-logo img {
+  width: 112px;
+  height: 58px;
+  object-fit: contain;
+  opacity: 0.9;
+  filter: saturate(0.92);
+}
+
+.brand-logo span {
+  color: var(--color-muted);
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1.15;
 }
 
 .service-grid {
@@ -853,6 +945,156 @@ button {
 .trust-strip a:focus-visible {
   outline: 3px solid rgba(245, 162, 26, 0.45);
   outline-offset: -6px;
+}
+
+.repair-media {
+  background: var(--color-panel-soft);
+  border-top: 1px solid rgba(16, 32, 51, 0.08);
+}
+
+.repair-media__inner {
+  padding-block: 70px 78px;
+}
+
+.repair-media__heading {
+  max-width: 820px;
+}
+
+.repair-gallery {
+  display: grid;
+  grid-auto-rows: 210px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.repair-gallery__item {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  margin: 0;
+  background: var(--color-navy);
+  border-radius: var(--radius);
+  box-shadow: 0 16px 42px rgba(16, 32, 51, 0.14);
+}
+
+.repair-gallery__item--large {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+.repair-gallery__item::after {
+  position: absolute;
+  inset: auto 0 0;
+  height: 54%;
+  background: linear-gradient(180deg, rgba(11, 18, 32, 0), rgba(11, 18, 32, 0.86));
+  content: "";
+}
+
+.repair-gallery__item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.repair-gallery__item figcaption {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  left: 14px;
+  z-index: 1;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.certificate-proof {
+  display: grid;
+  grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+  gap: 24px;
+  align-items: center;
+  margin-top: 24px;
+  padding: 24px;
+  background: #ffffff;
+  border: 1px solid rgba(16, 32, 51, 0.1);
+  border-radius: var(--radius);
+  box-shadow: 0 16px 42px rgba(16, 32, 51, 0.08);
+}
+
+.certificate-proof__copy h3 {
+  margin: 0;
+  color: var(--color-ink);
+  font-size: 30px;
+  line-height: 1.14;
+}
+
+.certificate-proof__copy p:not(.section-kicker) {
+  margin: 12px 0 0;
+  color: var(--color-muted);
+  font-size: 16px;
+}
+
+.certificate-proof__link {
+  display: inline-flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+  padding: 0 18px;
+  color: #ffffff;
+  background: var(--color-blue);
+  border-radius: var(--radius);
+  font-weight: 900;
+  transition: background 180ms var(--ease), transform 180ms var(--ease);
+}
+
+.certificate-proof__link:focus-visible,
+.certificate-proof__link:hover {
+  background: var(--color-blue-dark);
+  outline: 3px solid rgba(245, 162, 26, 0.34);
+  outline-offset: 3px;
+  transform: translateY(-1px);
+}
+
+.certificate-proof__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.certificate-card {
+  display: grid;
+  gap: 10px;
+  padding: 10px;
+  color: var(--color-ink);
+  background: var(--color-panel-soft);
+  border: 1px solid rgba(16, 32, 51, 0.09);
+  border-radius: var(--radius);
+  transition: border-color 180ms var(--ease), box-shadow 180ms var(--ease), transform 180ms var(--ease);
+}
+
+.certificate-card img {
+  width: 100%;
+  aspect-ratio: 7 / 10;
+  height: auto;
+  object-fit: contain;
+  background: #ffffff;
+  border: 1px solid rgba(16, 32, 51, 0.08);
+  border-radius: 6px;
+}
+
+.certificate-card span {
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.certificate-card:focus-visible,
+.certificate-card:hover {
+  border-color: rgba(47, 88, 168, 0.34);
+  box-shadow: 0 14px 28px rgba(16, 32, 51, 0.12);
+  outline: 3px solid rgba(245, 162, 26, 0.34);
+  outline-offset: 3px;
+  transform: translateY(-1px);
 }
 
 .site-footer {
@@ -987,12 +1229,35 @@ button {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .brand-logos__grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .repair-gallery {
+    grid-auto-rows: 220px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .certificate-proof {
+    grid-template-columns: 1fr;
+  }
+
   .service-layout {
     grid-template-columns: 1fr;
   }
 
   .related-links {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 860px) {
+  .official-brands__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .official-brand-card {
+    min-height: auto;
   }
 }
 
@@ -1083,8 +1348,34 @@ button {
     padding: 24px;
   }
 
+  .official-brand-card__logo {
+    flex-basis: 78px;
+    min-height: 58px;
+  }
+
+  .official-brand-card__logo img {
+    height: 42px;
+  }
+
   .official-brand-card h3 {
     font-size: 26px;
+  }
+
+  .brand-logos {
+    padding: 18px;
+  }
+
+  .brand-logos__head {
+    display: grid;
+    gap: 10px;
+  }
+
+  .brand-logos__head h3 {
+    font-size: 22px;
+  }
+
+  .brand-logos__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .page-hero__inner {
@@ -1145,6 +1436,34 @@ button {
     min-height: 64px;
   }
 
+  .repair-media__inner {
+    padding-block: 46px 54px;
+  }
+
+  .repair-gallery {
+    grid-auto-rows: auto;
+    grid-template-columns: 1fr;
+  }
+
+  .repair-gallery__item,
+  .repair-gallery__item--large {
+    grid-column: auto;
+    grid-row: auto;
+  }
+
+  .repair-gallery__item img {
+    aspect-ratio: 4 / 3;
+    height: auto;
+  }
+
+  .certificate-proof {
+    padding: 18px;
+  }
+
+  .certificate-proof__copy h3 {
+    font-size: 24px;
+  }
+
   .site-footer__inner {
     align-items: flex-start;
     flex-direction: column;
@@ -1202,6 +1521,32 @@ button {
     font-size: 11px;
   }
 
+  .official-brand-card__head {
+    gap: 10px;
+  }
+
+  .brand-logo {
+    min-height: 96px;
+  }
+
+  .brand-logo img {
+    width: 98px;
+    height: 52px;
+  }
+
+  .certificate-proof__grid {
+    gap: 8px;
+  }
+
+  .certificate-card {
+    gap: 8px;
+    padding: 8px;
+  }
+
+  .certificate-card span {
+    font-size: 12px;
+  }
+
   .page-hero h1 {
     font-size: 32px;
   }
@@ -1225,6 +1570,27 @@ button {
 
   .mobile-callbar__button {
     width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .official-brand-card__logo img,
+  .brand-logo,
+  .repair-gallery__item img {
+    transition: transform 260ms var(--ease), opacity 260ms var(--ease), filter 260ms var(--ease);
+  }
+
+  .official-brand-card:hover .official-brand-card__logo img,
+  .official-brand-card:focus-visible .official-brand-card__logo img {
+    transform: scale(1.04);
+  }
+
+  .brand-logo:hover {
+    transform: translateY(-1px);
+  }
+
+  .repair-gallery__item:hover img {
+    transform: scale(1.035);
   }
 }
 

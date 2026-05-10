@@ -1,7 +1,9 @@
 {
   "scripts": {
-    "build": "node tools/build.js"
+    "build": "node tools/build.js",
+    "prepare:media": "node tools/prepare-media.js"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "sharp": "^0.34.5"
+  }
 }
-
