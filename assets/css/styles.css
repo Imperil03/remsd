@@ -723,10 +723,10 @@ button {
 
 .official-brand-card__logo {
   display: grid;
-  flex: 0 0 88px;
-  min-height: 64px;
+  flex: 0 0 112px;
+  min-height: 78px;
   place-items: center;
-  padding: 8px;
+  padding: 10px;
   background: #ffffff;
   border-radius: var(--radius);
   box-shadow: 0 12px 30px rgba(5, 12, 25, 0.18);
@@ -734,7 +734,7 @@ button {
 
 .official-brand-card__logo img {
   width: 100%;
-  height: 48px;
+  height: 60px;
   object-fit: contain;
 }
 
@@ -806,10 +806,9 @@ button {
 
 .brand-logo {
   display: grid;
-  min-height: 108px;
+  min-height: 118px;
   place-items: center;
-  gap: 8px;
-  padding: 12px;
+  padding: 18px;
   text-align: center;
   background: #ffffff;
   border: 1px solid rgba(16, 32, 51, 0.08);
@@ -817,18 +816,11 @@ button {
 }
 
 .brand-logo img {
-  width: 112px;
-  height: 58px;
+  width: 150px;
+  height: 76px;
   object-fit: contain;
-  opacity: 0.9;
+  opacity: 0.94;
   filter: saturate(0.92);
-}
-
-.brand-logo span {
-  color: var(--color-muted);
-  font-size: 12px;
-  font-weight: 900;
-  line-height: 1.15;
 }
 
 .service-grid {
@@ -1097,6 +1089,239 @@ button {
   transform: translateY(-1px);
 }
 
+.media-group {
+  display: grid;
+  gap: 14px;
+}
+
+.media-group + .media-group {
+  margin-top: 34px;
+}
+
+.media-group__head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.media-group__head h3 {
+  margin: 0;
+  color: var(--color-ink);
+  font-size: 25px;
+  line-height: 1.16;
+}
+
+.media-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.media-grid--photos {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.media-grid--featured {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.media-grid--certificates {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.media-card {
+  position: relative;
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  padding: 0;
+  color: #ffffff;
+  text-align: left;
+  background: var(--color-navy);
+  border: 0;
+  border-radius: var(--radius);
+  box-shadow: 0 16px 42px rgba(16, 32, 51, 0.14);
+  transition: box-shadow 180ms var(--ease), transform 180ms var(--ease);
+}
+
+.media-card--wide {
+  grid-column: span 1;
+}
+
+.media-card::after {
+  position: absolute;
+  inset: auto 0 0;
+  height: 56%;
+  background: linear-gradient(180deg, rgba(11, 18, 32, 0), rgba(11, 18, 32, 0.88));
+  content: "";
+}
+
+.media-card img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  height: auto;
+  object-fit: cover;
+}
+
+.media-card span {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  left: 16px;
+  z-index: 1;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.media-card:focus-visible,
+.media-card:hover {
+  box-shadow: 0 20px 48px rgba(16, 32, 51, 0.2);
+  outline: 3px solid rgba(245, 162, 26, 0.42);
+  outline-offset: 3px;
+  transform: translateY(-1px);
+}
+
+.media-grid--certificates .certificate-card {
+  width: 100%;
+  min-width: 0;
+  padding: 12px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.repair-media--certificates {
+  background: #ffffff;
+}
+
+.media-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  color: #ffffff;
+  background: rgba(5, 10, 19, 0.98);
+}
+
+.media-lightbox[hidden] {
+  display: none;
+}
+
+.media-lightbox__panel {
+  display: grid;
+  width: min(100%, 1260px);
+  max-height: calc(100vh - 36px);
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 14px;
+}
+
+.media-lightbox__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.media-lightbox__counter {
+  margin: 0 0 4px;
+  color: var(--color-yellow);
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.media-lightbox__top h2 {
+  margin: 0;
+  font-size: 22px;
+  line-height: 1.16;
+}
+
+.media-lightbox__close,
+.media-lightbox__nav {
+  display: inline-flex;
+  min-width: 48px;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: var(--radius);
+  font-weight: 900;
+  transition: background 180ms var(--ease), transform 180ms var(--ease);
+}
+
+.media-lightbox__close {
+  padding-inline: 16px;
+}
+
+.media-lightbox__close:focus-visible,
+.media-lightbox__close:hover,
+.media-lightbox__nav:focus-visible,
+.media-lightbox__nav:hover {
+  background: rgba(255, 255, 255, 0.18);
+  outline: 3px solid rgba(245, 162, 26, 0.42);
+  outline-offset: 3px;
+  transform: translateY(-1px);
+}
+
+.media-lightbox__stage {
+  display: grid;
+  min-height: 0;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: center;
+}
+
+.media-lightbox__figure {
+  display: grid;
+  min-width: 0;
+  min-height: 0;
+  gap: 10px;
+  margin: 0;
+  place-items: center;
+}
+
+.media-lightbox__figure img {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: calc(100vh - 170px);
+  object-fit: contain;
+  background: #ffffff;
+  border-radius: var(--radius);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.36);
+}
+
+.media-lightbox__figure figcaption {
+  color: #d8e1ee;
+  font-weight: 800;
+  text-align: center;
+}
+
+.media-lightbox__nav::before {
+  display: block;
+  width: 12px;
+  height: 12px;
+  border-bottom: 3px solid currentColor;
+  border-left: 3px solid currentColor;
+  content: "";
+}
+
+.media-lightbox__nav--prev::before {
+  transform: rotate(45deg);
+}
+
+.media-lightbox__nav--next::before {
+  transform: rotate(225deg);
+}
+
+body.is-lightbox-open {
+  overflow: hidden;
+}
+
 .site-footer {
   color: #d8e1ee;
   background: var(--color-navy);
@@ -1233,6 +1458,18 @@ button {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
+  .media-grid--photos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .media-grid--featured {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .media-grid--certificates {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
   .repair-gallery {
     grid-auto-rows: 220px;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1349,12 +1586,12 @@ button {
   }
 
   .official-brand-card__logo {
-    flex-basis: 78px;
-    min-height: 58px;
+    flex-basis: 96px;
+    min-height: 66px;
   }
 
   .official-brand-card__logo img {
-    height: 42px;
+    height: 52px;
   }
 
   .official-brand-card h3 {
@@ -1376,6 +1613,11 @@ button {
 
   .brand-logos__grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .brand-logo img {
+    width: 132px;
+    height: 70px;
   }
 
   .page-hero__inner {
@@ -1440,6 +1682,26 @@ button {
     padding-block: 46px 54px;
   }
 
+  .media-group + .media-group {
+    margin-top: 26px;
+  }
+
+  .media-group__head h3 {
+    font-size: 21px;
+  }
+
+  .media-grid--photos {
+    grid-template-columns: 1fr;
+  }
+
+  .media-grid--featured {
+    grid-template-columns: 1fr;
+  }
+
+  .media-grid--certificates {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .repair-gallery {
     grid-auto-rows: auto;
     grid-template-columns: 1fr;
@@ -1462,6 +1724,45 @@ button {
 
   .certificate-proof__copy h3 {
     font-size: 24px;
+  }
+
+  .media-lightbox {
+    padding: 12px;
+  }
+
+  .media-lightbox__panel {
+    max-height: calc(100vh - 24px);
+  }
+
+  .media-lightbox__top {
+    align-items: flex-start;
+  }
+
+  .media-lightbox__top h2 {
+    font-size: 17px;
+  }
+
+  .media-lightbox__stage {
+    grid-template-columns: 1fr;
+  }
+
+  .media-lightbox__nav {
+    position: fixed;
+    top: 50%;
+    z-index: 1;
+    background: rgba(11, 18, 32, 0.72);
+  }
+
+  .media-lightbox__nav--prev {
+    left: 12px;
+  }
+
+  .media-lightbox__nav--next {
+    right: 12px;
+  }
+
+  .media-lightbox__figure img {
+    max-height: calc(100vh - 190px);
   }
 
   .site-footer__inner {
@@ -1527,11 +1828,12 @@ button {
 
   .brand-logo {
     min-height: 96px;
+    padding: 14px;
   }
 
   .brand-logo img {
-    width: 98px;
-    height: 52px;
+    width: 122px;
+    height: 64px;
   }
 
   .certificate-proof__grid {
@@ -1545,6 +1847,16 @@ button {
 
   .certificate-card span {
     font-size: 12px;
+  }
+
+  .media-grid--certificates {
+    gap: 10px;
+  }
+
+  .media-lightbox__close {
+    min-width: 44px;
+    min-height: 44px;
+    padding-inline: 12px;
   }
 
   .page-hero h1 {
@@ -1576,7 +1888,8 @@ button {
 @media (prefers-reduced-motion: no-preference) {
   .official-brand-card__logo img,
   .brand-logo,
-  .repair-gallery__item img {
+  .repair-gallery__item img,
+  .media-card img {
     transition: transform 260ms var(--ease), opacity 260ms var(--ease), filter 260ms var(--ease);
   }
 
@@ -1589,7 +1902,9 @@ button {
     transform: translateY(-1px);
   }
 
-  .repair-gallery__item:hover img {
+  .repair-gallery__item:hover img,
+  .media-card:hover img,
+  .media-card:focus-visible img {
     transform: scale(1.035);
   }
 }

@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Сертификаты и документы РемСД</title>
+    <meta name="description" content="Сертификаты и документы РемСД: МАЗ, УРАЛ, Weichai, Адверс и сертификат соответствия по ремонту грузовой техники.">
+    <link rel="stylesheet" href="{{rootPath}}assets/css/styles.css?v={{assetVersion}}">
+  </head>
+  <body>
+    {{header}}
+
+    <main>
+      <section class="page-hero">
+        <div class="container page-hero__inner">
+          <nav class="breadcrumbs" aria-label="Хлебные крошки">
+            <a href="{{rootPath}}">Главная</a>
+            <span>/</span>
+            <a href="{{rootPath}}sertifikaty/">Сертификаты</a>
+          </nav>
+          <p class="eyebrow">Документы</p>
+          <h1>Сертификаты и документы</h1>
+          <p class="page-hero__lead">Сервисные сертификаты, документы обучения и страницы сертификата соответствия в читаемом виде.</p>
+          <div class="page-hero__actions" aria-label="Основные действия">
+            <a class="button button--primary" href="tel:+73462260504">Позвонить мастеру</a>
+            <a class="button button--secondary" href="{{rootPath}}kontakty/">Контакты сервиса</a>
+          </div>
+        </div>
+      </section>
+
+      {{certificates-gallery}}
+      {{base-gallery}}
+    </main>
+
+    {{media-lightbox}}
+    {{footer}}
+    {{mobile-callbar}}
+
+    <script src="{{rootPath}}assets/js/main.js?v={{assetVersion}}"></script>
+  </body>
+</html>

@@ -9,7 +9,7 @@ const dataDir = path.join(srcDir, "data");
 const templatesDir = path.join(srcDir, "templates");
 const assetsDir = path.join(root, "assets");
 const distDir = path.join(root, "dist");
-const assetVersion = process.env.ASSET_VERSION || "20260510-media-proof";
+const assetVersion = process.env.ASSET_VERSION || "20260510-full-media";
 
 function cleanDir(dir) {
   fs.rmSync(dir, { recursive: true, force: true });
@@ -134,6 +134,8 @@ function buildSeoPages() {
 
   for (const page of pages) {
     const target = path.join(distDir, page.path, "index.html");
+    if (fs.existsSync(target)) continue;
+
     const relativeFile = path.relative(distDir, target);
     const rootPath = getRootPath(relativeFile);
     const context = {
