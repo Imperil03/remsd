@@ -45,5 +45,5 @@ git diff --check
 ## Project Skills
 
 - Перед работой с дизайном или текстами читать `docs/skills.md`, `.agent/CONTENT_GUIDE.md` и релевантный skill из `.agent/skills/`.
-- Для публичного русского текста использовать цепочку: `CONTENT_GUIDE` -> `infostyle` -> `russian-text-humanization` -> reviewer subagent, если нужен второй проход.
+- Для публичного русского текста использовать цепочку: `CONTENT_GUIDE` -> `infostyle` -> `semantic-seo-authorship` reference для SEO/GEO -> `russian-text-humanization` -> reviewer subagent, если нужен второй проход.
 - Импортированные внешние skills носят рекомендательный характер. Они не должны перебивать B2B-стиль РемСД, SEO-структуру, фактический тон и запрет на фейковые цены, сроки, гарантии, рейтинги, отзывы и манипулятивную срочность.

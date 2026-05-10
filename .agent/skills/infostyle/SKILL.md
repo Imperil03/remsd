@@ -176,3 +176,4 @@ argument-hint: <текст или путь к файлу>
 - `${CLAUDE_SKILL_DIR}/references/scoring.md` — критерии оценки, чеклист самопроверки
 - `${CLAUDE_SKILL_DIR}/references/manipulation-patterns.md` — антипаттерны манипуляции
 - `${CLAUDE_SKILL_DIR}/references/examples.md` — примеры before/after по каждому типу текста
+- `${CLAUDE_SKILL_DIR}/references/semantic-seo-authorship.md` — правила Semantic SEO, Algorithmic Authorship, Entity -> Attribute -> Value и passage-level ответов
