@@ -9,7 +9,7 @@ const dataDir = path.join(srcDir, "data");
 const templatesDir = path.join(srcDir, "templates");
 const assetsDir = path.join(root, "assets");
 const distDir = path.join(root, "dist");
-const assetVersion = process.env.ASSET_VERSION || "20260510-home-seo";
+const assetVersion = process.env.ASSET_VERSION || "20260511-industrial-blocks";
 
 function cleanDir(dir) {
   fs.rmSync(dir, { recursive: true, force: true });

@@ -7,30 +7,40 @@
     </div>
 
     <ol class="process-steps">
-      <li>
-        <span>01</span>
-        <h3>Звонок мастеру</h3>
-        <p>Назовите марку, тип техники, проблемный узел и что происходит с машиной сейчас.</p>
+      <li class="process-step process-step--start">
+        <span class="process-step__number">01</span>
+        <div class="process-step__body">
+          <h3>Звонок мастеру</h3>
+          <p>Назовите марку, тип техники, проблемный узел и что происходит с машиной сейчас.</p>
+        </div>
       </li>
-      <li>
-        <span>02</span>
-        <h3>Прием на базе</h3>
-        <p>РемСД принимает технику на базе по адресу: Сургут, ул. Производственная, 36.</p>
+      <li class="process-step">
+        <span class="process-step__number">02</span>
+        <div class="process-step__body">
+          <h3>Прием на базе</h3>
+          <p>РемСД принимает технику на базе по адресу: Сургут, ул. Производственная, 36.</p>
+        </div>
       </li>
-      <li>
-        <span>03</span>
-        <h3>Диагностика узла</h3>
-        <p>В цехе проверяют агрегат, систему, шасси или навесное оборудование и определяют состав работ.</p>
+      <li class="process-step">
+        <span class="process-step__number">03</span>
+        <div class="process-step__body">
+          <h3>Диагностика узла</h3>
+          <p>В цехе проверяют агрегат, систему, шасси или навесное оборудование и определяют состав работ.</p>
+        </div>
       </li>
-      <li>
-        <span>04</span>
-        <h3>Согласование ремонта</h3>
-        <p>Мастер согласует перечень работ, запчасти и последовательность ремонта.</p>
+      <li class="process-step">
+        <span class="process-step__number">04</span>
+        <div class="process-step__body">
+          <h3>Согласование ремонта</h3>
+          <p>Мастер согласует перечень работ, запчасти и последовательность ремонта.</p>
+        </div>
       </li>
-      <li>
-        <span>05</span>
-        <h3>Ремонт и выдача</h3>
-        <p>После ремонта технику передают заказчику и объясняют, какие работы выполнены.</p>
+      <li class="process-step">
+        <span class="process-step__number">05</span>
+        <div class="process-step__body">
+          <h3>Ремонт и выдача</h3>
+          <p>После ремонта технику передают заказчику и объясняют, какие работы выполнены.</p>
+        </div>
       </li>
     </ol>
   </div>
@@ -43,51 +53,71 @@
         <p class="section-kicker">Собственная база</p>
         <h2 id="base-capabilities-title">Работы на ремонтной базе РемСД</h2>
         <p>РемСД принимает на базе грузовые автомобили, спецтехнику, полуприцепы и тралы. В цехе выполняют диагностику, агрегатный ремонт, работы по ходовой, тормозам, гидравлике, РВД и электрике.</p>
+        <dl class="base-passport" aria-label="Паспорт ремонтной базы">
+          <div>
+            <dt>Адрес</dt>
+            <dd>Сургут, ул. Производственная, 36</dd>
+          </div>
+          <div>
+            <dt>Техника</dt>
+            <dd>грузовые автомобили, спецтехника, полуприцепы, тралы</dd>
+          </div>
+        </dl>
         <a class="capability-panel__link" href="{{rootPath}}remontnaya-baza/">Смотреть фотографии базы</a>
       </div>
 
-      <div class="capability-table-wrap">
-        <table class="capability-table">
-          <thead>
-            <tr>
-              <th scope="col">Зона</th>
-              <th scope="col">Работы на базе</th>
-              <th scope="col">Подробнее</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td data-label="Зона">Сервисная зона</td>
-              <td data-label="Работы на базе">Принимают грузовые автомобили и спецтехнику, осматривают шасси и системы на базе.</td>
-              <td data-label="Подробнее"><a href="{{rootPath}}remont/">Ремонт техники</a></td>
-            </tr>
-            <tr>
-              <td data-label="Зона">Агрегатные работы</td>
-              <td data-label="Работы на базе">Ремонтируют двигатели, ГБЦ, КПП, мосты, раздаточные коробки и сцепление.</td>
-              <td data-label="Подробнее"><a href="{{rootPath}}remont/dvigateley/">Двигатели</a> <a href="{{rootPath}}remont-kpp/">КПП</a></td>
-            </tr>
-            <tr>
-              <td data-label="Зона">Ходовая и тормоза</td>
-              <td data-label="Работы на базе">Ремонтируют подвеску, ступицы, оси, тормозную систему и делают развал-схождение грузовиков.</td>
-              <td data-label="Подробнее"><a href="{{rootPath}}remont-hodovoy/">Ходовая</a></td>
-            </tr>
-            <tr>
-              <td data-label="Зона">Гидравлика и РВД</td>
-              <td data-label="Работы на базе">Проверяют давление, ремонтируют гидроузлы, ремонтируют и меняют РВД.</td>
-              <td data-label="Подробнее"><a href="{{rootPath}}remont-gidravliki/">Гидравлика</a></td>
-            </tr>
-            <tr>
-              <td data-label="Зона">Электрика и диагностика</td>
-              <td data-label="Работы на базе">Проверяют проводку, датчики, стартер, генератор и выполняют компьютерную диагностику.</td>
-              <td data-label="Подробнее"><a href="{{rootPath}}remont-elektriki/">Электрика</a></td>
-            </tr>
-            <tr>
-              <td data-label="Зона">Полуприцепы и тралы</td>
-              <td data-label="Работы на базе">Ремонтируют рамы, подвеску, тормозную систему и обслуживают тралы.</td>
-              <td data-label="Подробнее"><a href="{{rootPath}}remont-polupricepov-i-tralov/">Полуприцепы и тралы</a></td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="capability-map" role="list" aria-label="Работы на ремонтной базе">
+        <article class="capability-lane" role="listitem">
+          <span class="capability-lane__number">01</span>
+          <div class="capability-lane__copy">
+            <h3>Сервисная зона</h3>
+            <p>Принимают грузовые автомобили и спецтехнику, осматривают шасси и системы на базе.</p>
+          </div>
+          <a class="capability-lane__link" href="{{rootPath}}remont/">Ремонт техники</a>
+        </article>
+        <article class="capability-lane" role="listitem">
+          <span class="capability-lane__number">02</span>
+          <div class="capability-lane__copy">
+            <h3>Агрегатные работы</h3>
+            <p>Ремонтируют двигатели, ГБЦ, КПП, мосты, раздаточные коробки и сцепление.</p>
+          </div>
+          <span class="capability-lane__links">
+            <a class="capability-lane__link" href="{{rootPath}}remont/dvigateley/">Двигатели</a>
+            <a class="capability-lane__link" href="{{rootPath}}remont-kpp/">КПП</a>
+          </span>
+        </article>
+        <article class="capability-lane" role="listitem">
+          <span class="capability-lane__number">03</span>
+          <div class="capability-lane__copy">
+            <h3>Ходовая и тормоза</h3>
+            <p>Ремонтируют подвеску, ступицы, оси, тормозную систему и делают развал-схождение грузовиков.</p>
+          </div>
+          <a class="capability-lane__link" href="{{rootPath}}remont-hodovoy/">Ходовая</a>
+        </article>
+        <article class="capability-lane" role="listitem">
+          <span class="capability-lane__number">04</span>
+          <div class="capability-lane__copy">
+            <h3>Гидравлика и РВД</h3>
+            <p>Проверяют давление, ремонтируют гидроузлы, ремонтируют и меняют РВД.</p>
+          </div>
+          <a class="capability-lane__link" href="{{rootPath}}remont-gidravliki/">Гидравлика</a>
+        </article>
+        <article class="capability-lane" role="listitem">
+          <span class="capability-lane__number">05</span>
+          <div class="capability-lane__copy">
+            <h3>Электрика и диагностика</h3>
+            <p>Проверяют проводку, датчики, стартер, генератор и выполняют компьютерную диагностику.</p>
+          </div>
+          <a class="capability-lane__link" href="{{rootPath}}remont-elektriki/">Электрика</a>
+        </article>
+        <article class="capability-lane" role="listitem">
+          <span class="capability-lane__number">06</span>
+          <div class="capability-lane__copy">
+            <h3>Полуприцепы и тралы</h3>
+            <p>Ремонтируют рамы, подвеску, тормозную систему и обслуживают тралы.</p>
+          </div>
+          <a class="capability-lane__link" href="{{rootPath}}remont-polupricepov-i-tralov/">Полуприцепы и тралы</a>
+        </article>
       </div>
     </div>
   </div>
