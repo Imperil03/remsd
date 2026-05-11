@@ -9,7 +9,7 @@ const dataDir = path.join(srcDir, "data");
 const templatesDir = path.join(srcDir, "templates");
 const assetsDir = path.join(root, "assets");
 const distDir = path.join(root, "dist");
-const assetVersion = process.env.ASSET_VERSION || "20260511-industrial-blocks";
+const assetVersion = process.env.ASSET_VERSION || "20260511-main-merge";
 
 // Check if v2 mode
 const isV2 = process.argv.includes('--v2');

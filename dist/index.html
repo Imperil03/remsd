@@ -64,7 +64,9 @@
 </script>
 
     <link rel="preload" as="image" href="./assets/img/hero-service.webp" type="image/webp" fetchpriority="high">
-    <link rel="stylesheet" href="./assets/css/styles.css?v=20260511-industrial-blocks">
+    <link rel="preload" as="font" href="./assets/fonts/montserrat-cyrillic-800-normal.woff2" type="font/woff2" crossorigin>
+    <link rel="preload" as="font" href="./assets/fonts/source-sans-3-cyrillic-400-normal.woff2" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="./assets/css/styles.css?v=20260511-main-merge">
   </head>
   <body>
     <header class="site-header" data-site-header>
@@ -129,38 +131,38 @@
     <div class="official-brands__grid">
       <a class="official-brand-card" href="./remont/kamaz/">
         <span class="official-brand-card__head">
-          <span class="official-brand-card__kicker">Официальный сервисный центр</span>
+          <span class="official-brand-card__kicker">Официальный сервис</span>
           <span class="official-brand-card__logo">
             <img src="./assets/img/brands/kamaz.webp" alt="Логотип КАМАЗ" width="260" height="160" loading="lazy" decoding="async">
           </span>
         </span>
         <h3>Ремонт КАМАЗ</h3>
         <p>РемСД ремонтирует двигатели, головки блока цилиндров (ГБЦ), коробки переключения передач (КПП), электрику, топливную систему, ходовую часть, тормоза и гидравлику КАМАЗ.</p>
-        <span class="official-brand-card__link">Перейти к ремонту КАМАЗ</span>
+        <span class="official-brand-card__link">Ремонт КАМАЗ в Сургуте →</span>
       </a>
 
       <a class="official-brand-card" href="./remont/maz/">
         <span class="official-brand-card__head">
-          <span class="official-brand-card__kicker">Официальный сервисный центр</span>
+          <span class="official-brand-card__kicker">Официальный сервис</span>
           <span class="official-brand-card__logo">
             <img src="./assets/img/brands/maz.webp" alt="Логотип МАЗ" width="260" height="160" loading="lazy" decoding="async">
           </span>
         </span>
         <h3>Ремонт МАЗ</h3>
         <p>РемСД проводит диагностику, ремонт двигателя внутреннего сгорания (ДВС), ГБЦ, трансмиссии, тормозной системы, электрики, системы охлаждения и техническое обслуживание (ТО) для МАЗ.</p>
-        <span class="official-brand-card__link">Перейти к ремонту МАЗ</span>
+        <span class="official-brand-card__link">Ремонт МАЗ в Сургуте →</span>
       </a>
 
       <a class="official-brand-card" href="./remont/ural/">
         <span class="official-brand-card__head">
-          <span class="official-brand-card__kicker">Официальный сервисный центр</span>
+          <span class="official-brand-card__kicker">Официальный сервис</span>
           <span class="official-brand-card__logo">
             <img src="./assets/img/brands/ural.webp" alt="Логотип УРАЛ" width="260" height="160" loading="lazy" decoding="async">
           </span>
         </span>
         <h3>Ремонт УРАЛ</h3>
         <p>РемСД ремонтирует двигатель, раздаточную коробку (раздатку), мосты, ходовую часть, тормоза, электрику, гидравлику и обслуживает шасси УРАЛ.</p>
-        <span class="official-brand-card__link">Перейти к ремонту УРАЛ</span>
+        <span class="official-brand-card__link">Ремонт УРАЛ в Сургуте →</span>
       </a>
     </div>
 
@@ -205,6 +207,46 @@
           <img src="./assets/img/brands/uzst.webp" alt="УЗСТ" width="220" height="120" loading="lazy" decoding="async">
         </li>
       </ul>
+    </div>
+  </div>
+</section>
+
+      <section class="company-about" aria-labelledby="company-about-title">
+  <div class="container company-about__inner">
+    <div class="company-about__media">
+      <img src="./assets/img/gallery/thumb/production-zone.webp" alt="Ремонтная зона РемСД в Сургуте" width="720" height="520" loading="lazy" decoding="async">
+    </div>
+
+    <div class="company-about__content">
+      <p class="section-kicker">О компании</p>
+      <h2 id="company-about-title">РемСД принимает грузовую технику на собственной базе в Сургуте</h2>
+      <p>
+        РемСД работает с грузовыми автомобилями, спецтехникой, полуприцепами и тралами. На базе в Сургуте выполняют диагностику, агрегатный ремонт, работы по ходовой, тормозам, гидравлике, РВД и электрике.
+      </p>
+
+      <dl class="company-facts" aria-label="Ключевые факты о РемСД">
+        <div>
+          <dt>Статус</dt>
+          <dd>официальный сервис КАМАЗ, МАЗ, УРАЛ</dd>
+        </div>
+        <div>
+          <dt>База</dt>
+          <dd>г. Сургут, ул. Производственная, 36</dd>
+        </div>
+        <div>
+          <dt>Техника</dt>
+          <dd>грузовики, спецтехника, полуприцепы, тралы</dd>
+        </div>
+        <div>
+          <dt>Документы</dt>
+          <dd>сертификаты и документы доступны на сайте</dd>
+        </div>
+      </dl>
+
+      <div class="company-about__actions">
+        <a class="button button--primary" href="tel:+73462260504">Позвонить мастеру</a>
+        <a class="company-about__link" href="./remontnaya-baza/">Смотреть базу</a>
+      </div>
     </div>
   </div>
 </section>
@@ -647,36 +689,55 @@
 <section class="home-context home-context--area" aria-labelledby="service-area-title">
   <div class="container home-context__inner">
     <div class="area-panel">
-      <div class="section-heading area-panel__heading">
-        <p class="section-kicker">География работ</p>
-        <h2 id="service-area-title">Зона обслуживания РемСД</h2>
-        <p>РемСД принимает на базе технику компаний из Сургута и Ханты-Мансийского автономного округа (ХМАО). Ремонтная база находится в Сургуте. Техника приезжает на диагностику и ремонт, после чего возвращается заказчику.</p>
+      <div class="area-panel__content">
+        <div class="section-heading area-panel__heading">
+          <p class="section-kicker">География работ</p>
+          <h2 id="service-area-title">Где находится ремонтная база РемСД</h2>
+          <p>РемСД принимает технику компаний из Сургута и ХМАО на ремонтной базе по адресу: г. Сургут, ул. Производственная, 36. На базу приезжают грузовые автомобили, спецтехника, полуприцепы и тралы.</p>
+        </div>
+
+        <div class="area-panel__details" aria-label="Контакты и адрес РемСД">
+          <dl>
+            <div>
+              <dt>Адрес базы</dt>
+              <dd>г. Сургут, ул. Производственная, 36</dd>
+            </div>
+            <div>
+              <dt>Телефон</dt>
+              <dd><a href="tel:+73462260504">+7 (3462) 26-05-04</a></dd>
+            </div>
+            <div>
+              <dt>Регион</dt>
+              <dd>Сургут и ХМАО</dd>
+            </div>
+            <div>
+              <dt>Тип техники</dt>
+              <dd>грузовые автомобили, спецтехника, полуприцепы, тралы</dd>
+            </div>
+          </dl>
+
+          <div class="home-actions">
+            <a class="button button--primary" href="tel:+73462260504">Позвонить мастеру</a>
+            <a class="button button--outline" href="./kontakty/">Контакты сервиса</a>
+          </div>
+        </div>
       </div>
 
-      <div class="area-panel__details" aria-label="Контакты и адрес РемСД">
-        <dl>
-          <div>
-            <dt>Адрес базы</dt>
-            <dd>г. Сургут, ул. Производственная, 36</dd>
-          </div>
-          <div>
-            <dt>Телефон</dt>
-            <dd><a href="tel:+73462260504">+7 (3462) 26-05-04</a></dd>
-          </div>
-          <div>
-            <dt>Регион</dt>
-            <dd>Сургут и ХМАО</dd>
-          </div>
-          <div>
-            <dt>Тип техники</dt>
-            <dd>грузовые автомобили, спецтехника, полуприцепы, тралы</dd>
-          </div>
-        </dl>
-
-        <div class="home-actions">
-          <a class="button button--primary" href="tel:+73462260504">Позвонить мастеру</a>
-          <a class="button button--outline" href="./kontakty/">Контакты сервиса</a>
+      <div class="area-map-card" aria-label="Карта проезда к ремонтной базе РемСД">
+        <iframe
+          title="РемСД на Яндекс.Картах"
+          src="https://yandex.ru/map-widget/v1/?text=%D0%A1%D1%83%D1%80%D0%B3%D1%83%D1%82%2C%20%D1%83%D0%BB.%20%D0%9F%D1%80%D0%BE%D0%B8%D0%B7%D0%B2%D0%BE%D0%B4%D1%81%D1%82%D0%B2%D0%B5%D0%BD%D0%BD%D0%B0%D1%8F%2C%2036&z=16"
+          width="560"
+          height="420"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          allowfullscreen>
+        </iframe>
+        <div class="area-map-card__marker" aria-hidden="true">
+          <span>РемСД</span>
+          <strong>ул. Производственная, 36</strong>
         </div>
+        <a class="area-map-card__link" href="https://yandex.ru/maps/?text=%D0%A1%D1%83%D1%80%D0%B3%D1%83%D1%82%2C%20%D1%83%D0%BB.%20%D0%9F%D1%80%D0%BE%D0%B8%D0%B7%D0%B2%D0%BE%D0%B4%D1%81%D1%82%D0%B2%D0%B5%D0%BD%D0%BD%D0%B0%D1%8F%2C%2036" target="_blank" rel="noopener">Открыть в Яндекс.Картах</a>
       </div>
     </div>
   </div>
@@ -791,6 +852,6 @@
 </aside>
 
 
-    <script src="./assets/js/main.js?v=20260511-industrial-blocks"></script>
+    <script src="./assets/js/main.js?v=20260511-main-merge"></script>
   </body>
 </html>
