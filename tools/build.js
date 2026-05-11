@@ -11,6 +11,9 @@ const assetsDir = path.join(root, "assets");
 const distDir = path.join(root, "dist");
 const assetVersion = process.env.ASSET_VERSION || "20260511-industrial-blocks";
 
+// Check if v2 mode
+const isV2 = process.argv.includes('--v2');
+
 function cleanDir(dir) {
   fs.rmSync(dir, { recursive: true, force: true });
   fs.mkdirSync(dir, { recursive: true });
@@ -165,10 +168,33 @@ function buildSeoPages() {
   }
 }
 
-cleanDir(distDir);
-copyDir(assetsDir, path.join(distDir, "assets"));
-buildPages();
-buildSeoPages();
+function buildV2() {
+  const partials = readPartials();
+  const v2Dir = path.join(distDir, "v2");
+  const assetsV2Dir = path.join(v2Dir, "assets");
 
-console.log("Built dist/");
+  cleanDir(v2Dir);
+  copyDir(assetsDir, assetsV2Dir);
 
+  // Build v2 index
+  const source = path.join(pagesDir, "index-v2.html");
+  const html = fs.readFileSync(source, "utf8");
+  const context = {
+    rootPath: "./",
+    assetVersion: assetVersion + "-v2",
+  };
+  const target = path.join(v2Dir, "index.html");
+  fs.writeFileSync(target, render(html, partials, context), "utf8");
+  console.log("Built v2/");
+}
+
+// Main build
+if (isV2) {
+  buildV2();
+} else {
+  cleanDir(distDir);
+  copyDir(assetsDir, path.join(distDir, "assets"));
+  buildPages();
+  buildSeoPages();
+  console.log("Built dist/");
+}
