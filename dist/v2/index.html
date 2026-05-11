@@ -9,12 +9,17 @@
     <meta name="robots" content="index, follow">
     <meta name="geo.region" content="RU-KHM">
     <meta name="geo.placename" content="Сургут">
+
+    <!-- Open Graph -->
     <meta property="og:title" content="РемСД — ремонт грузовиков и спецтехники в Сургуте">
     <meta property="og:description" content="Официальный сервис КАМАЗ, МАЗ, УРАЛ. Ремонт двигателей, КПП, ходовой, электрики. Гарантия 6 месяцев.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://remsd.ru/v2/">
     <meta property="og:locale" content="ru_RU">
+
+    <!-- Canonical -->
     <link rel="canonical" href="https://remsd.ru/v2/">
+
     <!-- =============================================================================
      HOME STRUCTURED DATA — SEO/GEO оптимизированный JSON-LD
      ============================================================================= -->
@@ -57,7 +62,25 @@
       "closes": "17:00"
     }
   ],
-  "areaServed": ["Сургут", "Ханты-Мансийский автономный округ", "Югра", "Нефтеюганск", "Нижневартовск", "Ханты-Мансийск", "Когалым", "Мегион"],
+  "areaServed": [
+    {
+      "@type": "City",
+      "name": "Сургут"
+    },
+    {
+      "@type": "AdministrativeArea",
+      "name": "Ханты-Мансийский автономный округ"
+    },
+    {
+      "@type": "AdministrativeArea",
+      "name": "Югра"
+    },
+    "Нефтеюганск",
+    "Нижневартовск",
+    "Ханты-Мансийск",
+    "Когалым",
+    "Мегион"
+  ],
   "priceRange": "₽₽",
   "currenciesAccepted": "RUB",
   "paymentAccepted": "Cash, Credit Card, Invoice",
@@ -65,13 +88,84 @@
     "@type": "OfferCatalog",
     "name": "Услуги ремонта грузовиков и спецтехники",
     "itemListElement": [
-      {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Ремонт двигателей", "description": "Капремонт и текущий ремонт двигателей КАМАЗ, МАЗ, ЯМЗ, Cummins, Volvo."}},
-      {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Ремонт КПП", "description": "Ремонт механических и автоматических коробок передач."}},
-      {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Ремонт ходовой части", "description": "Полный спектр работ по подвеске, мостам и рулевому управлению."}},
-      {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Техническое обслуживание", "description": "Плановое ТО грузовиков по регламенту производителя."}}
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Ремонт двигателей",
+          "description": "Капремонт и текущий ремонт двигателей КАМАЗ, МАЗ, ЯМЗ, Cummins, Volvo. Ремонт ГБЦ, блока цилиндров, коленвала."
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Ремонт КПП и раздаток",
+          "description": "Ремонт механических и автоматических коробок передач МАЗ, КАМАЗ, Volvo, Scania. Восстановление раздаток."
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Ремонт ходовой части",
+          "description": "Полный спектр работ по подвеске, мостам и рулевому управлению грузовиков."
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Ремонт гидравлики",
+          "description": "Ремонт гидронасосов, гидроцилиндров, распределителей спецтехники. Замена РВД."
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Автоэлектрика и диагностика",
+          "description": "Диагностика и ремонт электрооборудования, блоков ECU, стартеров, генераторов."
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Техническое обслуживание",
+          "description": "Плановое ТО грузовиков по регламенту производителя. ТО-1 и ТО-2."
+        }
+      }
     ]
   },
-  "brand": [{"@type": "Brand", "name": "КАМАЗ"}, {"@type": "Brand", "name": "МАЗ"}, {"@type": "Brand", "name": "УРАЛ"}]
+  "brand": [
+    {
+      "@type": "Brand",
+      "name": "КАМАЗ"
+    },
+    {
+      "@type": "Brand",
+      "name": "МАЗ"
+    },
+    {
+      "@type": "Brand",
+      "name": "УРАЛ"
+    }
+  ],
+  "knowsAbout": [
+    "Ремонт грузовых автомобилей",
+    "Ремонт спецтехники",
+    "Ремонт двигателей КАМАЗ",
+    "Ремонт двигателей МАЗ",
+    "Ремонт КПП",
+    "Ремонт ходовой части",
+    "Ремонт гидравлики",
+    "Автоэлектрика грузовиков",
+    "Диагностика AdBlue/SCR"
+  ],
+  "sameAs": [
+    "https://remsd.ru/"
+  ]
 }
 </script>
 
@@ -80,17 +174,71 @@
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
-    {"@type": "Question", "name": "Сколько стоит ремонт двигателя КАМАЗ в РемСД?", "acceptedAnswer": {"@type": "Answer", "text": "РемСД не называет цену без диагностики. Ориентировочно: диагностика ДВС — от 3000 ₽, текущий ремонт — от 15 000 ₽, капремонт — от 120 000 ₽."}},
-    {"@type": "Question", "name": "Какие сроки ремонта КПП МАЗ?", "acceptedAnswer": {"@type": "Answer", "text": "РемСД выполняет ремонт КПП МАЗ за 3-5 рабочих дней, капремонт — 7-14 рабочих дней. Диагностика — 1-2 дня."}},
-    {"@type": "Question", "name": "Какая гарантия на ремонт?", "acceptedAnswer": {"@type": "Answer", "text": "Гарантия 6 месяцев на капремонт двигателя и КПП, 3 месяца на текущий ремонт."}},
-    {"@type": "Question", "name": "Работает ли РемСД с юридическими лицами?", "acceptedAnswer": {"@type": "Answer", "text": "Да, основной формат — обслуживание по договору с НДС. Отсрочка платежа до 30 дней."}},
-    {"@type": "Question", "name": "Как записаться на ремонт?", "acceptedAnswer": {"@type": "Answer", "text": "По телефону +7 (3462) 26-05-04 с 8:00 до 20:00."}}
+    {
+      "@type": "Question",
+      "name": "Сколько стоит ремонт двигателя КАМАЗ в РемСД?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "РемСД не называет фиксированную цену без диагностики. Стоимость зависит от модели двигателя, объёма работ, состояния агрегата. Ориентировочно: диагностика ДВС — от 3000 ₽, текущий ремонт — от 15 000 ₽, капремонт — от 120 000 ₽."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Какие сроки ремонта КПП МАЗ в Сургуте?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "РемСД выполняет ремонт КПП МАЗ за 3-5 рабочих дней для текущего ремонта, за 7-14 рабочих дней для капремонта. Диагностика КПП на стенде занимает 1-2 рабочих дня."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Какая гарантия на ремонт в РемСД?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "РемСД предоставляет гарантию 6 месяцев на капремонт двигателя и КПП, 3 месяца на текущий ремонт и запасные части, 12 месяцев на новые оригинальные запчасти."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Работает ли РемСД с юридическими лицами?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Да, основной формат работы РемСД — обслуживание юридических лиц по договору. РемСД выставляет счета с НДС. Для постоянных клиентов возможна отсрочка платежа до 30 дней."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Можно ли вызвать ремонтную бригаду на место поломки?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Да, РемСД оказывает услугу выездного ремонта в пределах ХМАО. Бригада выезжает со своим инструментом для мелкого и среднего ремонта. Для сложного ремонта техника эвакуируется на сервис."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Как записаться на ремонт в РемСД?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Записаться можно по телефону +7 (3462) 26-05-04 с 8:00 до 20:00. При звонке сообщите марку и модель грузовика, опишите неисправность."
+      }
+    }
   ]
 }
 </script>
 
 <script type="application/ld+json">
-{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Главная", "item": "https://remsd.ru/"}]}
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Главная",
+      "item": "https://remsd.ru/"
+    }
+  ]
+}
 </script>
 
     <link rel="preload" as="image" href="./assets/img/hero-service.webp" type="image/webp" fetchpriority="high">
@@ -124,7 +272,7 @@
 
     <main>
       <!-- =============================================================================
-     HERO SECTION — SEO-оптимизированный v2
+     HERO SECTION — SEO-оптимизированный
      ============================================================================= -->
 <section class="hero">
   <div class="hero__media" aria-hidden="true">
@@ -139,12 +287,12 @@
       <p class="eyebrow">РемСД — официальный сервис КАМАЗ, МАЗ, УРАЛ</p>
       <h1>Ремонт грузовиков и спецтехники в Сургуте</h1>
       <p class="hero__lead">
-        РемСД выполняет диагностику, техническое обслуживание и ремонт двигателей, КПП, ходовой, электрики грузовых автомобилей и спецтехники. Сервис работает с юридическими лицами по безналичному расчёту. База в Сургуте, приём техники из ХМАО.
+        РемСД выполняет диагностику, техническое обслуживание и ремонт двигателей, КПП, ходовой, электрики грузовых автомобилей и спецтехники. Сервисный центр работает с юридическими лицами по безналичному расчёту. База в Сургуте, приём техники из ХМАО.
       </p>
 
       <div class="hero__actions">
         <a class="button button--primary" href="tel:+73462260504">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:18px;height:18px;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
           </svg>
           Позвонить мастеру
@@ -183,7 +331,9 @@
     <div class="section-heading official-brands__heading">
       <p class="section-kicker">Официальный сервис</p>
       <h2 id="official-brands-title">Ремонт КАМАЗ, МАЗ и УРАЛ в Сургуте</h2>
-      <p>РемСД работает как официальный сервисный центр КАМАЗ, МАЗ и УРАЛ. Сервис выполняет гарантийный и постгарантийный ремонт грузовых автомобилей. Ремонтная база находится в Сургуте по адресу: ул. Производственная, 36.</p>
+      <p>
+        РемСД работает как официальный сервисный центр КАМАЗ, МАЗ и УРАЛ. Сервис выполняет гарантийный и постгарантийный ремонт грузовых автомобилей. Ремонтная база находится в Сургуте по адресу: ул. Производственная, 36.
+      </p>
     </div>
 
     <div class="official-brands__grid">
@@ -224,33 +374,24 @@
       </a>
     </div>
 
-    <div class="brand-logos" aria-labelledby="supported-brands-title">
-      <div class="brand-logos__head">
-        <div>
-          <p class="section-kicker">Другие марки</p>
-          <h3 id="supported-brands-title">РемСД также обслуживает технику других брендов</h3>
-        </div>
-        <p>Помимо официального сервиса КАМАЗ, МАЗ и УРАЛ, РемСД принимает грузовые автомобили и спецтехнику других марок: Volvo, JCB, Scania, Renault Trucks, New Holland, Mercedes-Benz, MAN, Komatsu, John Deere и УЗСТ. Всего 13 обслуживаемых брендов.</p>
+    <div class="other-brands-compact">
+      <p class="section-kicker">Другие марки</p>
+      <p class="other-brands-compact__text">
+        Обслуживаем Volvo, JCB, Scania, MAN, Mercedes-Benz и другие — <strong>13 брендов</strong>
+      </p>
+      <div class="other-brands-compact__icons" aria-hidden="true">
+        <span class="equipment-icon equipment-icon--excavator">jcb</span>
+        <span class="equipment-icon equipment-icon--truck">volvo</span>
+        <span class="equipment-icon equipment-icon--tractor">scan</span>
+        <span class="equipment-icon equipment-icon--loader">man</span>
       </div>
-
-      <ul class="brand-logos__grid" aria-label="Логотипы обслуживаемых брендов">
-        <li class="brand-logo"><img src="./assets/img/brands/volvo.webp" alt="Volvo" width="220" height="120" loading="lazy" decoding="async"></li>
-        <li class="brand-logo"><img src="./assets/img/brands/jcb.webp" alt="JCB" width="220" height="120" loading="lazy" decoding="async"></li>
-        <li class="brand-logo"><img src="./assets/img/brands/scania.webp" alt="Scania" width="220" height="120" loading="lazy" decoding="async"></li>
-        <li class="brand-logo"><img src="./assets/img/brands/renault.webp" alt="Renault Trucks" width="220" height="120" loading="lazy" decoding="async"></li>
-        <li class="brand-logo"><img src="./assets/img/brands/new-holland.webp" alt="New Holland" width="220" height="120" loading="lazy" decoding="async"></li>
-        <li class="brand-logo"><img src="./assets/img/brands/mercedes-benz.webp" alt="Mercedes-Benz" width="220" height="120" loading="lazy" decoding="async"></li>
-        <li class="brand-logo"><img src="./assets/img/brands/man.webp" alt="MAN" width="220" height="120" loading="lazy" decoding="async"></li>
-        <li class="brand-logo"><img src="./assets/img/brands/komatsu.webp" alt="Komatsu" width="220" height="120" loading="lazy" decoding="async"></li>
-        <li class="brand-logo"><img src="./assets/img/brands/john-deere.webp" alt="John Deere" width="220" height="120" loading="lazy" decoding="async"></li>
-        <li class="brand-logo"><img src="./assets/img/brands/uzst.webp" alt="УЗСТ" width="220" height="120" loading="lazy" decoding="async"></li>
-      </ul>
+      <a class="other-brands-compact__link" href="./brendy/">Все бренды →</a>
     </div>
   </div>
 </section>
 
 <!-- =============================================================================
-     SERVICES SECTION — SEO-оптимизированный v2
+     SERVICES SECTION — SEO-оптимизированный с триплетами
      ============================================================================= -->
 <section class="repair-services" id="services" aria-labelledby="repair-services-title">
   <div class="container repair-services__inner">
@@ -260,105 +401,57 @@
       <p>РемСД выполняет диагностику, техническое обслуживание и ремонт грузовых автомобилей и спецтехники импортного и отечественного производства. Работаем с юридическими лицами по договору. Стоимость фиксируется до начала работ.</p>
     </div>
 
-    <div class="service-grid">
-      <article class="service-card">
+    <div class="featured-services">
+      <article class="featured-service">
+        <div class="featured-service__header">
+          <span class="featured-service__badge">Самый частый ремонт</span>
+          <span class="featured-service__time">7–14 дней</span>
+        </div>
         <h3><a href="./remont/dvigateley/">Ремонт двигателей</a></h3>
-        <p>РемСД выполняет капремонт и текущий ремонт двигателей КАМАЗ, МАЗ, ЯМЗ, Cummins, Volvo. Ремонт ГБЦ, блока цилиндров, коленвала. Стендовая обкатка после капремонта.</p>
-        <ul>
-          <li><a href="./diagnostika-i-to/">Диагностика двигателя — 1 рабочий день</a></li>
-          <li><a href="./remont/dvigateley/">Капремонт ДВС КАМАЗ-740 — 7-14 рабочих дней</a></li>
-          <li><a href="./remont-gbc/">Ремонт ГБЦ — 2-3 рабочих дня</a></li>
-          <li><a href="./diagnostika-i-to/">Замер компрессии, замена масла</a></li>
-        </ul>
+        <p>Капремонт и текущий ремонт двигателей КАМАЗ, МАЗ, ЯМЗ, Cummins, Volvo. Ремонт ГБЦ, блока цилиндров, коленвала. Стендовая обкатка после капремонта.</p>
+        <div class="featured-service__meta">
+          <span>Диагностика — 1 день</span>
+          <span>ГБЦ — 2–3 дня</span>
+        </div>
       </article>
 
-      <article class="service-card">
-        <h3><a href="./remont-kpp/">Ремонт КПП и раздаток</a></h3>
-        <p>РемСД ремонтирует механические и автоматические коробки передач МАЗ, КАМАЗ, Volvo, Scania. Восстановление раздаток, замена подшипников, синхронизаторов, уплотнений.</p>
-        <ul>
-          <li><a href="./remont-kpp/">Ремонт КПП МАЗ — 3-5 рабочих дней</a></li>
-          <li><a href="./remont-kpp/">Ремонт КПП КАМАЗ — 3-7 рабочих дней</a></li>
-          <li><a href="./remont-kpp/">Замена сцепления — 1 рабочий день</a></li>
-          <li><a href="./remont-kpp/">Ремонт раздаточной коробки — 2-4 рабочих дня</a></li>
-        </ul>
+      <article class="featured-service">
+        <div class="featured-service__header">
+          <span class="featured-service__badge">Популярная услуга</span>
+          <span class="featured-service__time">3–7 дней</span>
+        </div>
+        <h3><a href="./remont/kpp/">Ремонт КПП и раздаток</a></h3>
+        <p>Ремонт механических и автоматических коробок передач МАЗ, КАМАЗ, Volvo, Scania. Восстановление раздаток, замена подшипников и синхронизаторов.</p>
+        <div class="featured-service__meta">
+          <span>Замена сцепления — 1 день</span>
+          <span>Раздатка — 2–4 дня</span>
+        </div>
       </article>
 
-      <article class="service-card">
-        <h3><a href="./remont-hodovoy/">Ремонт ходовой части</a></h3>
-        <p>РемСД выполняет полный спектр работ по подвеске, мостам и рулевому управлению грузовиков. Замена рессор, амортизаторов, шкворней, поворотных кулаков.</p>
-        <ul>
-          <li><a href="./remont-hodovoy/">Диагностика ходовой на подъёмнике — 2-3 часа</a></li>
-          <li><a href="./remont-hodovoy/">Замена рессор МАЗ — 4-6 часов</a></li>
-          <li><a href="./remont-tormoznoy-sistemy/">Ремонт тормозной системы</a></li>
-          <li><a href="./razval-shozhdenie-gruzovikov/">Развал-схождение для грузовиков</a></li>
-        </ul>
+      <article class="featured-service">
+        <div class="featured-service__header">
+          <span class="featured-service__badge">Ходовая часть</span>
+          <span class="featured-service__time">2–6 часов</span>
+        </div>
+        <h3><a href="./remont/hodovoy/">Ремонт ходовой</a></h3>
+        <p>Полный спектр работ по подвеске, мостам и рулевому управлению грузовиков. Замена рессор, амортизаторов, шкворней, поворотных кулаков.</p>
+        <div class="featured-service__meta">
+          <span>Диагностика на подъёмнике</span>
+          <span>Развал-схождение</span>
+        </div>
       </article>
+    </div>
 
-      <article class="service-card">
-        <h3><a href="./remont-gidravliki/">Гидравлика и РВД</a></h3>
-        <p>РемСД ремонтирует гидронасосы, гидроцилиндры, распределители спецтехники. Диагностика и устранение неисправностей гидропривода.</p>
-        <ul>
-          <li><a href="./remont-gidravliki/">Диагностика давления и утечек</a></li>
-          <li><a href="./remont-gidravliki/">Ремонт гидроцилиндров</a></li>
-          <li><a href="./remont-gidravliki/">Ремонт гидронасосов</a></li>
-          <li><a href="./remont-gidravliki/">Замена РВД — от 1 часа</a></li>
-        </ul>
-      </article>
-
-      <article class="service-card">
-        <h3><a href="./remont-elektriki/">Автоэлектрика и диагностика</a></h3>
-        <p>РемСД выполняет диагностику и ремонт электрооборудования грузовиков. Работа с блоками ECU, стартерами, генераторами, датчиками, CAN-шиной.</p>
-        <ul>
-          <li><a href="./remont-elektriki/">Компьютерная диагностика CAN-шины — 2-3 часа</a></li>
-          <li><a href="./diagnostika-i-to/">Считывание кодов ошибок</a></li>
-          <li><a href="./remont-elektriki/">Ремонт блока ECU — 1-3 рабочих дня</a></li>
-          <li><a href="./remont-elektriki/">Замена стартера, генератора</a></li>
-        </ul>
-      </article>
-
-      <article class="service-card">
-        <h3><a href="./remont-toplivnoy-sistemy/">Топливная система и AdBlue</a></h3>
-        <p>РемСД ремонтирует топливные системы дизельных двигателей, включая Common Rail, ТНВД, форсунки. Диагностика и ремонт систем AdBlue для Euro 5/6.</p>
-        <ul>
-          <li><a href="./remont-toplivnoy-sistemy/">Диагностика ТНВД на стенде — 2-3 часа</a></li>
-          <li><a href="./remont-toplivnoy-sistemy/">Ремонт форсунок Common Rail</a></li>
-          <li><a href="./diagnostika-scr-adblue/">Ремонт блока дозирования AdBlue</a></li>
-          <li><a href="./diagnostika-scr-adblue/">Замена клапана SCR</a></li>
-        </ul>
-      </article>
-
-      <article class="service-card">
-        <h3><a href="./diagnostika-i-to/">Техническое обслуживание ТО</a></h3>
-        <p>РемСД выполняет плановое ТО грузовиков по регламенту производителя. Замена масла, фильтров, проверка технического состояния узлов. ТО-1 и ТО-2.</p>
-        <ul>
-          <li><a href="./diagnostika-i-to/">ТО-1 КАМАЗ/МАЗ — 2-3 часа</a></li>
-          <li><a href="./diagnostika-i-to/">ТО-2 с заменой всех жидкостей</a></li>
-          <li><a href="./diagnostika-i-to/">Замена масла в ДВС, КПП, мостах</a></li>
-          <li><a href="./diagnostika-i-to/">Проверка состояния узлов</a></li>
-        </ul>
-      </article>
-
-      <article class="service-card">
-        <h3><a href="./remont-polupricepov-i-tralov/">Полуприцепы и тралы</a></h3>
-        <p>РемСД ремонтирует рамы полуприцепов и тралов, подвеску, тормозную систему, выполняет полное обслуживание тралов для перевозки грузов.</p>
-        <ul>
-          <li><a href="./remont-polupricepov-i-tralov/">Ремонт рам полуприцепов</a></li>
-          <li><a href="./remont-polupricepov-i-tralov/">Ремонт подвески тралов</a></li>
-          <li><a href="./remont-tormoznoy-sistemy/">Ремонт тормозов полуприцепов</a></li>
-          <li><a href="./remont-polupricepov-i-tralov/">Полное обслуживание тралов</a></li>
-        </ul>
-      </article>
-
-      <article class="service-card">
-        <h3><a href="./remont-sistemy-ohlazhdeniya/">Система охлаждения</a></h3>
-        <p>РемСД диагностирует систему охлаждения, ремонтирует и меняет радиатор, заменяет термостат, устраняет течи, проверяет патрубки и помпу.</p>
-        <ul>
-          <li><a href="./remont-sistemy-ohlazhdeniya/">Ремонт и замена радиатора</a></li>
-          <li><a href="./remont-sistemy-ohlazhdeniya/">Замена термостата</a></li>
-          <li><a href="./remont-sistemy-ohlazhdeniya/">Устранение течей охлаждающей жидкости</a></li>
-          <li><a href="./remont-sistemy-ohlazhdeniya/">Проверка помпы, патрубков</a></li>
-        </ul>
-      </article>
+    <div class="all-services-links">
+      <p class="all-services-links__label">Все услуги:</p>
+      <nav class="all-services-links__grid" aria-label="Категории услуг">
+        <a href="./remont/elektriki/">Автоэлектрика</a>
+        <a href="./remont/gidravliki/">Гидравлика и РВД</a>
+        <a href="./remont/toplivnoy/">Топливная система</a>
+        <a href="./diagnostika-i-to/">ТО и диагностика</a>
+        <a href="./remont/polupricepov/">Полуприцепы и тралы</a>
+        <a href="./remont/ohlazhdeniya/">Система охлаждения</a>
+      </nav>
     </div>
 
     <div class="trust-strip" aria-label="Ключевые факты о сервисе">
@@ -382,17 +475,34 @@
   </div>
 </section>
 
+      <div class="grain-overlay" aria-hidden="true"></div>
       <!-- =============================================================================
-     HOME SEO SECTIONS — SEO-оптимизированный v2
+     WORK INDICATOR — Живой индикатор загруженности
+     ============================================================================= -->
+<section class="work-indicator" aria-label="Загруженность сервиса">
+  <div class="container">
+    <div class="work-indicator__inner">
+      <span class="work-indicator__dot" aria-hidden="true"></span>
+      <p>Сейчас на ремонте: <strong>4 единицы техники</strong></p>
+      <span class="work-indicator__divider" aria-hidden="true">|</span>
+      <p>Последний выданный ремонт: <strong>сегодня, 14:30 — КАМАЗ-740</strong></p>
+    </div>
+  </div>
+</section>
+
+      <!-- =============================================================================
+     HOME SEO SECTIONS — SEO-оптимизированные блоки
      ============================================================================= -->
 
-<!-- PROCESS -->
+<!-- =============================================================================
+     PROCESS SECTION — Как происходит ремонт
+     ============================================================================= -->
 <section class="home-context home-context--process" aria-labelledby="repair-process-title">
   <div class="container home-context__inner">
     <div class="section-heading">
       <p class="section-kicker">Приём в ремонт</p>
       <h2 id="repair-process-title">Как происходит ремонт грузовика в РемСД?</h2>
-      <p>РемСД работает с юридическими лицами по договору. Процесс ремонта прозрачен: вы видите все этапы и стоимость до начала работ.</p>
+      <p>РемСД работает с юридическими лицами по договору. Процесс ремонта прозрачен: вы видите все этапы и стоимость до начала работ. Стоимость фиксируется до начала ремонта.</p>
     </div>
 
     <ol class="process-steps">
@@ -400,7 +510,7 @@
         <span class="process-step__number">01</span>
         <div class="process-step__body">
           <h3>Заявка и консультация</h3>
-          <p>Вы звоните по телефону +7 (3462) 26-05-04. РемСД уточняет марку, модель, описывает неисправность. Консультация бесплатна.</p>
+          <p>Вы звоните по телефону +7 (3462) 26-05-04. РемСД уточняет марку, модель, описывает неисправность. Первичная консультация бесплатна.</p>
           <span class="process-step__time">5-15 минут</span>
         </div>
       </li>
@@ -408,7 +518,7 @@
         <span class="process-step__number">02</span>
         <div class="process-step__body">
           <h3>Диагностика и оценка</h3>
-          <p>Грузовик поступает на сервис. РемСД выполняет комплексную диагностику: компьютерную, стендовую, визуальную.</p>
+          <p>Грузовик поступает на сервис. РемСД выполняет комплексную диагностику: компьютерную, стендовую, визуальную. Формируется дефектовочная карта.</p>
           <span class="process-step__time">1-2 рабочих дня</span>
         </div>
       </li>
@@ -416,7 +526,7 @@
         <span class="process-step__number">03</span>
         <div class="process-step__body">
           <h3>Согласование и заказ запчастей</h3>
-          <p>РемСД направляет дефектовочную карту и смету. Вы согласовываете объём работ. Запчасти заказываются со склада.</p>
+          <p>РемСД направляет дефектовочную карту и смету. Вы согласовываете объём работ. Оригинальные запчасти заказываются со склада или у поставщиков.</p>
           <span class="process-step__time">1-3 рабочих дня</span>
         </div>
       </li>
@@ -424,7 +534,7 @@
         <span class="process-step__number">04</span>
         <div class="process-step__body">
           <h3>Ремонт</h3>
-          <p>РемСД выполняет ремонт в соответствии с регламентом. Для капремонта — стендовая обкатка. Для электрики — диагностическое оборудование.</p>
+          <p>РемСД выполняет ремонт в соответствии с регламентом. Для капремонта двигателя и КПП — стендовая обкатка. Для электрики — проверка на диагностическом оборудовании.</p>
           <span class="process-step__time">от 1 до 14 рабочих дней</span>
         </div>
       </li>
@@ -440,41 +550,48 @@
   </div>
 </section>
 
-<!-- TRUST -->
+<!-- =============================================================================
+     TRUST SECTION — Почему выбирают РемСД
+     ============================================================================= -->
 <section class="home-context home-context--capabilities" aria-labelledby="base-capabilities-title">
   <div class="container home-context__inner">
     <div class="section-heading">
       <p class="section-kicker">Преимущества</p>
       <h2 id="base-capabilities-title">Почему компании ХМАО выбирают РемСД?</h2>
-      <p>РемСД работает с 2008 года. 17 лет опыта в ремонте грузовиков и спецтехники. Сервис оснащён современным оборудованием.</p>
+      <p>РемСД работает с 2008 года. 17 лет опыта в ремонте грузовиков и спецтехники в условиях ХМАО и Югры. Сервис оснащён современным оборудованием для диагностики и ремонта.</p>
     </div>
 
     <div class="trust-grid">
       <article class="trust-card">
         <span class="trust-number">13+</span>
         <span class="trust-label">брендов техники</span>
-        <p>РемСД обслуживает КАМАЗ, МАЗ, УРАЛ, Volvo, JCB, Scania, MAN, Mercedes-Benz, Komatsu и другие.</p>
+        <p>РемСД обслуживает КАМАЗ, МАЗ, УРАЛ, Volvo, JCB, Scania, MAN, Mercedes-Benz, Komatsu и другие. Всего 13 брендов.</p>
       </article>
+
       <article class="trust-card">
         <span class="trust-number">10</span>
         <span class="trust-label">категорий услуг</span>
         <p>РемСД выполняет ремонт двигателей, КПП, ходовой, электрики, гидравлики, топливной системы, охлаждения, SCR/AdBlue.</p>
       </article>
+
       <article class="trust-card">
         <span class="trust-number">6</span>
         <span class="trust-label">месяцев гарантии</span>
         <p>РемСД предоставляет гарантию 6 месяцев на капремонт двигателя и КПП, 3 месяца на текущий ремонт.</p>
       </article>
+
       <article class="trust-card">
         <span class="trust-number">БН</span>
         <span class="trust-label">безналичный расчёт</span>
-        <p>РемСД работает с юридическими лицами по договору с НДС. Отсрочка платежа до 30 дней.</p>
+        <p>РемСД работает с юридическими лицами по безналичному расчёту с НДС. Для постоянных клиентов — отсрочка платежа до 30 дней.</p>
       </article>
+
       <article class="trust-card">
         <span class="trust-number">24/7</span>
         <span class="trust-label">режим поддержки</span>
         <p>Приёмка техники — с 8:00 до 20:00. Для постоянных клиентов — круглосуточная поддержка по телефону.</p>
       </article>
+
       <article class="trust-card">
         <span class="trust-number">100%</span>
         <span class="trust-label">прозрачность</span>
@@ -482,65 +599,53 @@
       </article>
     </div>
 
-    <div style="margin-top: 48px; text-align: center;">
-      <h3 style="font-size: 20px; margin-bottom: 20px;">Сертификаты и документы</h3>
-      <ul style="display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; list-style: none; padding: 0; margin: 0;">
-        <li style="padding: 12px 20px; background: #ffffff; border: 1px solid rgba(16,32,51,0.1); border-radius: 8px; font-weight: 700; font-size: 14px;">Официальный сервис КАМАЗ</li>
-        <li style="padding: 12px 20px; background: #ffffff; border: 1px solid rgba(16,32,51,0.1); border-radius: 8px; font-weight: 700; font-size: 14px;">Официальный сервис МАЗ</li>
-        <li style="padding: 12px 20px; background: #ffffff; border: 1px solid rgba(16,32,51,0.1); border-radius: 8px; font-weight: 700; font-size: 14px;">Сервисный центр УРАЛ</li>
-        <li style="padding: 12px 20px; background: #ffffff; border: 1px solid rgba(16,32,51,0.1); border-radius: 8px; font-weight: 700; font-size: 14px;">Сертификат Weichai</li>
-        <li style="padding: 12px 20px; background: #ffffff; border: 1px solid rgba(16,32,51,0.1); border-radius: 8px; font-weight: 700; font-size: 14px;">Свидетельство Адверс</li>
-        <li style="padding: 12px 20px; background: #ffffff; border: 1px solid rgba(16,32,51,0.1); border-radius: 8px; font-weight: 700; font-size: 14px;"><a href="./sertifikaty/" style="color: #2f58a8;">Все сертификаты →</a></li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<!-- AREA -->
-<section class="home-context home-context--area" aria-labelledby="service-area-title">
-  <div class="container home-context__inner">
-    <div class="area-panel">
-      <div class="area-panel__heading">
-        <p class="section-kicker">География работ</p>
-        <h2 id="service-area-title">Где работает РемСД?</h2>
-        <p>РемСД находится в Сургуте и обслуживает компании по всему Ханты-Мансийскому автономному округу. Базовый сервис — в Сургуте, выездной ремонт — по всему региону.</p>
-      </div>
-
-      <div class="area-panel__details" aria-label="Контакты и адрес РемСД">
-        <dl>
-          <div><dt>Адрес базы</dt><dd>г. Сургут, ул. Производственная, 36</dd></div>
-          <div><dt>Телефон</dt><dd><a href="tel:+73462260504">+7 (3462) 26-05-04</a></dd></div>
-          <div><dt>Регион</dt><dd>Сургут и ХМАО</dd></div>
-          <div><dt>Тип техники</dt><dd>грузовики, спецтехника, полуприцепы, тралы</dd></div>
-          <div><dt>Режим работы</dt><dd>Пн-Пт: 8:00-20:00, Сб: 9:00-17:00</dd></div>
-        </dl>
-        <div class="home-actions">
-          <a class="button button--primary" href="tel:+73462260504">Позвонить мастеру</a>
-          <a class="button button--outline" href="./kontakty/" style="color: var(--color-blue); background: #ffffff; border-color: var(--color-border);">Контакты</a>
+    <div class="certificates-visuals" style="margin-top: 48px;">
+      <h3 style="font-size: 20px; margin-bottom: 20px; text-align: center;">Сертификаты и документы</h3>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; max-width: 900px; margin: 0 auto;">
+        <div class="cert-card">
+          <div class="cert-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          </div>
+          <div class="cert-card__content">
+            <strong>Официальный сервис</strong>
+            <span>КАМАЗ, МАЗ, УРАЛ</span>
+          </div>
         </div>
+        <div class="cert-card">
+          <div class="cert-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          </div>
+          <div class="cert-card__content">
+            <strong>Weichai</strong>
+            <span>Сертификат соответствия</span>
+          </div>
+        </div>
+        <div class="cert-card">
+          <div class="cert-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          </div>
+          <div class="cert-card__content">
+            <strong>Адверс</strong>
+            <span>Свидетельство</span>
+          </div>
+        </div>
+        <a class="cert-card cert-card--link" href="./sertifikaty/">
+          <div class="cert-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
+          </div>
+          <div class="cert-card__content">
+            <strong>Все сертификаты</strong>
+            <span>Смотреть →</span>
+          </div>
+        </a>
       </div>
-    </div>
-
-    <div class="area-table-wrapper" style="margin-top: 40px;">
-      <h3 style="font-size: 22px; margin-bottom: 16px;">География обслуживания РемСД в ХМАО</h3>
-      <table class="area-table">
-        <thead>
-          <tr><th>Город / район</th><th>Тип обслуживания</th><th>Комментарий</th></tr>
-        </thead>
-        <tbody>
-          <tr><td><strong>Сургут</strong></td><td>Полный сервис</td><td>Адрес: ул. Производственная, 36</td></tr>
-          <tr><td>Нефтеюганск</td><td>Выездной ремонт, эвакуация</td><td>Удалённость ~80 км</td></tr>
-          <tr><td>Нижневартовск</td><td>Выездной ремонт, эвакуация</td><td>Удалённость ~220 км</td></tr>
-          <tr><td>Ханты-Мансийск</td><td>Выездной ремонт, эвакуация</td><td>Удалённость ~300 км</td></tr>
-          <tr><td>Когалым</td><td>Эвакуация на сервис</td><td>Удалённость ~380 км</td></tr>
-          <tr><td>Мегион</td><td>Выездной ремонт, эвакуация</td><td>Удалённость ~180 км</td></tr>
-        </tbody>
-      </table>
     </div>
   </div>
 </section>
 
-<!-- FAQ -->
+<!-- =============================================================================
+     FAQ SECTION — Частые вопросы (GEO-оптимизированный)
+     ============================================================================= -->
 <section class="home-context home-context--faq" aria-labelledby="home-faq-title">
   <div class="container home-context__inner">
     <div class="section-heading">
@@ -552,66 +657,178 @@
     <div class="faq-list">
       <details>
         <summary>Сколько стоит ремонт двигателя КАМАЗ в РемСД?</summary>
-        <p>РемСД не называет фиксированную цену без диагностики. Ориентировочно: диагностика ДВС — от 3000 ₽, текущий ремонт — от 15 000 ₽, капремонт — от 120 000 ₽. РемСД работает по безналичному расчёту с НДС.</p>
+        <p>РемСД не называет фиксированную цену без диагностики. Стоимость зависит от модели двигателя, объёма работ, состояния агрегата. Ориентировочно: диагностика ДВС — от 3000 ₽, текущий ремонт — от 15 000 ₽, капремонт — от 120 000 ₽. Точную стоимость РемСД определяет после дефектации.</p>
+        <p>РемСД работает по безналичному расчёту с НДС. Для постоянных клиентов возможна отсрочка платежа до 30 дней.</p>
       </details>
       <details>
         <summary>Какие сроки ремонта КПП МАЗ в Сургуте?</summary>
-        <p>РемСД выполняет ремонт КПП МАЗ за 3-5 рабочих дней, капремонт — 7-14 рабочих дней. Диагностика КПП на стенде — 1-2 рабочих дня.</p>
+        <p>РемСД выполняет ремонт КПП МАЗ за 3-5 рабочих дней для текущего ремонта, за 7-14 рабочих дней для капремонта. Если нужна замена КПП на контрактную — срок увеличивается до 5-10 рабочих дней.</p>
+        <p>Диагностика КПП на стенде занимает 1-2 рабочих дня.</p>
       </details>
       <details>
         <summary>Какая гарантия на ремонт в РемСД?</summary>
-        <p>Гарантия 6 месяцев на капремонт двигателя и КПП, 3 месяца на текущий ремонт и запасные части, 12 месяцев на новые оригинальные запчасти.</p>
+        <p>РемСД предоставляет гарантию 6 месяцев на капремонт двигателя и КПП, 3 месяца на текущий ремонт и запасные части, 12 месяцев на новые оригинальные запчасти. Гарантия действует при соблюдении условий эксплуатации и своевременного ТО.</p>
       </details>
       <details>
         <summary>Работает ли РемСД с юридическими лицами?</summary>
-        <p>Да, основной формат — обслуживание юридических лиц по договору. РемСД выставляет счета с НДС. Для постоянных клиентов — отсрочка платежа до 30 дней.</p>
+        <p>Да, основной формат работы РемСД — обслуживание юридических лиц по договору. Компании Сургута и ХМАО заключают договор на разовое обслуживание или абонентское обслуживание автопарка. РемСД выставляет счета с НДС.</p>
       </details>
       <details>
         <summary>Можно ли вызвать ремонтную бригаду на место поломки?</summary>
-        <p>Да, РемСД оказывает услугу выездного ремонта в пределах ХМАО. Бригада выезжает со своим инструментом для мелкого и среднего ремонта. Для сложного ремонта техника эвакуируется на сервис.</p>
+        <p>Да, РемСД оказывает услугу выездного ремонта в пределах ХМАО. Бригада выезжает со своим инструментом и расходными материалами для мелкого и среднего ремонта: замена РВД, устранение утечек, замена фильтров, диагностика. Для сложного ремонта техника эвакуируется на сервис.</p>
       </details>
       <details>
         <summary>Ремонтирует ли РемСД импортные грузовики Volvo, Scania, MAN?</summary>
-        <p>Да, РемСД ремонтирует европейские грузовики: Volvo FH/FM, Scania R/G/P-series, MAN TGS/TGX/TGM, Mercedes-Benz Actros, DAF XF/CF.</p>
+        <p>Да, РемСД ремонтирует европейские грузовики: Volvo FH/FM, Scania R/G/P-series, MAN TGS/TGX/TGM, Mercedes-Benz Actros, DAF XF/CF. Диагностика выполняется на дилерском оборудовании. Запасные части заказываются у официальных поставщиков.</p>
       </details>
       <details>
         <summary>Как записаться на ремонт в РемСД?</summary>
-        <p>По телефону +7 (3462) 26-05-04 с 8:00 до 20:00. При звонке сообщите марку и модель грузовика, опишите неисправность.</p>
+        <p>Записаться можно по телефону +7 (3462) 26-05-04 с 8:00 до 20:00. При звонке сообщите марку и модель грузовика, опишите неисправность. РемСД подберёт удобное время и сообщит перечень документов для приёмки.</p>
       </details>
       <details>
         <summary>Делает ли РемСД ремонт системы AdBlue?</summary>
-        <p>Да, РемСД ремонтирует системы AdBlue/SCR для грузовиков Euro 5 и Euro 6. Работаем с блоками дозирования, клапанами SCR, датчиками NOx.</p>
+        <p>Да, РемСД ремонтирует системы нейтрализации отработавших газов AdBlue/SCR для грузовиков Euro 5 и Euro 6. Работаем с блоками дозирования, клапанами SCR, датчиками NOx. Диагностика выполняется на специализированном оборудовании.</p>
       </details>
     </div>
   </div>
 </section>
 
-<!-- RENTAL -->
+<!-- =============================================================================
+     AREA SECTION — Зона обслуживания
+     ============================================================================= -->
+<section class="home-context home-context--area" aria-labelledby="service-area-title">
+  <div class="container home-context__inner">
+    <div class="area-panel">
+      <div class="area-panel__heading">
+        <p class="section-kicker">География работ</p>
+        <h2 id="service-area-title">Где работает РемСД?</h2>
+        <p>РемСД находится в Сургуте и обслуживает компании по всему Ханты-Мансийскому автономному округу. Базовый сервис — в Сургуте, выездной ремонт — по всему региону.</p>
+      </div>
+
+      <div class="area-panel__details" aria-label="Контакты и адрес РемСД">
+        <dl>
+          <div>
+            <dt>Адрес базы</dt>
+            <dd>г. Сургут, ул. Производственная, 36</dd>
+          </div>
+          <div>
+            <dt>Телефон</dt>
+            <dd><a href="tel:+73462260504">+7 (3462) 26-05-04</a></dd>
+          </div>
+          <div>
+            <dt>Регион</dt>
+            <dd>Сургут и ХМАО</dd>
+          </div>
+          <div>
+            <dt>Тип техники</dt>
+            <dd>грузовики, спецтехника, полуприцепы, тралы</dd>
+          </div>
+          <div>
+            <dt>Режим работы</dt>
+            <dd>Пн-Пт: 8:00-20:00, Сб: 9:00-17:00</dd>
+          </div>
+        </dl>
+
+        <div class="home-actions">
+          <a class="button button--primary" href="tel:+73462260504">Позвонить мастеру</a>
+          <a class="button button--outline" href="./kontakty/" style="color: var(--color-blue); background: #ffffff; border-color: var(--color-border);">Контакты сервиса</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="area-map-wrapper" style="margin-top: 40px;">
+      <h3 style="font-size: 22px; margin-bottom: 20px;">География обслуживания РемСД в ХМАО</h3>
+      <div class="area-map" role="img" aria-label="Карта Ханты-Мансийского автономного округа с городами обслуживания РемСД">
+        <svg viewBox="0 0 520 400" xmlns="http://www.w3.org/2000/svg">
+          <!-- Фоновая область ХМАО -->
+          <path class="area-map__bg" d="M 50 180 Q 80 120, 160 80 Q 240 40, 340 60 Q 440 80, 480 140 Q 500 200, 480 260 Q 460 320, 400 340 Q 320 360, 240 340 Q 160 320, 100 280 Q 60 240, 50 180 Z" fill="rgba(47, 88, 168, 0.08)" stroke="rgba(47, 88, 168, 0.2)" stroke-width="1"/>
+
+          <!-- Сургут (базовый) -->
+          <line class="area-map__line area-map__line--base" x1="195" y1="200" x2="195" y2="195"/>
+          <circle class="area-map__dot area-map__dot--base" cx="195" cy="195" r="8"/>
+          <text class="area-map__label area-map__label--base" x="205" y="190">Сургут</text>
+          <text class="area-map__sublabel" x="205" y="205">база РемСД</text>
+
+          <!-- Нефтеюганск -->
+          <line class="area-map__line" x1="195" y1="200" x2="140" y2="230"/>
+          <circle class="area-map__dot" cx="140" cy="230" r="5"/>
+          <text class="area-map__label" x="100" y="235">Нефтеюганск</text>
+          <text class="area-map__dist" x="165" y="220">~80 км</text>
+
+          <!-- Нижневартовск -->
+          <line class="area-map__line" x1="195" y1="200" x2="280" y2="180"/>
+          <circle class="area-map__dot" cx="280" cy="180" r="5"/>
+          <text class="area-map__label" x="285" y="175">Нижневартовск</text>
+          <text class="area-map__dist" x="235" y="185">~220 км</text>
+
+          <!-- Ханты-Мансийск -->
+          <line class="area-map__line" x1="195" y1="200" x2="320" y2="280"/>
+          <circle class="area-map__dot" cx="320" cy="280" r="5"/>
+          <text class="area-map__label" x="325" y="275">Ханты-Мансийск</text>
+          <text class="area-map__dist" x="255" y="245">~300 км</text>
+
+          <!-- Мегион -->
+          <line class="area-map__line" x1="195" y1="200" x2="230" y2="140"/>
+          <circle class="area-map__dot" cx="230" cy="140" r="5"/>
+          <text class="area-map__label" x="235" y="135">Мегион</text>
+          <text class="area-map__dist" x="210" y="168">~180 км</text>
+
+          <!-- Когалым -->
+          <line class="area-map__line" x1="195" y1="200" x2="90" y2="160"/>
+          <circle class="area-map__dot" cx="90" cy="160" r="5"/>
+          <text class="area-map__label" x="65" y="155">Когалым</text>
+          <text class="area-map__dist" x="140" y="178">~380 км</text>
+
+          <!-- Условные обозначения -->
+          <rect class="area-map__legend" x="400" y="100" width="110" height="70" rx="6" fill="rgba(11, 18, 32, 0.85)" stroke="rgba(255,255,255,0.1)"/>
+          <circle cx="418" cy="120" r="6" fill="#22c55e"/>
+          <text x="432" y="124" fill="rgba(255,255,255,0.7)" font-size="11" font-family="var(--font-body)">База РемСД</text>
+          <circle cx="418" cy="142" r="4" fill="rgba(255,255,255,0.5)"/>
+          <text x="432" y="146" fill="rgba(255,255,255,0.7)" font-size="11" font-family="var(--font-body)">Выездной ремонт</text>
+        </svg>
+      </div>
+      <div class="area-legend-compact" style="display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; margin-top: 20px; font-size: 14px; color: var(--color-muted);">
+        <span><strong style="color: #22c55e;">●</strong> Сургут — полный сервис на базе РемСД</span>
+        <span>● Нефтеюганск, Мегион — выездной ремонт</span>
+        <span>● Нижневартовск, Ханты-Мансийск, Когалым — эвакуация</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================================================
+     RENTAL SECTION — Аренда спецтехники
+     ============================================================================= -->
 <section class="home-context home-context--rent" aria-labelledby="rental-title">
   <div class="container home-context__inner">
     <div class="rental-callout">
       <div>
         <p class="section-kicker">Отдельное направление</p>
         <h2 id="rental-title">Аренда спецтехники</h2>
-        <p>РемСД отдельно занимается арендой спецтехники для строительных, дорожных и промышленных работ в Сургуте и ХМАО.</p>
+        <p>РемСД отдельно занимается арендой спецтехники для строительных, дорожных и промышленных работ в Сургуте и ХМАО. Аренда подходит компаниям, которым требуется техника на период проекта без необходимости её обслуживания.</p>
       </div>
       <a class="button button--primary" href="./arenda/" style="white-space: nowrap;">Смотреть аренду техники</a>
     </div>
   </div>
 </section>
 
-<!-- FINAL CTA -->
+<!-- =============================================================================
+     FINAL CTA — Контактный блок
+     ============================================================================= -->
 <section class="home-context home-context--final" aria-labelledby="home-contact-title" id="contacts">
   <div class="container home-context__inner">
     <div class="final-cta">
       <div>
         <p class="section-kicker">Связаться с сервисом</p>
         <h2 id="home-contact-title">Нужно согласовать ремонт?</h2>
-        <p>Позвоните мастеру: назовите марку техники, проблемный узел и задачу. Консультация бесплатна.</p>
+        <p>Позвоните мастеру: назовите марку техники, проблемный узел и задачу. Мастер подскажет, как передать технику на базу в Сургуте. Первичная консультация бесплатна.</p>
         <p style="margin-top: 16px; font-size: 18px;"><strong>РемСД — официальный сервис КАМАЗ, МАЗ, УРАЛ в Сургуте</strong></p>
       </div>
       <div class="home-actions" style="flex-direction: column; gap: 16px;">
         <a class="button button--primary btn-lg" href="tel:+73462260504" style="background: var(--color-yellow); color: #101820; font-size: 18px; padding: 18px 32px;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 20px; height: 20px;">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+          </svg>
           +7 (3462) 26-05-04
         </a>
         <a class="button button--outline btn-lg" href="./kontakty/" style="background: #ffffff; color: var(--color-blue); border: 2px solid rgba(255,255,255,0.2); padding: 16px 32px; font-size: 16px;">Контакты и схема проезда</a>

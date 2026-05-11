@@ -601,62 +601,237 @@ p {
 }
 
 /* ========================================
-   BRAND LOGOS — Enhanced grid
+   OTHER BRANDS — Compact version
    ======================================== */
-.brand-logos {
+.other-brands-compact {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px 20px;
   margin-top: 28px;
-  padding: 24px;
+  padding: 16px 20px;
   background: var(--color-panel-soft);
   border: 1px solid rgba(16, 32, 51, 0.08);
   border-radius: var(--radius-lg);
 }
 
-.brand-logos__head {
-  display: flex;
-  align-items: end;
-  justify-content: space-between;
-  gap: 24px;
-  margin-bottom: 18px;
-}
-
-.brand-logos__head h3 {
+.other-brands-compact .section-kicker {
   margin: 0;
-  color: var(--color-ink);
-  font-size: 24px;
 }
 
-.brand-logos__head p:not(.section-kicker) {
-  max-width: 410px;
+.other-brands-compact__text {
   margin: 0;
   color: var(--color-muted);
   font-size: 15px;
-  font-weight: 500;
+  flex-basis: 100%;
 }
 
-.brand-logos__grid {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 12px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
+.other-brands-compact__text strong {
+  color: var(--color-ink);
 }
 
-.brand-logo {
-  display: grid;
-  min-height: 110px;
-  place-items: center;
-  padding: 16px;
-  text-align: center;
+.other-brands-compact__icons {
+  display: flex;
+  gap: 8px;
+}
+
+.equipment-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--color-muted);
+  text-transform: uppercase;
   background: #ffffff;
+  border: 1px solid rgba(16, 32, 51, 0.1);
+  border-radius: var(--radius);
+}
+
+.other-brands-compact__link {
+  margin-left: auto;
+  color: var(--color-blue);
+  font-weight: 600;
+  font-size: 15px;
+  transition: color 200ms var(--ease);
+}
+
+.other-brands-compact__link:hover {
+  color: var(--color-blue-dark);
+}
+
+/* ========================================
+   FEATURED SERVICES — 3 hero services
+   ======================================== */
+.featured-services {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.featured-service {
+  padding: 24px;
+  background: var(--color-panel-soft);
   border: 1px solid rgba(16, 32, 51, 0.06);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  transition: all 300ms var(--ease);
+}
+
+.featured-service:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-card-hover);
+  border-color: rgba(47, 88, 168, 0.15);
+}
+
+.featured-service__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.featured-service__badge {
+  padding: 4px 10px;
+  color: var(--color-blue);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: rgba(47, 88, 168, 0.08);
+  border-radius: 4px;
+}
+
+.featured-service__time {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-yellow-dark);
+}
+
+.featured-service h3 {
+  margin: 0 0 12px;
+  font-size: 18px;
+}
+
+.featured-service h3 a {
+  color: var(--color-ink);
+  transition: color 200ms var(--ease);
+}
+
+.featured-service h3 a:hover {
+  color: var(--color-blue);
+}
+
+.featured-service p {
+  margin: 0 0 16px;
+  color: var(--color-muted);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.featured-service__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.featured-service__meta span {
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-ink);
+  background: #ffffff;
+  border-radius: 4px;
+}
+
+/* ========================================
+   ALL SERVICES LINKS — Quick navigation
+   ======================================== */
+.all-services-links {
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(16, 32, 51, 0.08);
+}
+
+.all-services-links__label {
+  margin: 0 0 14px;
+  color: var(--color-muted);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.all-services-links__grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.all-services-links__grid a {
+  padding: 8px 16px;
+  color: var(--color-blue);
+  font-size: 14px;
+  font-weight: 600;
+  background: rgba(47, 88, 168, 0.06);
+  border: 1px solid rgba(47, 88, 168, 0.12);
   border-radius: var(--radius);
   transition: all 200ms var(--ease);
 }
 
-.brand-logo:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-card);
+.all-services-links__grid a:hover {
+  color: #ffffff;
+  background: var(--color-blue);
+  border-color: var(--color-blue);
+}
+
+/* ========================================
+   WORK INDICATOR — Live workshop activity
+   ======================================== */
+.work-indicator {
+  padding: 16px 0;
+  background: var(--color-navy);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.work-indicator__inner {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 20px;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 14px;
+}
+
+.work-indicator__dot {
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  background: #22c55e;
+  border-radius: 50%;
+  animation: pulse-dot 2s infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.work-indicator__inner p {
+  margin: 0;
+}
+
+.work-indicator__inner strong {
+  color: #ffffff;
+}
+
+.work-indicator__divider {
+  opacity: 0.3;
+}
+
+/* ========================================
+   SERVICE GRID — Enhanced cards
+   ======================================== */
   border-color: rgba(47, 88, 168, 0.2);
 }
 
@@ -2103,6 +2278,146 @@ a.proof-rail__item:hover {
 
 .area-table tr:hover td {
   background: var(--color-panel-soft);
+}
+
+/* ========================================
+   AREA MAP — SVG map of XMAO
+   ======================================== */
+.area-map-wrapper {
+  overflow: hidden;
+}
+
+.area-map {
+  display: flex;
+  justify-content: center;
+  padding: 24px;
+  background: linear-gradient(135deg, rgba(11, 18, 32, 0.97) 0%, rgba(26, 35, 50, 0.95) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.area-map svg {
+  width: 100%;
+  max-width: 520px;
+  height: auto;
+}
+
+.area-map__dot {
+  fill: rgba(255, 255, 255, 0.6);
+  transition: all 200ms var(--ease);
+}
+
+.area-map__dot--base {
+  fill: #22c55e;
+  filter: drop-shadow(0 0 6px rgba(34, 197, 94, 0.6));
+}
+
+.area-map__line {
+  stroke: rgba(255, 255, 255, 0.15);
+  stroke-width: 1;
+  stroke-dasharray: 4 3;
+}
+
+.area-map__line--base {
+  stroke: rgba(34, 197, 94, 0.4);
+}
+
+.area-map__label {
+  fill: rgba(255, 255, 255, 0.85);
+  font-size: 12px;
+  font-weight: 600;
+  font-family: var(--font-heading);
+}
+
+.area-map__label--base {
+  fill: #ffffff;
+  font-weight: 800;
+}
+
+.area-map__sublabel {
+  fill: rgba(255, 255, 255, 0.5);
+  font-size: 10px;
+  font-family: var(--font-body);
+}
+
+.area-map__dist {
+  fill: rgba(255, 255, 255, 0.4);
+  font-size: 10px;
+  font-family: var(--font-body);
+}
+
+/* ========================================
+   CERTIFICATE CARDS — Visual certificates
+   ======================================== */
+.certificates-visuals {
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.cert-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px;
+  background: #ffffff;
+  border: 1px solid rgba(16, 32, 51, 0.08);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  transition: all 200ms var(--ease);
+}
+
+.cert-card--link {
+  background: rgba(47, 88, 168, 0.04);
+  border-color: rgba(47, 88, 168, 0.12);
+  cursor: pointer;
+}
+
+.cert-card--link:hover {
+  background: rgba(47, 88, 168, 0.08);
+  border-color: rgba(47, 88, 168, 0.25);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-card-hover);
+}
+
+.cert-card__icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  color: var(--color-blue);
+  background: rgba(47, 88, 168, 0.08);
+  border-radius: var(--radius);
+}
+
+.cert-card__icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.cert-card__content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.cert-card__content strong {
+  font-family: var(--font-heading);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-ink);
+}
+
+.cert-card__content span {
+  font-size: 13px;
+  color: var(--color-muted);
+}
+
+.cert-card--link .cert-card__content span {
+  color: var(--color-blue);
 }
 
 /* CTA Button with icon */

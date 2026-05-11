@@ -101,47 +101,18 @@
       </a>
     </div>
 
-    <div class="brand-logos" aria-labelledby="supported-brands-title">
-      <div class="brand-logos__head">
-        <div>
-          <p class="section-kicker">Другие марки</p>
-          <h3 id="supported-brands-title">РемСД также обслуживает технику других брендов</h3>
-        </div>
-        <p>Помимо официального сервиса КАМАЗ, МАЗ и УРАЛ, РемСД принимает грузовые автомобили и спецтехнику других марок: Volvo, JCB, Scania, Renault Trucks, New Holland, Mercedes-Benz, MAN, Komatsu, John Deere и УЗСТ. Всего 13 обслуживаемых брендов.</p>
+    <div class="other-brands-compact">
+      <p class="section-kicker">Другие марки</p>
+      <p class="other-brands-compact__text">
+        Обслуживаем Volvo, JCB, Scania, MAN, Mercedes-Benz и другие — <strong>13 брендов</strong>
+      </p>
+      <div class="other-brands-compact__icons" aria-hidden="true">
+        <span class="equipment-icon equipment-icon--excavator">jcb</span>
+        <span class="equipment-icon equipment-icon--truck">volvo</span>
+        <span class="equipment-icon equipment-icon--tractor">scan</span>
+        <span class="equipment-icon equipment-icon--loader">man</span>
       </div>
-
-      <ul class="brand-logos__grid" aria-label="Логотипы обслуживаемых брендов">
-        <li class="brand-logo">
-          <img src="{{rootPath}}assets/img/brands/volvo.webp" alt="Volvo" width="220" height="120" loading="lazy" decoding="async">
-        </li>
-        <li class="brand-logo">
-          <img src="{{rootPath}}assets/img/brands/jcb.webp" alt="JCB" width="220" height="120" loading="lazy" decoding="async">
-        </li>
-        <li class="brand-logo">
-          <img src="{{rootPath}}assets/img/brands/scania.webp" alt="Scania" width="220" height="120" loading="lazy" decoding="async">
-        </li>
-        <li class="brand-logo">
-          <img src="{{rootPath}}assets/img/brands/renault.webp" alt="Renault Trucks" width="220" height="120" loading="lazy" decoding="async">
-        </li>
-        <li class="brand-logo">
-          <img src="{{rootPath}}assets/img/brands/new-holland.webp" alt="New Holland" width="220" height="120" loading="lazy" decoding="async">
-        </li>
-        <li class="brand-logo">
-          <img src="{{rootPath}}assets/img/brands/mercedes-benz.webp" alt="Mercedes-Benz" width="220" height="120" loading="lazy" decoding="async">
-        </li>
-        <li class="brand-logo">
-          <img src="{{rootPath}}assets/img/brands/man.webp" alt="MAN" width="220" height="120" loading="lazy" decoding="async">
-        </li>
-        <li class="brand-logo">
-          <img src="{{rootPath}}assets/img/brands/komatsu.webp" alt="Komatsu" width="220" height="120" loading="lazy" decoding="async">
-        </li>
-        <li class="brand-logo">
-          <img src="{{rootPath}}assets/img/brands/john-deere.webp" alt="John Deere" width="220" height="120" loading="lazy" decoding="async">
-        </li>
-        <li class="brand-logo">
-          <img src="{{rootPath}}assets/img/brands/uzst.webp" alt="УЗСТ" width="220" height="120" loading="lazy" decoding="async">
-        </li>
-      </ul>
+      <a class="other-brands-compact__link" href="{{rootPath}}brendy/">Все бренды →</a>
     </div>
   </div>
 </section>
@@ -157,105 +128,57 @@
       <p>РемСД выполняет диагностику, техническое обслуживание и ремонт грузовых автомобилей и спецтехники импортного и отечественного производства. Работаем с юридическими лицами по договору. Стоимость фиксируется до начала работ.</p>
     </div>
 
-    <div class="service-grid">
-      <article class="service-card">
+    <div class="featured-services">
+      <article class="featured-service">
+        <div class="featured-service__header">
+          <span class="featured-service__badge">Самый частый ремонт</span>
+          <span class="featured-service__time">7–14 дней</span>
+        </div>
         <h3><a href="{{rootPath}}remont/dvigateley/">Ремонт двигателей</a></h3>
-        <p>РемСД выполняет капремонт и текущий ремонт двигателей КАМАЗ, МАЗ, ЯМЗ, Cummins, Volvo. Ремонт ГБЦ, блока цилиндров, коленвала. Стендовая обкатка после капремонта.</p>
-        <ul>
-          <li><a href="{{rootPath}}diagnostika-i-to/">Диагностика двигателя — 1 рабочий день</a></li>
-          <li><a href="{{rootPath}}remont/dvigateley/">Капремонт ДВС КАМАЗ-740 — 7-14 рабочих дней</a></li>
-          <li><a href="{{rootPath}}remont-gbc/">Ремонт ГБЦ — 2-3 рабочих дня</a></li>
-          <li><a href="{{rootPath}}diagnostika-i-to/">Замер компрессии, замена масла</a></li>
-        </ul>
+        <p>Капремонт и текущий ремонт двигателей КАМАЗ, МАЗ, ЯМЗ, Cummins, Volvo. Ремонт ГБЦ, блока цилиндров, коленвала. Стендовая обкатка после капремонта.</p>
+        <div class="featured-service__meta">
+          <span>Диагностика — 1 день</span>
+          <span>ГБЦ — 2–3 дня</span>
+        </div>
       </article>
 
-      <article class="service-card">
-        <h3><a href="{{rootPath}}remont-kpp/">Ремонт КПП и раздаток</a></h3>
-        <p>РемСД ремонтирует механические и автоматические коробки передач МАЗ, КАМАЗ, Volvo, Scania. Восстановление раздаток, замена подшипников, синхронизаторов, уплотнений.</p>
-        <ul>
-          <li><a href="{{rootPath}}remont-kpp/">Ремонт КПП МАЗ — 3-5 рабочих дней</a></li>
-          <li><a href="{{rootPath}}remont-kpp/">Ремонт КПП КАМАЗ — 3-7 рабочих дней</a></li>
-          <li><a href="{{rootPath}}remont-kpp/">Замена сцепления — 1 рабочий день</a></li>
-          <li><a href="{{rootPath}}remont-kpp/">Ремонт раздаточной коробки — 2-4 рабочих дня</a></li>
-        </ul>
+      <article class="featured-service">
+        <div class="featured-service__header">
+          <span class="featured-service__badge">Популярная услуга</span>
+          <span class="featured-service__time">3–7 дней</span>
+        </div>
+        <h3><a href="{{rootPath}}remont/kpp/">Ремонт КПП и раздаток</a></h3>
+        <p>Ремонт механических и автоматических коробок передач МАЗ, КАМАЗ, Volvo, Scania. Восстановление раздаток, замена подшипников и синхронизаторов.</p>
+        <div class="featured-service__meta">
+          <span>Замена сцепления — 1 день</span>
+          <span>Раздатка — 2–4 дня</span>
+        </div>
       </article>
 
-      <article class="service-card">
-        <h3><a href="{{rootPath}}remont-hodovoy/">Ремонт ходовой части</a></h3>
-        <p>РемСД выполняет полный спектр работ по подвеске, мостам и рулевому управлению грузовиков. Замена рессор, амортизаторов, шкворней, поворотных кулаков.</p>
-        <ul>
-          <li><a href="{{rootPath}}remont-hodovoy/">Диагностика ходовой на подъёмнике — 2-3 часа</a></li>
-          <li><a href="{{rootPath}}remont-hodovoy/">Замена рессор МАЗ — 4-6 часов</a></li>
-          <li><a href="{{rootPath}}remont-tormoznoy-sistemy/">Ремонт тормозной системы</a></li>
-          <li><a href="{{rootPath}}razval-shozhdenie-gruzovikov/">Развал-схождение для грузовиков</a></li>
-        </ul>
+      <article class="featured-service">
+        <div class="featured-service__header">
+          <span class="featured-service__badge">Ходовая часть</span>
+          <span class="featured-service__time">2–6 часов</span>
+        </div>
+        <h3><a href="{{rootPath}}remont/hodovoy/">Ремонт ходовой</a></h3>
+        <p>Полный спектр работ по подвеске, мостам и рулевому управлению грузовиков. Замена рессор, амортизаторов, шкворней, поворотных кулаков.</p>
+        <div class="featured-service__meta">
+          <span>Диагностика на подъёмнике</span>
+          <span>Развал-схождение</span>
+        </div>
       </article>
+    </div>
 
-      <article class="service-card">
-        <h3><a href="{{rootPath}}remont-gidravliki/">Гидравлика и РВД</a></h3>
-        <p>РемСД ремонтирует гидронасосы, гидроцилиндры, распределители спецтехники. Диагностика и устранение неисправностей гидропривода. Замена рукавов высокого давления (РВД).</p>
-        <ul>
-          <li><a href="{{rootPath}}remont-gidravliki/">Диагностика давления и утечек</a></li>
-          <li><a href="{{rootPath}}remont-gidravliki/">Ремонт гидроцилиндров</a></li>
-          <li><a href="{{rootPath}}remont-gidravliki/">Ремонт гидронасосов</a></li>
-          <li><a href="{{rootPath}}remont-gidravliki/">Замена РВД — от 1 часа</a></li>
-        </ul>
-      </article>
-
-      <article class="service-card">
-        <h3><a href="{{rootPath}}remont-elektriki/">Автоэлектрика и диагностика</a></h3>
-        <p>РемСД выполняет диагностику и ремонт электрооборудования грузовиков. Работа с блоками управления двигателем, стартерами, генераторами, датчиками, CAN-шиной.</p>
-        <ul>
-          <li><a href="{{rootPath}}remont-elektriki/">Компьютерная диагностика CAN-шины — 2-3 часа</a></li>
-          <li><a href="{{rootPath}}diagnostika-i-to/">Считывание кодов ошибок</a></li>
-          <li><a href="{{rootPath}}remont-elektriki/">Ремонт блока ECU — 1-3 рабочих дня</a></li>
-          <li><a href="{{rootPath}}remont-elektriki/">Замена стартера, генератора</a></li>
-        </ul>
-      </article>
-
-      <article class="service-card">
-        <h3><a href="{{rootPath}}remont-toplivnoy-sistemy/">Топливная система и AdBlue</a></h3>
-        <p>РемСД ремонтирует топливные системы дизельных двигателей, включая Common Rail, ТНВД, форсунки. Диагностика и ремонт систем AdBlue для Euro 5/6.</p>
-        <ul>
-          <li><a href="{{rootPath}}remont-toplivnoy-sistemy/">Диагностика ТНВД на стенде — 2-3 часа</a></li>
-          <li><a href="{{rootPath}}remont-toplivnoy-sistemy/">Ремонт форсунок Common Rail</a></li>
-          <li><a href="{{rootPath}}diagnostika-scr-adblue/">Ремонт блока дозирования AdBlue</a></li>
-          <li><a href="{{rootPath}}diagnostika-scr-adblue/">Замена клапана SCR</a></li>
-        </ul>
-      </article>
-
-      <article class="service-card">
-        <h3><a href="{{rootPath}}diagnostika-i-to/">Техническое обслуживание ТО</a></h3>
-        <p>РемСД выполняет плановое ТО грузовиков по регламенту производителя. Замена масла, фильтров, проверка технического состояния узлов. ТО-1 и ТО-2.</p>
-        <ul>
-          <li><a href="{{rootPath}}diagnostika-i-to/">ТО-1 КАМАЗ/МАЗ — 2-3 часа</a></li>
-          <li><a href="{{rootPath}}diagnostika-i-to/">ТО-2 с заменой всех жидкостей</a></li>
-          <li><a href="{{rootPath}}diagnostika-i-to/">Замена масла в ДВС, КПП, мостах</a></li>
-          <li><a href="{{rootPath}}diagnostika-i-to/">Проверка состояния узлов</a></li>
-        </ul>
-      </article>
-
-      <article class="service-card">
-        <h3><a href="{{rootPath}}remont-polupricepov-i-tralov/">Полуприцепы и тралы</a></h3>
-        <p>РемСД ремонтирует рамы полуприцепов и тралов, подвеску, тормозную систему, выполняет полное обслуживание тралов для перевозки грузов.</p>
-        <ul>
-          <li><a href="{{rootPath}}remont-polupricepov-i-tralov/">Ремонт рам полуприцепов</a></li>
-          <li><a href="{{rootPath}}remont-polupricepov-i-tralov/">Ремонт подвески тралов</a></li>
-          <li><a href="{{rootPath}}remont-tormoznoy-sistemy/">Ремонт тормозов полуприцепов</a></li>
-          <li><a href="{{rootPath}}remont-polupricepov-i-tralov/">Полное обслуживание тралов</a></li>
-        </ul>
-      </article>
-
-      <article class="service-card">
-        <h3><a href="{{rootPath}}remont-sistemy-ohlazhdeniya/">Система охлаждения</a></h3>
-        <p>РемСД диагностирует систему охлаждения, ремонтирует и меняет радиатор, заменяет термостат, устраняет течи, проверяет патрубки и помпу.</p>
-        <ul>
-          <li><a href="{{rootPath}}remont-sistemy-ohlazhdeniya/">Ремонт и замена радиатора</a></li>
-          <li><a href="{{rootPath}}remont-sistemy-ohlazhdeniya/">Замена термостата</a></li>
-          <li><a href="{{rootPath}}remont-sistemy-ohlazhdeniya/">Устранение течей охлаждающей жидкости</a></li>
-          <li><a href="{{rootPath}}remont-sistemy-ohlazhdeniya/">Проверка помпы, патрубков</a></li>
-        </ul>
-      </article>
+    <div class="all-services-links">
+      <p class="all-services-links__label">Все услуги:</p>
+      <nav class="all-services-links__grid" aria-label="Категории услуг">
+        <a href="{{rootPath}}remont/elektriki/">Автоэлектрика</a>
+        <a href="{{rootPath}}remont/gidravliki/">Гидравлика и РВД</a>
+        <a href="{{rootPath}}remont/toplivnoy/">Топливная система</a>
+        <a href="{{rootPath}}diagnostika-i-to/">ТО и диагностика</a>
+        <a href="{{rootPath}}remont/polupricepov/">Полуприцепы и тралы</a>
+        <a href="{{rootPath}}remont/ohlazhdeniya/">Система охлаждения</a>
+      </nav>
     </div>
 
     <div class="trust-strip" aria-label="Ключевые факты о сервисе">
