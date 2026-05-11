@@ -94,6 +94,8 @@ function buildPages() {
   const partials = readPartials();
 
   for (const source of getHtmlFiles(pagesDir)) {
+    if (path.basename(source) === "index-v2.html") continue;
+
     const relativeFile = path.relative(pagesDir, source);
     const target = path.join(distDir, relativeFile);
     const html = fs.readFileSync(source, "utf8");
@@ -196,5 +198,6 @@ if (isV2) {
   copyDir(assetsDir, path.join(distDir, "assets"));
   buildPages();
   buildSeoPages();
+  buildV2();
   console.log("Built dist/");
 }
