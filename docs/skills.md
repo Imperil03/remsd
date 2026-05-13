@@ -6,9 +6,10 @@
 
 1. Системные и developer-инструкции текущей Codex-сессии.
 2. `AGENTS.md`.
-3. `.agent/CONTENT_GUIDE.md` и `.agent/SEO_STRUCTURE.md`.
-4. Проектные skills в `.agent/skills/`.
-5. Импортированные внешние skills в `.agent/skills/`.
+3. `.agent/CONTENT_GUIDE.md`, `.agent/SEO_STRUCTURE.md` и `.agent/CLAIMS_LEDGER.md`.
+4. Проектные agent-роли в `.agent/agents/`.
+5. Проектные skills в `.agent/skills/`.
+6. Импортированные внешние skills в `.agent/skills/`.
 
 Design skills носят рекомендательный характер. Они подчиняются стилю РемСД: промышленный B2B, реальные фотографии, сдержанная плотная сетка, ясная навигация, без декоративного "вау" ради "вау".
 
@@ -76,10 +77,24 @@ foreach ($skill in $skills) {
 Для публичного русского текста:
 
 1. Проверить `.agent/CONTENT_GUIDE.md`.
-2. Применить `infostyle`.
-3. Для SEO/GEO-текстов открыть `.agent/skills/infostyle/references/semantic-seo-authorship.md`.
-4. Применить `russian-text-humanization`.
-5. Для важных текстов подключить reviewer subagent: он проверяет естественность языка, читабельность, полезность и соблюдение content rules.
+2. Проверить `.agent/CLAIMS_LEDGER.md`.
+3. Применить `infostyle`.
+4. Для SEO/GEO-текстов открыть `.agent/skills/infostyle/references/semantic-seo-authorship.md`.
+5. Применить `russian-text-humanization`.
+6. Для публичных SEO/коммерческих текстов обязательно подключить reviewer subagent: он проверяет естественность языка, читабельность, полезность, content rules и фактологическую безопасность.
+
+`infostyle` в этом проекте не заставляет придумывать цифры: проверенная конкретика важнее обязательного числа. `russian-text-humanization` используется только для снятия машинного ритма, канцелярита и кальки; без сленга, шуток, намеренных ошибок, разговорной расхлябанности и первого лица в публичном B2B-тексте.
+
+## Текстовые Агенты
+
+Для крупных правок публичных текстов использовать две роли:
+
+- `.agent/agents/remsd-copywriter.md` — пишет текст по `CONTENT_GUIDE -> SEO_STRUCTURE -> CLAIMS_LEDGER -> semantic-seo-authorship -> infostyle -> humanization`.
+- `.agent/agents/remsd-reviewer.md` — проверяет текст и выдает `Approved`, `Needs revision` или `Blocked`.
+
+Reviewer обязателен для главной, страниц услуг, брендовых страниц, FAQ, сертификатов, базы, аренды и CTA-блоков. Для мелких UI-лейблов и внутренних документов второй проход необязателен.
+
+Reviewer не добавляет новые факты. Если тексту нужен новый факт, он помечает его как `needs proof` или блокирует публикацию.
 
 Каждый H2-раздел закрывает один кластер интента. Заголовки в формате вопрос-ответ использовать там, где запросу нужен прямой ответ. Таблицы использовать, когда информация естественно ложится в структуру `attribute -> value`, но не превращать весь сайт в таблицы.
 
