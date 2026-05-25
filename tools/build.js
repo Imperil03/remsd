@@ -9,10 +9,11 @@ const dataDir = path.join(srcDir, "data");
 const templatesDir = path.join(srcDir, "templates");
 const assetsDir = path.join(root, "assets");
 const distDir = path.join(root, "dist");
-const assetVersion = process.env.ASSET_VERSION || "20260511-main-merge";
+const assetVersion = process.env.ASSET_VERSION || "20260525-v3-structure";
 
-// Check if v2 mode
-const isV2 = process.argv.includes('--v2');
+// Check if variant mode
+const isV2 = process.argv.includes("--v2");
+const isV3 = process.argv.includes("--v3");
 
 function cleanDir(dir) {
   fs.rmSync(dir, { recursive: true, force: true });
@@ -33,6 +34,39 @@ function copyDir(from, to) {
       fs.copyFileSync(source, target);
     }
   }
+}
+
+function copyDirFiltered(from, to, shouldCopy, base = from) {
+  if (!fs.existsSync(from)) return false;
+
+  let copied = false;
+
+  for (const entry of fs.readdirSync(from, { withFileTypes: true })) {
+    const source = path.join(from, entry.name);
+    const target = path.join(to, entry.name);
+    const relativePath = path.relative(base, source).split(path.sep).join("/");
+
+    if (entry.isDirectory()) {
+      copied = copyDirFiltered(source, target, shouldCopy, base) || copied;
+    } else if (shouldCopy(relativePath)) {
+      fs.mkdirSync(to, { recursive: true });
+      fs.copyFileSync(source, target);
+      copied = true;
+    }
+  }
+
+  return copied;
+}
+
+function isV2Asset(relativePath) {
+  return !(
+    relativePath === "css/styles-v3.css" ||
+    relativePath === "fonts/geologica-cyrillic-700-normal.woff2" ||
+    relativePath === "fonts/LICENSE-geologica.txt" ||
+    relativePath === "img/hero-industrial-base-v3.png" ||
+    relativePath === "img/hero-industrial-base-v3.webp" ||
+    relativePath.startsWith("img/v3-structure/")
+  );
 }
 
 function readPartials() {
@@ -93,8 +127,10 @@ function getRootPath(relativeFile) {
 function buildPages() {
   const partials = readPartials();
 
+  const skippedStandalonePages = new Set(["index-v2.html", "index-v3.html"]);
+
   for (const source of getHtmlFiles(pagesDir)) {
-    if (path.basename(source) === "index-v2.html") continue;
+    if (skippedStandalonePages.has(path.basename(source))) continue;
 
     const relativeFile = path.relative(pagesDir, source);
     const target = path.join(distDir, relativeFile);
@@ -176,7 +212,7 @@ function buildV2() {
   const assetsV2Dir = path.join(v2Dir, "assets");
 
   cleanDir(v2Dir);
-  copyDir(assetsDir, assetsV2Dir);
+  copyDirFiltered(assetsDir, assetsV2Dir, isV2Asset);
 
   // Build v2 index
   const source = path.join(pagesDir, "index-v2.html");
@@ -190,14 +226,40 @@ function buildV2() {
   console.log("Built v2/");
 }
 
+function buildV3() {
+  const partials = readPartials();
+  const v3Dir = path.join(distDir, "v3");
+
+  cleanDir(v3Dir);
+
+  partials["repair-services"] = partials["repair-services"].replace(
+    '<h2 id="repair-services-title">Ремонт грузовых автомобилей и спецтехники по узлам</h2>',
+    '<h2 id="repair-services-title">Профессиональный ремонт узлов спецтехники с гарантией до 3х лет</h2>',
+  );
+
+  const source = path.join(pagesDir, "index-v3.html");
+  const html = fs.readFileSync(source, "utf8");
+  const context = {
+    rootPath: "../",
+    assetVersion: assetVersion + "-v3",
+  };
+  const target = path.join(v3Dir, "index.html");
+  fs.writeFileSync(target, render(html, partials, context), "utf8");
+  console.log("Built v3/");
+}
+
 // Main build
 if (isV2) {
   buildV2();
+} else if (isV3) {
+  copyDir(assetsDir, path.join(distDir, "assets"));
+  buildV3();
 } else {
   cleanDir(distDir);
   copyDir(assetsDir, path.join(distDir, "assets"));
   buildPages();
   buildSeoPages();
   buildV2();
+  buildV3();
   console.log("Built dist/");
 }

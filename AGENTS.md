@@ -21,12 +21,11 @@
 ## Где лежит контекст
 
 - `.agent/SEO_STRUCTURE.md` — актуальная SEO-архитектура и запрет на тонкие страницы "услуга × марка".
-- `.agent/CONTENT_GUIDE.md` — правила публичного текста.
 - `docs/project-handoff.md` — состояние проекта, что уже сделано и как продолжать.
 - `docs/design-guideline.md` — визуальные правила.
 - `src/data/seo-pages.json` — контент генерируемых страниц.
-- `.agent/CLAIMS_LEDGER.md` — подтвержденные публичные факты: адрес, телефон, документы, услуги, запреты.
 - `.agent/agents/` — роли текстового автора и ревьюера.
+- Подтвержденные публичные факты сейчас берутся из существующего контента сайта, сертификатов/документов в проекте, `.agent/SEO_STRUCTURE.md` и явно указанных пользователем источников. Не восстанавливать удаленные `.agent/CONTENT_GUIDE.md` и `.agent/CLAIMS_LEDGER.md` без отдельного запроса.
 
 ## Как работать
 
@@ -46,6 +45,6 @@ git diff --check
 
 ## Project Skills
 
-- Перед работой с дизайном или текстами читать `docs/skills.md`, `.agent/CONTENT_GUIDE.md` и релевантный skill из `.agent/skills/`.
-- Для публичного русского текста использовать цепочку: `CONTENT_GUIDE` -> `SEO_STRUCTURE` -> `CLAIMS_LEDGER` -> `semantic-seo-authorship` reference для SEO/GEO -> `infostyle` -> осторожный `russian-text-humanization` -> обязательный reviewer для SEO/коммерческих текстов.
+- Перед работой с дизайном или текстами читать `docs/skills.md`, `.agent/SEO_STRUCTURE.md` и релевантный skill из `.agent/skills/`.
+- Для публичного русского текста использовать цепочку: `SEO_STRUCTURE` -> существующий контент и явно указанные источники фактов -> `semantic-seo-authorship` reference для SEO/GEO -> `infostyle` -> осторожный `russian-text-humanization` -> reviewer для SEO/коммерческих текстов.
 - Импортированные внешние skills носят рекомендательный характер. Они не должны перебивать B2B-стиль РемСД, SEO-структуру, фактический тон и запрет на фейковые цены, сроки, гарантии, рейтинги, отзывы и манипулятивную срочность.

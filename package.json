@@ -4,6 +4,7 @@
     "prepare:media": "node tools/prepare-media.js"
   },
   "devDependencies": {
+    "playwright": "^1.60.0",
     "sharp": "^0.34.5"
   }
 }

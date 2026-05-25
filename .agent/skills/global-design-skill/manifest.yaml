@@ -1,0 +1,93 @@
+name: global-design-skill
+version: 1.0.0
+description: >
+  Portable design operating system for AI-assisted frontend development.
+  Turns Claude Code, Cursor, Codex, ChatGPT, Windsurf, GitHub Copilot,
+  and other AI coding assistants into stricter UI/UX reviewers and
+  frontend handoff assistants.
+author: Stanislav Kirichenko (Staurus) — https://sk-seo.ru
+license: MIT
+repository: https://github.com/staurus86/global-design-skill
+
+keywords:
+  - claude-code
+  - cursor
+  - codex
+  - chatgpt
+  - windsurf
+  - github-copilot
+  - ai-agents
+  - ai-coding
+  - design-system
+  - ui-ux
+  - frontend
+  - react
+  - nextjs
+  - tailwindcss
+  - accessibility
+  - prompt-engineering
+
+github:
+  description: "Portable design system skill for Claude Code, Cursor, Codex, ChatGPT, Windsurf, Copilot, and AI coding agents."
+  homepage: "https://github.com/staurus86/global-design-skill#readme"
+  topics:
+    - claude-code
+    - cursor
+    - codex
+    - chatgpt
+    - windsurf
+    - github-copilot
+    - ai-agents
+    - ai-coding
+    - design-system
+    - ui-ux
+    - frontend
+    - react
+    - nextjs
+    - tailwindcss
+    - accessibility
+    - prompt-engineering
+
+standards:
+  css: "2026 Baseline (nesting, :has, @property, @starting-style, anchor-positioning, scroll-driven-animations)"
+  colors: "OKLCH throughout"
+  tailwind: "v4 (@theme CSS-native)"
+  react: "19 (useActionState, useOptimistic, ref-as-prop)"
+  nextjs: "15 (async APIs, use cache, Turbopack)"
+  motion: "motion/react (formerly framer-motion)"
+  typescript: "5.x (satisfies, const type params)"
+  accessibility: "WCAG 2.2 AA"
+
+skill_entry: skills/global-design/SKILL.md
+
+agents:
+  - agents/design-director.md
+  - agents/ux-architect.md
+  - agents/conversion-designer.md
+  - agents/design-critic.md
+  - agents/frontend-handoff-reviewer.md
+  - agents/accessibility-auditor.md
+  - agents/performance-auditor.md
+  - agents/copy-editor.md
+  - agents/motion-designer.md
+  - agents/design-systems-auditor.md
+  - agents/reference-hunter.md
+
+integrations:
+  claude_code: integrations/claude-code/CLAUDE.md
+  cursor: integrations/cursor/cursor-rules.md
+  chatgpt: integrations/chatgpt/custom-gpt-instructions.md
+  windsurf: integrations/windsurf/rules.md
+  github_copilot: integrations/github-copilot/copilot-instructions.md
+  figma: integrations/figma/figma-handoff-checklist.md
+
+tokens:
+  - tokens/design-tokens.json
+  - tokens/tokens.css
+  - tokens/tokens-dark.css
+
+compatibility:
+  claude_code: ">=1.0"
+  cursor: ">=0.40"
+  chatgpt: "GPT-4o, o1, o3"
+  node: ">=20"

@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Визуальная версия v3 — РемСД</title>
+    <meta name="description" content="Экспериментальная визуальная версия главной страницы РемСД для сравнения hero и шапки.">
+    <link rel="preload" as="image" href="{{rootPath}}assets/img/hero-industrial-base-v3.webp" type="image/webp" fetchpriority="high">
+    <link rel="preload" as="font" href="{{rootPath}}assets/fonts/montserrat-cyrillic-900-normal.woff2" type="font/woff2" crossorigin>
+    <link rel="preload" as="font" href="{{rootPath}}assets/fonts/source-sans-3-cyrillic-400-normal.woff2" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="{{rootPath}}assets/css/styles.css?v={{assetVersion}}">
+    <link rel="stylesheet" href="{{rootPath}}assets/css/styles-v3.css?v={{assetVersion}}">
+  </head>
+  <body class="v3-page">
+    <main>
+      {{v3-hero}}
+      {{v3-tech-categories}}
+      {{v3-truck-brands}}
+      {{v3-special-equipment}}
+      {{repair-services}}
+      {{home-process}}
+      {{company-about}}
+      {{base-gallery}}
+      {{certificates-gallery}}
+      {{home-seo-sections}}
+    </main>
+
+    {{media-lightbox}}
+    {{footer}}
+    {{mobile-callbar}}
+
+    <script src="{{rootPath}}assets/js/main.js?v={{assetVersion}}"></script>
+  </body>
+</html>

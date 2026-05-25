@@ -9,6 +9,8 @@ test-results/
 !.agent/skills/design-taste-frontend/**
 !.agent/skills/frontend-design/
 !.agent/skills/frontend-design/**
+!.agent/skills/global-design-skill/
+!.agent/skills/global-design-skill/**
 !.agent/skills/infostyle/
 !.agent/skills/infostyle/**
 !.agent/skills/jobs-to-be-done/
