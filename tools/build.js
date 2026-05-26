@@ -14,6 +14,23 @@ const assetVersion = process.env.ASSET_VERSION || "20260525-v3-structure";
 // Check if variant mode
 const isV2 = process.argv.includes("--v2");
 const isV3 = process.argv.includes("--v3");
+const v3TruckBrandAssets = new Set([
+  "img/brands/daf.webp",
+  "img/brands/dongfeng.webp",
+  "img/brands/faw.webp",
+  "img/brands/foton.webp",
+  "img/brands/gaz.webp",
+  "img/brands/hino.webp",
+  "img/brands/howo.webp",
+  "img/brands/hyundai.webp",
+  "img/brands/isuzu.webp",
+  "img/brands/iveco.webp",
+  "img/brands/jac.webp",
+  "img/brands/mitsubishi-fuso.webp",
+  "img/brands/sany.webp",
+  "img/brands/shacman.webp",
+  "img/brands/sitrak.webp",
+]);
 
 function cleanDir(dir) {
   fs.rmSync(dir, { recursive: true, force: true });
@@ -65,7 +82,9 @@ function isV2Asset(relativePath) {
     relativePath === "fonts/LICENSE-geologica.txt" ||
     relativePath === "img/hero-industrial-base-v3.png" ||
     relativePath === "img/hero-industrial-base-v3.webp" ||
-    relativePath.startsWith("img/v3-structure/")
+    v3TruckBrandAssets.has(relativePath) ||
+    relativePath.startsWith("img/v3-structure/") ||
+    relativePath.startsWith("img/v3-services/")
   );
 }
 
@@ -231,11 +250,6 @@ function buildV3() {
   const v3Dir = path.join(distDir, "v3");
 
   cleanDir(v3Dir);
-
-  partials["repair-services"] = partials["repair-services"].replace(
-    '<h2 id="repair-services-title">Ремонт грузовых автомобилей и спецтехники по узлам</h2>',
-    '<h2 id="repair-services-title">Профессиональный ремонт узлов спецтехники с гарантией до 3х лет</h2>',
-  );
 
   const source = path.join(pagesDir, "index-v3.html");
   const html = fs.readFileSync(source, "utf8");

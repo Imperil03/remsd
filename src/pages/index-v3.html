@@ -15,19 +15,25 @@
   <body class="v3-page">
     <main>
       {{v3-hero}}
+      <nav class="v3-mobile-jump" aria-label="Быстрые переходы по странице">
+        <div class="container v3-mobile-jump__inner">
+          <a href="#v3-tech-categories-title">Тип техники</a>
+          <a href="#v3-truck-brands-title">Марка</a>
+          <a href="#v3-repair-services-title">Услуги</a>
+          <a href="#v3-contact-title">Контакты</a>
+        </div>
+      </nav>
       {{v3-tech-categories}}
       {{v3-truck-brands}}
+      {{v3-service-base}}
       {{v3-special-equipment}}
-      {{repair-services}}
-      {{home-process}}
-      {{company-about}}
-      {{base-gallery}}
-      {{certificates-gallery}}
-      {{home-seo-sections}}
+      {{v3-repair-services}}
+      {{v3-company-proof}}
+      {{v3-contact}}
     </main>
 
     {{media-lightbox}}
-    {{footer}}
+    {{v3-footer}}
     {{mobile-callbar}}
 
     <script src="{{rootPath}}assets/js/main.js?v={{assetVersion}}"></script>
