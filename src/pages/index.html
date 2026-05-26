@@ -4,29 +4,36 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Ремонт грузовых автомобилей и спецтехники в Сургуте — РемСД</title>
-    <meta name="description" content="РемСД ремонтирует грузовые автомобили и спецтехнику в Сургуте: двигатели, КПП, ходовую, тормоза, гидравлику, электрику, топливную систему, SCR/AdBlue. Официальный сервис КАМАЗ, МАЗ, УРАЛ.">
+    <meta name="description" content="РемСД ремонтирует грузовые автомобили и спецтехнику в Сургуте: диагностика, ТО, ДВС, КПП, ходовая, тормоза, гидравлика, электрика, топливная система и SCR/AdBlue. Официальный сервис КАМАЗ, МАЗ, УРАЛ.">
     {{home-structured-data}}
-    <link rel="preload" as="image" href="{{rootPath}}assets/img/hero-service.webp" type="image/webp" fetchpriority="high">
-    <link rel="preload" as="font" href="{{rootPath}}assets/fonts/montserrat-cyrillic-800-normal.woff2" type="font/woff2" crossorigin>
+    <link rel="preload" as="image" href="{{rootPath}}assets/img/hero-industrial-base-v3.webp" type="image/webp" fetchpriority="high">
+    <link rel="preload" as="font" href="{{rootPath}}assets/fonts/geologica-cyrillic-700-normal.woff2" type="font/woff2" crossorigin>
     <link rel="preload" as="font" href="{{rootPath}}assets/fonts/source-sans-3-cyrillic-400-normal.woff2" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="{{rootPath}}assets/css/styles.css?v={{assetVersion}}">
+    <link rel="stylesheet" href="{{rootPath}}assets/css/styles-v3.css?v={{assetVersion}}">
   </head>
-  <body>
-    {{header}}
-
+  <body class="v3-page">
     <main>
-      {{hero-home}}
-      {{official-brands}}
-      {{repair-services}}
-      {{home-process}}
-      {{company-about}}
-      {{base-gallery}}
-      {{certificates-gallery}}
-      {{home-seo-sections}}
+      {{v3-hero}}
+      <nav class="v3-mobile-jump" aria-label="Быстрые переходы по странице">
+        <div class="container v3-mobile-jump__inner">
+          <a href="#v3-tech-categories-title">Тип техники</a>
+          <a href="#v3-truck-brands-title">Марка</a>
+          <a href="#v3-repair-services-title">Услуги</a>
+          <a href="#v3-contact-title">Контакты</a>
+        </div>
+      </nav>
+      {{v3-tech-categories}}
+      {{v3-truck-brands}}
+      {{v3-service-base}}
+      {{v3-special-equipment}}
+      {{v3-repair-services}}
+      {{v3-company-proof}}
+      {{v3-contact}}
     </main>
 
     {{media-lightbox}}
-    {{footer}}
+    {{v3-footer}}
     {{mobile-callbar}}
 
     <script src="{{rootPath}}assets/js/main.js?v={{assetVersion}}"></script>
