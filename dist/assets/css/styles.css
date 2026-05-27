@@ -252,22 +252,43 @@ button {
 .header-main {
   display: grid;
   min-height: 74px;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
   gap: 24px;
   align-items: center;
 }
 
 .logo {
   display: inline-flex;
-  width: 132px;
-  height: 56px;
+  width: 76px;
+  min-height: 58px;
   align-items: center;
 }
 
 .logo img {
-  width: 132px;
-  height: 56px;
+  width: auto;
+  height: 58px;
   object-fit: contain;
+}
+
+.header-meta {
+  display: grid;
+  gap: 3px;
+  color: #4d5d72;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.15;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.header-meta a {
+  color: var(--color-blue);
+}
+
+.header-meta a:focus-visible,
+.header-meta a:hover {
+  color: var(--color-yellow-dark);
 }
 
 .site-nav {
@@ -671,12 +692,20 @@ button {
 }
 
 .main-nav__brand::before {
-  width: 5px;
-  height: 5px;
+  width: 18px;
+  height: 18px;
   flex: 0 0 auto;
-  background: var(--color-blue);
+  background:
+    linear-gradient(135deg, rgba(47, 88, 168, 0.18), rgba(47, 88, 168, 0.08));
+  border: 1px solid rgba(47, 88, 168, 0.28);
   border-radius: 999px;
   content: "";
+}
+
+.main-nav__brand--official::before {
+  background:
+    radial-gradient(circle at 50% 50%, var(--color-blue) 0 2px, transparent 2.5px),
+    linear-gradient(135deg, rgba(47, 88, 168, 0.16), rgba(47, 88, 168, 0.05));
 }
 
 .main-nav__brand::after {
@@ -690,12 +719,11 @@ button {
 
 .main-nav__official {
   display: grid;
-  gap: 9px;
-  margin-top: 3px;
-  padding: 2px 0 4px 14px;
+  gap: 8px;
+  margin-top: 2px;
+  padding: 0 0 4px;
   background: transparent;
   border: 0;
-  border-left: 2px solid var(--color-blue);
 }
 
 .main-nav__official-label {
@@ -2760,6 +2788,10 @@ body.is-lightbox-open {
   .header-main {
     grid-template-columns: auto auto auto;
     justify-content: space-between;
+  }
+
+  .header-meta {
+    display: none;
   }
 
   .nav-toggle {
