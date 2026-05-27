@@ -1,115 +1,82 @@
-# SEO СТРУКТУРА
+# SEO структура
 
-Главный принцип после уточнения: главная страница продвигает общий ремонт грузовых автомобилей и спецтехники в Сургуте. Брендовые страницы КАМАЗ, МАЗ и УРАЛ — отдельный коммерческий слой, потому что РемСД работает как официальный сервисный центр по этим маркам. Агрегаты и системы техники — следующий слой. Низкочастотные работы собираем внутри укрупненных страниц, пока нет достаточно контента для отдельных URL.
+Дата обновления: 2026-05-27
 
-/
-├── /remont-gruzovyh-avtomobiley/      - будущий вход: ремонт грузовых автомобилей
-├── /remont-tyagachey/                 - будущий вход: ремонт седельных тягачей
-├── /remont-polupricepov-i-tralov/     - ремонт полуприцепов, прицепов и тралов
-├── /remont-avtobusov/                 - будущий вход: ремонт автобусов
-├── /kuzovnoy-remont-gruzovoy-tehniki/ - будущий вход: кузовной ремонт грузовой техники
-├── /remont-spectehniki/               - будущий вход: ремонт спецтехники
-│   ├── /remont-spectehniki/buldozerov/
-│   ├── /remont-spectehniki/ekskavatorov/
-│   ├── /remont-spectehniki/pogruzchikov/
-│   ├── /remont-spectehniki/avtokranov/
-│   ├── /remont-spectehniki/manipulyatorov/
-│   ├── /remont-spectehniki/samosvalov/
-│   ├── /remont-spectehniki/truboukladchikov/
-│   ├── /remont-spectehniki/greyderov/
-│   ├── /remont-spectehniki/dorozhnyh-katkov/
-│   └── /remont-spectehniki/traktorov/
-├── /remont/
-│   ├── /remont/kamaz/                 - главный вход: ремонт КАМАЗ
-│   ├── /remont/maz/                   - главный вход: ремонт МАЗ
-│   ├── /remont/ural/                  - главный вход: ремонт УРАЛ
-│   ├── /remont/man/                   - будущий брендовый вход: ремонт MAN
-│   ├── /remont/shacman/               - будущий брендовый вход: ремонт Shacman
-│   ├── /remont/scania/                - будущий брендовый вход: ремонт Scania
-│   ├── /remont/volvo/                 - будущий брендовый вход: ремонт Volvo
-│   ├── /remont/mercedes-benz/         - будущий брендовый вход: ремонт Mercedes-Benz
-│   ├── /remont/renault-trucks/        - будущий брендовый вход: ремонт Renault Trucks
-│   ├── /remont/howo/                  - будущий брендовый вход: ремонт Howo
-│   ├── /remont/sitrak/                - будущий брендовый вход: ремонт Sitrak
-│   ├── /remont/daf/                   - будущий брендовый вход: ремонт DAF
-│   ├── /remont/iveco/                 - будущий брендовый вход: ремонт Iveco
-│   ├── /remont/foton/                 - будущий брендовый вход: ремонт Foton
-│   ├── /remont/faw/                   - будущий брендовый вход: ремонт FAW
-│   ├── /remont/dongfeng/              - будущий брендовый вход: ремонт Dongfeng
-│   ├── /remont/dvigateley/
-│   ├── /remont-gbc/                   - укрупненная страница по ГБЦ для КАМАЗ, МАЗ, УРАЛ
-│   ├── /remont-kpp/
-│   ├── /remont-hodovoy/
-│   ├── /remont-tormoznoy-sistemy/
-│   ├── /remont-gidravliki/
-│   ├── /remont-elektriki/
-│   ├── /remont-toplivnoy-sistemy/
-│   ├── /remont-sistemy-ohlazhdeniya/
-│   ├── /razval-shozhdenie-gruzovikov/
-│   ├── /diagnostika-scr-adblue/
-│   ├── /remont-polupricepov-i-tralov/
-│   └── /diagnostika-i-to/
-│
-├── /arenda/
-│   ├── /arenda/avtokranov/
-│   ├── /arenda/avtokran-80-tonn/
-│   ├── /arenda/avtokran-40-tonn/
-│   ├── /arenda/avtokran-25-tonn/
-│   ├── /arenda/frontalnogo-pogruzchika/
-│   ├── /arenda/ekskavatorov/
-│   ├── /arenda/truboukladchik-90-tonn/
-│   ├── /arenda/manipulyator-3-tonny/
-│   ├── /arenda/samosvala/
-│   └── /perevozka-negabarita/
-│
-├── /sertifikaty/
-├── /remontnaya-baza/
-├── /o-kompanii/
-├── /otzyvy/
-├── /vakansii/
-├── /rekvizity/
-└── /kontakty/
+Главная страница `/` продвигает общий локальный интент: грузовое СТО, грузовой автосервис, ремонт грузовых автомобилей и ремонт спецтехники в Сургуте. Proof-интенты вроде ремонтной базы, документов и официального сервиса поддерживают главную, но не должны конкурировать с ней в верхней навигации.
 
-## Правило главной
+## Главное меню
 
-Главная страница `/` использует новую структуру бывшей v3-версии:
+Top-level меню:
+- `Ремонт` — основной mega-menu.
+- `Аренда техники` — отдельный dropdown, не смешивать с ремонтом.
+- `Сертификаты`.
+- `Контакты`.
+- Телефон как основной CTA.
 
-- hero с основным интентом "ремонт грузовых автомобилей и спецтехники в Сургуте";
-- категории техники;
-- ремонт грузовиков по маркам;
-- блок грузового автосервиса;
-- типы спецтехники;
-- ремонт по узлам и системам;
-- доказательства базы, сертификаты, контакты.
+Не выводить в top-level:
+- `Ремонтная база` — этот запрос поддерживается главной, proof-блоками, футером и контактным сценарием.
+- `Узлы и системы` — не основной навигационный слой.
 
-На главной реальные переходы ведут только на существующие страницы и якоря. Будущие категории, бренды и типы спецтехники можно показывать как placeholder-ссылки `href="#"` с `data-future-href`, чтобы было видно будущую структуру, но не создавать 404 до появления посадочных страниц.
+## Mega-menu "Ремонт"
 
-КАМАЗ, МАЗ и УРАЛ остаются кликабельными бренд-страницами и proof-сигналом официального сервиса, но не перетягивают основной смысл главной.
+Структура меню строится вокруг того, как клиент выбирает услугу:
+- по типу техники;
+- по типу спецтехники;
+- по марке грузовика.
 
-## Будущая структура посадочных страниц
+Группа "По типу техники":
+- `/remont-gruzovyh-avtomobiley/` — будущая страница;
+- `/remont-tyagachey/` — будущая страница;
+- `/remont-polupricepov-i-tralov/` — существующая страница;
+- `/remont-avtobusov/` — будущая страница;
+- `/kuzovnoy-remont-gruzovoy-tehniki/` — будущая страница.
 
-Будущие посадочные страницы делятся на три слоя:
-- категории техники: `/remont-gruzovyh-avtomobiley/`, `/remont-tyagachey/`, `/remont-polupricepov-i-tralov/`, `/remont-avtobusov/`, `/remont-spectehniki/`, `/kuzovnoy-remont-gruzovoy-tehniki/`;
-- бренды грузовиков: `/remont/man/`, `/remont/shacman/`, `/remont/scania/`, `/remont/volvo/`, `/remont/mercedes-benz/`, `/remont/renault-trucks/`, `/remont/howo/`, `/remont/sitrak/`, `/remont/daf/`, `/remont/iveco/`, `/remont/foton/`, `/remont/faw/`, `/remont/dongfeng/`;
-- типы спецтехники: `/remont-spectehniki/buldozerov/`, `/remont-spectehniki/ekskavatorov/`, `/remont-spectehniki/pogruzchikov/`, `/remont-spectehniki/avtokranov/`, `/remont-spectehniki/manipulyatorov/`, `/remont-spectehniki/samosvalov/`, `/remont-spectehniki/truboukladchikov/`, `/remont-spectehniki/greyderov/`, `/remont-spectehniki/dorozhnyh-katkov/`, `/remont-spectehniki/traktorov/`.
+Группа "Спецтехника":
+- `/remont-spectehniki/` — будущая страница;
+- `/remont-spectehniki/ekskavatorov/`;
+- `/remont-spectehniki/buldozerov/`;
+- `/remont-spectehniki/pogruzchikov/`;
+- `/remont-spectehniki/avtokranov/`;
+- `/remont-spectehniki/manipulyatorov/`;
+- `/remont-spectehniki/samosvalov/`;
+- `/remont-spectehniki/truboukladchikov/`;
+- `/remont-spectehniki/greyderov/`;
+- `/remont-spectehniki/dorozhnyh-katkov/`;
+- `/remont-spectehniki/traktorov/`.
 
-Новые страницы из этого списка не добавлять в `src/data/seo-pages.json`, пока структура и контент не согласованы отдельно.
+Группа "Марки грузовиков":
+- `/remont/kamaz/` — существующая брендовая страница, официальный сервис;
+- `/remont/maz/` — существующая брендовая страница, официальный сервис;
+- `/remont/ural/` — существующая брендовая страница, официальный сервис;
+- `/remont/man/`, `/remont/shacman/`, `/remont/sitrak/`, `/remont/howo/`, `/remont/scania/`, `/remont/volvo/`, `/remont/mercedes-benz/`, `/remont/renault-trucks/`, `/remont/daf/`, `/remont/iveco/`, `/remont/foton/`, `/remont/faw/`, `/remont/dongfeng/` — будущие брендовые страницы.
 
-## Правило низкой частотки
+## Роль узлов и систем
 
-Запросы вида "ремонт ГБЦ КАМАЗ", "ремонт ГБЦ МАЗ", "ремонт ГБЦ УРАЛ" пока ведем на одну страницу `/remont-gbc/`. На брендовых страницах используем соответствующие анкоры, но не создаем отдельные страницы под каждую связку.
+Запросы по узлам часто уточняются маркой, моделью или агрегатом: например ремонт двигателя MAN, ремонт MAN TGX, двигатель D2066, КПП ZF. Поэтому `ДВС`, `КПП`, `ГБЦ`, `ходовая`, `электрика`, `гидравлика`, `топливная система`, `SCR/AdBlue` не выводятся отдельным верхним блоком меню.
 
-Отдельные страницы вида "услуга × марка" можно добавлять позже, если есть:
-- показы и клики по конкретной связке;
-- реальные фото или кейсы по этой работе;
-- отличия по марке, которые дадут странице собственный полезный контент.
+Текущие общие страницы по узлам остаются support-контентом и внутренней перелинковкой. Их не удалять без отдельного решения. На брендовых страницах позже можно делать блоки "Популярные работы по марке", но не создавать массово страницы формата `услуга × марка` без фактического контента, спроса или отдельного решения.
 
-## Не создавать на первом этапе
+## Правило будущих URL
 
-- /remont-elektriki-kamaz/
-- /remont-kpp-maz/
-- /remont-gidravliki-ural/
-- /remont-gbc-kamaz/
-- /remont-gbc-maz/
-- /remont-gbc-ural/
-- другие страницы вида "услуга × марка".
+Новые посадочные страницы не создавать автоматически. Пока страницы не существует:
+- в меню и карточках использовать `href="#"`;
+- будущий адрес хранить в `data-future-href`;
+- JS должен блокировать переход, чтобы не было 404 и прыжка страницы вверх.
+
+Реальные ссылки разрешены только на существующие страницы, якоря, телефон, почту и внешние проверенные URL.
+
+## Аренда
+
+Аренда спецтехники — отдельное направление. В меню она не находится внутри `Ремонт`.
+
+Текущая существующая страница:
+- `/arenda/`.
+
+Будущие направления можно показывать как placeholder:
+- `/arenda/avtokranov/`;
+- `/arenda/frontalnogo-pogruzchika/`;
+- `/arenda/ekskavatorov/`;
+- `/arenda/truboukladchik-90-tonn/`;
+- `/arenda/manipulyator-3-tonny/`;
+- `/arenda/samosvala/`;
+- `/perevozka-negabarita/`.

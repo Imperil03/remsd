@@ -9,7 +9,7 @@ const dataDir = path.join(srcDir, "data");
 const templatesDir = path.join(srcDir, "templates");
 const assetsDir = path.join(root, "assets");
 const distDir = path.join(root, "dist");
-const assetVersion = process.env.ASSET_VERSION || "20260527-category-hover";
+const assetVersion = process.env.ASSET_VERSION || "20260527-seo-navigation";
 
 function cleanDir(dir) {
   fs.rmSync(dir, { recursive: true, force: true });
@@ -52,8 +52,15 @@ function readJson(file) {
 function render(content, partials, context) {
   let output = content;
 
-  for (const [name, html] of Object.entries(partials)) {
-    output = output.replaceAll(`{{${name}}}`, html);
+  for (let pass = 0; pass < 10; pass += 1) {
+    let next = output;
+
+    for (const [name, html] of Object.entries(partials)) {
+      next = next.replaceAll(`{{${name}}}`, html);
+    }
+
+    if (next === output) break;
+    output = next;
   }
 
   for (const [name, value] of Object.entries(context)) {

@@ -2,6 +2,7 @@ const navToggle = document.querySelector("[data-nav-toggle]");
 const siteNav = document.querySelector("[data-site-nav]");
 const mobileCallbar = document.querySelector("[data-mobile-callbar]");
 const mobileCallbarQuery = window.matchMedia("(max-width: 720px)");
+const menuItems = Array.from(document.querySelectorAll("[data-menu-item]"));
 let updateMobileCallbar = () => {};
 
 document.querySelectorAll("[data-placeholder-link]").forEach((link) => {
@@ -10,19 +11,51 @@ document.querySelectorAll("[data-placeholder-link]").forEach((link) => {
   });
 });
 
+const closeMenuPanels = (except = null) => {
+  menuItems.forEach((item) => {
+    if (item === except) return;
+    item.classList.remove("is-panel-open");
+    item.querySelector("[data-menu-toggle]")?.setAttribute("aria-expanded", "false");
+  });
+};
+
+menuItems.forEach((item) => {
+  const trigger = item.querySelector("[data-menu-toggle]");
+  if (!trigger) return;
+
+  trigger.addEventListener("click", () => {
+    const isOpen = item.classList.toggle("is-panel-open");
+    trigger.setAttribute("aria-expanded", String(isOpen));
+    closeMenuPanels(isOpen ? item : null);
+  });
+});
+
+document.addEventListener("click", (event) => {
+  if (event.target instanceof Node && siteNav?.contains(event.target)) return;
+  closeMenuPanels();
+});
+
 if (navToggle && siteNav) {
   navToggle.addEventListener("click", () => {
     const isOpen = siteNav.classList.toggle("is-open");
     navToggle.setAttribute("aria-expanded", String(isOpen));
     document.body.classList.toggle("is-nav-open", isOpen);
+    if (!isOpen) closeMenuPanels();
     updateMobileCallbar();
   });
 
   siteNav.addEventListener("click", (event) => {
-    if (!(event.target instanceof HTMLAnchorElement)) return;
+    if (!(event.target instanceof Element)) return;
+    const link = event.target.closest("a");
+    if (!(link instanceof HTMLAnchorElement)) return;
+    if (link.matches("[data-placeholder-link]")) {
+      event.preventDefault();
+      return;
+    }
     siteNav.classList.remove("is-open");
     navToggle.setAttribute("aria-expanded", "false");
     document.body.classList.remove("is-nav-open");
+    closeMenuPanels();
     updateMobileCallbar();
   });
 
@@ -31,6 +64,7 @@ if (navToggle && siteNav) {
     siteNav.classList.remove("is-open");
     navToggle.setAttribute("aria-expanded", "false");
     document.body.classList.remove("is-nav-open");
+    closeMenuPanels();
     updateMobileCallbar();
   });
 }
