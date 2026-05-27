@@ -430,9 +430,12 @@
 .v3-category-card:focus-visible,
 .v3-category-card:hover {
   box-shadow: 0 24px 58px rgba(16, 32, 51, 0.22);
-  outline: 3px solid rgba(245, 162, 26, 0.34);
-  outline-offset: 3px;
   transform: translateY(-4px);
+}
+
+.v3-category-card:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.82);
+  outline-offset: -6px;
 }
 
 .v3-category-card:focus-visible img,
