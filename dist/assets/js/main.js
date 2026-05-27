@@ -4,6 +4,12 @@ const mobileCallbar = document.querySelector("[data-mobile-callbar]");
 const mobileCallbarQuery = window.matchMedia("(max-width: 720px)");
 let updateMobileCallbar = () => {};
 
+document.querySelectorAll("[data-placeholder-link]").forEach((link) => {
+  link.addEventListener("click", (event) => {
+    event.preventDefault();
+  });
+});
+
 if (navToggle && siteNav) {
   navToggle.addEventListener("click", () => {
     const isOpen = siteNav.classList.toggle("is-open");

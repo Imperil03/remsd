@@ -383,6 +383,11 @@
   transition: box-shadow 180ms ease, transform 180ms ease;
 }
 
+.v3-link-placeholder {
+  cursor: pointer;
+  text-decoration: none;
+}
+
 .v3-category-card::before {
   position: absolute;
   inset: 0;
