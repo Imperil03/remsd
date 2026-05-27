@@ -19,11 +19,24 @@ const closeMenuPanels = (except = null) => {
   });
 };
 
+const suppressMenuPanels = () => {
+  menuItems.forEach((item) => item.classList.add("is-panel-suppressed"));
+};
+
 menuItems.forEach((item) => {
   const trigger = item.querySelector("[data-menu-toggle]");
   if (!trigger) return;
 
+  item.addEventListener("mouseleave", () => {
+    item.classList.remove("is-panel-suppressed");
+  });
+
+  trigger.addEventListener("pointerenter", () => {
+    item.classList.remove("is-panel-suppressed");
+  });
+
   trigger.addEventListener("click", () => {
+    item.classList.remove("is-panel-suppressed");
     const isOpen = item.classList.toggle("is-panel-open");
     trigger.setAttribute("aria-expanded", String(isOpen));
     closeMenuPanels(isOpen ? item : null);
@@ -65,6 +78,7 @@ if (navToggle && siteNav) {
     navToggle.setAttribute("aria-expanded", "false");
     document.body.classList.remove("is-nav-open");
     closeMenuPanels();
+    suppressMenuPanels();
     updateMobileCallbar();
   });
 }
