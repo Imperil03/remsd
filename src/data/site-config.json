@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "defaultMode": "preview",
+  "modes": {
+    "preview": {
+      "baseUrl": "https://imperil03.github.io/remsd/",
+      "indexable": false
+    },
+    "production": {
+      "baseUrl": "https://remsd.ru/",
+      "indexable": true
+    }
+  },
+  "site": {
+    "name": "РемСД",
+    "description": "Сервисный центр по ремонту грузовых автомобилей и спецтехники в Сургуте.",
+    "language": "ru",
+    "phone": "+7 (922) 448-88-22",
+    "phoneHref": "tel:+79224488822",
+    "email": "info@remsd.ru",
+    "address": {
+      "street": "ул. Домостроителей, 13",
+      "locality": "Сургут",
+      "region": "Ханты-Мансийский автономный округ — Югра",
+      "country": "RU"
+    },
+    "areaServed": ["Сургут", "ХМАО"],
+    "primaryCta": {
+      "label": "Позвонить мастеру",
+      "shortLabel": "Позвонить",
+      "href": "tel:+79224488822"
+    },
+    "defaultSocialImage": "assets/img/hero-industrial-base-v3.webp",
+    "logo": "assets/img/logo-remsd.png"
+  },
+  "legacy": {
+    "staticPageOverrides": ["remontnaya-baza", "sertifikaty"]
+  },
+  "claims": [
+    {
+      "id": "claim-official-service",
+      "text": "Официальный сервис КАМАЗ, МАЗ и УРАЛ",
+      "scope": "Сервисный статус по маркам КАМАЗ, МАЗ и УРАЛ",
+      "entityRefs": ["brand-kamaz", "brand-maz", "brand-ural"],
+      "source": "Решение владельца и документы, опубликованные в проекте",
+      "status": "owner_approved"
+    },
+    {
+      "id": "claim-warranty",
+      "text": "Гарантия на отдельные виды работ до 3 лет",
+      "scope": "Только отдельные виды выполненных работ",
+      "entityRefs": ["service-repair"],
+      "source": "Решение владельца и действующий контент главной страницы",
+      "status": "owner_approved"
+    }
+  ]
+}

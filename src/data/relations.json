@@ -1,0 +1,245 @@
+{
+  "schemaVersion": 1,
+  "relations": [
+    {
+      "id": "rel-repair-located-surgut",
+      "subject": "service-repair",
+      "predicate": "locatedIn",
+      "predicateLabel": "работает в",
+      "object": "location-surgut",
+      "description": "Технику принимают на ремонтной базе РемСД в Сургуте."
+    },
+    {
+      "id": "rel-repair-accepts-trucks",
+      "subject": "service-repair",
+      "predicate": "accepts",
+      "predicateLabel": "принимает",
+      "object": "vehicle-truck"
+    },
+    {
+      "id": "rel-repair-accepts-special",
+      "subject": "service-repair",
+      "predicate": "accepts",
+      "predicateLabel": "принимает",
+      "object": "vehicle-special"
+    },
+    {
+      "id": "rel-repair-accepts-trailers",
+      "subject": "service-repair",
+      "predicate": "accepts",
+      "predicateLabel": "принимает",
+      "object": "vehicle-trailer"
+    },
+    {
+      "id": "rel-repair-accepts-trawls",
+      "subject": "service-repair",
+      "predicate": "accepts",
+      "predicateLabel": "принимает",
+      "object": "vehicle-trawl"
+    },
+    {
+      "id": "rel-gbc-part-engine",
+      "subject": "component-gbc",
+      "predicate": "partOf",
+      "predicateLabel": "входит в",
+      "object": "component-engine",
+      "description": "ГБЦ оценивают вместе с состоянием двигателя и режимом, в котором проявилась неисправность."
+    },
+    {
+      "id": "rel-gbc-cooling",
+      "subject": "component-gbc",
+      "predicate": "relatedTo",
+      "predicateLabel": "связана с",
+      "object": "system-cooling",
+      "description": "Перегрев и расход охлаждающей жидкости требуют проверки контура охлаждения до решения о ремонте ГБЦ."
+    },
+    {
+      "id": "rel-gbc-fuel",
+      "subject": "component-gbc",
+      "predicate": "relatedTo",
+      "predicateLabel": "проверяется вместе с",
+      "object": "system-fuel",
+      "description": "Дым и нестабильная работа могут быть связаны с подачей топлива, поэтому один симптом не подтверждает дефект ГБЦ."
+    },
+    {
+      "id": "rel-gbc-intake-exhaust",
+      "subject": "component-gbc",
+      "predicate": "relatedTo",
+      "predicateLabel": "связана с",
+      "object": "system-intake-exhaust",
+      "description": "Состояние клапанного механизма оценивают вместе с впуском, выпуском и газообменом двигателя."
+    },
+    {
+      "id": "rel-gbc-electronics",
+      "subject": "component-gbc",
+      "predicate": "relatedTo",
+      "predicateLabel": "проверяется вместе с",
+      "object": "system-electronic-diagnostics",
+      "description": "Коды ошибок и параметры работы помогают отделить механическую причину от неисправности датчиков или цепей."
+    },
+    {
+      "id": "rel-gbc-lubrication",
+      "subject": "component-gbc",
+      "predicate": "relatedTo",
+      "predicateLabel": "связана с",
+      "object": "system-lubrication",
+      "description": "Следы смешивания жидкостей требуют проверки масляного и охлаждающего контуров."
+    },
+    {
+      "id": "rel-gbc-cylinder-piston",
+      "subject": "component-gbc",
+      "predicate": "relatedTo",
+      "predicateLabel": "проверяется вместе с",
+      "object": "system-cylinder-piston",
+      "description": "Разброс компрессии может быть связан с клапанным механизмом, ГБЦ или цилиндропоршневой группой."
+    },
+    {
+      "id": "rel-overheating-cooling",
+      "subject": "symptom-overheating",
+      "predicate": "requiresCheck",
+      "predicateLabel": "требует проверки",
+      "object": "system-cooling"
+    },
+    {
+      "id": "rel-overheating-gbc",
+      "subject": "symptom-overheating",
+      "predicate": "requiresCheck",
+      "predicateLabel": "может потребовать проверки",
+      "object": "component-gbc"
+    },
+    {
+      "id": "rel-coolant-loss-cooling",
+      "subject": "symptom-coolant-loss",
+      "predicate": "requiresCheck",
+      "predicateLabel": "требует проверки",
+      "object": "system-cooling"
+    },
+    {
+      "id": "rel-coolant-loss-gbc",
+      "subject": "symptom-coolant-loss",
+      "predicate": "requiresCheck",
+      "predicateLabel": "может потребовать проверки",
+      "object": "component-gbc"
+    },
+    {
+      "id": "rel-fluid-mixing-cooling",
+      "subject": "symptom-fluid-mixing",
+      "predicate": "requiresCheck",
+      "predicateLabel": "требует проверки",
+      "object": "system-cooling"
+    },
+    {
+      "id": "rel-fluid-mixing-lubrication",
+      "subject": "symptom-fluid-mixing",
+      "predicate": "requiresCheck",
+      "predicateLabel": "требует проверки",
+      "object": "system-lubrication"
+    },
+    {
+      "id": "rel-compression-gbc",
+      "subject": "symptom-compression",
+      "predicate": "requiresCheck",
+      "predicateLabel": "требует проверки",
+      "object": "component-gbc"
+    },
+    {
+      "id": "rel-compression-cylinder-piston",
+      "subject": "symptom-compression",
+      "predicate": "requiresCheck",
+      "predicateLabel": "требует проверки",
+      "object": "system-cylinder-piston"
+    },
+    {
+      "id": "rel-smoke-fuel",
+      "subject": "symptom-smoke",
+      "predicate": "requiresCheck",
+      "predicateLabel": "требует проверки",
+      "object": "system-fuel"
+    },
+    {
+      "id": "rel-smoke-intake-exhaust",
+      "subject": "symptom-smoke",
+      "predicate": "requiresCheck",
+      "predicateLabel": "требует проверки",
+      "object": "system-intake-exhaust"
+    },
+    {
+      "id": "rel-gbc-method-pressure-test",
+      "subject": "service-gbc",
+      "predicate": "includes",
+      "predicateLabel": "включает по результатам дефектовки",
+      "object": "method-pressure-test"
+    },
+    {
+      "id": "rel-gbc-method-flatness",
+      "subject": "service-gbc",
+      "predicate": "includes",
+      "predicateLabel": "включает",
+      "object": "method-flatness"
+    },
+    {
+      "id": "rel-gbc-method-milling",
+      "subject": "service-gbc",
+      "predicate": "includes",
+      "predicateLabel": "может включать",
+      "object": "method-milling"
+    },
+    {
+      "id": "rel-gbc-tolerances",
+      "subject": "service-gbc",
+      "predicate": "verifiedBy",
+      "predicateLabel": "проверяется по",
+      "object": "method-manufacturer-tolerances"
+    },
+    {
+      "id": "rel-maz-brand",
+      "subject": "service-maz",
+      "predicate": "appliesTo",
+      "predicateLabel": "предназначен для",
+      "object": "brand-maz"
+    },
+    {
+      "id": "rel-maz-trucks",
+      "subject": "service-maz",
+      "predicate": "accepts",
+      "predicateLabel": "принимает",
+      "object": "vehicle-truck"
+    },
+    {
+      "id": "rel-maz-special",
+      "subject": "service-maz",
+      "predicate": "accepts",
+      "predicateLabel": "принимает",
+      "object": "vehicle-special"
+    },
+    {
+      "id": "rel-maz-certificate",
+      "subject": "service-maz-warranty",
+      "predicate": "verifiedBy",
+      "predicateLabel": "подтверждается свидетельством №1723",
+      "object": "proof-maz-certificate"
+    },
+    {
+      "id": "rel-base-located-surgut",
+      "subject": "proof-service-base",
+      "predicate": "locatedIn",
+      "predicateLabel": "находится в",
+      "object": "location-surgut",
+      "description": "Фотографии показывают территорию, цех и рабочие зоны ремонтной базы в Сургуте."
+    },
+    {
+      "id": "rel-engine-photo-gbc",
+      "subject": "component-engine",
+      "predicate": "verifiedBy",
+      "predicateLabel": "показан на фотографии работ",
+      "object": "proof-engine-photo"
+    },
+    {
+      "id": "rel-maz-photo-service",
+      "subject": "service-maz",
+      "predicate": "verifiedBy",
+      "predicateLabel": "показан на фотографии поста",
+      "object": "proof-maz-service-photo"
+    }
+  ]
+}

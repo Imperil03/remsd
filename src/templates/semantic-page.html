@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{title}}</title>
+    <meta name="description" content="{{description}}">
+    <link rel="stylesheet" href="{{rootPath}}assets/css/semantic.css?v={{assetVersion}}">
+  </head>
+  <body class="semantic-page semantic-page--{{family}}">
+    <a class="skip-link" href="#main-content">Перейти к содержанию</a>
+    {{header}}
+
+    <main class="semantic-main" id="main-content" tabindex="-1">
+      <section class="semantic-hero" aria-labelledby="semantic-page-title">
+        <div class="container semantic-hero__grid">
+          <div class="semantic-hero__content">
+{{breadcrumbs}}
+            <p class="semantic-hero__kicker">{{kicker}}</p>
+            <h1 id="semantic-page-title">{{h1}}</h1>
+            <p class="semantic-hero__lead">{{lead}}</p>
+            <div class="semantic-hero__actions" aria-label="Основные действия">
+              <a class="button button--primary" href="{{phoneHref}}">{{primaryCtaLabel}}</a>
+              <a class="button button--secondary" href="{{rootPath}}kontakty/">Адрес и контакты</a>
+            </div>
+          </div>
+          <ul class="semantic-hero__facts" aria-label="Ключевые факты">
+{{heroFacts}}
+          </ul>
+        </div>
+      </section>
+
+      <nav class="semantic-local-nav semantic-jump" aria-label="Разделы страницы">
+        <div class="container semantic-local-nav__inner">
+          <span class="semantic-local-nav__label">На странице</span>
+          <div class="semantic-local-nav__links">
+{{localNav}}
+          </div>
+        </div>
+      </nav>
+
+      <div class="container semantic-layout">
+        <article class="semantic-content">
+{{sections}}
+        </article>
+
+        <aside class="semantic-aside" aria-label="Контакты сервисного центра">
+          <div class="semantic-aside__card semantic-call-card">
+            <p class="semantic-aside__label">Обсудить ремонт</p>
+            <a class="semantic-aside__phone" href="{{phoneHref}}">{{phone}}</a>
+            <p class="semantic-aside__meta">Сургут, ул. Домостроителей, 13</p>
+            <p class="semantic-aside__meta">Подготовьте марку, модель, узел и режим проявления неисправности.</p>
+            <a class="button button--primary" href="{{phoneHref}}">{{primaryCtaLabel}}</a>
+          </div>
+        </aside>
+      </div>
+    </main>
+
+    {{v3-footer}}
+    {{mobile-callbar}}
+
+    <script src="{{rootPath}}assets/js/main.js?v={{assetVersion}}"></script>
+  </body>
+</html>

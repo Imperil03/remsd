@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Страница не найдена — РемСД</title>
+    <meta name="description" content="Запрошенная страница не найдена. Перейдите к услугам ремонта РемСД или позвоните мастеру.">
+    <link rel="stylesheet" href="{{rootPath}}assets/css/styles.css?v={{assetVersion}}">
+    <link rel="stylesheet" href="{{rootPath}}assets/css/semantic-pages.css?v={{assetVersion}}">
+  </head>
+  <body class="semantic-page semantic-page--error">
+    <a class="skip-link" href="#main-content">Перейти к содержанию</a>
+    {{header}}
+
+    <main id="main-content" class="semantic-error">
+      <div class="container semantic-error__inner">
+        <p class="semantic-kicker">Ошибка 404</p>
+        <h1>Такой страницы нет</h1>
+        <p>Адрес мог измениться. Перейдите к карте ремонта или позвоните мастеру, если нужно подобрать направление по марке техники и симптомам.</p>
+        <div class="semantic-error__actions">
+          <a class="button button--primary" href="{{rootPath}}remont/">Все услуги ремонта</a>
+          <a class="button button--secondary" href="tel:+79224488822">Позвонить мастеру</a>
+        </div>
+      </div>
+    </main>
+
+    {{v3-footer}}
+    {{mobile-callbar}}
+    <script src="{{rootPath}}assets/js/main.js?v={{assetVersion}}"></script>
+  </body>
+</html>

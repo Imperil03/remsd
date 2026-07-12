@@ -4,7 +4,7 @@
   font-family: "Geologica V3";
   font-style: normal;
   font-weight: 700;
-  font-display: swap;
+  font-display: optional;
   src: url("../fonts/geologica-cyrillic-700-normal.woff2") format("woff2");
   unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
 }
@@ -263,6 +263,7 @@
   max-width: 700px;
   margin: 20px 0 0;
   color: rgba(255, 255, 255, 0.86);
+  font-family: "Segoe UI", Roboto, sans-serif;
   font-size: clamp(15px, 1.05vw, 18px);
   line-height: 1.55;
 }
@@ -437,11 +438,6 @@
   border-radius: 8px;
   box-shadow: 0 18px 48px rgba(16, 32, 51, 0.14);
   transition: box-shadow 180ms ease, transform 180ms ease;
-}
-
-.v3-link-placeholder {
-  cursor: pointer;
-  text-decoration: none;
 }
 
 .v3-category-card::before {
@@ -2579,6 +2575,498 @@
   .v3-proof-photo img,
   .v3-cert-card,
   .v3-footer a {
+    transition-duration: 0.01ms;
+  }
+}
+
+/* Focused UX pass: compact entity indexes and explicit interactive states. */
+#main-content:focus {
+  outline: 0;
+}
+
+.v3-nav > a[aria-current="page"],
+.v3-nav .main-nav__group.is-current > .main-nav__trigger {
+  color: #ffffff;
+}
+
+.v3-nav > a[aria-current="page"]::after {
+  background: #f5a21a;
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+.v3-category-card--static {
+  cursor: default;
+}
+
+.v3-category-card--static:hover {
+  box-shadow: 0 18px 48px rgba(16, 32, 51, 0.14);
+  transform: none;
+}
+
+.v3-category-card--static:hover img {
+  transform: scale(1.01);
+}
+
+a.v3-category-card:active,
+.v3-brand-card a:active,
+.v3-brand-toggle:active,
+.v3-repair-card--link:active,
+.v3-proof-photo:active,
+.v3-cert-card:active,
+.v3-nav-toggle:active {
+  transform: translateY(1px) scale(0.99);
+}
+
+.v3-brand-toggle {
+  display: none;
+}
+
+.v3-brand-matrix {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.v3-brand-matrix li {
+  display: flex;
+  min-width: 0;
+  min-height: 44px;
+  align-items: center;
+  padding: 10px 12px;
+  color: rgba(255, 255, 255, 0.78);
+  background: rgba(255, 255, 255, 0.055);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 7px;
+  font-family: var(--font-heading);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.14;
+  overflow-wrap: anywhere;
+  cursor: default;
+}
+
+.v3-equipment-index {
+  display: grid;
+  grid-template-columns: minmax(320px, 0.88fr) minmax(0, 1.12fr);
+  gap: clamp(24px, 4vw, 48px);
+  align-items: stretch;
+}
+
+.v3-equipment-index__media {
+  position: relative;
+  min-height: 390px;
+  margin: 0;
+  overflow: hidden;
+  background: #080d16;
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  border-radius: 8px;
+  box-shadow: 0 24px 62px rgba(0, 0, 0, 0.28);
+}
+
+.v3-equipment-index__media::after {
+  position: absolute;
+  inset: auto 0 0;
+  height: 48%;
+  background: linear-gradient(180deg, rgba(4, 8, 15, 0), rgba(4, 8, 15, 0.88));
+  content: "";
+  pointer-events: none;
+}
+
+.v3-equipment-index__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.88) contrast(1.06);
+}
+
+.v3-equipment-index__media figcaption {
+  position: absolute;
+  right: 18px;
+  bottom: 16px;
+  left: 18px;
+  z-index: 1;
+  color: rgba(255, 255, 255, 0.86);
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.24;
+}
+
+.v3-equipment-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-content: stretch;
+  gap: 0 22px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.13);
+}
+
+.v3-equipment-list li {
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+  min-width: 0;
+  min-height: 74px;
+  padding: 12px 4px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.13);
+}
+
+.v3-equipment-list span {
+  color: #f5a21a;
+  font-family: var(--font-heading);
+  font-size: 11px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.v3-equipment-list strong {
+  min-width: 0;
+  color: #ffffff;
+  font-family: var(--font-heading);
+  font-size: clamp(15px, 1.25vw, 18px);
+  font-weight: 700;
+  line-height: 1.16;
+  overflow-wrap: anywhere;
+}
+
+.v3-repair-card--static {
+  cursor: default;
+}
+
+.v3-repair-card--static:hover {
+  border-color: rgba(16, 32, 51, 0.08);
+  box-shadow: 0 18px 48px rgba(16, 32, 51, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.86);
+  transform: none;
+}
+
+.v3-repair-card--static:hover::after {
+  opacity: 0;
+}
+
+.v3-repair-card--static:hover img {
+  transform: none;
+}
+
+.v3-repair-card--link:focus-visible {
+  border-color: rgba(47, 88, 168, 0.34);
+  outline: 3px solid rgba(47, 88, 168, 0.48);
+  outline-offset: 4px;
+  transform: translateY(-2px);
+}
+
+.v3-repair-card__more {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  min-height: 44px;
+  align-items: end;
+  width: fit-content;
+  margin-top: 18px;
+  color: #2f58a8;
+  font-family: var(--font-heading);
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.v3-repair-card__more::after {
+  margin-left: 8px;
+  content: "→";
+  transition: transform 180ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.v3-footer__email {
+  display: block;
+  width: fit-content;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 15px;
+  font-weight: 650;
+}
+
+.v3-repair-card--link:hover .v3-repair-card__more::after,
+.v3-repair-card--link:focus-visible .v3-repair-card__more::after {
+  transform: translateX(4px);
+}
+
+@media (max-width: 1120px) {
+  .v3-nav .main-nav__static {
+    min-height: 42px;
+    padding: 10px 12px;
+    background: rgba(255, 255, 255, 0.62);
+    border: 0;
+    border-radius: 7px;
+  }
+
+  .v3-nav .main-nav__brand-cloud span {
+    min-height: 34px;
+    background: rgba(255, 255, 255, 0.7);
+  }
+
+  .v3-brand-matrix {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .v3-section__inner {
+    padding-block: 42px;
+  }
+
+  .v3-category-grid {
+    gap: 10px;
+  }
+
+  .v3-category-card {
+    grid-template-columns: 104px minmax(0, 1fr);
+    min-height: 104px;
+  }
+
+  .v3-category-card img {
+    position: relative;
+    inset: auto;
+    grid-column: 1;
+    grid-row: 1;
+    width: 104px;
+    height: 100%;
+    min-height: 104px;
+  }
+
+  .v3-category-card__content {
+    grid-column: 2;
+    grid-row: 1;
+    align-self: center;
+    padding: 14px;
+  }
+
+  .v3-category-card strong {
+    font-size: 17px;
+    line-height: 1.12;
+  }
+
+  .v3-brand-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .v3-brand-card--official {
+    grid-column: auto;
+  }
+
+  .v3-brand-card--official a,
+  .v3-brand-card--official .v3-brand-card__body {
+    grid-template-columns: 1fr;
+    grid-template-rows: 50px auto auto;
+    min-height: 126px;
+    align-content: stretch;
+    gap: 4px;
+    padding: 10px 6px 8px;
+  }
+
+  .v3-brand-card--official .v3-brand-card__logo {
+    grid-row: auto;
+    min-height: 48px;
+    justify-items: center;
+  }
+
+  .v3-brand-card--official .v3-brand-card__logo img {
+    width: min(96px, 92%);
+    height: 46px;
+  }
+
+  .v3-brand-card--official .v3-brand-card__name {
+    min-height: 24px;
+    align-self: auto;
+    justify-items: center;
+    font-size: 11px;
+    text-align: center;
+  }
+
+  .v3-brand-card--official .v3-brand-card__status {
+    align-self: auto;
+    justify-self: center;
+    font-size: 9.5px;
+    line-height: 1.1;
+    text-align: center;
+    white-space: normal;
+  }
+
+  .v3-brand-toggle {
+    display: flex;
+    width: 100%;
+    min-height: 50px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 12px;
+    padding: 10px 14px;
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 8px;
+    font-family: var(--font-heading);
+    font-size: 12px;
+    font-weight: 700;
+    text-align: left;
+  }
+
+  .v3-brand-toggle > span:last-child {
+    display: inline-grid;
+    width: 28px;
+    height: 28px;
+    flex: 0 0 auto;
+    place-items: center;
+    color: #101820;
+    background: #f5a21a;
+    border-radius: 999px;
+    font-size: 10px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .v3-brand-toggle:focus-visible {
+    outline: 2px solid rgba(245, 162, 26, 0.92);
+    outline-offset: 3px;
+  }
+
+  .v3-brand-matrix {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 7px;
+    margin-top: 8px;
+  }
+
+  .v3-brand-matrix li {
+    min-height: 40px;
+    padding: 8px 10px;
+    font-size: 11px;
+  }
+
+  .v3-equipment-index {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .v3-equipment-index__media {
+    min-height: 220px;
+  }
+
+  .v3-equipment-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 12px;
+  }
+
+  .v3-equipment-list li {
+    grid-template-columns: 24px minmax(0, 1fr);
+    gap: 8px;
+    min-height: 60px;
+    padding-block: 9px;
+  }
+
+  .v3-equipment-list strong {
+    font-size: 13px;
+  }
+
+  .v3-repair-card__more {
+    min-height: 38px;
+    margin-top: 12px;
+    font-size: 11px;
+  }
+
+  .v3-company-proof__media {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: auto;
+    gap: 8px;
+  }
+
+  .v3-proof-photo--wide {
+    grid-column: 1 / -1;
+    grid-row: auto;
+  }
+
+  .v3-proof-photo img {
+    aspect-ratio: 1 / 1;
+  }
+
+  .v3-proof-photo--wide img {
+    aspect-ratio: 16 / 10;
+  }
+
+  .v3-proof-photo span {
+    right: 10px;
+    bottom: 9px;
+    left: 10px;
+    font-size: 11px;
+  }
+
+  .v3-cert-strip__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .v3-cert-card,
+  .v3-cert-card--key,
+  .v3-cert-card--conformity {
+    grid-column: auto;
+  }
+
+  .v3-cert-strip__group-label {
+    grid-column: 1 / -1;
+  }
+
+  .v3-cert-card {
+    grid-template-columns: 46px minmax(0, 1fr);
+    gap: 8px;
+    min-height: 70px;
+    padding: 7px;
+  }
+
+  .v3-cert-card img,
+  .v3-cert-card--conformity img {
+    width: 46px;
+  }
+
+  .v3-cert-card span,
+  .v3-cert-card--conformity span {
+    font-size: 11px;
+    overflow-wrap: anywhere;
+  }
+}
+
+@media (max-width: 420px) {
+  .v3-cert-strip__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .v3-cert-card,
+  .v3-cert-card--conformity {
+    grid-template-columns: 38px minmax(0, 1fr);
+    min-height: 62px;
+    padding: 6px;
+  }
+
+  .v3-cert-card img,
+  .v3-cert-card--conformity img {
+    width: 38px;
+  }
+
+  .v3-cert-card span,
+  .v3-cert-card--conformity span {
+    font-size: 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .v3-brand-toggle,
+  .v3-repair-card__more::after,
+  .v3-category-card,
+  .v3-category-card img,
+  .v3-repair-card,
+  .v3-repair-card img {
     transition-duration: 0.01ms;
   }
 }

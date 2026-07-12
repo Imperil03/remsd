@@ -23,7 +23,8 @@
 - `.agent/SEO_STRUCTURE.md` — актуальная SEO-архитектура и запрет на тонкие страницы "услуга × марка".
 - `docs/project-handoff.md` — состояние проекта, что уже сделано и как продолжать.
 - `docs/design-guideline.md` — визуальные правила.
-- `src/data/seo-pages.json` — контент генерируемых страниц.
+- `src/data/site-config.json`, `entities.json`, `relations.json`, `pilot-pages.json` — новая типизированная модель.
+- `src/data/seo-pages.json` — прежние страницы семейства `legacy`.
 - `.agent/agents/` — роли текстового автора и ревьюера.
 - Подтвержденные публичные факты сейчас берутся из существующего контента сайта, сертификатов/документов в проекте, `.agent/SEO_STRUCTURE.md` и явно указанных пользователем источников. Не восстанавливать удаленные `.agent/CONTENT_GUIDE.md` и `.agent/CLAIMS_LEDGER.md` без отдельного запроса.
 
@@ -31,11 +32,12 @@
 
 - Сначала читать `.agent/SEO_STRUCTURE.md` и `docs/project-handoff.md`.
 - Не добавлять отдельные страницы вида `/remont-gbc-kamaz/`, `/remont-kpp-maz/`, `/remont-elektriki-ural/` без отдельного решения.
-- Для новых SEO-страниц сначала добавлять объект в `src/data/seo-pages.json`, затем запускать `node tools/build.js`.
+- Новые страницы сначала отнести к семейству `hub`, `service` или `brand`, затем добавить сущности, отношения и `PageDefinition` в `pilot-pages.json`.
 - После изменений проверять:
 
 ```bash
-node tools/build.js
+npm run verify
+npm run test:browser
 git diff --check
 ```
 

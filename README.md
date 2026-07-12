@@ -1,75 +1,88 @@
 # РемСД
 
-Статический сайт на HTML, CSS и JS для компании по ремонту грузовых автомобилей и спецтехники в Сургуте.
+Многостраничный статический сайт ремонтной базы грузовых автомобилей и спецтехники в Сургуте. Исходники написаны на HTML, CSS и JavaScript; `tools/build.js` собирает готовый сайт в `dist/`.
+
+## Что уже сделано
+
+- Доработана главная без смены её Industrial Editorial-направления.
+- Выпущены три эталонные страницы: `/remont/`, `/remont-gbc/`, `/remont/maz/`.
+- Убраны неработающие `href="#"`; будущие направления выводятся обычным текстом.
+- Меню, lightbox и мобильная callbar приведены к единому состоянию `hidden`/`inert` и проверяются с клавиатуры.
+- Добавлены breadcrumbs, локальная навигация, уникальные metadata, JSON-LD, favicon и полезная 404.
+- GitHub Pages работает как закрытый от индексации preview. Production-режим заранее поддерживает canonical, sitemap и индексируемый `robots.txt`.
+
+## Контентная модель
+
+- `src/data/site-config.json` — режимы сборки, NAP, CTA и подтверждённые владельцем claims.
+- `src/data/entities.json` — услуги, узлы, системы, техника, марки, симптомы, методы проверки и доказательства.
+- `src/data/relations.json` — проверяемые связи `subject → predicate → object`.
+- `src/data/pilot-pages.json` — три пилота семейств `hub`, `service`, `brand`.
+- `src/data/seo-pages.json` — прежние страницы семейства `legacy`; они остаются на старом шаблоне до поэтапной миграции.
+- `src/templates/semantic-page.html` — общий каркас новых внутренних страниц.
+
+Сборка проверяет ID, отношения, claims, маршруты, внутренние ссылки, обязательные поля секций и уникальность title/description. Произвольный HTML в контентных JSON запрещён.
+
+## Команды
+
+Установка зависимостей:
+
+```powershell
+npm ci
+```
+
+Preview-сборка с `noindex,nofollow,noarchive` и без sitemap:
+
+```powershell
+npm run verify
+```
+
+Production-like сборка для проверки SEO и Lighthouse:
+
+```powershell
+$env:SITE_MODE = "production"
+$env:SITE_URL = "http://127.0.0.1:4175/"
+npm run verify
+npm run test:browser
+npm run test:lighthouse
+```
+
+После production-проверки вернуть `dist/` в preview:
+
+```powershell
+Remove-Item Env:SITE_MODE -ErrorAction SilentlyContinue
+Remove-Item Env:SITE_URL -ErrorAction SilentlyContinue
+npm run verify
+```
+
+`test:browser` проверяет главную на 1440×900, 1120×900, 414×896 и 390×844, внутреннюю шапку на 1120/1050/1020/390 px, клавиатурное меню, lightbox, callbar, overflow и три пилота. `test:lighthouse` проверяет четыре маршрута с порогами P/A/SEO ≥ 95, LCP < 2,5 с, CLS < 0,1 и без ошибок консоли.
+
+Если меняются стили первого экрана главной, после обычной сборки обновите покрытие critical CSS и снова соберите сайт:
+
+```powershell
+npm run build
+npm run generate:critical
+npm run verify
+```
 
 ## Структура
 
-- `src/pages/` — страницы с подключаемыми partials.
-- `src/partials/` — общие блоки: шапка, hero, брендовые карточки, перечень услуг, SEO/FAQ-блоки, футер, мобильная CTA-плашка.
-- `src/data/seo-pages.json` — контент SEO-страниц услуг и служебных разделов.
-- `src/templates/seo-page.html` — шаблон генерируемых SEO-страниц.
-- `assets/css/styles.css` — дизайн-система и стили.
-- `assets/js/main.js` — поведение мобильного меню, нижней CTA-плашки и просмотра медиа.
-- `assets/img/brands/`, `assets/img/gallery/`, `assets/img/certificates/` — оптимизированные WebP-медиа с remsd.ru, включая превью и крупные версии для просмотра.
-- `docs/design-guideline.md` — короткий дизайн-гайд.
-- `docs/project-handoff.md` — текущий контекст, решения и ближайшие шаги.
-- `tools/build.js` — сборка готового сайта в `dist/`.
-- `tools/prepare-media.js` — загрузка и оптимизация фото/логотипов из исходного сайта.
-- `.agent/` — проектные инструкции, SEO-структура и текстовые agent-роли.
-- `docs/skills.md` — инструкция по project skills, лицензиям, установке на другом компьютере и правилам конфликтов.
-
-## Сборка
-
-```bash
-node tools/build.js
-```
-
-Готовый файл главной страницы появится в `dist/index.html`.
-
-Если нужно заново подготовить фото и логотипы с remsd.ru:
-
-```bash
-npm.cmd install
-npm.cmd run prepare:media
-```
-
-Скрипт сохраняет только оптимизированные WebP-файлы, без исходных тяжелых изображений и метаданных.
-
-В PowerShell `npm run build` может блокироваться системной политикой. В этом случае используйте `node tools/build.js` или `npm.cmd run build`.
-
-Версия CSS/JS задается в `tools/build.js` через `assetVersion`. При необходимости можно переопределить:
-
-```bash
-ASSET_VERSION=20260509 node tools/build.js
-```
-
-В PowerShell:
-
-```powershell
-$env:ASSET_VERSION = "20260509"; node tools/build.js
-```
-
-## Текущий статус
-
-- Бывшая v3-главная перенесена в production `/`; отдельные `/v2/` и `/v3/` удалены.
-- Главная собрана из v3-only partials: hero, категории техники, марки грузовиков, блок грузового автосервиса, типы спецтехники, услуги по узлам, доказательный блок базы, контактный сценарий и отдельный footer.
-- Шапка использует кириллический логотип, меню, адрес `Сургут, Домостроителей, 13`, email `info@remsd.ru` и телефон. На мобильных адрес/email и верхний телефон скрываются.
-- Mega-menu `Ремонт` построен вокруг трех выборов: тип техники, спецтехника, марки грузовиков. КАМАЗ, МАЗ и УРАЛ идут первыми как существующие официальные страницы; остальные брендовые URL пока placeholder через `data-future-href`.
-- В группе `Марки грузовиков` не выводится отдельная строка `Официальный сервис`: статус передан порядком, компактными маркерами и `aria-label`.
-- Dropdown `Аренда техники` отделен от ремонта и использует отдельную промо-карточку с фото автокрана.
-- Брендовые страницы КАМАЗ, МАЗ и УРАЛ — первый SEO-слой; общие страницы по узлам остаются support-контентом.
-- Страницы `/remontnaya-baza/` и `/sertifikaty/` сделаны отдельными HTML-страницами, а не generic SEO-шаблонами.
-- Основная SEO-структура хранится в `.agent/SEO_STRUCTURE.md`; текущий handoff — в `docs/project-handoff.md`.
-- Удаленные `.agent/CONTENT_GUIDE.md`, `.agent/CLAIMS_LEDGER.md` и `.agent/skills/` не восстанавливать без отдельного запроса.
+- `src/pages/` — вручную собранные страницы.
+- `src/partials/` — общие блоки главной, header/footer, меню, callbar и lightbox.
+- `assets/css/` — исходная дизайн-система; в `dist/` CSS минифицируется и собирается в page-aware bundles.
+- `assets/js/main.js` — навигация, раскрытие марок, callbar и просмотр изображений.
+- `assets/img/` — реальные фотографии, логотипы, сертификаты и responsive hero.
+- `tools/check-site.js` — структурная и ссылочная проверка результата.
+- `tools/verify-browser.js` — Playwright-сценарии.
+- `tools/verify-lighthouse.js` — Lighthouse-барьер для indexable-сборки.
+- `docs/project-handoff.md` — актуальное состояние и следующие шаги.
 
 ## Деплой
 
-GitHub Pages забирает собранный `dist/` из workflow. После изменения исходников нужно запускать сборку и коммитить обновленный `dist/`.
+Workflow `.github/workflows/deploy-pages.yml` сначала собирает indexable-тестовую версию, запускает Playwright и Lighthouse, затем заново собирает preview с `noindex` и публикует `dist/`.
 
-Проверить прод:
+- Preview: https://imperil03.github.io/remsd/
+- Хаб ремонта: https://imperil03.github.io/remsd/remont/
+- Ремонт ГБЦ: https://imperil03.github.io/remsd/remont-gbc/
+- Ремонт МАЗ: https://imperil03.github.io/remsd/remont/maz/
 
-- https://imperil03.github.io/remsd/
-- https://imperil03.github.io/remsd/remont/kamaz/
-- https://imperil03.github.io/remsd/remont/maz/
-- https://imperil03.github.io/remsd/remont/ural/
-- https://imperil03.github.io/remsd/remont-gbc/
+Перенос на `remsd.ru`, серверные 301, Search Console и аналитика в эту итерацию не входят.
