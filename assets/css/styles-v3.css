@@ -47,7 +47,6 @@
 .v3-hero__backdrop img {
   object-fit: cover;
   object-position: 58% center;
-  filter: saturate(0.9) contrast(1.08);
 }
 
 .v3-hero::before {
