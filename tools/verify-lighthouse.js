@@ -99,13 +99,16 @@ async function run() {
         accessibility: score(lhr, "accessibility"),
         bestPractices: score(lhr, "best-practices"),
         seo: score(lhr, "seo"),
-        lcp: Math.round(lhr.audits["largest-contentful-paint"]?.numericValue || Infinity),
+        fcp: Math.round(lhr.audits["first-contentful-paint"]?.numericValue ?? Infinity),
+        lcp: Math.round(lhr.audits["largest-contentful-paint"]?.numericValue ?? Infinity),
+        speedIndex: Math.round(lhr.audits["speed-index"]?.numericValue ?? Infinity),
+        tbt: Math.round(lhr.audits["total-blocking-time"]?.numericValue ?? Infinity),
         cls: Number((lhr.audits["cumulative-layout-shift"]?.numericValue ?? Infinity).toFixed(3)),
         consoleErrors: lhr.audits["errors-in-console"]?.details?.items?.length || 0,
       };
       const slug = route === "/" ? "home" : route.replace(/^\/|\/$/g, "").replaceAll("/", "-");
       fs.writeFileSync(path.join(resultDir, `${slug}.json`), result.report, "utf8");
-      console.log(`${route} P${metrics.performance} A${metrics.accessibility} BP${metrics.bestPractices} SEO${metrics.seo} LCP ${metrics.lcp}ms CLS ${metrics.cls}`);
+      console.log(`${route} P${metrics.performance} A${metrics.accessibility} BP${metrics.bestPractices} SEO${metrics.seo} FCP ${metrics.fcp}ms LCP ${metrics.lcp}ms SI ${metrics.speedIndex}ms TBT ${metrics.tbt}ms CLS ${metrics.cls}`);
 
       for (const category of ["performance", "accessibility", "seo"]) {
         if (metrics[category] < minScore * 100) failures.push(`${route}: ${category} ${metrics[category]} < ${minScore * 100}`);

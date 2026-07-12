@@ -128,6 +128,22 @@ async function verifyLightbox(page) {
   if (!focusReturned) throw new Error("Lightbox не вернул фокус на открывшую кнопку");
 }
 
+async function materializeHomeSections(page) {
+  const sections = page.locator("main > :not(.v3-hero)");
+  const count = await sections.count();
+  for (let index = 0; index < count; index += 1) {
+    await sections.nth(index).scrollIntoViewIfNeeded();
+  }
+  await page.evaluate(() => {
+    document.querySelectorAll("main > :not(.v3-hero)").forEach((section) => {
+      section.style.contentVisibility = "visible";
+    });
+    document.documentElement.style.scrollBehavior = "auto";
+    window.scrollTo(0, 0);
+  });
+  await page.waitForTimeout(100);
+}
+
 async function verifyInternalHeaderBreakpoint(page, width) {
   const state = await page.evaluate(() => {
     const toggle = document.querySelector("[data-nav-toggle]");
@@ -170,6 +186,7 @@ async function run() {
       await page.screenshot({ path: path.join(resultDir, `home-${viewport.name}.png`), fullPage: false });
 
       if (viewport.width === 390) {
+        await materializeHomeSections(page);
         const height = await page.evaluate(() => document.documentElement.scrollHeight);
         mobileHomeHeight = height;
         if (height > 12600) throw new Error(`Главная mobile выше целевого лимита: ${height}px`);

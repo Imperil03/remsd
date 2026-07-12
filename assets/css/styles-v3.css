@@ -14,7 +14,8 @@
 }
 
 .v3-page :where(main > :not(.v3-hero)) {
-  display: block;
+  content-visibility: auto;
+  contain-intrinsic-block-size: auto 900px;
 }
 
 .v3-page .section-heading h2,
@@ -2430,7 +2431,7 @@ a.v3-equipment-item:focus-visible {
   }
 
   .v3-equipment-item img {
-    height: clamp(92px, 24vw, 112px);
+    height: clamp(80px, 20vw, 104px);
   }
 
   .v3-equipment-item strong {
@@ -2569,7 +2570,7 @@ a.v3-equipment-item:focus-visible {
   }
 
   .v3-equipment-item img {
-    height: 92px;
+    height: 80px;
   }
 
   .v3-equipment-item strong {

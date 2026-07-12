@@ -124,7 +124,7 @@ async function run() {
     const ranges = mergeRanges(entries.flatMap((entry) => entry.ranges));
     const parsed = postcss.parse(source, { from: "home.css" });
     const criticalRoot = postcss.root();
-    criticalRoot.append(postcss.parse(".v3-page :where(main > :not(.v3-hero)){display:none}"));
+    criticalRoot.append(postcss.parse(".v3-page :where(main > :not(.v3-hero)){content-visibility:hidden;contain-intrinsic-block-size:900px}"));
     criticalRoot.append(keepUsedNodes(parsed, ranges));
     const normalized = criticalRoot.toString()
       .replaceAll("./assets/fonts/", "../fonts/")
