@@ -35,6 +35,15 @@ function resolveRequest(url) {
 function startServer() {
   return new Promise((resolve) => {
     const server = http.createServer((request, response) => {
+      const pathname = new URL(request.url, `http://${host}:${port}`).pathname;
+      if (pathname === "/__lighthouse-warmup__") {
+        response.writeHead(200, {
+          "cache-control": "no-store",
+          "content-type": "text/html; charset=utf-8",
+        });
+        response.end("<!doctype html><html><head><meta charset=\"utf-8\"><title>Warm-up</title></head><body><p>Warm-up</p></body></html>");
+        return;
+      }
       const file = resolveRequest(request.url);
       if (!file) {
         response.writeHead(404, { "content-type": "text/plain; charset=utf-8" });
@@ -85,6 +94,14 @@ async function run() {
   const failures = [];
 
   try {
+    await lighthouse(`http://${host}:${port}/__lighthouse-warmup__`, {
+      port: chrome.port,
+      logLevel: "error",
+      output: "json",
+      onlyCategories: ["performance"],
+    });
+    console.log("Lighthouse browser warm-up complete.");
+
     for (const route of routes) {
       const url = `http://${host}:${port}${route}`;
       const result = await lighthouse(url, {
