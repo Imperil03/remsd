@@ -847,6 +847,8 @@
 }
 
 .v3-special-equipment {
+  content-visibility: auto;
+  contain-intrinsic-block-size: auto 850px;
   color: #ffffff;
   background:
     linear-gradient(135deg, rgba(16, 24, 36, 0.98), rgba(7, 12, 21, 0.98)),
@@ -1992,6 +1994,10 @@ a.v3-equipment-item:focus-visible {
 }
 
 @media (max-width: 720px) {
+  .v3-special-equipment {
+    contain-intrinsic-block-size: auto 1060px;
+  }
+
   #v3-tech-categories-title,
   #v3-truck-brands-title,
   #v3-repair-services-title,
