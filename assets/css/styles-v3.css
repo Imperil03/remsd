@@ -871,6 +871,9 @@
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 .v3-equipment-item {
@@ -934,7 +937,7 @@
   line-height: 1.12;
 }
 
-.v3-equipment-item:hover {
+a.v3-equipment-item:hover {
   background: rgba(255, 255, 255, 0.095);
   border-color: rgba(255, 255, 255, 0.2);
   box-shadow:
@@ -943,16 +946,16 @@
   transform: translateY(-4px);
 }
 
-.v3-equipment-item:hover::after {
+a.v3-equipment-item:hover::after {
   opacity: 1;
 }
 
-.v3-equipment-item:hover img {
+a.v3-equipment-item:hover img {
   filter: saturate(1) contrast(1.08);
   transform: scale(1.035);
 }
 
-.v3-equipment-item:focus-visible {
+a.v3-equipment-item:focus-visible {
   background: rgba(255, 255, 255, 0.095);
   border-color: rgba(122, 169, 255, 0.58);
   outline: 2px solid rgba(122, 169, 255, 0.95);
@@ -2181,9 +2184,12 @@
     left: 16px;
   }
 
-  .v3-category-grid,
-  .v3-equipment-grid {
+  .v3-category-grid {
     grid-template-columns: 1fr;
+  }
+
+  .v3-equipment-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .v3-repair-services__heading {
@@ -2404,13 +2410,22 @@
   }
 
   .v3-equipment-item {
-    grid-template-columns: 116px minmax(0, 1fr);
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    gap: 8px;
     min-height: 0;
-    align-items: center;
+    align-content: start;
+    align-items: stretch;
+    padding: 8px;
   }
 
   .v3-equipment-item img {
-    height: 116px;
+    height: clamp(92px, 24vw, 112px);
+  }
+
+  .v3-equipment-item strong {
+    font-size: 13px;
+    line-height: 1.14;
   }
 }
 
@@ -2540,7 +2555,7 @@
   }
 
   .v3-equipment-item {
-    grid-template-columns: 92px minmax(0, 1fr);
+    grid-template-columns: 1fr;
   }
 
   .v3-equipment-item img {
@@ -2548,7 +2563,7 @@
   }
 
   .v3-equipment-item strong {
-    font-size: 16px;
+    font-size: 13px;
   }
 }
 
@@ -2647,93 +2662,6 @@ a.v3-category-card:active,
   line-height: 1.14;
   overflow-wrap: anywhere;
   cursor: default;
-}
-
-.v3-equipment-index {
-  display: grid;
-  grid-template-columns: minmax(320px, 0.88fr) minmax(0, 1.12fr);
-  gap: clamp(24px, 4vw, 48px);
-  align-items: stretch;
-}
-
-.v3-equipment-index__media {
-  position: relative;
-  min-height: 390px;
-  margin: 0;
-  overflow: hidden;
-  background: #080d16;
-  border: 1px solid rgba(255, 255, 255, 0.11);
-  border-radius: 8px;
-  box-shadow: 0 24px 62px rgba(0, 0, 0, 0.28);
-}
-
-.v3-equipment-index__media::after {
-  position: absolute;
-  inset: auto 0 0;
-  height: 48%;
-  background: linear-gradient(180deg, rgba(4, 8, 15, 0), rgba(4, 8, 15, 0.88));
-  content: "";
-  pointer-events: none;
-}
-
-.v3-equipment-index__media img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: saturate(0.88) contrast(1.06);
-}
-
-.v3-equipment-index__media figcaption {
-  position: absolute;
-  right: 18px;
-  bottom: 16px;
-  left: 18px;
-  z-index: 1;
-  color: rgba(255, 255, 255, 0.86);
-  font-family: var(--font-heading);
-  font-size: 13px;
-  font-weight: 700;
-  line-height: 1.24;
-}
-
-.v3-equipment-list {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  align-content: stretch;
-  gap: 0 22px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  border-top: 1px solid rgba(255, 255, 255, 0.13);
-}
-
-.v3-equipment-list li {
-  display: grid;
-  grid-template-columns: 30px minmax(0, 1fr);
-  gap: 12px;
-  align-items: center;
-  min-width: 0;
-  min-height: 74px;
-  padding: 12px 4px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.13);
-}
-
-.v3-equipment-list span {
-  color: #f5a21a;
-  font-family: var(--font-heading);
-  font-size: 11px;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-}
-
-.v3-equipment-list strong {
-  min-width: 0;
-  color: #ffffff;
-  font-family: var(--font-heading);
-  font-size: clamp(15px, 1.25vw, 18px);
-  font-weight: 700;
-  line-height: 1.16;
-  overflow-wrap: anywhere;
 }
 
 .v3-repair-card--static {
@@ -2944,31 +2872,6 @@ a.v3-category-card:active,
     min-height: 40px;
     padding: 8px 10px;
     font-size: 11px;
-  }
-
-  .v3-equipment-index {
-    grid-template-columns: 1fr;
-    gap: 18px;
-  }
-
-  .v3-equipment-index__media {
-    min-height: 220px;
-  }
-
-  .v3-equipment-list {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0 12px;
-  }
-
-  .v3-equipment-list li {
-    grid-template-columns: 24px minmax(0, 1fr);
-    gap: 8px;
-    min-height: 60px;
-    padding-block: 9px;
-  }
-
-  .v3-equipment-list strong {
-    font-size: 13px;
   }
 
   .v3-repair-card__more {
