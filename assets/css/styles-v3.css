@@ -13,6 +13,10 @@
   background: #f4f7fb;
 }
 
+.v3-page :where(main > :not(.v3-hero)) {
+  display: block;
+}
+
 .v3-page .section-heading h2,
 .v3-brand-card__name,
 .v3-brand-card__status,

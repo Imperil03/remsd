@@ -12,6 +12,13 @@ const outputFile = path.join(root, "assets", "css", "home-critical.css");
 const host = "127.0.0.1";
 const port = Number(process.env.CRITICAL_PORT || 4178);
 
+function criticalShell() {
+  const html = fs.readFileSync(path.join(distDir, "index.html"), "utf8");
+  const hero = html.match(/<section class="v3-hero"[\s\S]*?<\/section>/)?.[0];
+  if (!hero) throw new Error("Не удалось выделить первый экран главной");
+  return `<!doctype html><html lang="ru"><head><meta charset="utf-8"><base href="/"><link rel="stylesheet" href="./assets/css/home.css"></head><body class="v3-page"><main>${hero}</main></body></html>`;
+}
+
 function resolveRequest(url) {
   const pathname = decodeURIComponent(new URL(url, `http://${host}:${port}`).pathname);
   const requested = path.resolve(distDir, pathname.replace(/^\/+/, ""));
@@ -24,6 +31,15 @@ function resolveRequest(url) {
 function startServer() {
   return new Promise((resolve) => {
     const server = http.createServer((request, response) => {
+      const pathname = new URL(request.url, `http://${host}:${port}`).pathname;
+      if (pathname === "/__critical__/") {
+        response.writeHead(200, {
+          "cache-control": "no-store",
+          "content-type": "text/html; charset=utf-8",
+        });
+        response.end(criticalShell());
+        return;
+      }
       const file = resolveRequest(request.url);
       if (!file) {
         response.writeHead(404).end();
@@ -79,7 +95,7 @@ async function collectCoverage(browser, viewport) {
   const page = await browser.newPage();
   await page.setViewport(viewport);
   await page.coverage.startCSSCoverage();
-  await page.goto(`http://${host}:${port}/`, { waitUntil: "networkidle0" });
+  await page.goto(`http://${host}:${port}/__critical__/`, { waitUntil: "networkidle0" });
   await new Promise((resolve) => setTimeout(resolve, 350));
   const coverage = await page.coverage.stopCSSCoverage();
   await page.close();
@@ -108,6 +124,7 @@ async function run() {
     const ranges = mergeRanges(entries.flatMap((entry) => entry.ranges));
     const parsed = postcss.parse(source, { from: "home.css" });
     const criticalRoot = postcss.root();
+    criticalRoot.append(postcss.parse(".v3-page :where(main > :not(.v3-hero)){display:none}"));
     criticalRoot.append(keepUsedNodes(parsed, ranges));
     const normalized = criticalRoot.toString()
       .replaceAll("./assets/fonts/", "../fonts/")
