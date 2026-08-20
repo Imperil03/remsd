@@ -108,11 +108,13 @@ if (mediaLightbox && lightboxItems.length) {
   const lightboxTitle = mediaLightbox.querySelector("[data-lightbox-title]");
   const lightboxCaption = mediaLightbox.querySelector("[data-lightbox-caption]");
   const lightboxCounter = mediaLightbox.querySelector("[data-lightbox-counter]");
+  const lightboxStatus = mediaLightbox.querySelector("[data-lightbox-status]");
   const closeButton = mediaLightbox.querySelector("[data-lightbox-close]");
   const prevButton = mediaLightbox.querySelector("[data-lightbox-prev]");
   const nextButton = mediaLightbox.querySelector("[data-lightbox-next]");
   let activeItems = [];
   let activeIndex = 0;
+  let activeRender = 0;
   let previousFocus = null;
 
   const getItemData = (item) => {
@@ -128,11 +130,40 @@ if (mediaLightbox && lightboxItems.length) {
 
   const renderLightbox = () => {
     const data = getItemData(activeItems[activeIndex]);
-    lightboxImage.src = data.src;
+    const renderId = activeRender + 1;
+    let hasFinished = false;
+    activeRender = renderId;
+
     lightboxImage.alt = data.alt;
     lightboxTitle.textContent = data.caption;
     lightboxCaption.textContent = data.caption;
     lightboxCounter.textContent = `${activeIndex + 1} / ${activeItems.length}`;
+    mediaLightbox.classList.add("is-loading");
+    mediaLightbox.classList.remove("is-error");
+    lightboxStatus.hidden = false;
+    lightboxStatus.textContent = "Загрузка изображения…";
+
+    const finishLoading = () => {
+      if (renderId !== activeRender || hasFinished) return;
+      hasFinished = true;
+      mediaLightbox.classList.remove("is-loading", "is-error");
+      const settleDelay = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 160;
+      window.setTimeout(() => {
+        if (renderId === activeRender) lightboxStatus.hidden = true;
+      }, settleDelay);
+    };
+
+    lightboxImage.onload = finishLoading;
+    lightboxImage.onerror = () => {
+      if (renderId !== activeRender) return;
+      mediaLightbox.classList.remove("is-loading");
+      mediaLightbox.classList.add("is-error");
+      lightboxStatus.hidden = false;
+      lightboxStatus.textContent = "Не удалось загрузить изображение.";
+    };
+
+    lightboxImage.src = data.src;
+    if (lightboxImage.complete && lightboxImage.naturalWidth > 0) finishLoading();
   };
 
   const moveLightbox = (step) => {
@@ -141,9 +172,14 @@ if (mediaLightbox && lightboxItems.length) {
   };
 
   const closeLightbox = () => {
+    activeRender += 1;
     mediaLightbox.hidden = true;
+    mediaLightbox.classList.remove("is-loading", "is-error");
     document.body.classList.remove("is-lightbox-open");
+    lightboxImage.onload = null;
+    lightboxImage.onerror = null;
     lightboxImage.removeAttribute("src");
+    lightboxStatus.hidden = true;
     updateMobileCallbar();
 
     if (previousFocus instanceof HTMLElement) {
@@ -196,4 +232,43 @@ if (mediaLightbox && lightboxItems.length) {
       moveLightbox(1);
     }
   });
+}
+
+const dossierSections = Array.from(document.querySelectorAll("[data-dossier-section][id]"));
+const dossierNavLinks = Array.from(document.querySelectorAll("[data-dossier-nav-link]"));
+
+if (dossierSections.length && dossierNavLinks.length && "IntersectionObserver" in window) {
+  const visibleSections = new Map();
+
+  const setCurrentDossierSection = (sectionId) => {
+    dossierNavLinks.forEach((link) => {
+      if (!(link instanceof HTMLAnchorElement)) return;
+
+      if (link.hash === `#${sectionId}`) {
+        link.setAttribute("aria-current", "location");
+      } else {
+        link.removeAttribute("aria-current");
+      }
+    });
+  };
+
+  setCurrentDossierSection(dossierSections[0].id);
+
+  const dossierObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          visibleSections.set(entry.target.id, entry.boundingClientRect.top);
+        } else {
+          visibleSections.delete(entry.target.id);
+        }
+      });
+
+      const current = Array.from(visibleSections.entries()).sort((a, b) => Math.abs(a[1]) - Math.abs(b[1]))[0];
+      if (current) setCurrentDossierSection(current[0]);
+    },
+    { rootMargin: "-18% 0px -62% 0px", threshold: [0, 0.15, 0.5] },
+  );
+
+  dossierSections.forEach((section) => dossierObserver.observe(section));
 }

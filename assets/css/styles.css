@@ -2028,12 +2028,34 @@ a.proof-rail__item:focus-visible {
 }
 
 .media-lightbox__figure {
+  position: relative;
   display: grid;
   min-width: 0;
-  min-height: 0;
+  min-height: min(68vh, 720px);
   gap: 10px;
   margin: 0;
   place-items: center;
+}
+
+.media-lightbox__status {
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 12px 16px;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: var(--radius);
+  font-weight: 800;
+  text-align: center;
+}
+
+.media-lightbox__status[hidden] {
+  display: none;
 }
 
 .media-lightbox__figure img {
@@ -2045,6 +2067,13 @@ a.proof-rail__item:focus-visible {
   background: #ffffff;
   border-radius: var(--radius);
   box-shadow: 0 24px 80px rgba(0, 0, 0, 0.36);
+  opacity: 1;
+  transition: opacity 140ms var(--ease);
+}
+
+.media-lightbox.is-loading .media-lightbox__figure img,
+.media-lightbox.is-error .media-lightbox__figure img {
+  opacity: 0;
 }
 
 .media-lightbox__figure figcaption {
@@ -3310,6 +3339,10 @@ body.is-lightbox-open {
     grid-template-columns: 1fr;
   }
 
+  .media-lightbox__figure {
+    min-height: min(62vh, 520px);
+  }
+
   .media-lightbox__nav {
     position: fixed;
     top: 50%;
@@ -3327,6 +3360,10 @@ body.is-lightbox-open {
 
   .media-lightbox__figure img {
     max-height: calc(100vh - 190px);
+  }
+
+  .media-lightbox__figure figcaption {
+    display: none;
   }
 
   .home-context__inner {

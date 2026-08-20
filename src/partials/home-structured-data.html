@@ -4,20 +4,20 @@
   "@graph": [
     {
       "@type": "Organization",
-      "@id": "https://imperil03.github.io/remsd/#organization",
+      "@id": "{{siteUrl}}#organization",
       "name": "РемСД",
-      "url": "https://imperil03.github.io/remsd/",
-      "logo": "https://imperil03.github.io/remsd/assets/img/logo-remsd.png",
+      "url": "{{siteUrl}}",
+      "logo": "{{siteUrl}}assets/img/logo-remsd.png",
       "telephone": "+79224488822"
     },
     {
       "@type": ["LocalBusiness", "AutoRepair"],
-      "@id": "https://imperil03.github.io/remsd/#auto-repair",
+      "@id": "{{siteUrl}}#auto-repair",
       "name": "РемСД",
-      "url": "https://imperil03.github.io/remsd/",
+      "url": "{{siteUrl}}",
       "image": [
-        "https://imperil03.github.io/remsd/assets/img/hero-industrial-base-v3.webp",
-        "https://imperil03.github.io/remsd/assets/img/gallery/large/base-entrance.webp"
+        "{{siteUrl}}assets/img/hero-industrial-base-v3.webp",
+        "{{siteUrl}}assets/img/gallery/large/base-entrance.webp"
       ],
       "telephone": "+79224488822",
       "address": {
@@ -37,18 +37,18 @@
         }
       ],
       "parentOrganization": {
-        "@id": "https://imperil03.github.io/remsd/#organization"
+        "@id": "{{siteUrl}}#organization"
       }
     },
     {
       "@type": "BreadcrumbList",
-      "@id": "https://imperil03.github.io/remsd/#breadcrumb",
+      "@id": "{{siteUrl}}#breadcrumb",
       "itemListElement": [
         {
           "@type": "ListItem",
           "position": 1,
           "name": "Главная",
-          "item": "https://imperil03.github.io/remsd/"
+          "item": "{{siteUrl}}"
         }
       ]
     }
