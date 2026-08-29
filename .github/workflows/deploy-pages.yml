@@ -30,8 +30,29 @@ jobs:
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 
-      - name: Build site
-        run: node tools/build.js
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install browser runtime
+        run: npx playwright install --with-deps chromium
+
+      - name: Build indexable test version
+        env:
+          SITE_MODE: production
+          SITE_URL: http://127.0.0.1:4175/
+        run: npm run verify
+
+      - name: Verify browser scenarios
+        run: npm run test:browser
+
+      - name: Verify Lighthouse thresholds
+        run: npm run test:lighthouse
+
+      - name: Build and validate noindex preview
+        env:
+          SITE_MODE: preview
+          SITE_URL: https://imperil03.github.io/remsd/
+        run: npm run verify
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

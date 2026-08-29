@@ -1,10 +1,18 @@
 {
   "scripts": {
     "build": "node tools/build.js",
+    "check": "node tools/check-site.js && node tools/check-design-system.js",
+    "generate:critical": "node tools/generate-home-critical-css.js",
+    "test:browser": "node tools/verify-browser.js",
+    "test:lighthouse": "node tools/verify-lighthouse.js",
+    "verify": "npm run build && npm run check",
     "prepare:media": "node tools/prepare-media.js"
   },
   "devDependencies": {
+    "lighthouse": "^12.6.1",
+    "lightningcss": "^1.32.0",
     "playwright": "^1.60.0",
+    "postcss": "^8.5.17",
     "sharp": "^0.34.5"
   }
 }

@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const { transform: transformCss } = require("lightningcss");
 
 const root = path.resolve(__dirname, "..");
 const srcDir = path.join(root, "src");
@@ -9,9 +10,52 @@ const dataDir = path.join(srcDir, "data");
 const templatesDir = path.join(srcDir, "templates");
 const assetsDir = path.join(root, "assets");
 const distDir = path.join(root, "dist");
-const assetVersion = process.env.ASSET_VERSION || "20260820-internal-service";
-const defaultSiteUrl = "https://imperil03.github.io/remsd/";
-const siteUrl = new URL(process.env.SITE_URL || defaultSiteUrl).href;
+const assetVersion = process.env.ASSET_VERSION || "20260829-internal-system-v1";
+
+const PAGE_FAMILIES = new Set(["hub", "service", "brand"]);
+const SECTION_TYPES = new Set([
+  "introProof", "serviceGrid", "vehicleTypes", "brandStrip", "symptoms",
+  "workStages", "priceExamples", "relatedIndex", "faq",
+]);
+
+function fail(message) {
+  throw new Error(`[build] ${message}`);
+}
+
+function requireObject(value, label) {
+  if (!value || typeof value !== "object" || Array.isArray(value)) fail(`${label}: ожидается объект`);
+  return value;
+}
+
+function requireArray(value, label, { nonEmpty = false } = {}) {
+  if (!Array.isArray(value)) fail(`${label}: ожидается массив`);
+  if (nonEmpty && !value.length) fail(`${label}: массив не должен быть пустым`);
+  return value;
+}
+
+function requireText(value, label) {
+  if (typeof value !== "string" || !value.trim()) fail(`${label}: обязательная строка не заполнена`);
+  return value.trim();
+}
+
+function requireIsoDate(value, label) {
+  const date = requireText(value, label);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) fail(`${label}: ожидается дата YYYY-MM-DD`);
+  const parsed = new Date(`${date}T00:00:00.000Z`);
+  if (Number.isNaN(parsed.getTime()) || parsed.toISOString().slice(0, 10) !== date) {
+    fail(`${label}: несуществующая календарная дата ${date}`);
+  }
+  return date;
+}
+
+function readJson(file) {
+  if (!fs.existsSync(file)) fail(`не найден файл ${path.relative(root, file)}`);
+  try {
+    return JSON.parse(fs.readFileSync(file, "utf8"));
+  } catch (error) {
+    fail(`${path.relative(root, file)}: невалидный JSON (${error.message})`);
+  }
+}
 
 function cleanDir(dir) {
   fs.rmSync(dir, { recursive: true, force: true });
@@ -21,82 +65,79 @@ function cleanDir(dir) {
 function copyDir(from, to) {
   if (!fs.existsSync(from)) return;
   fs.mkdirSync(to, { recursive: true });
-
   for (const entry of fs.readdirSync(from, { withFileTypes: true })) {
     const source = path.join(from, entry.name);
     const target = path.join(to, entry.name);
+    if (entry.isDirectory()) copyDir(source, target);
+    else fs.copyFileSync(source, target);
+  }
+}
 
-    if (entry.isDirectory()) {
-      copyDir(source, target);
-    } else {
-      fs.copyFileSync(source, target);
+function minifyCssFiles(dir) {
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const file = path.join(dir, entry.name);
+    if (entry.isDirectory()) minifyCssFiles(file);
+    else if (entry.isFile() && entry.name.endsWith(".css")) {
+      const result = transformCss({ filename: file, code: fs.readFileSync(file), minify: true });
+      fs.writeFileSync(file, result.code);
     }
   }
 }
 
-function readPartials() {
-  const partials = {};
-
-  for (const file of fs.readdirSync(partialsDir)) {
-    if (!file.endsWith(".html")) continue;
-    const name = path.basename(file, ".html");
-    partials[name] = fs.readFileSync(path.join(partialsDir, file), "utf8");
+function createCssBundles(cssDir) {
+  const bundles = {
+    "base.css": ["design-system.css", "styles.css", "site-chrome.css"],
+    "home.css": ["design-system.css", "styles.css", "site-chrome.css", "styles-v3.css"],
+    "internal.css": ["design-system.css", "styles.css", "site-chrome.css", "internal-pages.css"],
+  };
+  for (const [target, sources] of Object.entries(bundles)) {
+    const css = sources.map((source) => fs.readFileSync(path.join(cssDir, source), "utf8")).join("\n");
+    fs.writeFileSync(path.join(cssDir, target), css, "utf8");
   }
-
-  return partials;
-}
-
-function readJson(file) {
-  if (!fs.existsSync(file)) return [];
-  return JSON.parse(fs.readFileSync(file, "utf8"));
-}
-
-function render(content, partials, context) {
-  let output = content;
-
-  for (let pass = 0; pass < 10; pass += 1) {
-    let next = output;
-
-    for (const [name, html] of Object.entries(partials)) {
-      next = next.replaceAll(`{{${name}}}`, html);
-    }
-
-    if (next === output) break;
-    output = next;
-  }
-
-  for (const [name, value] of Object.entries(context)) {
-    output = output.replaceAll(`{{${name}}}`, value);
-  }
-
-  return output;
+  return new Set(Object.values(bundles).flat());
 }
 
 function getHtmlFiles(dir) {
-  const files = [];
-
-  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+  if (!fs.existsSync(dir)) return [];
+  return fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
     const source = path.join(dir, entry.name);
+    if (entry.isDirectory()) return getHtmlFiles(source);
+    return entry.isFile() && entry.name.endsWith(".html") ? [source] : [];
+  });
+}
 
-    if (entry.isDirectory()) {
-      files.push(...getHtmlFiles(source));
-    } else if (entry.isFile() && entry.name.endsWith(".html")) {
-      files.push(source);
-    }
+function normalizeRoute(value, label, { allowEmpty = false } = {}) {
+  if (typeof value !== "string") fail(`${label}: маршрут должен быть строкой`);
+  if (/[?#]/.test(value)) fail(`${label}: query и fragment не входят в маршрут`);
+  const route = value.replace(/\\/g, "/").replace(/^\/+|\/+$/g, "");
+  if (!route) {
+    if (allowEmpty) return "";
+    fail(`${label}: пустой маршрут`);
   }
+  if (route.split("/").some((part) => !/^[a-z0-9-]+$/.test(part))) fail(`${label}: недопустимый маршрут «${value}»`);
+  return route;
+}
 
-  return files;
+function routeFromSource(file) {
+  const relative = path.relative(pagesDir, file).split(path.sep).join("/");
+  if (relative === "index.html") return "";
+  if (relative.endsWith("/index.html")) return normalizeRoute(relative.slice(0, -"/index.html".length), relative);
+  return normalizeRoute(relative.replace(/\.html$/, ""), relative);
+}
+
+function outputFileForRoute(route) {
+  if (route === "") return path.join(distDir, "index.html");
+  if (route === "404") return path.join(distDir, "404.html");
+  return path.join(distDir, ...route.split("/"), "index.html");
 }
 
 function getRootPath(relativeFile) {
   const dir = path.dirname(relativeFile);
   if (dir === ".") return "./";
-  const depth = dir.split(path.sep).filter(Boolean).length;
-  if (depth === 0) return "./";
-  return "../".repeat(depth);
+  return "../".repeat(dir.split(path.sep).filter(Boolean).length);
 }
 
-function escapeHtml(value = "") {
+function escapeHtml(value) {
   return String(value)
     .replaceAll("&", "&amp;")
     .replaceAll("<", "&lt;")
@@ -105,407 +146,582 @@ function escapeHtml(value = "") {
     .replaceAll("'", "&#39;");
 }
 
-function relativeHref(rootPath, href = "") {
-  if (/^(?:https?:|tel:|mailto:)/.test(href)) return escapeHtml(href);
-  return `${rootPath}${escapeHtml(href)}`;
-}
-
-function absoluteUrl(href = "") {
-  return new URL(String(href).replace(/^\/+/, ""), siteUrl).href;
-}
-
-function pageAbsoluteUrl(pagePath) {
-  return absoluteUrl(`${String(pagePath).replace(/^\/+|\/+$/g, "")}/`);
-}
-
-function buildPages() {
-  const partials = readPartials();
-
-  for (const source of getHtmlFiles(pagesDir)) {
-    const relativeFile = path.relative(pagesDir, source);
-    const target = path.join(distDir, relativeFile);
-    const html = fs.readFileSync(source, "utf8");
-    const context = {
-      rootPath: getRootPath(relativeFile),
-      assetVersion,
-      siteUrl: escapeHtml(siteUrl),
-    };
-
-    fs.mkdirSync(path.dirname(target), { recursive: true });
-    fs.writeFileSync(target, render(html, partials, context), "utf8");
+function validateNoHtml(value, label) {
+  if (typeof value === "string" && /[<>]/.test(value)) fail(`${label}: HTML в контентных JSON запрещён`);
+  if (Array.isArray(value)) value.forEach((item, index) => validateNoHtml(item, `${label}[${index}]`));
+  else if (value && typeof value === "object") {
+    Object.entries(value).forEach(([key, item]) => validateNoHtml(item, `${label}.${key}`));
   }
 }
 
-function renderList(items, rootPath = "") {
-  return items
-    .map((item) => {
-      if (typeof item === "string") return `          <li>${escapeHtml(item)}</li>`;
-
-      const suffix = item.text ? ` ${escapeHtml(item.text)}` : "";
-      return `          <li><a href="${relativeHref(rootPath, item.href)}">${escapeHtml(item.label)}</a>${suffix}</li>`;
-    })
-    .join("\n");
-}
-
-function renderBrands(items) {
-  return items.map((item) => `          <span>${escapeHtml(item)}</span>`).join("\n");
-}
-
-function renderRelated(items, rootPath) {
-  return items
-    .map((item) => `        <a href="${relativeHref(rootPath, item.href)}">${escapeHtml(item.label)}</a>`)
-    .join("\n");
-}
-
-function renderParagraph(paragraph) {
-  if (typeof paragraph === "string") return `          <p>${escapeHtml(paragraph)}</p>`;
-
-  if (paragraph && paragraph.prefix && paragraph.strong) {
-    return `          <p>${escapeHtml(paragraph.prefix)} <strong>${escapeHtml(paragraph.strong)}</strong>.</p>`;
+function validateAsset(asset, label) {
+  const normalized = requireText(asset, label).replace(/\\/g, "/").replace(/^\/+/, "");
+  if (!normalized.startsWith("assets/")) fail(`${label}: путь должен начинаться с assets/`);
+  const absolute = path.resolve(root, normalized);
+  if (!absolute.startsWith(path.resolve(assetsDir) + path.sep) || !fs.existsSync(absolute)) {
+    fail(`${label}: файл не найден (${normalized})`);
   }
-
-  throw new Error("Unsupported paragraph shape in internal-service page");
 }
 
-function renderParagraphs(paragraphs = []) {
-  return paragraphs.map(renderParagraph).join("\n");
+function readPartials(homeStructuredData) {
+  const partials = {};
+  for (const file of fs.readdirSync(partialsDir)) {
+    if (!file.endsWith(".html")) continue;
+    partials[path.basename(file, ".html")] = fs.readFileSync(path.join(partialsDir, file), "utf8");
+  }
+  partials["home-structured-data"] = homeStructuredData;
+  return partials;
 }
 
-function renderBreadcrumbs(items, rootPath) {
-  return items
-    .map((item, index) => {
-      const separator = index === 0 ? "" : '        <span aria-hidden="true">/</span>\n';
-      if (item.href === undefined) {
-        return `${separator}        <span aria-current="page">${escapeHtml(item.label)}</span>`;
-      }
-
-      return `${separator}        <a href="${relativeHref(rootPath, item.href)}">${escapeHtml(item.label)}</a>`;
-    })
-    .join("\n");
+function render(content, partials, context) {
+  let output = content;
+  for (let pass = 0; pass < 12; pass += 1) {
+    let next = output;
+    for (const [name, html] of Object.entries(partials)) next = next.replaceAll(`{{${name}}}`, html);
+    if (next === output) break;
+    output = next;
+  }
+  for (const [name, value] of Object.entries(context)) output = output.replaceAll(`{{${name}}}`, String(value));
+  return output;
 }
 
-function renderTocLinks(items) {
-  return items
-    .map((item) => `          <a href="#${escapeHtml(item.id)}" data-dossier-nav-link>${escapeHtml(item.label)}</a>`)
-    .join("\n");
+function assertNoPlaceholders(html, label) {
+  const unresolved = html.match(/{{[^}]+}}/g);
+  if (unresolved) fail(`${label}: остались placeholder ${[...new Set(unresolved)].join(", ")}`);
 }
 
-function renderProseSection(section) {
-  return `
-        <section class="dossier-section dossier-section--prose" id="${escapeHtml(section.id)}" data-dossier-section>
-          <h2>${escapeHtml(section.title)}</h2>
-${renderParagraphs(section.paragraphs)}
-        </section>`;
+function toAbsoluteUrl(baseUrl, route, { file = false } = {}) {
+  if (!route) return baseUrl;
+  return new URL(file ? route : `${route.replace(/\/+$/, "")}/`, baseUrl).toString();
 }
 
-function renderServiceMap(section, rootPath) {
-  const items = section.items
-    .map((item, index) => {
-      const title = item.href
-        ? `<a href="${relativeHref(rootPath, item.href)}">${escapeHtml(item.title)}</a>`
-        : escapeHtml(item.title);
-
-      return `
-          <article class="dossier-lane">
-            <span class="dossier-lane__number" aria-hidden="true">${String(index + 1).padStart(2, "0")}</span>
-            <div class="dossier-lane__content">
-              <h3>${title}</h3>
-${renderParagraphs(item.paragraphs)}
-            </div>
-          </article>`;
-    })
-    .join("");
-
-  return `
-        <section class="dossier-section dossier-section--service-map" id="${escapeHtml(section.id)}" data-dossier-section>
-          <h2>${escapeHtml(section.title)}</h2>
-          <div class="dossier-service-map">
-${items}
-          </div>
-        </section>`;
+function assetUrl(baseUrl, asset) {
+  return new URL(asset.replace(/^\/+/, ""), baseUrl).toString();
 }
 
-function renderDiagnostics(section) {
-  return `
-        <section class="dossier-section dossier-section--diagnostics" id="${escapeHtml(section.id)}" data-dossier-section>
-          <h2>${escapeHtml(section.title)}</h2>
-          <div class="dossier-diagnostics__text">
-${renderParagraphs(section.paragraphs)}
-          </div>
-        </section>`;
+function jsonLdScript(data) {
+  return `<script type="application/ld+json">\n${JSON.stringify(data, null, 2).replaceAll("<", "\\u003c")}\n</script>`;
 }
 
-function renderBrandSection(section, rootPath) {
-  const official = section.official
-    .map((item) => `
-            <a class="dossier-official-brand" href="${relativeHref(rootPath, item.href)}">
-              <span class="dossier-official-brand__logo"><img src="${relativeHref(rootPath, item.logo)}" alt="" width="${Number(item.width)}" height="${Number(item.height)}" loading="lazy" decoding="async"></span>
-              <span>${escapeHtml(item.name)}</span>
-            </a>`)
-    .join("");
-
-  const others = section.others
-    .map((item) => `
-            <li>
-              <img src="${relativeHref(rootPath, item.logo)}" alt="" width="220" height="120" loading="lazy" decoding="async">
-              <span>${escapeHtml(item.name)}</span>
-            </li>`)
-    .join("");
-
-  return `
-        <section class="dossier-section dossier-section--brands" id="${escapeHtml(section.id)}" data-dossier-section>
-          <h2>${escapeHtml(section.title)}</h2>
-          <p>${escapeHtml(section.intro)}</p>
-          <p class="dossier-brands__official-line"><strong>${escapeHtml(section.officialPrefix)}</strong> ${escapeHtml(section.officialText)}</p>
-          <div class="dossier-official-brands" aria-label="Официальный сервис по маркам">
-${official}
-          </div>
-          <p>${escapeHtml(section.otherText)}</p>
-          <ul class="dossier-brand-register" aria-label="Другие марки грузовых автомобилей">
-${others}
-          </ul>
-          <p class="dossier-note">${escapeHtml(section.note)}</p>
-        </section>`;
+function openingHoursNode(site) {
+  return {
+    "@type": "OpeningHoursSpecification",
+    dayOfWeek: site.openingHours.days,
+    opens: site.openingHours.opens,
+    closes: site.openingHours.closes,
+  };
 }
 
-function renderTimeline(section) {
-  const items = section.items
-    .map((item, index) => `
-          <article class="dossier-timeline__step">
-            <span class="dossier-timeline__number" aria-hidden="true">${String(index + 1).padStart(2, "0")}</span>
-            <div>
-              <h3>${escapeHtml(item.title)}</h3>
-              <p>${escapeHtml(item.text)}</p>
-            </div>
-          </article>`)
-    .join("");
-
-  return `
-        <section class="dossier-section dossier-section--timeline" id="${escapeHtml(section.id)}" data-dossier-section>
-          <h2>${escapeHtml(section.title)}</h2>
-          <div class="dossier-timeline">
-${items}
-          </div>
-        </section>`;
+function localBusinessNode(config, baseUrl) {
+  const site = config.site;
+  return {
+    "@type": ["LocalBusiness", "AutoRepair"],
+    "@id": `${baseUrl}#auto-repair`,
+    name: site.name,
+    url: baseUrl,
+    image: [assetUrl(baseUrl, site.defaultSocialImage)],
+    telephone: site.phoneHref.replace("tel:", ""),
+    email: site.email,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: site.address.street,
+      addressLocality: site.address.locality,
+      addressRegion: site.address.region,
+      addressCountry: site.address.country,
+    },
+    areaServed: site.areaServed.map((name, index) => ({
+      "@type": index === 0 ? "City" : "AdministrativeArea",
+      name,
+    })),
+    openingHoursSpecification: [openingHoursNode(site)],
+    parentOrganization: { "@id": `${baseUrl}#organization` },
+  };
 }
 
-function renderSplitProse(section) {
-  const items = section.items
-    .map((item) => `
-          <article class="dossier-operational" id="${escapeHtml(item.id)}" data-dossier-section>
-            <h2>${escapeHtml(item.title)}</h2>
-${renderParagraphs(item.paragraphs)}
-          </article>`)
-    .join("");
-
-  return `
-        <div class="dossier-operational-grid">
-${items}
-        </div>`;
-}
-
-function renderGallery(section, rootPath) {
-  const images = section.images
-    .map((item) => `
-            <button class="dossier-gallery__item" type="button" data-lightbox-item data-lightbox-group="truck-service-base" data-large-src="${relativeHref(rootPath, item.large)}" data-caption="${escapeHtml(item.caption)}">
-              <img src="${relativeHref(rootPath, item.thumb)}" alt="${escapeHtml(item.alt)}" width="${Number(item.width)}" height="${Number(item.height)}" loading="lazy" decoding="async">
-              <span>${escapeHtml(item.caption)}</span>
-            </button>`)
-    .join("");
-
-  return `
-        <section class="dossier-section dossier-section--base" id="${escapeHtml(section.id)}" data-dossier-section>
-          <div class="dossier-base__copy">
-            <h2>${escapeHtml(section.title)}</h2>
-${renderParagraphs(section.paragraphs)}
-          </div>
-          <div class="dossier-gallery" aria-label="Фотографии ремонтной базы РемСД">
-${images}
-          </div>
-        </section>`;
-}
-
-function renderFaq(section) {
-  const items = section.items
-    .map((item, index) => `
-          <details class="dossier-faq__item"${index === 0 ? " open" : ""}>
-            <summary>${escapeHtml(item.question)}</summary>
-            <div><p>${escapeHtml(item.answer)}</p></div>
-          </details>`)
-    .join("");
-
-  return `
-        <section class="dossier-section dossier-section--faq" id="${escapeHtml(section.id)}" data-dossier-section>
-          <h2>${escapeHtml(section.title)}</h2>
-          <div class="dossier-faq">
-${items}
-          </div>
-        </section>`;
-}
-
-function renderInternalSections(sections, rootPath) {
-  return sections
-    .map((section) => {
-      switch (section.type) {
-        case "prose": return renderProseSection(section);
-        case "service-map": return renderServiceMap(section, rootPath);
-        case "diagnostics": return renderDiagnostics(section);
-        case "brands": return renderBrandSection(section, rootPath);
-        case "timeline": return renderTimeline(section);
-        case "split-prose": return renderSplitProse(section);
-        case "gallery": return renderGallery(section, rootPath);
-        case "faq": return renderFaq(section);
-        default: throw new Error(`Unknown internal-service section type: ${section.type}`);
-      }
-    })
-    .join("\n");
-}
-
-function renderFinalCta(cta) {
-  return `
-      <section class="dossier-final" id="${escapeHtml(cta.id)}" aria-labelledby="dossier-final-title">
-        <div class="container dossier-final__inner">
-          <div class="dossier-final__copy">
-            <h2 id="dossier-final-title">${escapeHtml(cta.title)}</h2>
-            <p>${escapeHtml(cta.text)}</p>
-          </div>
-          <div class="dossier-final__contact">
-            <a class="dossier-button dossier-button--primary" href="tel:${escapeHtml(cta.phoneHref)}">${escapeHtml(cta.buttonLabel)}</a>
-            <a class="dossier-final__phone" href="tel:${escapeHtml(cta.phoneHref)}">${escapeHtml(cta.phone)}</a>
-            <p>${escapeHtml(cta.address)}</p>
-          </div>
-        </div>
-      </section>`;
-}
-
-function renderStructuredData(page, canonicalUrl) {
-  const breadcrumbId = `${canonicalUrl}#breadcrumb`;
-  const webpageId = `${canonicalUrl}#webpage`;
-  const serviceId = `${canonicalUrl}#service`;
-  const imageUrl = absoluteUrl(page.seo.social.image);
-  const graph = {
+function buildHomeStructuredData(config, baseUrl) {
+  const site = config.site;
+  return jsonLdScript({
     "@context": "https://schema.org",
     "@graph": [
       {
-        "@type": "WebPage",
-        "@id": webpageId,
-        url: canonicalUrl,
-        name: page.seo.title,
-        description: page.seo.description,
-        inLanguage: "ru-RU",
-        image: imageUrl,
-        breadcrumb: { "@id": breadcrumbId },
-        mainEntity: { "@id": serviceId },
+        "@type": "Organization",
+        "@id": `${baseUrl}#organization`,
+        name: site.name,
+        url: baseUrl,
+        logo: assetUrl(baseUrl, site.logo),
+        telephone: site.phoneHref.replace("tel:", ""),
+        email: site.email,
+      },
+      localBusinessNode(config, baseUrl),
+    ],
+  });
+}
+
+function buildInternalStructuredData(page, config, baseUrl) {
+  const url = toAbsoluteUrl(baseUrl, page.path);
+  const breadcrumbs = page.breadcrumbs.map((crumb, index) => ({
+    "@type": "ListItem",
+    position: index + 1,
+    name: crumb.label,
+    item: crumb.href === undefined ? url : toAbsoluteUrl(baseUrl, normalizeRoute(crumb.href, `${page.path}.breadcrumbs`, { allowEmpty: true })),
+  }));
+  return jsonLdScript({
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${url}#breadcrumb`,
+        itemListElement: breadcrumbs,
       },
       {
         "@type": "Service",
-        "@id": serviceId,
+        "@id": `${url}#service`,
         name: page.hero.h1,
         serviceType: "Ремонт грузовых автомобилей",
-        description: page.seo.description,
-        url: canonicalUrl,
-        provider: { "@id": `${siteUrl}#auto-repair` },
-        areaServed: { "@type": "City", name: "Сургут" },
-        mainEntityOfPage: { "@id": webpageId },
+        description: page.metadata.description,
+        url,
+        provider: { "@id": `${baseUrl}#auto-repair` },
+        areaServed: { "@type": "City", name: config.site.address.locality },
+        availableChannel: {
+          "@type": "ServiceChannel",
+          servicePhone: {
+            "@type": "ContactPoint",
+            telephone: config.site.phoneHref.replace("tel:", ""),
+            contactType: "service",
+          },
+        },
       },
-      {
-        "@type": "BreadcrumbList",
-        "@id": breadcrumbId,
-        itemListElement: page.breadcrumbs.map((item, index) => ({
-          "@type": "ListItem",
-          position: index + 1,
-          name: item.label,
-          item: item.href === undefined ? canonicalUrl : absoluteUrl(item.href),
-        })),
-      },
+      localBusinessNode(config, baseUrl),
     ],
-  };
-
-  return JSON.stringify(graph, null, 2).replaceAll("<", "\\u003c");
+  });
 }
 
-function buildInternalServiceContext(page, rootPath) {
-  const canonicalUrl = absoluteUrl(page.seo.canonicalPath || `${page.path}/`);
-  const tocLinks = renderTocLinks(page.toc);
-
-  return {
-    rootPath,
-    assetVersion,
-    title: escapeHtml(page.seo.title),
-    description: escapeHtml(page.seo.description),
-    canonicalUrl: escapeHtml(canonicalUrl),
-    socialTitle: escapeHtml(page.seo.social.title),
-    socialDescription: escapeHtml(page.seo.social.description),
-    ogImage: escapeHtml(absoluteUrl(page.seo.social.image)),
-    ogImageAlt: escapeHtml(page.seo.social.imageAlt),
-    heroImageSrc: relativeHref(rootPath, page.hero.image.src),
-    heroImageAlt: escapeHtml(page.hero.image.alt),
-    heroImageWidth: String(Number(page.hero.image.width)),
-    heroImageHeight: String(Number(page.hero.image.height)),
-    heroImageCaption: escapeHtml(page.hero.image.caption),
-    breadcrumbs: renderBreadcrumbs(page.breadcrumbs, rootPath),
-    h1: escapeHtml(page.hero.h1),
-    lead: escapeHtml(page.hero.lead),
-    heroCtaLabel: escapeHtml(page.hero.ctaLabel),
-    tocDesktop: tocLinks,
-    tocMobile: tocLinks,
-    sections: renderInternalSections(page.sections, rootPath),
-    finalCta: renderFinalCta(page.finalCta),
-    structuredData: renderStructuredData(page, canonicalUrl),
-  };
+function metadataBlock({ title, description, socialImage }, route, rootPath, config, mode, baseUrl) {
+  const pageUrl = route === "404" ? toAbsoluteUrl(baseUrl, "404.html", { file: true }) : toAbsoluteUrl(baseUrl, route);
+  const imageUrl = assetUrl(baseUrl, socialImage || config.site.defaultSocialImage);
+  const robots = mode === "preview" ? "noindex,nofollow,noarchive" : "index,follow,max-image-preview:large";
+  const canonical = mode === "production" ? `\n    <link rel="canonical" href="${escapeHtml(pageUrl)}">` : "";
+  return `    <link rel="icon" type="image/png" href="${rootPath}assets/img/favicon.png">
+    <link rel="apple-touch-icon" href="${rootPath}assets/img/apple-touch-icon.png">
+    <meta name="robots" content="${robots}">${canonical}
+    <meta property="og:locale" content="ru_RU">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="${escapeHtml(config.site.name)}">
+    <meta property="og:title" content="${escapeHtml(title)}">
+    <meta property="og:description" content="${escapeHtml(description)}">
+    <meta property="og:url" content="${escapeHtml(pageUrl)}">
+    <meta property="og:image" content="${escapeHtml(imageUrl)}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="${escapeHtml(title)}">
+    <meta name="twitter:description" content="${escapeHtml(description)}">
+    <meta name="twitter:image" content="${escapeHtml(imageUrl)}">`;
 }
 
-function buildSeoPages() {
-  const partials = readPartials();
-  const pages = readJson(path.join(dataDir, "seo-pages.json"));
-  if (!pages.length) return;
+function enrichHead(html, metadata, route, rootPath, config, mode, baseUrl, structuredData = "") {
+  if (!html.includes("</head>")) fail(`${route || "/"}: отсутствует </head>`);
+  const additions = `${metadataBlock(metadata, route, rootPath, config, mode, baseUrl)}${structuredData ? `\n    ${structuredData}` : ""}`;
+  return html.replace("  </head>", `${additions}\n  </head>`);
+}
 
-  const templates = {
-    default: fs.readFileSync(path.join(templatesDir, "seo-page.html"), "utf8"),
-    "internal-service": fs.readFileSync(path.join(templatesDir, "internal-service-page.html"), "utf8"),
-  };
+function extractMetadata(html, label, config) {
+  const title = html.match(/<title>([\s\S]*?)<\/title>/i)?.[1].trim();
+  const description = html.match(/<meta\s+name=["']description["']\s+content=["']([^"']+)["']/i)?.[1].trim();
+  if (!title || !description) fail(`${label}: нужны title и meta description`);
+  return { title, description, socialImage: config.site.defaultSocialImage };
+}
 
-  for (const page of pages) {
-    const target = path.join(distDir, page.path, "index.html");
-    if (fs.existsSync(target)) continue;
+function validateConfig(config) {
+  requireObject(config, "site-config.json");
+  if (config.schemaVersion !== 1) fail("site-config.json: поддерживается schemaVersion 1");
+  requireObject(config.modes, "site-config.modes");
+  for (const mode of ["preview", "production"]) {
+    const baseUrl = requireText(config.modes[mode]?.baseUrl, `site-config.modes.${mode}.baseUrl`);
+    try {
+      if (!/^https?:$/.test(new URL(baseUrl).protocol) || !baseUrl.endsWith("/")) fail(`${mode}.baseUrl: нужен HTTP(S) URL со слешем`);
+    } catch (error) {
+      fail(`${mode}.baseUrl: невалидный URL`);
+    }
+  }
+  const site = requireObject(config.site, "site-config.site");
+  ["name", "phone", "phoneHref", "email", "mapUrl", "timeZone", "defaultSocialImage", "logo"].forEach((key) => requireText(site[key], `site.${key}`));
+  requireObject(site.address, "site.address");
+  ["street", "locality", "region", "country"].forEach((key) => requireText(site.address[key], `site.address.${key}`));
+  requireArray(site.areaServed, "site.areaServed", { nonEmpty: true });
+  requireObject(site.primaryCta, "site.primaryCta");
+  ["label", "shortLabel", "href"].forEach((key) => requireText(site.primaryCta[key], `site.primaryCta.${key}`));
+  const hours = requireObject(site.openingHours, "site.openingHours");
+  requireArray(hours.days, "site.openingHours.days", { nonEmpty: true }).forEach((day, index) => requireText(day, `site.openingHours.days[${index}]`));
+  ["opens", "closes", "label"].forEach((key) => requireText(hours[key], `site.openingHours.${key}`));
+  validateAsset(site.defaultSocialImage, "site.defaultSocialImage");
+  validateAsset(site.logo, "site.logo");
+  requireArray(config.claims, "site-config.claims").forEach((claim, index) => {
+    requireObject(claim, `claims[${index}]`);
+    ["id", "text", "scope", "source"].forEach((key) => requireText(claim[key], `claims[${index}].${key}`));
+    if (claim.status !== "owner_approved") fail(`claims[${index}].status: допускается owner_approved`);
+    if (claim.validThrough !== undefined) requireIsoDate(claim.validThrough, `claims[${index}].validThrough`);
+  });
+}
 
-    const relativeFile = path.relative(distDir, target);
-    const rootPath = getRootPath(relativeFile);
-    const templateKey = page.template || "default";
-    const template = templates[templateKey];
-    if (!template) throw new Error(`Unknown SEO page template: ${templateKey}`);
-
-    const context = templateKey === "internal-service"
-      ? buildInternalServiceContext(page, rootPath)
-      : {
-        rootPath,
-        assetVersion,
-        title: escapeHtml(page.title),
-        description: escapeHtml(page.description),
-        breadcrumbLabel: escapeHtml(page.breadcrumbLabel || "Ремонт"),
-        breadcrumbHref: escapeHtml(page.breadcrumbHref || "remont/"),
-        kicker: escapeHtml(page.kicker),
-        h1: escapeHtml(page.h1),
-        lead: escapeHtml(page.lead),
-        worksTitle: escapeHtml(page.worksTitle),
-        works: renderList(page.works, rootPath),
-        techTitle: escapeHtml(page.techTitle),
-        techText: escapeHtml(page.techText),
-        brands: renderBrands(page.brands),
-        processTitle: escapeHtml(page.processTitle),
-        process: renderList(page.process, rootPath),
-        ctaTitle: escapeHtml(page.ctaTitle),
-        ctaText: escapeHtml(page.ctaText),
-        related: renderRelated(page.related, rootPath),
-      };
-
-    fs.mkdirSync(path.dirname(target), { recursive: true });
-    fs.writeFileSync(target, render(template, partials, context), "utf8");
+function validateClaimExpiry(claims, mode, timeZone) {
+  if (mode !== "production") return;
+  const parts = new Intl.DateTimeFormat("en-US", { timeZone, year: "numeric", month: "2-digit", day: "2-digit" }).formatToParts(new Date());
+  const values = Object.fromEntries(parts.map((part) => [part.type, part.value]));
+  const asOf = process.env.CLAIMS_AS_OF || `${values.year}-${values.month}-${values.day}`;
+  requireIsoDate(asOf, "CLAIMS_AS_OF");
+  for (const claim of claims) {
+    if (claim.validThrough !== undefined && claim.validThrough < asOf) {
+      fail(`claim ${claim.id}: срок validThrough ${claim.validThrough} истёк; production-сборка остановлена`);
+    }
   }
 }
 
-cleanDir(distDir);
-copyDir(assetsDir, path.join(distDir, "assets"));
-buildPages();
-buildSeoPages();
-console.log("Built dist/");
+function validateSection(section, label) {
+  requireObject(section, label);
+  requireText(section.id, `${label}.id`);
+  const type = requireText(section.type, `${label}.type`);
+  if (!SECTION_TYPES.has(type)) fail(`${label}.type: неизвестный тип ${type}`);
+  requireText(section.title, `${label}.title`);
+  if (section.intro !== undefined) requireText(section.intro, `${label}.intro`);
+
+  if (type === "introProof") {
+    requireArray(section.bullets, `${label}.bullets`, { nonEmpty: true }).forEach((item, index) => requireText(item, `${label}.bullets[${index}]`));
+    requireText(section.statement, `${label}.statement`);
+    validateAsset(section.image, `${label}.image`);
+    requireText(section.imageAlt, `${label}.imageAlt`);
+    requireArray(section.stats, `${label}.stats`, { nonEmpty: true }).forEach((item, index) => {
+      requireText(item.value, `${label}.stats[${index}].value`);
+      requireText(item.label, `${label}.stats[${index}].label`);
+    });
+  } else if (["serviceGrid", "workStages"].includes(type)) {
+    requireArray(section.items, `${label}.items`, { nonEmpty: true }).forEach((item, index) => {
+      requireText(item.title, `${label}.items[${index}].title`);
+      requireText(item.text, `${label}.items[${index}].text`);
+      if (type === "serviceGrid") requireText(item.icon, `${label}.items[${index}].icon`);
+    });
+  } else if (type === "vehicleTypes") {
+    requireArray(section.items, `${label}.items`, { nonEmpty: true }).forEach((item, index) => {
+      requireText(item.title, `${label}.items[${index}].title`);
+      requireText(item.text, `${label}.items[${index}].text`);
+      validateAsset(item.image, `${label}.items[${index}].image`);
+      requireText(item.alt, `${label}.items[${index}].alt`);
+    });
+  } else if (type === "brandStrip") {
+    requireArray(section.items, `${label}.items`, { nonEmpty: true }).forEach((item, index) => {
+      requireText(item.name, `${label}.items[${index}].name`);
+      validateAsset(item.image, `${label}.items[${index}].image`);
+    });
+  } else if (["symptoms", "relatedIndex"].includes(type)) {
+    requireArray(section.items, `${label}.items`, { nonEmpty: true }).forEach((item, index) => requireText(item, `${label}.items[${index}]`));
+  } else if (type === "priceExamples") {
+    requireArray(section.items, `${label}.items`, { nonEmpty: true }).forEach((item, index) => {
+      requireText(item.service, `${label}.items[${index}].service`);
+      requireText(item.price, `${label}.items[${index}].price`);
+    });
+    const metadata = requireObject(section.metadata, `${label}.metadata`);
+    requireIsoDate(metadata.validFrom, `${label}.metadata.validFrom`);
+    ["unit", "vat", "partsAndMaterials", "source"].forEach((key) => requireText(metadata[key], `${label}.metadata.${key}`));
+    requireText(section.note, `${label}.note`);
+  } else if (type === "faq") {
+    requireArray(section.items, `${label}.items`, { nonEmpty: true }).forEach((item, index) => {
+      requireText(item.question, `${label}.items[${index}].question`);
+      requireText(item.answer, `${label}.items[${index}].answer`);
+    });
+  }
+}
+
+function validateInternalPages(data) {
+  requireObject(data, "internal-pages.json");
+  if (data.schemaVersion !== 2) fail("internal-pages.json: поддерживается schemaVersion 2");
+  const pages = requireArray(data.pages, "internal-pages.pages", { nonEmpty: true });
+  const paths = new Set();
+  const titles = new Set();
+  pages.forEach((page, index) => {
+    const label = `internal-pages.pages[${index}]`;
+    requireObject(page, label);
+    page.path = normalizeRoute(page.path, `${label}.path`);
+    if (paths.has(page.path)) fail(`${label}.path: маршрут дублируется`);
+    paths.add(page.path);
+    if (!PAGE_FAMILIES.has(page.family)) fail(`${label}.family: ожидается hub, service или brand`);
+    const metadata = requireObject(page.metadata, `${label}.metadata`);
+    ["title", "description"].forEach((key) => requireText(metadata[key], `${label}.metadata.${key}`));
+    if (titles.has(metadata.title)) fail(`${label}.metadata.title: title должен быть уникальным`);
+    titles.add(metadata.title);
+    validateAsset(metadata.socialImage, `${label}.metadata.socialImage`);
+    requireArray(page.breadcrumbs, `${label}.breadcrumbs`, { nonEmpty: true }).forEach((crumb, crumbIndex) => {
+      requireText(crumb.label, `${label}.breadcrumbs[${crumbIndex}].label`);
+      if (crumb.href !== undefined) normalizeRoute(crumb.href, `${label}.breadcrumbs[${crumbIndex}].href`, { allowEmpty: true });
+    });
+    const hero = requireObject(page.hero, `${label}.hero`);
+    ["h1", "lead", "ctaLabel"].forEach((key) => requireText(hero[key], `${label}.hero.${key}`));
+    if (hero.accent !== undefined) requireText(hero.accent, `${label}.hero.accent`);
+    validateAsset(hero.image, `${label}.hero.image`);
+    validateAsset(hero.mobileImage, `${label}.hero.mobileImage`);
+    requireArray(hero.facts, `${label}.hero.facts`, { nonEmpty: true }).forEach((fact, factIndex) => {
+      requireText(fact.label, `${label}.hero.facts[${factIndex}].label`);
+      requireText(fact.value, `${label}.hero.facts[${factIndex}].value`);
+    });
+    const sectionIds = new Set();
+    requireArray(page.sections, `${label}.sections`, { nonEmpty: true }).forEach((section, sectionIndex) => {
+      validateSection(section, `${label}.sections[${sectionIndex}]`);
+      if (sectionIds.has(section.id)) fail(`${label}.sections: дублируется id ${section.id}`);
+      sectionIds.add(section.id);
+    });
+  });
+  validateNoHtml(data, "internal-pages.json");
+  return pages;
+}
+
+function renderBreadcrumbs(page, rootPath) {
+  const items = page.breadcrumbs.map((crumb, index) => {
+    const last = index === page.breadcrumbs.length - 1;
+    if (last || crumb.href === undefined) return `              <li aria-current="page">${escapeHtml(crumb.label)}</li>`;
+    const href = crumb.href === "" ? rootPath : `${rootPath}${crumb.href.replace(/^\/+|\/+$/g, "")}/`;
+    return `              <li><a href="${escapeHtml(href)}">${escapeHtml(crumb.label)}</a></li>`;
+  }).join("\n");
+  return `            <nav class="internal-breadcrumbs" aria-label="Хлебные крошки">\n              <ol>\n${items}\n              </ol>\n            </nav>`;
+}
+
+function renderHeroTitle(hero) {
+  const title = requireText(hero.h1, "hero.h1");
+  if (!hero.accent || !title.endsWith(hero.accent)) return escapeHtml(title);
+  const base = title.slice(0, -hero.accent.length).trim();
+  return `${escapeHtml(base)} <span>${escapeHtml(hero.accent)}</span>`;
+}
+
+function renderHeroFacts(hero) {
+  return hero.facts.map((fact) => `            <div><dt>${escapeHtml(fact.label)}</dt><dd>${escapeHtml(fact.value)}</dd></div>`).join("\n");
+}
+
+function renderSectionHead(section, { centered = false } = {}) {
+  const intro = section.intro ? `<p>${escapeHtml(section.intro)}</p>` : "";
+  return `        <header class="internal-section__head${centered ? " internal-section__head--center" : ""}">
+          <h2 id="${escapeHtml(section.id)}-title">${escapeHtml(section.title)}</h2>
+          ${intro}
+        </header>`;
+}
+
+function renderIntroProof(section, rootPath) {
+  const bullets = section.bullets.map((item) => `<li>${escapeHtml(item)}</li>`).join("");
+  const stats = section.stats.map((item) => `<div><dt>${escapeHtml(item.label)}</dt><dd>${escapeHtml(item.value)}</dd></div>`).join("");
+  return `<section class="internal-section internal-section--introProof" id="${escapeHtml(section.id)}" aria-labelledby="${escapeHtml(section.id)}-title">
+  <div class="container internal-intro">
+    <div class="internal-intro__copy">
+      <h2 id="${escapeHtml(section.id)}-title">${escapeHtml(section.title)}</h2>
+      <p class="internal-intro__lead">${escapeHtml(section.intro)}</p>
+      <ul class="internal-intro__list">${bullets}</ul>
+      <p class="internal-intro__statement">${escapeHtml(section.statement)}</p>
+    </div>
+    <figure class="internal-intro__media"><img src="${rootPath}${escapeHtml(section.image)}" alt="${escapeHtml(section.imageAlt)}" loading="eager" decoding="async"></figure>
+    <dl class="internal-intro__stats">${stats}</dl>
+  </div>
+</section>`;
+}
+
+function renderServiceGrid(section) {
+  const items = section.items.map((item) => `<article class="internal-service-card">
+  <svg class="internal-service-card__icon" aria-hidden="true"><use href="#internal-icon-${escapeHtml(item.icon)}"></use></svg>
+  <div><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.text)}</p></div>
+</article>`).join("\n");
+  return `<section class="internal-section internal-section--serviceGrid" id="${escapeHtml(section.id)}" aria-labelledby="${escapeHtml(section.id)}-title">
+  <div class="container">${renderSectionHead(section, { centered: true })}<div class="internal-service-grid">${items}</div></div>
+</section>`;
+}
+
+function renderVehicleTypes(section, rootPath) {
+  const items = section.items.map((item) => `<article class="internal-vehicle-card">
+  <img src="${rootPath}${escapeHtml(item.image)}" alt="${escapeHtml(item.alt)}" loading="lazy" decoding="async">
+  <div class="internal-vehicle-card__copy"><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.text)}</p></div>
+</article>`).join("\n");
+  return `<section class="internal-section internal-section--vehicleTypes" id="${escapeHtml(section.id)}" aria-labelledby="${escapeHtml(section.id)}-title">
+  <div class="container">${renderSectionHead(section, { centered: true })}<div class="internal-vehicle-mosaic">${items}</div></div>
+</section>`;
+}
+
+function renderBrandStrip(section, rootPath) {
+  const items = section.items.map((item) => `<div class="internal-brand-strip__item"><img src="${rootPath}${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}" loading="lazy" decoding="async"></div>`).join("");
+  return `<section class="internal-section internal-section--brandStrip" id="${escapeHtml(section.id)}" aria-labelledby="${escapeHtml(section.id)}-title">
+  <div class="container">${renderSectionHead(section, { centered: true })}<div class="internal-brand-strip" aria-label="Марки грузовых автомобилей">${items}</div></div>
+</section>`;
+}
+
+function renderSymptoms(section) {
+  const items = section.items.map((item) => `<li>${escapeHtml(item)}</li>`).join("");
+  return `<section class="internal-section internal-section--symptoms" id="${escapeHtml(section.id)}" aria-labelledby="${escapeHtml(section.id)}-title">
+  <div class="container">${renderSectionHead(section)}<ul class="internal-symptoms">${items}</ul></div>
+</section>`;
+}
+
+function renderWorkStages(section) {
+  const items = section.items.map((item, index) => `<li class="internal-timeline__item">
+  <span class="internal-timeline__number">${String(index + 1).padStart(2, "0")}</span>
+  <h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.text)}</p>
+</li>`).join("");
+  return `<section class="internal-section internal-section--workStages" id="${escapeHtml(section.id)}" aria-labelledby="${escapeHtml(section.id)}-title">
+  <div class="container">${renderSectionHead(section)}<ol class="internal-timeline">${items}</ol></div>
+</section>`;
+}
+
+function renderPriceTable(items) {
+  const rows = items.map((item) => `<tr><th scope="row">${escapeHtml(item.service)}</th><td>${escapeHtml(item.price)}</td></tr>`).join("");
+  return `<table class="internal-price-table"><thead class="visually-hidden"><tr><th>Услуга</th><th>Цена от</th></tr></thead><tbody>${rows}</tbody></table>`;
+}
+
+function renderPriceExamples(section) {
+  const midpoint = Math.ceil(section.items.length / 2);
+  const metadata = [
+    ["Действует с", "29 августа 2026 года"],
+    ["Единица", section.metadata.unit],
+    ["НДС", section.metadata.vat],
+    ["Запчасти", section.metadata.partsAndMaterials],
+    ["Источник", section.metadata.source],
+  ].map(([label, value]) => `<div><dt>${escapeHtml(label)}:</dt><dd>${escapeHtml(value)}</dd></div>`).join("");
+  return `<section class="internal-section internal-section--priceExamples" id="${escapeHtml(section.id)}" aria-labelledby="${escapeHtml(section.id)}-title">
+  <div class="container">${renderSectionHead(section)}
+    <div class="internal-price-layout">${renderPriceTable(section.items.slice(0, midpoint))}${renderPriceTable(section.items.slice(midpoint))}</div>
+    <p class="internal-price-note">${escapeHtml(section.note)}</p>
+    <dl class="internal-price-meta">${metadata}</dl>
+  </div>
+</section>`;
+}
+
+function renderRelatedIndex(section) {
+  const items = section.items.map((item) => `<span>${escapeHtml(item)}</span>`).join("");
+  return `<section class="internal-section internal-section--relatedIndex" id="${escapeHtml(section.id)}" aria-labelledby="${escapeHtml(section.id)}-title">
+  <div class="container">${renderSectionHead(section)}<div class="internal-related-index" aria-label="Будущие направления сайта">${items}</div></div>
+</section>`;
+}
+
+function renderFaq(section) {
+  const items = section.items.map((item) => `<details><summary>${escapeHtml(item.question)}</summary><p>${escapeHtml(item.answer)}</p></details>`).join("");
+  return `<section class="internal-section internal-section--faq" id="${escapeHtml(section.id)}" aria-labelledby="${escapeHtml(section.id)}-title">
+  <div class="container internal-faq-layout">${renderSectionHead(section)}<div class="internal-faq">${items}</div></div>
+</section>`;
+}
+
+function renderSection(section, rootPath) {
+  const renderers = {
+    introProof: () => renderIntroProof(section, rootPath),
+    serviceGrid: () => renderServiceGrid(section),
+    vehicleTypes: () => renderVehicleTypes(section, rootPath),
+    brandStrip: () => renderBrandStrip(section, rootPath),
+    symptoms: () => renderSymptoms(section),
+    workStages: () => renderWorkStages(section),
+    priceExamples: () => renderPriceExamples(section),
+    relatedIndex: () => renderRelatedIndex(section),
+    faq: () => renderFaq(section),
+  };
+  return renderers[section.type]();
+}
+
+function writeHtml(route, html, writtenRoutes) {
+  if (writtenRoutes.has(route)) fail(`попытка повторно записать маршрут ${route || "/"}`);
+  const normalized = html.replace(/[ \t]+$/gm, "").replace(/<!--[\s\S]*?-->/g, "").replace(/>\s+</g, "> <").trim();
+  assertNoPlaceholders(normalized, route || "/");
+  const target = outputFileForRoute(route);
+  fs.mkdirSync(path.dirname(target), { recursive: true });
+  fs.writeFileSync(target, normalized, "utf8");
+  writtenRoutes.add(route);
+}
+
+function buildStaticPages(staticFiles, partials, config, mode, baseUrl, writtenRoutes) {
+  for (const source of staticFiles) {
+    const route = routeFromSource(source);
+    const target = outputFileForRoute(route);
+    const rootPath = route === "404"
+      ? new URL(baseUrl).pathname
+      : getRootPath(path.relative(distDir, target));
+    const homeCss = route === ""
+      ? fs.readFileSync(path.join(distDir, "assets", "css", "home-critical.css"), "utf8")
+        .replaceAll("../fonts/", `${rootPath}assets/fonts/`)
+        .replaceAll("../img/", `${rootPath}assets/img/`)
+      : "";
+    const rendered = render(fs.readFileSync(source, "utf8"), partials, {
+      rootPath,
+      assetVersion,
+      homeStyles: homeCss ? `<style data-critical-styles>${homeCss}</style>` : "",
+    });
+    const metadata = extractMetadata(rendered, route || "/", config);
+    writeHtml(route, enrichHead(rendered, metadata, route, rootPath, config, mode, baseUrl), writtenRoutes);
+  }
+}
+
+function buildInternalPages(pages, partials, config, mode, baseUrl, writtenRoutes) {
+  const template = fs.readFileSync(path.join(templatesDir, "internal-page.html"), "utf8");
+  for (const page of pages) {
+    const target = outputFileForRoute(page.path);
+    const rootPath = getRootPath(path.relative(distDir, target));
+    const rendered = render(template, partials, {
+      rootPath,
+      assetVersion,
+      family: escapeHtml(page.family),
+      title: escapeHtml(page.metadata.title),
+      description: escapeHtml(page.metadata.description),
+      heroImage: escapeHtml(page.hero.image),
+      heroMobileImage: escapeHtml(page.hero.mobileImage),
+      h1: renderHeroTitle(page.hero),
+      lead: escapeHtml(page.hero.lead),
+      heroCtaLabel: escapeHtml(page.hero.ctaLabel),
+      heroFacts: renderHeroFacts(page.hero),
+      breadcrumbs: renderBreadcrumbs(page, rootPath),
+      sections: page.sections.map((section) => renderSection(section, rootPath)).join("\n"),
+      phoneHref: escapeHtml(config.site.phoneHref),
+      phone: escapeHtml(config.site.phone),
+      address: escapeHtml(`${config.site.address.locality}, ${config.site.address.street}`),
+      openingHoursLabel: escapeHtml(config.site.openingHours.label),
+    });
+    writeHtml(
+      page.path,
+      enrichHead(rendered, page.metadata, page.path, rootPath, config, mode, baseUrl, buildInternalStructuredData(page, config, baseUrl)),
+      writtenRoutes,
+    );
+  }
+}
+
+function writeSeoFiles(mode, baseUrl, finalRoutes) {
+  const robots = mode === "preview"
+    ? "User-agent: *\nAllow: /\n"
+    : `User-agent: *\nAllow: /\nSitemap: ${new URL("sitemap.xml", baseUrl)}\n`;
+  fs.writeFileSync(path.join(distDir, "robots.txt"), robots, "utf8");
+  if (mode !== "production") return;
+  const urls = [...finalRoutes].filter((route) => route !== "404").sort()
+    .map((route) => `  <url><loc>${escapeHtml(toAbsoluteUrl(baseUrl, route))}</loc></url>`).join("\n");
+  fs.writeFileSync(path.join(distDir, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`, "utf8");
+}
+
+function main() {
+  const config = readJson(path.join(dataDir, "site-config.json"));
+  const internalPages = validateInternalPages(readJson(path.join(dataDir, "internal-pages.json")));
+  validateConfig(config);
+  const mode = process.env.SITE_MODE || process.env.BUILD_MODE || config.defaultMode;
+  if (!config.modes[mode]) fail(`SITE_MODE: неизвестный режим ${mode}`);
+  validateClaimExpiry(config.claims, mode, config.site.timeZone);
+  const baseUrl = process.env.SITE_URL || config.modes[mode].baseUrl;
+  if (!baseUrl.endsWith("/")) fail("SITE_URL должен оканчиваться слешем");
+
+  const staticFiles = getHtmlFiles(pagesDir);
+  const staticRoutes = new Set(staticFiles.map(routeFromSource));
+  const internalRoutes = new Set(internalPages.map((page) => page.path));
+  for (const route of internalRoutes) if (staticRoutes.has(route)) fail(`дублируется маршрут ${route}`);
+  const finalRoutes = new Set([...staticRoutes, ...internalRoutes]);
+
+  cleanDir(distDir);
+  copyDir(assetsDir, path.join(distDir, "assets"));
+  const outputCssDir = path.join(distDir, "assets", "css");
+  const physicalCssLayers = createCssBundles(outputCssDir);
+  for (const layer of physicalCssLayers) fs.rmSync(path.join(outputCssDir, layer), { force: true });
+  minifyCssFiles(outputCssDir);
+
+  const partials = readPartials(buildHomeStructuredData(config, baseUrl));
+  const writtenRoutes = new Set();
+  buildStaticPages(staticFiles, partials, config, mode, baseUrl, writtenRoutes);
+  buildInternalPages(internalPages, partials, config, mode, baseUrl, writtenRoutes);
+  writeSeoFiles(mode, baseUrl, finalRoutes);
+  console.log(`Built dist/ in ${mode} mode: ${writtenRoutes.size} HTML pages${mode === "production" ? " with sitemap" : " without sitemap"}.`);
+}
+
+try {
+  main();
+} catch (error) {
+  console.error(error.message);
+  process.exit(1);
+}

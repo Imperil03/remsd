@@ -2,7 +2,7 @@
   font-family: "Montserrat";
   font-style: normal;
   font-weight: 600;
-  font-display: swap;
+  font-display: optional;
   src: url("../fonts/montserrat-cyrillic-600-normal.woff2") format("woff2");
   unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
 }
@@ -11,7 +11,7 @@
   font-family: "Montserrat";
   font-style: normal;
   font-weight: 700;
-  font-display: swap;
+  font-display: optional;
   src: url("../fonts/montserrat-cyrillic-700-normal.woff2") format("woff2");
   unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
 }
@@ -20,7 +20,7 @@
   font-family: "Montserrat";
   font-style: normal;
   font-weight: 800;
-  font-display: swap;
+  font-display: optional;
   src: url("../fonts/montserrat-cyrillic-800-normal.woff2") format("woff2");
   unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
 }
@@ -29,7 +29,7 @@
   font-family: "Montserrat";
   font-style: normal;
   font-weight: 900;
-  font-display: swap;
+  font-display: optional;
   src: url("../fonts/montserrat-cyrillic-900-normal.woff2") format("woff2");
   unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
 }
@@ -38,7 +38,7 @@
   font-family: "Montserrat";
   font-style: normal;
   font-weight: 600;
-  font-display: swap;
+  font-display: optional;
   src: url("../fonts/montserrat-latin-600-normal.woff2") format("woff2");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
@@ -47,7 +47,7 @@
   font-family: "Montserrat";
   font-style: normal;
   font-weight: 700;
-  font-display: swap;
+  font-display: optional;
   src: url("../fonts/montserrat-latin-700-normal.woff2") format("woff2");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
@@ -56,7 +56,7 @@
   font-family: "Montserrat";
   font-style: normal;
   font-weight: 800;
-  font-display: swap;
+  font-display: optional;
   src: url("../fonts/montserrat-latin-800-normal.woff2") format("woff2");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
@@ -65,16 +65,18 @@
   font-family: "Montserrat";
   font-style: normal;
   font-weight: 900;
-  font-display: swap;
+  font-display: optional;
   src: url("../fonts/montserrat-latin-900-normal.woff2") format("woff2");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
+
+/* Shared foundations and components. Global tokens live in design-system.css. */
 
 @font-face {
   font-family: "Source Sans 3";
   font-style: normal;
   font-weight: 400;
-  font-display: swap;
+  font-display: optional;
   src: url("../fonts/source-sans-3-cyrillic-400-normal.woff2") format("woff2");
   unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
 }
@@ -83,7 +85,7 @@
   font-family: "Source Sans 3";
   font-style: normal;
   font-weight: 500;
-  font-display: swap;
+  font-display: optional;
   src: url("../fonts/source-sans-3-cyrillic-500-normal.woff2") format("woff2");
   unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
 }
@@ -92,7 +94,7 @@
   font-family: "Source Sans 3";
   font-style: normal;
   font-weight: 600;
-  font-display: swap;
+  font-display: optional;
   src: url("../fonts/source-sans-3-cyrillic-600-normal.woff2") format("woff2");
   unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
 }
@@ -101,7 +103,7 @@
   font-family: "Source Sans 3";
   font-style: normal;
   font-weight: 700;
-  font-display: swap;
+  font-display: optional;
   src: url("../fonts/source-sans-3-cyrillic-700-normal.woff2") format("woff2");
   unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
 }
@@ -110,7 +112,7 @@
   font-family: "Source Sans 3";
   font-style: normal;
   font-weight: 400;
-  font-display: swap;
+  font-display: optional;
   src: url("../fonts/source-sans-3-latin-400-normal.woff2") format("woff2");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
@@ -119,7 +121,7 @@
   font-family: "Source Sans 3";
   font-style: normal;
   font-weight: 500;
-  font-display: swap;
+  font-display: optional;
   src: url("../fonts/source-sans-3-latin-500-normal.woff2") format("woff2");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
@@ -128,7 +130,7 @@
   font-family: "Source Sans 3";
   font-style: normal;
   font-weight: 600;
-  font-display: swap;
+  font-display: optional;
   src: url("../fonts/source-sans-3-latin-600-normal.woff2") format("woff2");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
@@ -137,31 +139,45 @@
   font-family: "Source Sans 3";
   font-style: normal;
   font-weight: 700;
-  font-display: swap;
+  font-display: optional;
   src: url("../fonts/source-sans-3-latin-700-normal.woff2") format("woff2");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
-:root {
-  --font-heading: "Montserrat", "Segoe UI", Roboto, sans-serif;
-  --font-body: "Source Sans 3", "Segoe UI", Roboto, sans-serif;
-  --color-ink: #102033;
-  --color-muted: #5d6878;
-  --color-steel: #e8edf5;
-  --color-panel: #ffffff;
-  --color-panel-soft: #f4f7fb;
-  --color-navy: #0b1220;
-  --color-navy-2: #111827;
-  --color-blue: #2f58a8;
-  --color-blue-dark: #234681;
-  --color-yellow: #f5a21a;
-  --color-yellow-dark: #d88705;
-  --color-border: rgba(16, 32, 51, 0.14);
-  --shadow-panel: 0 24px 80px rgba(5, 12, 25, 0.22);
-  --shadow-soft: 0 18px 50px rgba(16, 32, 51, 0.12);
-  --radius: 8px;
-  --container: 1180px;
-  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+@font-face {
+  font-family: "Montserrat Variable";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: optional;
+  src: url("../fonts/montserrat-variable-cyrillic.woff2") format("woff2-variations");
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+
+@font-face {
+  font-family: "Montserrat Variable";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: optional;
+  src: url("../fonts/montserrat-variable-latin.woff2") format("woff2-variations");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Source Sans 3 Variable";
+  font-style: normal;
+  font-weight: 200 900;
+  font-display: optional;
+  src: url("../fonts/source-sans-3-variable-cyrillic.woff2") format("woff2-variations");
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+
+@font-face {
+  font-family: "Source Sans 3 Variable";
+  font-style: normal;
+  font-weight: 200 900;
+  font-display: optional;
+  src: url("../fonts/source-sans-3-variable-latin.woff2") format("woff2-variations");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
 *,
@@ -177,11 +193,11 @@ html {
 
 body {
   margin: 0;
-  color: var(--color-ink);
-  background: var(--color-panel-soft);
+  color: var(--text-primary);
+  background: var(--surface-page);
   font-family: var(--font-body);
-  font-size: 17px;
-  line-height: 1.5;
+  font-size: var(--type-body-size);
+  line-height: var(--type-body-leading);
   -webkit-font-smoothing: antialiased;
 }
 
@@ -236,7 +252,7 @@ button {
 }
 
 .container {
-  width: min(100% - 32px, var(--container));
+  width: min(calc(100% - (2 * var(--layout-gutter))), var(--layout-container));
   margin-inline: auto;
 }
 
@@ -896,23 +912,27 @@ button {
   justify-content: center;
   padding: 0 22px;
   border: 1px solid transparent;
-  border-radius: var(--radius);
+  border-radius: var(--radius-md);
   font-weight: 900;
-  transition: background 180ms var(--ease), border-color 180ms var(--ease), color 180ms var(--ease), transform 180ms var(--ease);
+  transition:
+    background var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard),
+    transform var(--duration-fast) var(--ease-standard);
 }
 
 .button:focus-visible {
-  outline: 3px solid rgba(245, 162, 26, 0.38);
+  outline: var(--focus-ring);
   outline-offset: 3px;
 }
 
 .button--primary {
-  color: #101820;
-  background: var(--color-yellow);
+  color: var(--text-on-accent);
+  background: var(--action-primary);
 }
 
 .button--primary:hover {
-  background: var(--color-yellow-dark);
+  background: var(--action-primary-hover);
   transform: translateY(-1px);
 }
 
@@ -2028,34 +2048,12 @@ a.proof-rail__item:focus-visible {
 }
 
 .media-lightbox__figure {
-  position: relative;
   display: grid;
   min-width: 0;
-  min-height: min(68vh, 720px);
+  min-height: 0;
   gap: 10px;
   margin: 0;
   place-items: center;
-}
-
-.media-lightbox__status {
-  position: absolute;
-  z-index: 1;
-  display: flex;
-  min-height: 48px;
-  align-items: center;
-  justify-content: center;
-  margin: 0;
-  padding: 12px 16px;
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.24);
-  border-radius: var(--radius);
-  font-weight: 800;
-  text-align: center;
-}
-
-.media-lightbox__status[hidden] {
-  display: none;
 }
 
 .media-lightbox__figure img {
@@ -2067,13 +2065,6 @@ a.proof-rail__item:focus-visible {
   background: #ffffff;
   border-radius: var(--radius);
   box-shadow: 0 24px 80px rgba(0, 0, 0, 0.36);
-  opacity: 1;
-  transition: opacity 140ms var(--ease);
-}
-
-.media-lightbox.is-loading .media-lightbox__figure img,
-.media-lightbox.is-error .media-lightbox__figure img {
-  opacity: 0;
 }
 
 .media-lightbox__figure figcaption {
@@ -3339,10 +3330,6 @@ body.is-lightbox-open {
     grid-template-columns: 1fr;
   }
 
-  .media-lightbox__figure {
-    min-height: min(62vh, 520px);
-  }
-
   .media-lightbox__nav {
     position: fixed;
     top: 50%;
@@ -3360,10 +3347,6 @@ body.is-lightbox-open {
 
   .media-lightbox__figure img {
     max-height: calc(100vh - 190px);
-  }
-
-  .media-lightbox__figure figcaption {
-    display: none;
   }
 
   .home-context__inner {
@@ -3603,5 +3586,119 @@ body.is-lightbox-open {
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
+  }
+}
+
+/* Shared navigation and keyboard-state hardening. */
+.site-nav[hidden],
+.main-nav__panel[hidden],
+.media-lightbox[hidden],
+.v3-brand-matrix[hidden] {
+  display: none !important;
+}
+
+.skip-link {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 500;
+  display: inline-flex;
+  min-height: var(--control-height-compact);
+  align-items: center;
+  padding: 0 16px;
+  color: var(--text-on-accent);
+  background: var(--action-primary);
+  border: 2px solid #ffffff;
+  border-radius: var(--radius-md);
+  box-shadow: 0 12px 30px rgba(5, 12, 25, 0.28);
+  font-family: var(--font-heading);
+  font-size: 14px;
+  font-weight: 900;
+  opacity: 0;
+  transform: translateY(calc(-100% - 24px));
+  transition: opacity 140ms var(--ease-standard), transform 140ms var(--ease-standard);
+}
+
+.skip-link:focus {
+  opacity: 1;
+  outline: 3px solid rgba(47, 88, 168, 0.72);
+  outline-offset: 3px;
+  transform: translateY(0);
+}
+
+.main-nav__static {
+  position: relative;
+  display: inline-flex;
+  width: 100%;
+  min-height: 42px;
+  align-items: center;
+  padding: 8px 2px;
+  color: #5f6b7b;
+  border-bottom: 1px solid rgba(16, 32, 51, 0.065);
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 650;
+  line-height: 1.16;
+  cursor: default;
+}
+
+.main-nav__brand-cloud span {
+  display: inline-flex;
+  min-height: 32px;
+  align-items: center;
+  padding: 6px 9px;
+  color: #536073;
+  background: rgba(238, 242, 247, 0.74);
+  border: 1px solid rgba(16, 32, 51, 0.065);
+  border-radius: 999px;
+  font-family: var(--font-heading);
+  font-size: 11px;
+  font-weight: 700;
+  cursor: default;
+}
+
+.site-nav a[aria-current="page"],
+.main-nav__group.is-current > .main-nav__trigger {
+  color: var(--color-blue);
+}
+
+.site-nav a[aria-current="page"]::after {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+.nav-toggle:active,
+.main-nav__trigger:active,
+.main-nav__feature a:active,
+.header-contact:active,
+.mobile-callbar__button:active,
+.media-lightbox__close:active,
+.media-lightbox__nav:active {
+  transform: translateY(1px) scale(0.985);
+}
+
+@media (max-width: 1020px) {
+  .main-nav__static {
+    min-height: 42px;
+    padding: 10px 12px;
+    background: rgba(255, 255, 255, 0.62);
+    border: 0;
+    border-radius: 7px;
+  }
+
+  .main-nav__brand-cloud span {
+    min-height: 34px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skip-link,
+  .main-nav__trigger,
+  .main-nav__feature a,
+  .header-contact,
+  .mobile-callbar__button,
+  .media-lightbox__close,
+  .media-lightbox__nav {
+    transition-duration: 0.01ms;
   }
 }

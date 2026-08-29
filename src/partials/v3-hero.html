@@ -1,6 +1,9 @@
 <section class="v3-hero" aria-labelledby="v3-hero-title">
+  <a class="skip-link" href="#main-content">К основному содержанию</a>
+
   <div class="v3-hero__backdrop" aria-hidden="true">
     <picture>
+      <source media="(max-width: 720px)" srcset="{{rootPath}}assets/img/hero-industrial-base-v3-mobile.webp" type="image/webp">
       <source srcset="{{rootPath}}assets/img/hero-industrial-base-v3.webp" type="image/webp">
       <img src="{{rootPath}}assets/img/hero-industrial-base-v3.png" width="1672" height="941" alt="" fetchpriority="high">
     </picture>
@@ -8,28 +11,9 @@
 
   <div class="v3-hero__shell">
     <div class="v3-hero__frame">
-      <header class="v3-header">
-        <a class="v3-logo" href="{{rootPath}}" aria-label="РемСД — на главную">
-          <img src="{{rootPath}}assets/img/logo-remsd.png" width="300" height="341" alt="РемСД">
-        </a>
+      {{v3-header}}
 
-        <button class="v3-nav-toggle" type="button" aria-label="Открыть меню" aria-controls="site-nav" aria-expanded="false" data-nav-toggle>
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-
-        {{main-nav}}
-
-        <div class="v3-header__meta" aria-label="Адрес и почта">
-          <span>Сургут, Домостроителей, 13</span>
-          <a href="mailto:info@remsd.ru">info@remsd.ru</a>
-        </div>
-
-        <a class="v3-header__phone" href="tel:+79224488822">+7 (922) 448-88-22</a>
-      </header>
-
-      <div class="v3-hero__content">
+      <div class="v3-hero__content" id="main-content" tabindex="-1">
         <h1 id="v3-hero-title">
           <span class="v3-hero-title__line">Ремонт <span class="v3-hero-title__accent">грузовых</span></span>
           <span class="v3-hero-title__line">автомобилей</span>
@@ -37,7 +21,7 @@
           <span class="v3-hero-title__line">в Сургуте</span>
         </h1>
         <p class="v3-hero__lead">
-          Диагностика, ТО и ремонт ДВС, КПП, ходовой, тормозной системы, гидравлики, электрики и SCR/AdBlue. Работаем с юрлицами по договору, согласуем смету до начала работ, выдаём закрывающие документы и гарантию на работу.
+          Диагностика и ремонт ДВС, КПП, ходовой, тормозов, гидравлики, электрики и SCR/AdBlue. Для юрлиц — согласование сметы, закрывающие документы и гарантия на работы.
         </p>
 
         <div class="v3-hero__actions" aria-label="Основные действия">

@@ -6,11 +6,13 @@
     <title>Ремонт грузовых автомобилей и спецтехники в Сургуте — РемСД</title>
     <meta name="description" content="РемСД ремонтирует грузовые автомобили и спецтехнику в Сургуте: диагностика, ТО, ДВС, КПП, ходовая, тормоза, гидравлика, электрика, топливная система и SCR/AdBlue. Официальный сервис КАМАЗ, МАЗ, УРАЛ.">
     {{home-structured-data}}
-    <link rel="preload" as="image" href="{{rootPath}}assets/img/hero-industrial-base-v3.webp" type="image/webp" fetchpriority="high">
+    <link rel="preload" as="image" href="{{rootPath}}assets/img/hero-industrial-base-v3-mobile.webp" type="image/webp" media="(max-width: 720px)" fetchpriority="high">
+    <link rel="preload" as="image" href="{{rootPath}}assets/img/hero-industrial-base-v3.webp" type="image/webp" media="(min-width: 721px)" fetchpriority="high">
     <link rel="preload" as="font" href="{{rootPath}}assets/fonts/geologica-cyrillic-700-normal.woff2" type="font/woff2" crossorigin>
-    <link rel="preload" as="font" href="{{rootPath}}assets/fonts/source-sans-3-cyrillic-400-normal.woff2" type="font/woff2" crossorigin>
-    <link rel="stylesheet" href="{{rootPath}}assets/css/styles.css?v={{assetVersion}}">
-    <link rel="stylesheet" href="{{rootPath}}assets/css/styles-v3.css?v={{assetVersion}}">
+    {{homeStyles}}
+    <link rel="preload" as="style" href="{{rootPath}}assets/css/home.css?v={{assetVersion}}">
+    <link rel="stylesheet" href="{{rootPath}}assets/css/home.css?v={{assetVersion}}" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="{{rootPath}}assets/css/home.css?v={{assetVersion}}"></noscript>
   </head>
   <body class="v3-page">
     <main>
@@ -36,6 +38,6 @@
     {{v3-footer}}
     {{mobile-callbar}}
 
-    <script src="{{rootPath}}assets/js/main.js?v={{assetVersion}}"></script>
+    <script src="{{rootPath}}assets/js/main.js?v={{assetVersion}}" defer></script>
   </body>
 </html>

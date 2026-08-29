@@ -1,0 +1,128 @@
+{
+  "schemaVersion": 1,
+  "defaultMode": "preview",
+  "modes": {
+    "preview": {
+      "baseUrl": "https://imperil03.github.io/remsd/",
+      "indexable": false
+    },
+    "production": {
+      "baseUrl": "https://remsd.ru/",
+      "indexable": true
+    }
+  },
+  "site": {
+    "name": "РемСД",
+    "description": "Сервисный центр по ремонту грузовых автомобилей и спецтехники в Сургуте.",
+    "language": "ru",
+    "timeZone": "Asia/Yekaterinburg",
+    "phone": "+7 (922) 448-88-22",
+    "phoneHref": "tel:+79224488822",
+    "email": "info@remsd.ru",
+    "address": {
+      "street": "ул. Домостроителей, 13",
+      "locality": "Сургут",
+      "region": "Ханты-Мансийский автономный округ — Югра",
+      "country": "RU"
+    },
+    "mapUrl": "https://yandex.ru/maps/?text=%D0%A1%D1%83%D1%80%D0%B3%D1%83%D1%82%2C%20%D1%83%D0%BB.%20%D0%94%D0%BE%D0%BC%D0%BE%D1%81%D1%82%D1%80%D0%BE%D0%B8%D1%82%D0%B5%D0%BB%D0%B5%D0%B9%2C%2013",
+    "areaServed": ["Сургут", "ХМАО"],
+    "openingHours": {
+      "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+      "opens": "08:00",
+      "closes": "22:00",
+      "label": "Ежедневно с 08:00 до 22:00"
+    },
+    "primaryCta": {
+      "label": "Позвонить мастеру",
+      "shortLabel": "Позвонить",
+      "href": "tel:+79224488822"
+    },
+    "defaultSocialImage": "assets/img/hero-industrial-base-v3.webp",
+    "logo": "assets/img/logo-remsd.png"
+  },
+  "claims": [
+    {
+      "id": "claim-official-service",
+      "text": "Официальный сервис КАМАЗ, МАЗ и УРАЛ",
+      "scope": "Сервисный статус по маркам КАМАЗ, МАЗ и УРАЛ",
+      "entityRefs": ["brand-kamaz", "brand-maz", "brand-ural"],
+      "source": "Решение владельца и документы, опубликованные в проекте",
+      "status": "owner_approved"
+    },
+    {
+      "id": "claim-maz-certificate",
+      "text": "Свидетельство №1723: ТО и гарантийный ремонт грузовой и пассажирской техники МАЗ",
+      "scope": "Только техническое обслуживание и гарантийный ремонт грузовой и пассажирской техники МАЗ до 31 декабря 2026 года",
+      "entityRefs": ["service-maz-warranty", "brand-maz", "proof-maz-certificate"],
+      "source": "Свидетельство официального сервисного партнёра МАЗ №1723, опубликованное в разделе «Сертификаты»",
+      "status": "owner_approved",
+      "validThrough": "2026-12-31"
+    },
+    {
+      "id": "claim-warranty",
+      "text": "Гарантия на отдельные виды работ до 3 лет",
+      "scope": "Только отдельные виды выполненных работ",
+      "entityRefs": ["service-repair"],
+      "source": "Решение владельца и действующий контент главной страницы",
+      "status": "owner_approved"
+    },
+    {
+      "id": "claim-experience",
+      "text": "Опыт работы более 10 лет",
+      "scope": "Опыт сервисного центра по ремонту грузовой техники",
+      "source": "Решение владельца от 29.08.2026",
+      "status": "owner_approved"
+    },
+    {
+      "id": "claim-work-warranty",
+      "text": "Гарантия на выполненные работы",
+      "scope": "Условия и срок гарантии зависят от вида ремонта и применённых запчастей и фиксируются в документах",
+      "source": "Решение владельца от 29.08.2026",
+      "status": "owner_approved"
+    },
+    {
+      "id": "claim-parts-warehouse",
+      "text": "Собственный склад запчастей",
+      "scope": "Наличие собственного склада без обещания постоянного наличия конкретной позиции",
+      "source": "Решение владельца от 29.08.2026",
+      "status": "owner_approved"
+    },
+    {
+      "id": "claim-daily-schedule",
+      "text": "Работаем без выходных, ежедневно с 08:00 до 22:00",
+      "scope": "Публичный график работы сервиса",
+      "source": "Решение владельца от 29.08.2026",
+      "status": "owner_approved"
+    },
+    {
+      "id": "claim-clients",
+      "text": "Более 5000 клиентов",
+      "scope": "Накопленный показатель клиентов сервиса",
+      "source": "Решение владельца от 29.08.2026",
+      "status": "owner_approved"
+    },
+    {
+      "id": "claim-recommendations",
+      "text": "80% клиентов приходят по рекомендации",
+      "scope": "Маркетинговый показатель сервиса, не включать в структурированные данные",
+      "source": "Решение владельца от 29.08.2026",
+      "status": "owner_approved"
+    },
+    {
+      "id": "claim-average-repair-time",
+      "text": "Средний срок ремонта — 1–2 дня",
+      "scope": "Средний показатель; фактический срок зависит от диагностики, объёма работ и запчастей",
+      "source": "Решение владельца от 29.08.2026",
+      "status": "owner_approved"
+    },
+    {
+      "id": "claim-price-examples",
+      "text": "Ориентировочные цены на типовые работы утверждены владельцем",
+      "scope": "Ориентиры действуют с 29.08.2026; точная стоимость, НДС и состав запчастей уточняются при согласовании",
+      "source": "Решение владельца от 29.08.2026",
+      "status": "owner_approved",
+      "validFrom": "2026-08-29"
+    }
+  ]
+}
