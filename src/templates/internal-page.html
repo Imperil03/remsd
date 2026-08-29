@@ -7,7 +7,10 @@
     <meta name="description" content="{{description}}">
     <link rel="preload" as="image" href="{{rootPath}}{{heroMobileImage}}" type="image/webp" media="(max-width: 720px)" fetchpriority="high">
     <link rel="preload" as="image" href="{{rootPath}}{{heroImage}}" type="image/webp" media="(min-width: 721px)" fetchpriority="high">
-    <link rel="stylesheet" href="{{rootPath}}assets/css/internal.css?v={{assetVersion}}">
+    {{internalStyles}}
+    <link rel="preload" as="style" href="{{rootPath}}assets/css/internal.css?v={{assetVersion}}">
+    <link rel="stylesheet" href="{{rootPath}}assets/css/internal.css?v={{assetVersion}}" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="{{rootPath}}assets/css/internal.css?v={{assetVersion}}"></noscript>
   </head>
   <body class="internal-page internal-page--{{family}}">
     {{internal-icon-sprite}}

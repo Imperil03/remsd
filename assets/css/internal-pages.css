@@ -5,6 +5,11 @@
   background: var(--surface-page);
 }
 
+.internal-page main > :not(.internal-hero) {
+  content-visibility: visible;
+  contain-intrinsic-block-size: none;
+}
+
 .internal-page ::selection {
   color: var(--text-on-accent);
   background: var(--action-primary);
@@ -126,6 +131,7 @@
   max-width: 720px;
   margin: 22px 0 0;
   color: rgba(255, 255, 255, 0.86);
+  font-family: "Segoe UI", Arial, sans-serif;
   font-size: clamp(17px, 1.25vw, 20px);
   line-height: 1.55;
 }
