@@ -1,9 +1,19 @@
+const DESIGN_BREAKPOINTS = Object.freeze({
+  compact: 720,
+  internalNav: 1020,
+  homeNav: 1120,
+});
+
+const maxWidthQuery = (value) => `(max-width: ${value}px)`;
+
 const navToggle = document.querySelector("[data-nav-toggle]");
 const siteNav = document.querySelector("[data-site-nav]");
 const mobileCallbar = document.querySelector("[data-mobile-callbar]");
-const mobileCallbarQuery = window.matchMedia("(max-width: 720px)");
+const mobileCallbarQuery = window.matchMedia(maxWidthQuery(DESIGN_BREAKPOINTS.compact));
 const menuItems = Array.from(document.querySelectorAll("[data-menu-item]"));
-const navQuery = navToggle?.classList.contains("v3-nav-toggle") ? "(max-width: 1120px)" : "(max-width: 1020px)";
+const navQuery = navToggle?.classList.contains("v3-nav-toggle")
+  ? maxWidthQuery(DESIGN_BREAKPOINTS.homeNav)
+  : maxWidthQuery(DESIGN_BREAKPOINTS.internalNav);
 const navMediaQuery = window.matchMedia(navQuery);
 let navIsOpen = false;
 let updateMobileCallbar = () => {};
@@ -213,7 +223,7 @@ if (siteNav instanceof HTMLElement) {
 
 const brandToggle = document.querySelector("[data-brand-toggle]");
 const brandPanel = document.querySelector("[data-brand-panel]");
-const brandMediaQuery = window.matchMedia("(max-width: 720px)");
+const brandMediaQuery = window.matchMedia(maxWidthQuery(DESIGN_BREAKPOINTS.compact));
 let brandsAreExpanded = false;
 
 const setBrandPanelState = (isExpanded) => {

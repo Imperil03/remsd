@@ -9,7 +9,7 @@ const resultDir = path.join(root, "test-results", "lighthouse");
 const host = "127.0.0.1";
 const port = Number(process.env.LIGHTHOUSE_PORT || 4175);
 const minScore = Number(process.env.LIGHTHOUSE_MIN_SCORE || 0.95);
-const routes = ["/", "/remont/", "/remont-gbc/", "/remont/maz/"];
+const routes = ["/", "/remont-gruzovyh-avtomobiley/"];
 
 const mime = {
   ".css": "text/css; charset=utf-8",

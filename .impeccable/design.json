@@ -1,0 +1,137 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-29T18:00:00+05:00",
+  "title": "Design System: РемСД",
+  "extensions": {
+    "colorMeta": {
+      "service-amber": {
+        "role": "primary",
+        "displayName": "Service Amber",
+        "canonical": "#f5a21a",
+        "tonalRamp": ["#3b2302", "#654006", "#8d5c0a", "#b8790f", "#f5a21a", "#ffc45f", "#ffdda3", "#fff3da"]
+      },
+      "night-bay": {
+        "role": "neutral",
+        "displayName": "Night Bay",
+        "canonical": "#0b1220",
+        "tonalRamp": ["#060a12", "#0b1220", "#17243a", "#2b3d58", "#4c607a", "#7f90a6", "#bdc7d3", "#edf1f5"]
+      },
+      "cool-paper": {
+        "role": "neutral",
+        "displayName": "Cool Paper",
+        "canonical": "#f4f7fb",
+        "tonalRamp": ["#16202d", "#2b3949", "#4a5a6c", "#6d7e90", "#95a4b4", "#bdc8d4", "#dce4ec", "#f4f7fb"]
+      },
+      "service-blue": {
+        "role": "secondary",
+        "displayName": "Service Blue",
+        "canonical": "#2f58a8",
+        "tonalRamp": ["#0c1935", "#162b58", "#203e7b", "#2f58a8", "#5578bd", "#809bd0", "#b2c2e3", "#e8edf8"]
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Workshop Display", "purpose": "Hero headlines only." },
+      "headline": { "displayName": "Section Headline", "purpose": "Section titles and strong hierarchy." },
+      "body": { "displayName": "Service Body", "purpose": "B2B explanations and operational details." },
+      "label": { "displayName": "Technical Label", "purpose": "Facts, numbers and compact navigation." }
+    },
+    "shadows": [
+      { "name": "card", "value": "0 18px 50px rgba(16, 32, 51, 0.12)", "purpose": "Light raised surfaces." },
+      { "name": "card-hover", "value": "0 24px 64px rgba(16, 32, 51, 0.16)", "purpose": "Interactive lift only." },
+      { "name": "overlay", "value": "0 24px 80px rgba(5, 12, 25, 0.22)", "purpose": "Navigation panels and modal layers." }
+    ],
+    "motion": [
+      { "name": "fast", "value": "180ms", "purpose": "Hover and focus state changes." },
+      { "name": "medium", "value": "260ms", "purpose": "Image and panel transitions." },
+      { "name": "standard", "value": "cubic-bezier(0.4, 0, 0.2, 1)", "purpose": "Default easing." }
+    ],
+    "breakpoints": [
+      { "name": "narrow", "value": "420px" },
+      { "name": "compact", "value": "720px" },
+      { "name": "internal-nav", "value": "1020px" },
+      { "name": "home-nav", "value": "1120px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The single prominent phone action.",
+      "html": "<a class=\"ds-button-primary\" href=\"#\">Позвонить мастеру</a>",
+      "css": ".ds-button-primary { display:inline-flex; min-width:250px; min-height:56px; align-items:center; justify-content:center; padding:0 30px; color:var(--text-on-accent); background:var(--action-primary); border-radius:var(--radius-md); font-family:var(--font-heading); font-size:15px; font-weight:700; text-decoration:none; transition:background-color 180ms var(--ease-standard), transform 180ms var(--ease-standard); } .ds-button-primary:hover { background:#ffb22a; transform:translateY(-3px); } .ds-button-primary:focus-visible { outline:var(--focus-ring); outline-offset:4px; }"
+    },
+    {
+      "name": "Service Card",
+      "kind": "card",
+      "refersTo": "card-light",
+      "description": "A light technical summary with an SVG line icon.",
+      "html": "<article class=\"ds-service-card\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M4 12h16M12 4v16\"/></svg><div><strong>Двигатель</strong><p>Диагностика, ремонт и капитальный ремонт.</p></div></article>",
+      "css": ".ds-service-card { display:grid; grid-template-columns:auto 1fr; gap:18px; min-height:180px; padding:24px; color:var(--text-primary); background:var(--surface-card); border:1px solid var(--border-subtle); border-radius:var(--radius-md); } .ds-service-card svg { width:42px; height:42px; fill:none; stroke:var(--action-secondary); stroke-width:1.7; } .ds-service-card strong { font-family:var(--font-heading); font-size:18px; } .ds-service-card p { margin:8px 0 0; color:var(--text-secondary); }"
+    },
+    {
+      "name": "Timeline Step",
+      "kind": "custom",
+      "description": "A numbered operational step in the repair route.",
+      "html": "<div class=\"ds-timeline-step\"><span>03</span><strong>Согласование</strong><p>Сообщаем стоимость и срок ремонта.</p></div>",
+      "css": ".ds-timeline-step { position:relative; min-height:190px; padding:28px 22px; color:var(--text-primary); background:var(--surface-page); border-top:1px solid var(--border-default); } .ds-timeline-step span { color:var(--action-secondary); font-family:var(--font-heading); font-size:12px; font-weight:800; } .ds-timeline-step strong { display:block; margin-top:24px; font-family:var(--font-heading); font-size:17px; } .ds-timeline-step p { color:var(--text-secondary); }"
+    },
+    {
+      "name": "Related Index Row",
+      "kind": "nav",
+      "description": "Static future direction with no fake interactivity.",
+      "html": "<span class=\"ds-related-row\">Ремонт тягачей</span>",
+      "css": ".ds-related-row { display:flex; min-height:52px; align-items:center; gap:12px; color:rgba(255,255,255,.82); border-bottom:1px solid rgba(255,255,255,.12); font-family:var(--font-heading); font-weight:700; } .ds-related-row::before { width:7px; height:7px; background:var(--action-primary); content:\"\"; }"
+    },
+    {
+      "name": "FAQ Row",
+      "kind": "custom",
+      "description": "Native disclosure with a large keyboard-accessible target.",
+      "html": "<details class=\"ds-faq\"><summary>Сколько времени занимает диагностика?</summary><p>Срок зависит от симптомов и объёма проверки.</p></details>",
+      "css": ".ds-faq { border-top:1px solid var(--border-default); } .ds-faq summary { min-height:58px; display:flex; align-items:center; justify-content:space-between; padding:10px 0; color:var(--text-primary); font-family:var(--font-heading); font-weight:750; cursor:pointer; } .ds-faq summary:focus-visible { outline:var(--focus-ring); outline-offset:4px; } .ds-faq p { color:var(--text-secondary); }"
+    },
+    {
+      "name": "Hero Fact",
+      "kind": "custom",
+      "description": "Compact proof item under the hero.",
+      "html": "<dl class=\"ds-hero-fact\"><dt>Опыт</dt><dd>Более 10 лет</dd></dl>",
+      "css": ".ds-hero-fact { position:relative; display:grid; gap:4px; margin:0; padding-left:18px; color:#fff; } .ds-hero-fact::before { position:absolute; top:6px; left:0; width:7px; height:7px; background:var(--action-primary); border-radius:999px; content:\"\"; } .ds-hero-fact dt { opacity:.62; font-family:var(--font-heading); font-size:11px; font-weight:800; text-transform:uppercase; } .ds-hero-fact dd { margin:0; font-weight:800; }"
+    },
+    {
+      "name": "Mobile Callbar",
+      "kind": "nav",
+      "description": "Post-scroll phone action for compact screens.",
+      "html": "<div class=\"ds-callbar\"><span>Нужен ремонт?</span><a href=\"#\">Позвонить</a></div>",
+      "css": ".ds-callbar { display:flex; min-height:68px; align-items:center; justify-content:space-between; gap:16px; padding:10px 16px; color:#fff; background:var(--surface-dark); border-top:1px solid rgba(255,255,255,.14); } .ds-callbar span { font-family:var(--font-heading); font-weight:800; } .ds-callbar a { display:inline-flex; min-height:48px; align-items:center; padding:0 20px; color:var(--text-on-accent); background:var(--action-primary); border-radius:var(--radius-md); font-weight:800; text-decoration:none; } .ds-callbar a:focus-visible { outline:var(--focus-ring); outline-offset:3px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Industrial Editorial",
+    "overview": "РемСД выглядит как аккуратно собранный технический журнал действующей ремонтной базы: крупные факты, реальные фотографии цеха, ясные маршруты работ и минимум рекламного декора. Система сочетает плотную B2B-информацию с заметным воздухом между смысловыми блоками. Тёмные поверхности задают контекст сервиса, светлые поверхности обеспечивают рабочую читаемость, а янтарный цвет отмечает действие и технические точки. Интерфейс не имитирует металл, штампы или приборные панели — материальность приходит из фотографий и реальных документов.",
+    "keyCharacteristics": [
+      "реальные фотографии ремонтной базы и техники",
+      "строгая типографическая иерархия без декоративных шрифтов",
+      "чередование тёмных, белых и холодных светло-серых секций",
+      "редкий янтарный акцент для CTA, маркеров и состояния фокуса",
+      "асимметрия только там, где она помогает различать типы контента"
+    ],
+    "rules": [
+      { "name": "The Amber Rarity Rule", "body": "Янтарный цвет отмечает действие или важную техническую точку; он не становится фоном каждой карточки и не конкурирует с фотографиями.", "section": "colors" },
+      { "name": "The Two-Voice Rule", "body": "Geologica/Montserrat несут иерархию, Source Sans 3 несёт объяснение; новые декоративные или системные display-шрифты не добавляются.", "section": "typography" },
+      { "name": "The Air Between Systems Rule", "body": "Разные смысловые системы разделяются поверхностью и секционным отступом; одинаковые карточные сетки не ставятся подряд без смены композиции.", "section": "layout" },
+      { "name": "The Material Truth Rule", "body": "Глубина не имитирует металл или тиснение; физическая фактура приходит из реальной фотографии.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do использовать реальные фотографии техники, базы и документов.",
+      "Do чередовать поверхности и композиции, чтобы соседние разделы считывались как разные системы.",
+      "Do сохранять интерактивные цели не меньше 44 px и явный focus-visible.",
+      "Do создавать внутреннюю страницу из типизированных модулей, выбирая порядок по интенту."
+    ],
+    "donts": [
+      "Don't превращать неопубликованный раздел в ссылку, hover-цель или псевдокнопку.",
+      "Don't добавлять формы, декоративные отзывы, фейковые рейтинги или манипулятивную срочность.",
+      "Don't использовать градиентный текст, emoji/glyph-иконки, боковые акцентные полосы или тяжёлые hard-offset тени.",
+      "Don't копировать одну и ту же карточную сетку из секции в секцию."
+    ]
+  }
+}

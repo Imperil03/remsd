@@ -213,6 +213,202 @@
       "object": "vehicle-special"
     },
     {
+      "id": "rel-maz-warranty-trucks",
+      "subject": "service-maz-warranty",
+      "predicate": "appliesTo",
+      "predicateLabel": "распространяется на",
+      "object": "vehicle-truck"
+    },
+    {
+      "id": "rel-maz-warranty-passenger",
+      "subject": "service-maz-warranty",
+      "predicate": "appliesTo",
+      "predicateLabel": "распространяется на",
+      "object": "vehicle-passenger"
+    },
+    {
+      "id": "rel-maz-engine-services",
+      "subject": "service-maz",
+      "predicate": "includes",
+      "predicateLabel": "включает работы по",
+      "object": "component-engine"
+    },
+    {
+      "id": "rel-maz-gbc-services",
+      "subject": "service-maz",
+      "predicate": "includes",
+      "predicateLabel": "включает работы по",
+      "object": "component-gbc"
+    },
+    {
+      "id": "rel-maz-cooling-services",
+      "subject": "service-maz",
+      "predicate": "includes",
+      "predicateLabel": "включает работы по",
+      "object": "system-cooling"
+    },
+    {
+      "id": "rel-maz-fuel-services",
+      "subject": "service-maz",
+      "predicate": "includes",
+      "predicateLabel": "включает работы по",
+      "object": "system-fuel"
+    },
+    {
+      "id": "rel-maz-transmission-services",
+      "subject": "service-maz",
+      "predicate": "includes",
+      "predicateLabel": "включает работы по",
+      "object": "system-transmission"
+    },
+    {
+      "id": "rel-maz-running-gear-services",
+      "subject": "service-maz",
+      "predicate": "includes",
+      "predicateLabel": "включает работы по",
+      "object": "system-running-gear"
+    },
+    {
+      "id": "rel-maz-brake-services",
+      "subject": "service-maz",
+      "predicate": "includes",
+      "predicateLabel": "включает работы по",
+      "object": "system-brakes"
+    },
+    {
+      "id": "rel-maz-electrical-services",
+      "subject": "service-maz",
+      "predicate": "includes",
+      "predicateLabel": "включает работы по",
+      "object": "system-electrical"
+    },
+    {
+      "id": "rel-maz-electronic-diagnostics",
+      "subject": "service-maz",
+      "predicate": "includes",
+      "predicateLabel": "включает работы по",
+      "object": "system-electronic-diagnostics"
+    },
+    {
+      "id": "rel-maz-hydraulics-services",
+      "subject": "service-maz",
+      "predicate": "includes",
+      "predicateLabel": "включает работы по",
+      "object": "system-hydraulics"
+    },
+    {
+      "id": "rel-maz-scr-services",
+      "subject": "service-maz",
+      "predicate": "includes",
+      "predicateLabel": "включает работы по",
+      "object": "system-scr"
+    },
+    {
+      "id": "rel-power-loss-engine",
+      "subject": "symptom-power-loss",
+      "predicate": "requiresCheck",
+      "predicateLabel": "требует проверки",
+      "object": "component-engine"
+    },
+    {
+      "id": "rel-power-loss-fuel",
+      "subject": "symptom-power-loss",
+      "predicate": "requiresCheck",
+      "predicateLabel": "требует проверки",
+      "object": "system-fuel"
+    },
+    {
+      "id": "rel-power-loss-intake",
+      "subject": "symptom-power-loss",
+      "predicate": "requiresCheck",
+      "predicateLabel": "требует проверки",
+      "object": "system-intake-exhaust"
+    },
+    {
+      "id": "rel-starting-electrical",
+      "subject": "symptom-starting",
+      "predicate": "requiresCheck",
+      "predicateLabel": "требует проверки",
+      "object": "system-electrical"
+    },
+    {
+      "id": "rel-starting-fuel",
+      "subject": "symptom-starting",
+      "predicate": "requiresCheck",
+      "predicateLabel": "требует проверки",
+      "object": "system-fuel"
+    },
+    {
+      "id": "rel-noise-vibration-engine",
+      "subject": "symptom-noise-vibration",
+      "predicate": "requiresCheck",
+      "predicateLabel": "может потребовать проверки",
+      "object": "component-engine"
+    },
+    {
+      "id": "rel-noise-vibration-transmission",
+      "subject": "symptom-noise-vibration",
+      "predicate": "requiresCheck",
+      "predicateLabel": "может потребовать проверки",
+      "object": "system-transmission"
+    },
+    {
+      "id": "rel-noise-vibration-running-gear",
+      "subject": "symptom-noise-vibration",
+      "predicate": "requiresCheck",
+      "predicateLabel": "может потребовать проверки",
+      "object": "system-running-gear"
+    },
+    {
+      "id": "rel-transmission-behavior",
+      "subject": "symptom-transmission",
+      "predicate": "requiresCheck",
+      "predicateLabel": "требует проверки",
+      "object": "system-transmission"
+    },
+    {
+      "id": "rel-chassis-behavior-running-gear",
+      "subject": "symptom-chassis-brakes",
+      "predicate": "requiresCheck",
+      "predicateLabel": "может потребовать проверки",
+      "object": "system-running-gear"
+    },
+    {
+      "id": "rel-chassis-behavior-brakes",
+      "subject": "symptom-chassis-brakes",
+      "predicate": "requiresCheck",
+      "predicateLabel": "может потребовать проверки",
+      "object": "system-brakes"
+    },
+    {
+      "id": "rel-electrical-errors-circuits",
+      "subject": "symptom-electrical-errors",
+      "predicate": "requiresCheck",
+      "predicateLabel": "требует проверки",
+      "object": "system-electrical"
+    },
+    {
+      "id": "rel-electrical-errors-diagnostics",
+      "subject": "symptom-electrical-errors",
+      "predicate": "requiresCheck",
+      "predicateLabel": "требует проверки",
+      "object": "system-electronic-diagnostics"
+    },
+    {
+      "id": "rel-scr-warning-system",
+      "subject": "symptom-scr-warning",
+      "predicate": "requiresCheck",
+      "predicateLabel": "требует проверки",
+      "object": "system-scr"
+    },
+    {
+      "id": "rel-scr-warning-diagnostics",
+      "subject": "symptom-scr-warning",
+      "predicate": "requiresCheck",
+      "predicateLabel": "требует проверки",
+      "object": "system-electronic-diagnostics"
+    },
+    {
       "id": "rel-maz-certificate",
       "subject": "service-maz-warranty",
       "predicate": "verifiedBy",

@@ -10,58 +10,13 @@ const dataDir = path.join(srcDir, "data");
 const templatesDir = path.join(srcDir, "templates");
 const assetsDir = path.join(root, "assets");
 const distDir = path.join(root, "dist");
-const assetVersion = process.env.ASSET_VERSION || "20260712-semantic-pilots";
+const assetVersion = process.env.ASSET_VERSION || "20260829-internal-system-v1";
 
-const ENTITY_TYPES = new Set([
-  "service",
-  "component",
-  "vehicleType",
-  "brand",
-  "symptom",
-  "system",
-  "method",
-  "proof",
-  "location",
-]);
-const PAGE_FAMILIES = new Set(["hub", "service", "brand", "legacy"]);
+const PAGE_FAMILIES = new Set(["hub", "service", "brand"]);
 const SECTION_TYPES = new Set([
-  "applicability",
-  "serviceMap",
-  "diagnosticMatrix",
-  "workStages",
-  "decisionCriteria",
-  "relatedSystems",
-  "costFactors",
-  "proof",
-  "preCall",
-  "related",
-  "contact",
+  "introProof", "serviceGrid", "vehicleTypes", "brandStrip", "symptoms",
+  "workStages", "priceExamples", "relatedIndex", "faq",
 ]);
-const PREDICATES = new Set([
-  "locatedIn",
-  "accepts",
-  "partOf",
-  "relatedTo",
-  "requiresCheck",
-  "verifiedBy",
-  "includes",
-  "appliesTo",
-]);
-const REQUIRED_SECTIONS = {
-  hub: ["applicability", "serviceMap", "workStages", "proof", "preCall", "related", "contact"],
-  service: [
-    "applicability",
-    "diagnosticMatrix",
-    "workStages",
-    "decisionCriteria",
-    "relatedSystems",
-    "costFactors",
-    "preCall",
-    "related",
-    "contact",
-  ],
-  brand: ["proof", "serviceMap", "preCall", "workStages", "related", "contact"],
-};
 
 function fail(message) {
   throw new Error(`[build] ${message}`);
@@ -72,15 +27,10 @@ function requireObject(value, label) {
   return value;
 }
 
-function requireArray(value, label) {
+function requireArray(value, label, { nonEmpty = false } = {}) {
   if (!Array.isArray(value)) fail(`${label}: ожидается массив`);
+  if (nonEmpty && !value.length) fail(`${label}: массив не должен быть пустым`);
   return value;
-}
-
-function requireNonEmptyArray(value, label) {
-  const items = requireArray(value, label);
-  if (!items.length) fail(`${label}: массив не должен быть пустым`);
-  return items;
 }
 
 function requireText(value, label) {
@@ -88,12 +38,18 @@ function requireText(value, label) {
   return value.trim();
 }
 
-function readJson(file, { required = true } = {}) {
-  if (!fs.existsSync(file)) {
-    if (required) fail(`не найден файл ${path.relative(root, file)}`);
-    return null;
+function requireIsoDate(value, label) {
+  const date = requireText(value, label);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) fail(`${label}: ожидается дата YYYY-MM-DD`);
+  const parsed = new Date(`${date}T00:00:00.000Z`);
+  if (Number.isNaN(parsed.getTime()) || parsed.toISOString().slice(0, 10) !== date) {
+    fail(`${label}: несуществующая календарная дата ${date}`);
   }
+  return date;
+}
 
+function readJson(file) {
+  if (!fs.existsSync(file)) fail(`не найден файл ${path.relative(root, file)}`);
   try {
     return JSON.parse(fs.readFileSync(file, "utf8"));
   } catch (error) {
@@ -109,7 +65,6 @@ function cleanDir(dir) {
 function copyDir(from, to) {
   if (!fs.existsSync(from)) return;
   fs.mkdirSync(to, { recursive: true });
-
   for (const entry of fs.readdirSync(from, { withFileTypes: true })) {
     const source = path.join(from, entry.name);
     const target = path.join(to, entry.name);
@@ -121,14 +76,9 @@ function copyDir(from, to) {
 function minifyCssFiles(dir) {
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
     const file = path.join(dir, entry.name);
-    if (entry.isDirectory()) {
-      minifyCssFiles(file);
-    } else if (entry.isFile() && entry.name.endsWith(".css")) {
-      const result = transformCss({
-        filename: file,
-        code: fs.readFileSync(file),
-        minify: true,
-      });
+    if (entry.isDirectory()) minifyCssFiles(file);
+    else if (entry.isFile() && entry.name.endsWith(".css")) {
+      const result = transformCss({ filename: file, code: fs.readFileSync(file), minify: true });
       fs.writeFileSync(file, result.code);
     }
   }
@@ -136,13 +86,15 @@ function minifyCssFiles(dir) {
 
 function createCssBundles(cssDir) {
   const bundles = {
-    "home.css": ["styles.css", "styles-v3.css"],
-    "semantic.css": ["styles.css", "semantic-pages.css"],
+    "base.css": ["design-system.css", "styles.css", "site-chrome.css"],
+    "home.css": ["design-system.css", "styles.css", "site-chrome.css", "styles-v3.css"],
+    "internal.css": ["design-system.css", "styles.css", "site-chrome.css", "internal-pages.css"],
   };
   for (const [target, sources] of Object.entries(bundles)) {
     const css = sources.map((source) => fs.readFileSync(path.join(cssDir, source), "utf8")).join("\n");
     fs.writeFileSync(path.join(cssDir, target), css, "utf8");
   }
+  return new Set(Object.values(bundles).flat());
 }
 
 function getHtmlFiles(dir) {
@@ -162,10 +114,7 @@ function normalizeRoute(value, label, { allowEmpty = false } = {}) {
     if (allowEmpty) return "";
     fail(`${label}: пустой маршрут`);
   }
-  const segments = route.split("/");
-  if (segments.some((segment) => !/^[a-z0-9-]+$/.test(segment) || segment === "." || segment === "..")) {
-    fail(`${label}: недопустимый маршрут «${value}»`);
-  }
+  if (route.split("/").some((part) => !/^[a-z0-9-]+$/.test(part))) fail(`${label}: недопустимый маршрут «${value}»`);
   return route;
 }
 
@@ -185,8 +134,7 @@ function outputFileForRoute(route) {
 function getRootPath(relativeFile) {
   const dir = path.dirname(relativeFile);
   if (dir === ".") return "./";
-  const depth = dir.split(path.sep).filter(Boolean).length;
-  return depth ? "../".repeat(depth) : "./";
+  return "../".repeat(dir.split(path.sep).filter(Boolean).length);
 }
 
 function escapeHtml(value) {
@@ -198,16 +146,28 @@ function escapeHtml(value) {
     .replaceAll("'", "&#39;");
 }
 
-function escapeXml(value) {
-  return escapeHtml(value);
+function validateNoHtml(value, label) {
+  if (typeof value === "string" && /[<>]/.test(value)) fail(`${label}: HTML в контентных JSON запрещён`);
+  if (Array.isArray(value)) value.forEach((item, index) => validateNoHtml(item, `${label}[${index}]`));
+  else if (value && typeof value === "object") {
+    Object.entries(value).forEach(([key, item]) => validateNoHtml(item, `${label}.${key}`));
+  }
+}
+
+function validateAsset(asset, label) {
+  const normalized = requireText(asset, label).replace(/\\/g, "/").replace(/^\/+/, "");
+  if (!normalized.startsWith("assets/")) fail(`${label}: путь должен начинаться с assets/`);
+  const absolute = path.resolve(root, normalized);
+  if (!absolute.startsWith(path.resolve(assetsDir) + path.sep) || !fs.existsSync(absolute)) {
+    fail(`${label}: файл не найден (${normalized})`);
+  }
 }
 
 function readPartials(homeStructuredData) {
   const partials = {};
   for (const file of fs.readdirSync(partialsDir)) {
     if (!file.endsWith(".html")) continue;
-    const name = path.basename(file, ".html");
-    partials[name] = fs.readFileSync(path.join(partialsDir, file), "utf8");
+    partials[path.basename(file, ".html")] = fs.readFileSync(path.join(partialsDir, file), "utf8");
   }
   partials["home-structured-data"] = homeStructuredData;
   return partials;
@@ -232,8 +192,7 @@ function assertNoPlaceholders(html, label) {
 
 function toAbsoluteUrl(baseUrl, route, { file = false } = {}) {
   if (!route) return baseUrl;
-  const suffix = file ? route : `${route.replace(/\/+$/, "")}/`;
-  return new URL(suffix, baseUrl).toString();
+  return new URL(file ? route : `${route.replace(/\/+$/, "")}/`, baseUrl).toString();
 }
 
 function assetUrl(baseUrl, asset) {
@@ -241,85 +200,88 @@ function assetUrl(baseUrl, asset) {
 }
 
 function jsonLdScript(data) {
-  const json = JSON.stringify(data, null, 2).replaceAll("<", "\\u003c");
-  return `<script type="application/ld+json">\n${json}\n</script>`;
+  return `<script type="application/ld+json">\n${JSON.stringify(data, null, 2).replaceAll("<", "\\u003c")}\n</script>`;
+}
+
+function openingHoursNode(site) {
+  return {
+    "@type": "OpeningHoursSpecification",
+    dayOfWeek: site.openingHours.days,
+    opens: site.openingHours.opens,
+    closes: site.openingHours.closes,
+  };
+}
+
+function localBusinessNode(config, baseUrl) {
+  const site = config.site;
+  return {
+    "@type": ["LocalBusiness", "AutoRepair"],
+    "@id": `${baseUrl}#auto-repair`,
+    name: site.name,
+    url: baseUrl,
+    image: [assetUrl(baseUrl, site.defaultSocialImage)],
+    telephone: site.phoneHref.replace("tel:", ""),
+    email: site.email,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: site.address.street,
+      addressLocality: site.address.locality,
+      addressRegion: site.address.region,
+      addressCountry: site.address.country,
+    },
+    areaServed: site.areaServed.map((name, index) => ({
+      "@type": index === 0 ? "City" : "AdministrativeArea",
+      name,
+    })),
+    openingHoursSpecification: [openingHoursNode(site)],
+    parentOrganization: { "@id": `${baseUrl}#organization` },
+  };
 }
 
 function buildHomeStructuredData(config, baseUrl) {
   const site = config.site;
-  const organizationId = `${baseUrl}#organization`;
-  const autoRepairId = `${baseUrl}#auto-repair`;
   return jsonLdScript({
     "@context": "https://schema.org",
     "@graph": [
       {
         "@type": "Organization",
-        "@id": organizationId,
+        "@id": `${baseUrl}#organization`,
         name: site.name,
         url: baseUrl,
         logo: assetUrl(baseUrl, site.logo),
         telephone: site.phoneHref.replace("tel:", ""),
         email: site.email,
       },
-      {
-        "@type": ["LocalBusiness", "AutoRepair"],
-        "@id": autoRepairId,
-        name: site.name,
-        url: baseUrl,
-        image: [
-          assetUrl(baseUrl, site.defaultSocialImage),
-          assetUrl(baseUrl, "assets/img/gallery/large/base-entrance.webp"),
-        ],
-        telephone: site.phoneHref.replace("tel:", ""),
-        email: site.email,
-        address: {
-          "@type": "PostalAddress",
-          streetAddress: site.address.street,
-          addressLocality: site.address.locality,
-          addressRegion: site.address.region,
-          addressCountry: site.address.country,
-        },
-        areaServed: site.areaServed.map((name, index) => ({
-          "@type": index === 0 ? "City" : "AdministrativeArea",
-          name,
-        })),
-        parentOrganization: { "@id": organizationId },
-      },
+      localBusinessNode(config, baseUrl),
     ],
   });
 }
 
-function buildPilotStructuredData(page, config, entitiesById, baseUrl) {
+function buildInternalStructuredData(page, config, baseUrl) {
   const url = toAbsoluteUrl(baseUrl, page.path);
-  const entity = entitiesById.get(page.primaryEntity);
-  const breadcrumbItems = page.breadcrumbs.map((crumb, index) => ({
+  const breadcrumbs = page.breadcrumbs.map((crumb, index) => ({
     "@type": "ListItem",
     position: index + 1,
     name: crumb.label,
     item: crumb.href === undefined ? url : toAbsoluteUrl(baseUrl, normalizeRoute(crumb.href, `${page.path}.breadcrumbs`, { allowEmpty: true })),
   }));
-
   return jsonLdScript({
     "@context": "https://schema.org",
     "@graph": [
       {
         "@type": "BreadcrumbList",
         "@id": `${url}#breadcrumb`,
-        itemListElement: breadcrumbItems,
+        itemListElement: breadcrumbs,
       },
       {
         "@type": "Service",
         "@id": `${url}#service`,
-        name: page.h1,
-        serviceType: entity.name,
+        name: page.hero.h1,
+        serviceType: "Ремонт грузовых автомобилей",
         description: page.metadata.description,
         url,
-        mainEntityOfPage: url,
-        provider: { "@id": `${baseUrl}#organization` },
-        areaServed: {
-          "@type": "City",
-          name: config.site.address.locality,
-        },
+        provider: { "@id": `${baseUrl}#auto-repair` },
+        areaServed: { "@type": "City", name: config.site.address.locality },
         availableChannel: {
           "@type": "ServiceChannel",
           servicePhone: {
@@ -329,6 +291,7 @@ function buildPilotStructuredData(page, config, entitiesById, baseUrl) {
           },
         },
       },
+      localBusinessNode(config, baseUrl),
     ],
   });
 }
@@ -367,796 +330,351 @@ function extractMetadata(html, label, config) {
   return { title, description, socialImage: config.site.defaultSocialImage };
 }
 
-function validateAsset(asset, label) {
-  requireText(asset, label);
-  const normalized = asset.replace(/\\/g, "/").replace(/^\/+/, "");
-  if (!normalized.startsWith("assets/")) fail(`${label}: путь должен начинаться с assets/`);
-  const absolute = path.resolve(root, normalized);
-  if (!absolute.startsWith(path.resolve(assetsDir) + path.sep) || !fs.existsSync(absolute)) {
-    fail(`${label}: файл не найден (${normalized})`);
-  }
-}
-
-function validateNoHtml(value, label) {
-  if (typeof value === "string" && /[<>]/.test(value)) fail(`${label}: HTML в контентных JSON запрещён`);
-  if (Array.isArray(value)) value.forEach((item, index) => validateNoHtml(item, `${label}[${index}]`));
-  else if (value && typeof value === "object") {
-    for (const [key, item] of Object.entries(value)) validateNoHtml(item, `${label}.${key}`);
-  }
-}
-
-function makeUniqueMap(items, key, label) {
-  const map = new Map();
-  items.forEach((item, index) => {
-    const id = requireText(item[key], `${label}[${index}].${key}`);
-    if (map.has(id)) fail(`${label}: дублируется ${key} «${id}»`);
-    map.set(id, item);
-  });
-  return map;
-}
-
 function validateConfig(config) {
   requireObject(config, "site-config.json");
   if (config.schemaVersion !== 1) fail("site-config.json: поддерживается schemaVersion 1");
   requireObject(config.modes, "site-config.modes");
   for (const mode of ["preview", "production"]) {
-    const item = requireObject(config.modes[mode], `site-config.modes.${mode}`);
-    const baseUrl = requireText(item.baseUrl, `site-config.modes.${mode}.baseUrl`);
+    const baseUrl = requireText(config.modes[mode]?.baseUrl, `site-config.modes.${mode}.baseUrl`);
     try {
-      const url = new URL(baseUrl);
-      if (!/^https?:$/.test(url.protocol) || !baseUrl.endsWith("/")) fail(`${mode}.baseUrl должен быть HTTP(S) URL со слешем`);
+      if (!/^https?:$/.test(new URL(baseUrl).protocol) || !baseUrl.endsWith("/")) fail(`${mode}.baseUrl: нужен HTTP(S) URL со слешем`);
     } catch (error) {
-      fail(`site-config.modes.${mode}.baseUrl: невалидный URL`);
+      fail(`${mode}.baseUrl: невалидный URL`);
     }
   }
-  if (!config.modes[config.defaultMode]) fail("site-config.defaultMode: неизвестный режим");
   const site = requireObject(config.site, "site-config.site");
-  ["name", "phone", "phoneHref", "email", "defaultSocialImage", "logo"].forEach((key) =>
-    requireText(site[key], `site-config.site.${key}`),
-  );
-  requireObject(site.address, "site-config.site.address");
+  ["name", "phone", "phoneHref", "email", "mapUrl", "timeZone", "defaultSocialImage", "logo"].forEach((key) => requireText(site[key], `site.${key}`));
+  requireObject(site.address, "site.address");
   ["street", "locality", "region", "country"].forEach((key) => requireText(site.address[key], `site.address.${key}`));
+  requireArray(site.areaServed, "site.areaServed", { nonEmpty: true });
   requireObject(site.primaryCta, "site.primaryCta");
   ["label", "shortLabel", "href"].forEach((key) => requireText(site.primaryCta[key], `site.primaryCta.${key}`));
+  const hours = requireObject(site.openingHours, "site.openingHours");
+  requireArray(hours.days, "site.openingHours.days", { nonEmpty: true }).forEach((day, index) => requireText(day, `site.openingHours.days[${index}]`));
+  ["opens", "closes", "label"].forEach((key) => requireText(hours[key], `site.openingHours.${key}`));
   validateAsset(site.defaultSocialImage, "site.defaultSocialImage");
   validateAsset(site.logo, "site.logo");
+  requireArray(config.claims, "site-config.claims").forEach((claim, index) => {
+    requireObject(claim, `claims[${index}]`);
+    ["id", "text", "scope", "source"].forEach((key) => requireText(claim[key], `claims[${index}].${key}`));
+    if (claim.status !== "owner_approved") fail(`claims[${index}].status: допускается owner_approved`);
+    if (claim.validThrough !== undefined) requireIsoDate(claim.validThrough, `claims[${index}].validThrough`);
+  });
 }
 
-function validateGraph(entityData, relationData, config) {
-  requireObject(entityData, "entities.json");
-  requireObject(relationData, "relations.json");
-  if (entityData.schemaVersion !== 1 || relationData.schemaVersion !== 1) fail("entities/relations: поддерживается schemaVersion 1");
-  const entities = requireArray(entityData.entities, "entities.entities");
-  const relations = requireArray(relationData.relations, "relations.relations");
-  const entitiesById = makeUniqueMap(entities, "id", "entities");
-  for (const entity of entities) {
-    if (!/^[-a-z0-9]+$/.test(entity.id)) fail(`entity ${entity.id}: нестабильный id`);
-    if (!ENTITY_TYPES.has(entity.type)) fail(`entity ${entity.id}: неизвестный type ${entity.type}`);
-    requireText(entity.name, `entity ${entity.id}.name`);
-    requireText(entity.description, `entity ${entity.id}.description`);
-  }
-  const relationsById = makeUniqueMap(relations, "id", "relations");
-  for (const relation of relations) {
-    if (!entitiesById.has(relation.subject)) fail(`relation ${relation.id}: неизвестный subject ${relation.subject}`);
-    if (!entitiesById.has(relation.object)) fail(`relation ${relation.id}: неизвестный object ${relation.object}`);
-    if (!PREDICATES.has(relation.predicate)) fail(`relation ${relation.id}: неизвестный predicate ${relation.predicate}`);
-    requireText(relation.predicateLabel, `relation ${relation.id}.predicateLabel`);
-  }
-  const claims = requireArray(config.claims, "site-config.claims");
-  const claimsById = makeUniqueMap(claims, "id", "claims");
+function validateClaimExpiry(claims, mode, timeZone) {
+  if (mode !== "production") return;
+  const parts = new Intl.DateTimeFormat("en-US", { timeZone, year: "numeric", month: "2-digit", day: "2-digit" }).formatToParts(new Date());
+  const values = Object.fromEntries(parts.map((part) => [part.type, part.value]));
+  const asOf = process.env.CLAIMS_AS_OF || `${values.year}-${values.month}-${values.day}`;
+  requireIsoDate(asOf, "CLAIMS_AS_OF");
   for (const claim of claims) {
-    requireText(claim.text, `claim ${claim.id}.text`);
-    requireText(claim.scope, `claim ${claim.id}.scope`);
-    requireText(claim.source, `claim ${claim.id}.source`);
-    if (claim.status !== "owner_approved") fail(`claim ${claim.id}: допускается только статус owner_approved`);
-    requireArray(claim.entityRefs, `claim ${claim.id}.entityRefs`).forEach((id) => {
-      if (!entitiesById.has(id)) fail(`claim ${claim.id}: неизвестная сущность ${id}`);
+    if (claim.validThrough !== undefined && claim.validThrough < asOf) {
+      fail(`claim ${claim.id}: срок validThrough ${claim.validThrough} истёк; production-сборка остановлена`);
+    }
+  }
+}
+
+function validateSection(section, label) {
+  requireObject(section, label);
+  requireText(section.id, `${label}.id`);
+  const type = requireText(section.type, `${label}.type`);
+  if (!SECTION_TYPES.has(type)) fail(`${label}.type: неизвестный тип ${type}`);
+  requireText(section.title, `${label}.title`);
+  if (section.intro !== undefined) requireText(section.intro, `${label}.intro`);
+
+  if (type === "introProof") {
+    requireArray(section.bullets, `${label}.bullets`, { nonEmpty: true }).forEach((item, index) => requireText(item, `${label}.bullets[${index}]`));
+    requireText(section.statement, `${label}.statement`);
+    validateAsset(section.image, `${label}.image`);
+    requireText(section.imageAlt, `${label}.imageAlt`);
+    requireArray(section.stats, `${label}.stats`, { nonEmpty: true }).forEach((item, index) => {
+      requireText(item.value, `${label}.stats[${index}].value`);
+      requireText(item.label, `${label}.stats[${index}].label`);
     });
-  }
-  validateNoHtml(entityData, "entities.json");
-  validateNoHtml(relationData, "relations.json");
-  return { entitiesById, relationsById, claimsById };
-}
-
-function validatePilotReferences(value, label, graph) {
-  if (Array.isArray(value)) {
-    value.forEach((item, index) => validatePilotReferences(item, `${label}[${index}]`, graph));
-    return;
-  }
-  if (!value || typeof value !== "object") return;
-
-  for (const [key, item] of Object.entries(value)) {
-    if (["primaryEntity", "entityId", "symptomEntityId"].includes(key) && !graph.entitiesById.has(item)) {
-      fail(`${label}.${key}: неизвестная сущность ${item}`);
-    }
-    if (["entityIds", "relatedEntityIds"].includes(key)) {
-      requireArray(item, `${label}.${key}`).forEach((id) => {
-        if (!graph.entitiesById.has(id)) fail(`${label}.${key}: неизвестная сущность ${id}`);
-      });
-    }
-    if (key === "relationIds") {
-      requireArray(item, `${label}.relationIds`).forEach((id) => {
-        if (!graph.relationsById.has(id)) fail(`${label}.relationIds: неизвестное отношение ${id}`);
-      });
-    }
-    if (key === "claimId" && !graph.claimsById.has(item)) fail(`${label}.claimId: неизвестный claim ${item}`);
-    if (["image", "largeImage", "socialImage"].includes(key)) validateAsset(item, `${label}.${key}`);
-    if (key === "links") {
-      requireObject(item, `${label}.links`);
-      for (const entityId of Object.keys(item)) {
-        if (!graph.entitiesById.has(entityId)) fail(`${label}.links: неизвестная сущность ${entityId}`);
-      }
-    }
-    validatePilotReferences(item, `${label}.${key}`, graph);
-  }
-}
-
-function validateOptionalText(value, label) {
-  if (value !== undefined) requireText(value, label);
-}
-
-function validateSectionDefinition(section, label) {
-  validateOptionalText(section.eyebrow, `${label}.eyebrow`);
-  validateOptionalText(section.intro, `${label}.intro`);
-
-  const validateTitleTextItems = () => {
-    requireNonEmptyArray(section.items, `${label}.items`).forEach((item, index) => {
-      requireObject(item, `${label}.items[${index}]`);
+  } else if (["serviceGrid", "workStages"].includes(type)) {
+    requireArray(section.items, `${label}.items`, { nonEmpty: true }).forEach((item, index) => {
       requireText(item.title, `${label}.items[${index}].title`);
       requireText(item.text, `${label}.items[${index}].text`);
+      if (type === "serviceGrid") requireText(item.icon, `${label}.items[${index}].icon`);
     });
-  };
-
-  if (section.type === "applicability") {
-    requireNonEmptyArray(section.groups, `${label}.groups`).forEach((group, groupIndex) => {
-      requireObject(group, `${label}.groups[${groupIndex}]`);
-      requireText(group.title, `${label}.groups[${groupIndex}].title`);
-      requireNonEmptyArray(group.items, `${label}.groups[${groupIndex}].items`).forEach((item, itemIndex) => {
-        requireObject(item, `${label}.groups[${groupIndex}].items[${itemIndex}]`);
-        requireText(item.entityId, `${label}.groups[${groupIndex}].items[${itemIndex}].entityId`);
-        validateOptionalText(item.label, `${label}.groups[${groupIndex}].items[${itemIndex}].label`);
-      });
-    });
-  } else if (section.type === "serviceMap") {
-    requireNonEmptyArray(section.items, `${label}.items`).forEach((item, index) => {
-      requireObject(item, `${label}.items[${index}]`);
-      requireText(item.zone, `${label}.items[${index}].zone`);
+  } else if (type === "vehicleTypes") {
+    requireArray(section.items, `${label}.items`, { nonEmpty: true }).forEach((item, index) => {
       requireText(item.title, `${label}.items[${index}].title`);
       requireText(item.text, `${label}.items[${index}].text`);
-    });
-  } else if (section.type === "diagnosticMatrix") {
-    requireNonEmptyArray(section.rows, `${label}.rows`).forEach((row, index) => {
-      requireObject(row, `${label}.rows[${index}]`);
-      requireText(row.symptomEntityId, `${label}.rows[${index}].symptomEntityId`);
-      requireText(row.context, `${label}.rows[${index}].context`);
-      requireText(row.firstCheck, `${label}.rows[${index}].firstCheck`);
-      requireNonEmptyArray(row.relatedEntityIds, `${label}.rows[${index}].relatedEntityIds`);
-    });
-  } else if (["workStages", "decisionCriteria", "costFactors"].includes(section.type)) {
-    validateTitleTextItems();
-  } else if (section.type === "relatedSystems") {
-    requireNonEmptyArray(section.relationIds, `${label}.relationIds`);
-  } else if (section.type === "proof") {
-    requireNonEmptyArray(section.items, `${label}.items`).forEach((item, index) => {
-      requireObject(item, `${label}.items[${index}]`);
-      requireText(item.entityId, `${label}.items[${index}].entityId`);
-      requireText(item.image, `${label}.items[${index}].image`);
+      validateAsset(item.image, `${label}.items[${index}].image`);
       requireText(item.alt, `${label}.items[${index}].alt`);
-      validateOptionalText(item.title, `${label}.items[${index}].title`);
-      validateOptionalText(item.text, `${label}.items[${index}].text`);
-      validateOptionalText(item.linkLabel, `${label}.items[${index}].linkLabel`);
     });
-  } else if (section.type === "preCall") {
-    requireNonEmptyArray(section.items, `${label}.items`).forEach((item, index) => {
-      requireObject(item, `${label}.items[${index}]`);
-      requireText(item.label, `${label}.items[${index}].label`);
-      requireText(item.text, `${label}.items[${index}].text`);
+  } else if (type === "brandStrip") {
+    requireArray(section.items, `${label}.items`, { nonEmpty: true }).forEach((item, index) => {
+      requireText(item.name, `${label}.items[${index}].name`);
+      validateAsset(item.image, `${label}.items[${index}].image`);
     });
-  } else if (section.type === "related") {
-    requireNonEmptyArray(section.items, `${label}.items`).forEach((item, index) => {
-      requireObject(item, `${label}.items[${index}]`);
-      requireText(item.href, `${label}.items[${index}].href`);
-      requireText(item.label, `${label}.items[${index}].label`);
-      requireText(item.text, `${label}.items[${index}].text`);
+  } else if (["symptoms", "relatedIndex"].includes(type)) {
+    requireArray(section.items, `${label}.items`, { nonEmpty: true }).forEach((item, index) => requireText(item, `${label}.items[${index}]`));
+  } else if (type === "priceExamples") {
+    requireArray(section.items, `${label}.items`, { nonEmpty: true }).forEach((item, index) => {
+      requireText(item.service, `${label}.items[${index}].service`);
+      requireText(item.price, `${label}.items[${index}].price`);
     });
-  } else if (section.type === "contact") {
-    requireText(section.intro, `${label}.intro`);
-    if ((section.secondaryHref === undefined) !== (section.secondaryLabel === undefined)) {
-      fail(`${label}: secondaryHref и secondaryLabel задаются вместе`);
-    }
-    validateOptionalText(section.secondaryLabel, `${label}.secondaryLabel`);
+    const metadata = requireObject(section.metadata, `${label}.metadata`);
+    requireIsoDate(metadata.validFrom, `${label}.metadata.validFrom`);
+    ["unit", "vat", "partsAndMaterials", "source"].forEach((key) => requireText(metadata[key], `${label}.metadata.${key}`));
+    requireText(section.note, `${label}.note`);
+  } else if (type === "faq") {
+    requireArray(section.items, `${label}.items`, { nonEmpty: true }).forEach((item, index) => {
+      requireText(item.question, `${label}.items[${index}].question`);
+      requireText(item.answer, `${label}.items[${index}].answer`);
+    });
   }
 }
 
-function validatePilots(pilotData, graph) {
-  requireObject(pilotData, "pilot-pages.json");
-  if (pilotData.schemaVersion !== 1) fail("pilot-pages.json: поддерживается schemaVersion 1");
-  const pages = requireArray(pilotData.pages, "pilot-pages.pages");
+function validateInternalPages(data) {
+  requireObject(data, "internal-pages.json");
+  if (data.schemaVersion !== 2) fail("internal-pages.json: поддерживается schemaVersion 2");
+  const pages = requireArray(data.pages, "internal-pages.pages", { nonEmpty: true });
   const paths = new Set();
   const titles = new Set();
-  const descriptions = new Set();
-  const h1s = new Set();
-  for (const [index, page] of pages.entries()) {
-    const label = `pilot-pages.pages[${index}]`;
+  pages.forEach((page, index) => {
+    const label = `internal-pages.pages[${index}]`;
+    requireObject(page, label);
     page.path = normalizeRoute(page.path, `${label}.path`);
-    if (paths.has(page.path)) fail(`pilot-pages: дублируется маршрут ${page.path}`);
+    if (paths.has(page.path)) fail(`${label}.path: маршрут дублируется`);
     paths.add(page.path);
-    if (!PAGE_FAMILIES.has(page.family) || page.family === "legacy") fail(`${label}.family: ожидается hub, service или brand`);
-    if (!graph.entitiesById.has(page.primaryEntity)) fail(`${label}.primaryEntity: неизвестная сущность`);
+    if (!PAGE_FAMILIES.has(page.family)) fail(`${label}.family: ожидается hub, service или brand`);
     const metadata = requireObject(page.metadata, `${label}.metadata`);
-    for (const [key, bucket] of [["title", titles], ["description", descriptions]]) {
-      const text = requireText(metadata[key], `${label}.metadata.${key}`);
-      if (bucket.has(text)) fail(`pilot-pages: неуникальный metadata.${key}`);
-      bucket.add(text);
-    }
-    requireText(metadata.socialImage, `${label}.metadata.socialImage`);
-    requireText(page.kicker, `${label}.kicker`);
-    const h1 = requireText(page.h1, `${label}.h1`);
-    if (h1s.has(h1)) fail("pilot-pages: H1 должны быть уникальны");
-    h1s.add(h1);
-    requireText(page.lead, `${label}.lead`);
-    requireNonEmptyArray(page.heroFacts, `${label}.heroFacts`).forEach((fact, factIndex) => {
-      requireObject(fact, `${label}.heroFacts[${factIndex}]`);
-      if (![fact.text, fact.label, fact.claimId].some((value) => typeof value === "string" && value.trim())) {
-        fail(`${label}.heroFacts[${factIndex}]: нужен text, label или claimId`);
-      }
-    });
-    const breadcrumbs = requireArray(page.breadcrumbs, `${label}.breadcrumbs`);
-    if (breadcrumbs.length < 2 || breadcrumbs[0].href !== "" || breadcrumbs.at(-1).href !== undefined) {
-      fail(`${label}.breadcrumbs: нужны полные крошки от главной до текущей страницы`);
-    }
-    breadcrumbs.forEach((crumb, crumbIndex) => {
-      requireObject(crumb, `${label}.breadcrumbs[${crumbIndex}]`);
+    ["title", "description"].forEach((key) => requireText(metadata[key], `${label}.metadata.${key}`));
+    if (titles.has(metadata.title)) fail(`${label}.metadata.title: title должен быть уникальным`);
+    titles.add(metadata.title);
+    validateAsset(metadata.socialImage, `${label}.metadata.socialImage`);
+    requireArray(page.breadcrumbs, `${label}.breadcrumbs`, { nonEmpty: true }).forEach((crumb, crumbIndex) => {
       requireText(crumb.label, `${label}.breadcrumbs[${crumbIndex}].label`);
-      if (crumbIndex < breadcrumbs.length - 1 && typeof crumb.href !== "string") {
-        fail(`${label}.breadcrumbs[${crumbIndex}].href: обязательный маршрут не заполнен`);
-      }
+      if (crumb.href !== undefined) normalizeRoute(crumb.href, `${label}.breadcrumbs[${crumbIndex}].href`, { allowEmpty: true });
     });
-    const sections = requireNonEmptyArray(page.sections, `${label}.sections`);
+    const hero = requireObject(page.hero, `${label}.hero`);
+    ["h1", "lead", "ctaLabel"].forEach((key) => requireText(hero[key], `${label}.hero.${key}`));
+    if (hero.accent !== undefined) requireText(hero.accent, `${label}.hero.accent`);
+    validateAsset(hero.image, `${label}.hero.image`);
+    validateAsset(hero.mobileImage, `${label}.hero.mobileImage`);
+    requireArray(hero.facts, `${label}.hero.facts`, { nonEmpty: true }).forEach((fact, factIndex) => {
+      requireText(fact.label, `${label}.hero.facts[${factIndex}].label`);
+      requireText(fact.value, `${label}.hero.facts[${factIndex}].value`);
+    });
     const sectionIds = new Set();
-    const sectionTypes = new Set();
-    for (const section of sections) {
-      requireText(section.id, `${label}.section.id`);
-      if (!/^[a-z][a-z0-9-]*$/.test(section.id)) fail(`${label}: некорректный id секции ${section.id}`);
-      if (sectionIds.has(section.id)) fail(`${label}: дублируется id секции ${section.id}`);
+    requireArray(page.sections, `${label}.sections`, { nonEmpty: true }).forEach((section, sectionIndex) => {
+      validateSection(section, `${label}.sections[${sectionIndex}]`);
+      if (sectionIds.has(section.id)) fail(`${label}.sections: дублируется id ${section.id}`);
       sectionIds.add(section.id);
-      if (!SECTION_TYPES.has(section.type)) fail(`${label}: неизвестный type секции ${section.type}`);
-      sectionTypes.add(section.type);
-      requireText(section.title, `${label}.${section.id}.title`);
-      validateSectionDefinition(section, `${label}.${section.id}`);
-    }
-    for (const required of REQUIRED_SECTIONS[page.family]) {
-      if (!sectionTypes.has(required)) fail(`${label}: для family ${page.family} нужна секция ${required}`);
-    }
-    validatePilotReferences(page, label, graph);
-  }
-  validateNoHtml(pilotData, "pilot-pages.json");
+    });
+  });
+  validateNoHtml(data, "internal-pages.json");
   return pages;
 }
 
-function validateLegacy(legacyPages) {
-  requireArray(legacyPages, "seo-pages.json");
-  const routes = new Set();
-  for (const [index, page] of legacyPages.entries()) {
-    page.path = normalizeRoute(page.path, `seo-pages[${index}].path`);
-    if (routes.has(page.path)) fail(`seo-pages.json: дублируется маршрут ${page.path}`);
-    routes.add(page.path);
-    ["title", "description", "kicker", "h1", "lead", "worksTitle", "techTitle", "techText", "processTitle", "ctaTitle", "ctaText"].forEach(
-      (key) => requireText(page[key], `seo-pages[${index}].${key}`),
-    );
-    ["works", "brands", "process", "related"].forEach((key) => requireArray(page[key], `seo-pages[${index}].${key}`));
-  }
-  return legacyPages;
-}
-
-function planRoutes(staticFiles, legacyPages, pilots, config) {
-  const staticRoutes = new Map();
-  for (const file of staticFiles) {
-    const route = routeFromSource(file);
-    if (staticRoutes.has(route)) fail(`src/pages: дублируется маршрут ${route || "/"}`);
-    staticRoutes.set(route, file);
-  }
-  const legacyByRoute = new Map(legacyPages.map((page) => [page.path, page]));
-  const pilotByRoute = new Map(pilots.map((page) => [page.path, page]));
-  const skippedLegacy = new Set();
-  const staticOverrides = new Set(requireArray(config.legacy?.staticPageOverrides || [], "site-config.legacy.staticPageOverrides").map((route) =>
-    normalizeRoute(route, "staticPageOverrides"),
-  ));
-
-  for (const route of staticOverrides) {
-    if (!staticRoutes.has(route) || !legacyByRoute.has(route)) fail(`staticPageOverrides ${route}: нужны и source page, и legacy page`);
-    skippedLegacy.add(route);
-  }
-  for (const route of staticRoutes.keys()) {
-    if (route && legacyByRoute.has(route) && !staticOverrides.has(route)) {
-      fail(`дублируется маршрут ${route}: src/pages и seo-pages.json`);
-    }
-    if (pilotByRoute.has(route)) fail(`дублируется маршрут ${route}: src/pages и pilot-pages.json`);
-  }
-  for (const page of pilots) {
-    if (legacyByRoute.has(page.path)) {
-      if (page.replacesLegacy !== true) fail(`${page.path}: pilot дублирует legacy без replacesLegacy: true`);
-      skippedLegacy.add(page.path);
-    } else if (page.replacesLegacy === true) {
-      fail(`${page.path}: replacesLegacy указан, но legacy route не найден`);
-    }
-  }
-
-  const finalRoutes = new Set(staticRoutes.keys());
-  for (const page of legacyPages) if (!skippedLegacy.has(page.path)) finalRoutes.add(page.path);
-  for (const page of pilots) finalRoutes.add(page.path);
-  return { staticRoutes, skippedLegacy, finalRoutes };
-}
-
-function validateGlobalMetadata(routePlan, legacyPages, pilots, config) {
-  const titles = new Map();
-  const descriptions = new Map();
-  const register = (route, metadata) => {
-    for (const [key, bucket] of [["title", titles], ["description", descriptions]]) {
-      const value = requireText(metadata[key], `${route || "/"}.metadata.${key}`).replace(/\s+/g, " ");
-      if (bucket.has(value)) {
-        fail(`неуникальный metadata.${key} у маршрутов ${bucket.get(value)} и ${route || "/"}`);
-      }
-      bucket.set(value, route || "/");
-    }
-  };
-
-  for (const [route, source] of routePlan.staticRoutes) {
-    register(route, extractMetadata(fs.readFileSync(source, "utf8"), route || "/", config));
-  }
-  for (const page of legacyPages) {
-    if (!routePlan.skippedLegacy.has(page.path)) register(page.path, page);
-  }
-  for (const page of pilots) register(page.path, page.metadata);
-}
-
-function validateHref(href, label, finalRoutes) {
-  if (typeof href !== "string") fail(`${label}: href должен быть строкой`);
-  if (href === "") {
-    if (!finalRoutes.has("")) fail(`${label}: главная не найдена`);
-    return;
-  }
-  if (href.startsWith("#")) {
-    if (!/^#[a-z][a-z0-9-]*$/.test(href)) fail(`${label}: некорректный якорь ${href}`);
-    return;
-  }
-  if (/^(?:https?:|mailto:|tel:)/.test(href)) return;
-  if (/^[a-z]+:/i.test(href)) fail(`${label}: недопустимая схема ссылки`);
-  const [routePart, fragment, extra] = href.split("#");
-  if (extra !== undefined || /[?]/.test(routePart)) fail(`${label}: некорректная внутренняя ссылка ${href}`);
-  if (fragment && !/^[a-z][a-z0-9-]*$/.test(fragment)) fail(`${label}: некорректный fragment ${fragment}`);
-  const route = normalizeRoute(routePart, label, { allowEmpty: true });
-  if (!finalRoutes.has(route)) fail(`${label}: ссылка ведёт на отсутствующий маршрут ${route || "/"}`);
-}
-
-function validateLinks(value, label, finalRoutes) {
-  if (Array.isArray(value)) {
-    value.forEach((item, index) => validateLinks(item, `${label}[${index}]`, finalRoutes));
-    return;
-  }
-  if (!value || typeof value !== "object") return;
-  for (const [key, item] of Object.entries(value)) {
-    if (["href", "secondaryHref", "breadcrumbHref"].includes(key)) validateHref(item, `${label}.${key}`, finalRoutes);
-    else if (key === "links") {
-      for (const [entityId, href] of Object.entries(item)) validateHref(href, `${label}.links.${entityId}`, finalRoutes);
-    }
-    validateLinks(item, `${label}.${key}`, finalRoutes);
-  }
-}
-
-function renderHref(href, rootPath) {
-  if (href === "") return rootPath;
-  if (href.startsWith("#") || /^(?:https?:|mailto:|tel:)/.test(href)) return escapeHtml(href);
-  const [routePart, fragment] = href.split("#");
-  const route = normalizeRoute(routePart, "renderHref", { allowEmpty: true });
-  const suffix = route ? `${route}/` : "";
-  return escapeHtml(`${rootPath}${suffix}${fragment ? `#${fragment}` : ""}`);
-}
-
-function renderLegacyList(items, rootPath) {
-  return items
-    .map((item) => {
-      if (typeof item === "string") return `          <li>${escapeHtml(item)}</li>`;
-      const suffix = item.text ? ` ${escapeHtml(item.text)}` : "";
-      return `          <li><a href="${renderHref(item.href, rootPath)}">${escapeHtml(item.label)}</a>${suffix}</li>`;
-    })
-    .join("\n");
-}
-
-function renderLegacyBrands(items) {
-  return items.map((item) => `          <span>${escapeHtml(item)}</span>`).join("\n");
-}
-
-function renderLegacyRelated(items, rootPath) {
-  return items.map((item) => `        <a href="${renderHref(item.href, rootPath)}">${escapeHtml(item.label)}</a>`).join("\n");
-}
-
 function renderBreadcrumbs(page, rootPath) {
-  const items = page.breadcrumbs
-    .map((crumb, index) => {
-      const current = index === page.breadcrumbs.length - 1;
-      const content = current
-        ? `<span aria-current="page">${escapeHtml(crumb.label)}</span>`
-        : `<a href="${renderHref(crumb.href, rootPath)}">${escapeHtml(crumb.label)}</a>`;
-      return `                <li>${content}</li>`;
-    })
-    .join("\n");
-  return `            <nav class="semantic-hero__breadcrumbs semantic-breadcrumbs" aria-label="Хлебные крошки">\n              <ol>\n${items}\n              </ol>\n            </nav>`;
+  const items = page.breadcrumbs.map((crumb, index) => {
+    const last = index === page.breadcrumbs.length - 1;
+    if (last || crumb.href === undefined) return `              <li aria-current="page">${escapeHtml(crumb.label)}</li>`;
+    const href = crumb.href === "" ? rootPath : `${rootPath}${crumb.href.replace(/^\/+|\/+$/g, "")}/`;
+    return `              <li><a href="${escapeHtml(href)}">${escapeHtml(crumb.label)}</a></li>`;
+  }).join("\n");
+  return `            <nav class="internal-breadcrumbs" aria-label="Хлебные крошки">\n              <ol>\n${items}\n              </ol>\n            </nav>`;
 }
 
-function renderHeroFacts(page, graph) {
-  return page.heroFacts
-    .map((fact) => {
-      const claim = fact.claimId ? graph.claimsById.get(fact.claimId) : null;
-      const text = fact.label || fact.text || claim?.text;
-      if (!text) fail(`${page.path}: пустой heroFact`);
-      return `            <li>${escapeHtml(text)}</li>`;
-    })
-    .join("\n");
+function renderHeroTitle(hero) {
+  const title = requireText(hero.h1, "hero.h1");
+  if (!hero.accent || !title.endsWith(hero.accent)) return escapeHtml(title);
+  const base = title.slice(0, -hero.accent.length).trim();
+  return `${escapeHtml(base)} <span>${escapeHtml(hero.accent)}</span>`;
 }
 
-function sectionHeader(section, index) {
-  const eyebrow = section.eyebrow ? `<p class="semantic-section__eyebrow">${escapeHtml(section.eyebrow)}</p>` : "";
-  const intro = section.intro ? `<p class="semantic-section__intro">${escapeHtml(section.intro)}</p>` : "";
-  return `        <header class="semantic-section__head">
-          <span class="semantic-section__index" aria-hidden="true">${String(index + 1).padStart(2, "0")}</span>
-          <div>
-            ${eyebrow}
-            <h2 id="${escapeHtml(section.id)}-title">${escapeHtml(section.title)}</h2>
-            ${intro}
-          </div>
+function renderHeroFacts(hero) {
+  return hero.facts.map((fact) => `            <div><dt>${escapeHtml(fact.label)}</dt><dd>${escapeHtml(fact.value)}</dd></div>`).join("\n");
+}
+
+function renderSectionHead(section, { centered = false } = {}) {
+  const intro = section.intro ? `<p>${escapeHtml(section.intro)}</p>` : "";
+  return `        <header class="internal-section__head${centered ? " internal-section__head--center" : ""}">
+          <h2 id="${escapeHtml(section.id)}-title">${escapeHtml(section.title)}</h2>
+          ${intro}
         </header>`;
 }
 
-function sectionWrapper(section, index, body) {
-  if (!body.trim()) return "";
-  const typeClass = section.type.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`);
-  return `      <section class="semantic-section semantic-section--${typeClass}" id="${escapeHtml(section.id)}" aria-labelledby="${escapeHtml(section.id)}-title">
-${sectionHeader(section, index)}
-${body}
-      </section>`;
+function renderIntroProof(section, rootPath) {
+  const bullets = section.bullets.map((item) => `<li>${escapeHtml(item)}</li>`).join("");
+  const stats = section.stats.map((item) => `<div><dt>${escapeHtml(item.label)}</dt><dd>${escapeHtml(item.value)}</dd></div>`).join("");
+  return `<section class="internal-section internal-section--introProof" id="${escapeHtml(section.id)}" aria-labelledby="${escapeHtml(section.id)}-title">
+  <div class="container internal-intro">
+    <div class="internal-intro__copy">
+      <h2 id="${escapeHtml(section.id)}-title">${escapeHtml(section.title)}</h2>
+      <p class="internal-intro__lead">${escapeHtml(section.intro)}</p>
+      <ul class="internal-intro__list">${bullets}</ul>
+      <p class="internal-intro__statement">${escapeHtml(section.statement)}</p>
+    </div>
+    <figure class="internal-intro__media"><img src="${rootPath}${escapeHtml(section.image)}" alt="${escapeHtml(section.imageAlt)}" loading="eager" decoding="async"></figure>
+    <dl class="internal-intro__stats">${stats}</dl>
+  </div>
+</section>`;
 }
 
-function renderApplicability(section, graph, rootPath) {
-  const groups = requireArray(section.groups, `${section.id}.groups`)
-    .map((group) => {
-      const items = requireArray(group.items, `${section.id}.${group.title}.items`)
-        .map((item) => {
-          const entity = graph.entitiesById.get(item.entityId);
-          const label = item.label || entity.name;
-          const inner = `<strong>${escapeHtml(label)}</strong><span>${escapeHtml(entity.description)}</span>`;
-          const element = item.href
-            ? `<a class="semantic-applicability__item semantic-section__link" href="${renderHref(item.href, rootPath)}">${inner}</a>`
-            : `<div class="semantic-applicability__item">${inner}</div>`;
-          return `              <li>${element}</li>`;
-        })
-        .join("\n");
-      return `          <section class="semantic-applicability__group semantic-card">
-            <h3>${escapeHtml(group.title)}</h3>
-            <ul>
-${items}
-            </ul>
-          </section>`;
-    })
-    .join("\n");
-  return `        <div class="semantic-applicability semantic-index semantic-section__grid">\n${groups}\n        </div>`;
+function renderServiceGrid(section) {
+  const items = section.items.map((item) => `<article class="internal-service-card">
+  <svg class="internal-service-card__icon" aria-hidden="true"><use href="#internal-icon-${escapeHtml(item.icon)}"></use></svg>
+  <div><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.text)}</p></div>
+</article>`).join("\n");
+  return `<section class="internal-section internal-section--serviceGrid" id="${escapeHtml(section.id)}" aria-labelledby="${escapeHtml(section.id)}-title">
+  <div class="container">${renderSectionHead(section, { centered: true })}<div class="internal-service-grid">${items}</div></div>
+</section>`;
 }
 
-function renderServiceMap(section, rootPath) {
-  const items = requireArray(section.items, `${section.id}.items`)
-    .map((item) => {
-      const link = item.href
-        ? `<a class="semantic-service-map__link semantic-section__link" href="${renderHref(item.href, rootPath)}">Открыть направление</a>`
-        : "";
-      return `          <article class="semantic-service-map__lane semantic-section__item">
-            <span class="semantic-service-map__zone">${escapeHtml(item.zone)}</span>
-            <div class="semantic-service-map__body">
-              <h3 class="semantic-section__item-title">${escapeHtml(item.title)}</h3>
-              <p class="semantic-section__item-text">${escapeHtml(item.text)}</p>
-            </div>
-            ${link}
-          </article>`;
-    })
-    .join("\n");
-  return `        <div class="semantic-service-map semantic-index">\n${items}\n        </div>`;
+function renderVehicleTypes(section, rootPath) {
+  const items = section.items.map((item) => `<article class="internal-vehicle-card">
+  <img src="${rootPath}${escapeHtml(item.image)}" alt="${escapeHtml(item.alt)}" loading="lazy" decoding="async">
+  <div class="internal-vehicle-card__copy"><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.text)}</p></div>
+</article>`).join("\n");
+  return `<section class="internal-section internal-section--vehicleTypes" id="${escapeHtml(section.id)}" aria-labelledby="${escapeHtml(section.id)}-title">
+  <div class="container">${renderSectionHead(section, { centered: true })}<div class="internal-vehicle-mosaic">${items}</div></div>
+</section>`;
 }
 
-function renderDiagnosticMatrix(section, graph) {
-  const rows = requireArray(section.rows, `${section.id}.rows`)
-    .map((row) => {
-      const symptom = graph.entitiesById.get(row.symptomEntityId);
-      const systems = row.relatedEntityIds
-        .map((id) => `<span>${escapeHtml(graph.entitiesById.get(id).name)}</span>`)
-        .join("");
-      return `              <tr class="semantic-diagnostic__row">
-                <th class="semantic-diagnostic__cell" scope="row" data-label="Симптом и режим"><strong>${escapeHtml(symptom.name)}</strong><span>${escapeHtml(row.context)}</span></th>
-                <td class="semantic-diagnostic__cell" data-label="Связанные системы"><div class="semantic-tags">${systems}</div></td>
-                <td class="semantic-diagnostic__cell" data-label="Первая проверка">${escapeHtml(row.firstCheck)}</td>
-              </tr>`;
-    })
-    .join("\n");
-  return `        <div class="semantic-table-wrap">
-          <table class="semantic-diagnostic semantic-table">
-            <thead class="semantic-diagnostic__head">
-              <tr><th>Симптом и режим</th><th>Связанные системы</th><th>Первая проверка</th></tr>
-            </thead>
-            <tbody>
-${rows}
-            </tbody>
-          </table>
-        </div>`;
+function renderBrandStrip(section, rootPath) {
+  const items = section.items.map((item) => `<div class="internal-brand-strip__item"><img src="${rootPath}${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}" loading="lazy" decoding="async"></div>`).join("");
+  return `<section class="internal-section internal-section--brandStrip" id="${escapeHtml(section.id)}" aria-labelledby="${escapeHtml(section.id)}-title">
+  <div class="container">${renderSectionHead(section, { centered: true })}<div class="internal-brand-strip" aria-label="Марки грузовых автомобилей">${items}</div></div>
+</section>`;
+}
+
+function renderSymptoms(section) {
+  const items = section.items.map((item) => `<li>${escapeHtml(item)}</li>`).join("");
+  return `<section class="internal-section internal-section--symptoms" id="${escapeHtml(section.id)}" aria-labelledby="${escapeHtml(section.id)}-title">
+  <div class="container">${renderSectionHead(section)}<ul class="internal-symptoms">${items}</ul></div>
+</section>`;
 }
 
 function renderWorkStages(section) {
-  const items = requireArray(section.items, `${section.id}.items`)
-    .map(
-      (item, index) => `          <li class="semantic-steps__item">
-            <span class="semantic-steps__number" aria-hidden="true">${String(index + 1).padStart(2, "0")}</span>
-            <div class="semantic-steps__body"><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.text)}</p></div>
-          </li>`,
-    )
-    .join("\n");
-  return `        <ol class="semantic-steps semantic-workflow">\n${items}\n        </ol>`;
+  const items = section.items.map((item, index) => `<li class="internal-timeline__item">
+  <span class="internal-timeline__number">${String(index + 1).padStart(2, "0")}</span>
+  <h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.text)}</p>
+</li>`).join("");
+  return `<section class="internal-section internal-section--workStages" id="${escapeHtml(section.id)}" aria-labelledby="${escapeHtml(section.id)}-title">
+  <div class="container">${renderSectionHead(section)}<ol class="internal-timeline">${items}</ol></div>
+</section>`;
 }
 
-function renderCardGrid(section) {
-  const items = requireArray(section.items, `${section.id}.items`)
-    .map(
-      (item) => `          <article class="semantic-section__item semantic-card">
-            <h3 class="semantic-section__item-title">${escapeHtml(item.title)}</h3>
-            <p class="semantic-section__item-text">${escapeHtml(item.text)}</p>
-          </article>`,
-    )
-    .join("\n");
-  return `        <div class="semantic-section__grid semantic-index">\n${items}\n        </div>`;
+function renderPriceTable(items) {
+  const rows = items.map((item) => `<tr><th scope="row">${escapeHtml(item.service)}</th><td>${escapeHtml(item.price)}</td></tr>`).join("");
+  return `<table class="internal-price-table"><thead class="visually-hidden"><tr><th>Услуга</th><th>Цена от</th></tr></thead><tbody>${rows}</tbody></table>`;
 }
 
-function renderRelatedSystems(section, graph, rootPath) {
-  const items = section.relationIds
-    .map((id) => {
-      const relation = graph.relationsById.get(id);
-      const subject = graph.entitiesById.get(relation.subject);
-      const object = graph.entitiesById.get(relation.object);
-      const href = section.links?.[relation.object];
-      const title = href
-        ? `<a class="semantic-section__link" href="${renderHref(href, rootPath)}">${escapeHtml(object.name)}</a>`
-        : escapeHtml(object.name);
-      return `          <article class="semantic-section__item semantic-card">
-            <p class="semantic-section__relation"><span>${escapeHtml(subject.name)}</span> <span>${escapeHtml(relation.predicateLabel)}</span></p>
-            <h3 class="semantic-section__item-title">${title}</h3>
-            <p class="semantic-section__item-text">${escapeHtml(relation.description || object.description)}</p>
-          </article>`;
-    })
-    .join("\n");
-  return `        <div class="semantic-section__grid semantic-index">\n${items}\n        </div>`;
+function renderPriceExamples(section) {
+  const midpoint = Math.ceil(section.items.length / 2);
+  const metadata = [
+    ["Действует с", "29 августа 2026 года"],
+    ["Единица", section.metadata.unit],
+    ["НДС", section.metadata.vat],
+    ["Запчасти", section.metadata.partsAndMaterials],
+    ["Источник", section.metadata.source],
+  ].map(([label, value]) => `<div><dt>${escapeHtml(label)}:</dt><dd>${escapeHtml(value)}</dd></div>`).join("");
+  return `<section class="internal-section internal-section--priceExamples" id="${escapeHtml(section.id)}" aria-labelledby="${escapeHtml(section.id)}-title">
+  <div class="container">${renderSectionHead(section)}
+    <div class="internal-price-layout">${renderPriceTable(section.items.slice(0, midpoint))}${renderPriceTable(section.items.slice(midpoint))}</div>
+    <p class="internal-price-note">${escapeHtml(section.note)}</p>
+    <dl class="internal-price-meta">${metadata}</dl>
+  </div>
+</section>`;
 }
 
-function renderProof(section, graph, rootPath) {
-  const items = requireArray(section.items, `${section.id}.items`)
-    .map((item) => {
-      const entity = graph.entitiesById.get(item.entityId);
-      const title = item.title || entity.name;
-      const text = item.text || entity.description;
-      const image = `<img class="semantic-proof__image" src="${escapeHtml(`${rootPath}${item.image}`)}" alt="${escapeHtml(item.alt)}" loading="lazy" decoding="async">`;
-      const mediaClass = item.image.includes("/certificates/")
-        ? "semantic-proof__media semantic-proof__media--document"
-        : "semantic-proof__media";
-      const media = item.largeImage
-        ? `<a class="${mediaClass}" href="${escapeHtml(`${rootPath}${item.largeImage}`)}" aria-label="Открыть изображение: ${escapeHtml(item.alt)}">${image}</a>`
-        : `<div class="${mediaClass}">${image}</div>`;
-      const link = item.href
-        ? `<a class="semantic-section__link" href="${renderHref(item.href, rootPath)}">${escapeHtml(item.linkLabel || "Подробнее")}</a>`
-        : "";
-      return `          <article class="semantic-proof__item semantic-card">
-            ${media}
-            <div class="semantic-proof__body">
-              <h3>${escapeHtml(title)}</h3>
-              <p>${escapeHtml(text)}</p>
-              ${link}
-            </div>
-          </article>`;
-    })
-    .join("\n");
-  return `        <div class="semantic-proof semantic-section__grid">\n${items}\n        </div>`;
+function renderRelatedIndex(section) {
+  const items = section.items.map((item) => `<span>${escapeHtml(item)}</span>`).join("");
+  return `<section class="internal-section internal-section--relatedIndex" id="${escapeHtml(section.id)}" aria-labelledby="${escapeHtml(section.id)}-title">
+  <div class="container">${renderSectionHead(section)}<div class="internal-related-index" aria-label="Будущие направления сайта">${items}</div></div>
+</section>`;
 }
 
-function renderPreCall(section) {
-  const items = requireArray(section.items, `${section.id}.items`)
-    .map(
-      (item) => `          <div class="semantic-pre-call__item semantic-card">
-            <dt>${escapeHtml(item.label)}</dt>
-            <dd>${escapeHtml(item.text)}</dd>
-          </div>`,
-    )
-    .join("\n");
-  return `        <dl class="semantic-pre-call semantic-index">\n${items}\n        </dl>`;
+function renderFaq(section) {
+  const items = section.items.map((item) => `<details><summary>${escapeHtml(item.question)}</summary><p>${escapeHtml(item.answer)}</p></details>`).join("");
+  return `<section class="internal-section internal-section--faq" id="${escapeHtml(section.id)}" aria-labelledby="${escapeHtml(section.id)}-title">
+  <div class="container internal-faq-layout">${renderSectionHead(section)}<div class="internal-faq">${items}</div></div>
+</section>`;
 }
 
-function renderRelated(section, rootPath) {
-  const items = requireArray(section.items, `${section.id}.items`)
-    .map(
-      (item) => `          <a class="semantic-links__item semantic-card" href="${renderHref(item.href, rootPath)}">
-            <strong>${escapeHtml(item.label)}</strong>
-            <span>${escapeHtml(item.text)}</span>
-          </a>`,
-    )
-    .join("\n");
-  return `        <div class="semantic-links semantic-section__grid">\n${items}\n        </div>`;
-}
-
-function renderContact(section, rootPath, config) {
-  const secondary = section.secondaryHref
-    ? `<a class="button button--secondary" href="${renderHref(section.secondaryHref, rootPath)}">${escapeHtml(section.secondaryLabel)}</a>`
-    : "";
-  return `        <div class="semantic-contact semantic-callout">
-          <div>
-            <p>${escapeHtml(section.intro || "")}</p>
-            <p class="semantic-contact__address">${escapeHtml(config.site.address.locality)}, ${escapeHtml(config.site.address.street)}</p>
-          </div>
-          <div class="semantic-contact__actions">
-            <a class="button button--primary" href="${escapeHtml(config.site.primaryCta.href)}">${escapeHtml(config.site.primaryCta.label)}</a>
-            ${secondary}
-          </div>
-        </div>`;
-}
-
-function renderSection(section, index, graph, rootPath, config) {
-  let body = "";
-  if (section.type === "applicability") body = renderApplicability(section, graph, rootPath);
-  else if (section.type === "serviceMap") body = renderServiceMap(section, rootPath);
-  else if (section.type === "diagnosticMatrix") body = renderDiagnosticMatrix(section, graph);
-  else if (section.type === "workStages") body = renderWorkStages(section);
-  else if (["decisionCriteria", "costFactors"].includes(section.type)) body = renderCardGrid(section);
-  else if (section.type === "relatedSystems") body = renderRelatedSystems(section, graph, rootPath);
-  else if (section.type === "proof") body = renderProof(section, graph, rootPath);
-  else if (section.type === "preCall") body = renderPreCall(section);
-  else if (section.type === "related") body = renderRelated(section, rootPath);
-  else if (section.type === "contact") body = renderContact(section, rootPath, config);
-  return sectionWrapper(section, index, body);
+function renderSection(section, rootPath) {
+  const renderers = {
+    introProof: () => renderIntroProof(section, rootPath),
+    serviceGrid: () => renderServiceGrid(section),
+    vehicleTypes: () => renderVehicleTypes(section, rootPath),
+    brandStrip: () => renderBrandStrip(section, rootPath),
+    symptoms: () => renderSymptoms(section),
+    workStages: () => renderWorkStages(section),
+    priceExamples: () => renderPriceExamples(section),
+    relatedIndex: () => renderRelatedIndex(section),
+    faq: () => renderFaq(section),
+  };
+  return renderers[section.type]();
 }
 
 function writeHtml(route, html, writtenRoutes) {
   if (writtenRoutes.has(route)) fail(`попытка повторно записать маршрут ${route || "/"}`);
-  const normalizedHtml = html
-    .replace(/[ \t]+$/gm, "")
-    .replace(/<!--[\s\S]*?-->/g, "")
-    .replace(/>\s+</g, "> <")
-    .trim();
-  assertNoPlaceholders(normalizedHtml, route || "/");
+  const normalized = html.replace(/[ \t]+$/gm, "").replace(/<!--[\s\S]*?-->/g, "").replace(/>\s+</g, "> <").trim();
+  assertNoPlaceholders(normalized, route || "/");
   const target = outputFileForRoute(route);
   fs.mkdirSync(path.dirname(target), { recursive: true });
-  fs.writeFileSync(target, normalizedHtml, "utf8");
+  fs.writeFileSync(target, normalized, "utf8");
   writtenRoutes.add(route);
 }
 
-function buildSourcePages(routePlan, partials, config, mode, baseUrl, writtenRoutes) {
-  for (const [route, source] of routePlan.staticRoutes) {
+function buildStaticPages(staticFiles, partials, config, mode, baseUrl, writtenRoutes) {
+  for (const source of staticFiles) {
+    const route = routeFromSource(source);
     const target = outputFileForRoute(route);
-    const rootPath = getRootPath(path.relative(distDir, target));
+    const rootPath = route === "404"
+      ? new URL(baseUrl).pathname
+      : getRootPath(path.relative(distDir, target));
     const homeCss = route === ""
       ? fs.readFileSync(path.join(distDir, "assets", "css", "home-critical.css"), "utf8")
         .replaceAll("../fonts/", `${rootPath}assets/fonts/`)
         .replaceAll("../img/", `${rootPath}assets/img/`)
       : "";
-    const context = {
+    const rendered = render(fs.readFileSync(source, "utf8"), partials, {
       rootPath,
       assetVersion,
       homeStyles: homeCss ? `<style data-critical-styles>${homeCss}</style>` : "",
-    };
-    const rendered = render(fs.readFileSync(source, "utf8"), partials, context);
+    });
     const metadata = extractMetadata(rendered, route || "/", config);
     writeHtml(route, enrichHead(rendered, metadata, route, rootPath, config, mode, baseUrl), writtenRoutes);
   }
 }
 
-function buildLegacyPages(legacyPages, routePlan, partials, config, mode, baseUrl, writtenRoutes) {
-  const template = fs.readFileSync(path.join(templatesDir, "seo-page.html"), "utf8");
-  for (const page of legacyPages) {
-    if (routePlan.skippedLegacy.has(page.path)) continue;
+function buildInternalPages(pages, partials, config, mode, baseUrl, writtenRoutes) {
+  const template = fs.readFileSync(path.join(templatesDir, "internal-page.html"), "utf8");
+  for (const page of pages) {
     const target = outputFileForRoute(page.path);
     const rootPath = getRootPath(path.relative(distDir, target));
-    const context = {
-      rootPath,
-      assetVersion,
-      title: escapeHtml(page.title),
-      description: escapeHtml(page.description),
-      breadcrumbLabel: escapeHtml(page.breadcrumbLabel || "Ремонт"),
-      breadcrumbHref: renderHref(page.breadcrumbHref || "remont/", rootPath).replace(rootPath, ""),
-      kicker: escapeHtml(page.kicker),
-      h1: escapeHtml(page.h1),
-      lead: escapeHtml(page.lead),
-      worksTitle: escapeHtml(page.worksTitle),
-      works: renderLegacyList(page.works, rootPath),
-      techTitle: escapeHtml(page.techTitle),
-      techText: escapeHtml(page.techText),
-      brands: renderLegacyBrands(page.brands),
-      processTitle: escapeHtml(page.processTitle),
-      process: renderLegacyList(page.process, rootPath),
-      ctaTitle: escapeHtml(page.ctaTitle),
-      ctaText: escapeHtml(page.ctaText),
-      related: renderLegacyRelated(page.related, rootPath),
-    };
-    const rendered = render(template, partials, context);
-    const metadata = { title: page.title, description: page.description, socialImage: config.site.defaultSocialImage };
-    writeHtml(page.path, enrichHead(rendered, metadata, page.path, rootPath, config, mode, baseUrl), writtenRoutes);
-  }
-}
-
-function buildPilotPages(pilots, partials, config, graph, mode, baseUrl, writtenRoutes) {
-  const template = fs.readFileSync(path.join(templatesDir, "semantic-page.html"), "utf8");
-  for (const page of pilots) {
-    const target = outputFileForRoute(page.path);
-    const rootPath = getRootPath(path.relative(distDir, target));
-    const localNav = page.sections
-      .map((section) => `            <a href="#${escapeHtml(section.id)}">${escapeHtml(section.title)}</a>`)
-      .join("\n");
-    const sections = page.sections.map((section, index) => renderSection(section, index, graph, rootPath, config)).filter(Boolean).join("\n\n");
-    const context = {
+    const rendered = render(template, partials, {
       rootPath,
       assetVersion,
       family: escapeHtml(page.family),
       title: escapeHtml(page.metadata.title),
       description: escapeHtml(page.metadata.description),
+      heroImage: escapeHtml(page.hero.image),
+      heroMobileImage: escapeHtml(page.hero.mobileImage),
+      h1: renderHeroTitle(page.hero),
+      lead: escapeHtml(page.hero.lead),
+      heroCtaLabel: escapeHtml(page.hero.ctaLabel),
+      heroFacts: renderHeroFacts(page.hero),
       breadcrumbs: renderBreadcrumbs(page, rootPath),
-      kicker: escapeHtml(page.kicker),
-      h1: escapeHtml(page.h1),
-      lead: escapeHtml(page.lead),
-      heroFacts: renderHeroFacts(page, graph),
-      localNav,
-      sections,
+      sections: page.sections.map((section) => renderSection(section, rootPath)).join("\n"),
       phoneHref: escapeHtml(config.site.phoneHref),
       phone: escapeHtml(config.site.phone),
-      primaryCtaLabel: escapeHtml(config.site.primaryCta.label),
-    };
-    const rendered = render(template, partials, context);
-    const structuredData = buildPilotStructuredData(page, config, graph.entitiesById, baseUrl);
+      address: escapeHtml(`${config.site.address.locality}, ${config.site.address.street}`),
+      openingHoursLabel: escapeHtml(config.site.openingHours.label),
+    });
     writeHtml(
       page.path,
-      enrichHead(rendered, page.metadata, page.path, rootPath, config, mode, baseUrl, structuredData),
+      enrichHead(rendered, page.metadata, page.path, rootPath, config, mode, baseUrl, buildInternalStructuredData(page, config, baseUrl)),
       writtenRoutes,
     );
   }
-}
-
-function build404(partials, config, mode, baseUrl, writtenRoutes) {
-  const source = `<!doctype html>
-<html lang="ru">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Страница не найдена — РемСД</title>
-    <meta name="description" content="Запрошенная страница не найдена. Перейдите к направлениям ремонта или свяжитесь с мастером РемСД в Сургуте.">
-    <link rel="stylesheet" href="{{rootPath}}assets/css/styles.css?v={{assetVersion}}">
-  </head>
-  <body>
-    <a class="skip-link" href="#main-content">Перейти к содержанию</a>
-    {{header}}
-    <main id="main-content" tabindex="-1">
-      <section class="page-hero">
-        <div class="container page-hero__inner">
-          <p class="eyebrow">Ошибка 404</p>
-          <h1>Такой страницы нет</h1>
-          <p class="page-hero__lead">Адрес мог измениться или в ссылке есть ошибка. Откройте карту ремонта либо вернитесь на главную.</p>
-          <div class="page-hero__actions">
-            <a class="button button--primary" href="{{rootPath}}remont/">Выбрать направление ремонта</a>
-            <a class="button button--secondary" href="{{rootPath}}">На главную</a>
-          </div>
-        </div>
-      </section>
-    </main>
-    {{footer}}
-    {{mobile-callbar}}
-    <script src="{{rootPath}}assets/js/main.js?v={{assetVersion}}"></script>
-  </body>
-</html>`;
-  const rootPath = "./";
-  const rendered = render(source, partials, { rootPath, assetVersion });
-  const metadata = {
-    title: "Страница не найдена — РемСД",
-    description: "Запрошенная страница не найдена. Перейдите к направлениям ремонта или свяжитесь с мастером РемСД в Сургуте.",
-    socialImage: config.site.defaultSocialImage,
-  };
-  writeHtml("404", enrichHead(rendered, metadata, "404", rootPath, config, mode, baseUrl), writtenRoutes);
 }
 
 function writeSeoFiles(mode, baseUrl, finalRoutes) {
@@ -1165,55 +683,39 @@ function writeSeoFiles(mode, baseUrl, finalRoutes) {
     : `User-agent: *\nAllow: /\nSitemap: ${new URL("sitemap.xml", baseUrl)}\n`;
   fs.writeFileSync(path.join(distDir, "robots.txt"), robots, "utf8");
   if (mode !== "production") return;
-  const urls = [...finalRoutes]
-    .filter((route) => route !== "404")
-    .sort()
-    .map((route) => `  <url><loc>${escapeXml(toAbsoluteUrl(baseUrl, route))}</loc></url>`)
-    .join("\n");
-  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
-  fs.writeFileSync(path.join(distDir, "sitemap.xml"), sitemap, "utf8");
+  const urls = [...finalRoutes].filter((route) => route !== "404").sort()
+    .map((route) => `  <url><loc>${escapeHtml(toAbsoluteUrl(baseUrl, route))}</loc></url>`).join("\n");
+  fs.writeFileSync(path.join(distDir, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`, "utf8");
 }
 
 function main() {
   const config = readJson(path.join(dataDir, "site-config.json"));
-  const entityData = readJson(path.join(dataDir, "entities.json"));
-  const relationData = readJson(path.join(dataDir, "relations.json"));
-  const pilotData = readJson(path.join(dataDir, "pilot-pages.json"));
-  const legacyPages = validateLegacy(readJson(path.join(dataDir, "seo-pages.json")));
+  const internalPages = validateInternalPages(readJson(path.join(dataDir, "internal-pages.json")));
   validateConfig(config);
-  const graph = validateGraph(entityData, relationData, config);
-  const pilots = validatePilots(pilotData, graph);
   const mode = process.env.SITE_MODE || process.env.BUILD_MODE || config.defaultMode;
   if (!config.modes[mode]) fail(`SITE_MODE: неизвестный режим ${mode}`);
+  validateClaimExpiry(config.claims, mode, config.site.timeZone);
   const baseUrl = process.env.SITE_URL || config.modes[mode].baseUrl;
-  try {
-    if (!new URL(baseUrl).protocol.startsWith("http") || !baseUrl.endsWith("/")) fail("SITE_URL должен оканчиваться слешем");
-  } catch (error) {
-    fail("SITE_URL: невалидный URL");
-  }
+  if (!baseUrl.endsWith("/")) fail("SITE_URL должен оканчиваться слешем");
 
-  const routePlan = planRoutes(getHtmlFiles(pagesDir), legacyPages, pilots, config);
-  validateGlobalMetadata(routePlan, legacyPages, pilots, config);
-  validateLinks(legacyPages, "seo-pages", routePlan.finalRoutes);
-  validateLinks(pilots, "pilot-pages", routePlan.finalRoutes);
+  const staticFiles = getHtmlFiles(pagesDir);
+  const staticRoutes = new Set(staticFiles.map(routeFromSource));
+  const internalRoutes = new Set(internalPages.map((page) => page.path));
+  for (const route of internalRoutes) if (staticRoutes.has(route)) fail(`дублируется маршрут ${route}`);
+  const finalRoutes = new Set([...staticRoutes, ...internalRoutes]);
 
   cleanDir(distDir);
   copyDir(assetsDir, path.join(distDir, "assets"));
   const outputCssDir = path.join(distDir, "assets", "css");
-  createCssBundles(outputCssDir);
+  const physicalCssLayers = createCssBundles(outputCssDir);
+  for (const layer of physicalCssLayers) fs.rmSync(path.join(outputCssDir, layer), { force: true });
   minifyCssFiles(outputCssDir);
-  const homeStructuredData = buildHomeStructuredData(config, baseUrl);
-  const partials = readPartials(homeStructuredData);
-  const writtenRoutes = new Set();
-  buildSourcePages(routePlan, partials, config, mode, baseUrl, writtenRoutes);
-  buildLegacyPages(legacyPages, routePlan, partials, config, mode, baseUrl, writtenRoutes);
-  buildPilotPages(pilots, partials, config, graph, mode, baseUrl, writtenRoutes);
-  if (!routePlan.staticRoutes.has("404")) {
-    routePlan.finalRoutes.add("404");
-    build404(partials, config, mode, baseUrl, writtenRoutes);
-  }
-  writeSeoFiles(mode, baseUrl, routePlan.finalRoutes);
 
+  const partials = readPartials(buildHomeStructuredData(config, baseUrl));
+  const writtenRoutes = new Set();
+  buildStaticPages(staticFiles, partials, config, mode, baseUrl, writtenRoutes);
+  buildInternalPages(internalPages, partials, config, mode, baseUrl, writtenRoutes);
+  writeSeoFiles(mode, baseUrl, finalRoutes);
   console.log(`Built dist/ in ${mode} mode: ${writtenRoutes.size} HTML pages${mode === "production" ? " with sitemap" : " without sitemap"}.`);
 }
 

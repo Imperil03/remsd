@@ -1,7 +1,7 @@
 {
   "scripts": {
     "build": "node tools/build.js",
-    "check": "node tools/check-site.js",
+    "check": "node tools/check-site.js && node tools/check-design-system.js",
     "generate:critical": "node tools/generate-home-critical-css.js",
     "test:browser": "node tools/verify-browser.js",
     "test:lighthouse": "node tools/verify-lighthouse.js",

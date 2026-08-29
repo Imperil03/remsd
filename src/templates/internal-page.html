@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{title}}</title>
+    <meta name="description" content="{{description}}">
+    <link rel="preload" as="image" href="{{rootPath}}{{heroMobileImage}}" type="image/webp" media="(max-width: 720px)" fetchpriority="high">
+    <link rel="preload" as="image" href="{{rootPath}}{{heroImage}}" type="image/webp" media="(min-width: 721px)" fetchpriority="high">
+    <link rel="stylesheet" href="{{rootPath}}assets/css/internal.css?v={{assetVersion}}">
+  </head>
+  <body class="internal-page internal-page--{{family}}">
+    {{internal-icon-sprite}}
+    <main id="main-content" tabindex="-1">
+      <section class="internal-hero" aria-labelledby="internal-page-title">
+        <a class="skip-link" href="#internal-page-title">К основному содержанию</a>
+        <picture class="internal-hero__media" aria-hidden="true">
+          <source media="(max-width: 720px)" srcset="{{rootPath}}{{heroMobileImage}}" type="image/webp">
+          <source srcset="{{rootPath}}{{heroImage}}" type="image/webp">
+          <img src="{{rootPath}}{{heroImage}}" alt="" width="1672" height="941" fetchpriority="high">
+        </picture>
+        <div class="internal-hero__shell">
+          {{v3-header}}
+          <div class="internal-hero__content">
+{{breadcrumbs}}
+            <h1 id="internal-page-title">{{h1}}</h1>
+            <p class="internal-hero__lead">{{lead}}</p>
+            <a class="v3-button v3-button--primary" href="{{phoneHref}}">{{heroCtaLabel}}</a>
+          </div>
+          <dl class="internal-hero__facts" aria-label="Ключевые факты">
+{{heroFacts}}
+          </dl>
+        </div>
+      </section>
+
+{{sections}}
+
+      <section class="internal-close" aria-labelledby="internal-close-title">
+        <div class="container internal-close__inner">
+          <div class="internal-close__copy">
+            <h2 id="internal-close-title">Остались вопросы? Мы всегда на связи</h2>
+            <p>Позвоните мастеру, назовите марку автомобиля и опишите неисправность — уточним, с чего начать диагностику.</p>
+          </div>
+          <dl class="internal-close__contacts">
+            <div><dt>Телефон</dt><dd><a href="{{phoneHref}}">{{phone}}</a></dd></div>
+            <div><dt>Адрес</dt><dd>{{address}}</dd></div>
+            <div><dt>График</dt><dd>{{openingHoursLabel}}</dd></div>
+          </dl>
+          <a class="v3-button v3-button--primary" href="{{phoneHref}}">Позвонить мастеру</a>
+        </div>
+      </section>
+    </main>
+
+    {{v3-footer}}
+    {{mobile-callbar}}
+    <script src="{{rootPath}}assets/js/main.js?v={{assetVersion}}" defer></script>
+  </body>
+</html>
