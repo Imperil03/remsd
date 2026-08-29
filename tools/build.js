@@ -511,7 +511,7 @@ function renderIntroProof(section, rootPath) {
       <ul class="internal-intro__list">${bullets}</ul>
       <p class="internal-intro__statement">${escapeHtml(section.statement)}</p>
     </div>
-    <figure class="internal-intro__media"><img src="${rootPath}${escapeHtml(section.image)}" alt="${escapeHtml(section.imageAlt)}" loading="eager" decoding="async"></figure>
+    <figure class="internal-intro__media"><img src="${rootPath}${escapeHtml(section.image)}" alt="${escapeHtml(section.imageAlt)}" loading="lazy" decoding="async"></figure>
     <dl class="internal-intro__stats">${stats}</dl>
   </div>
 </section>`;
@@ -647,12 +647,19 @@ function buildStaticPages(staticFiles, partials, config, mode, baseUrl, writtenR
 
 function buildInternalPages(pages, partials, config, mode, baseUrl, writtenRoutes) {
   const template = fs.readFileSync(path.join(templatesDir, "internal-page.html"), "utf8");
+  const internalCriticalFile = path.join(assetsDir, "css", "internal-critical.css");
   for (const page of pages) {
     const target = outputFileForRoute(page.path);
     const rootPath = getRootPath(path.relative(distDir, target));
+    const internalCriticalCss = fs.existsSync(internalCriticalFile)
+      ? fs.readFileSync(internalCriticalFile, "utf8")
+        .replaceAll("../fonts/", `${rootPath}assets/fonts/`)
+        .replaceAll("../img/", `${rootPath}assets/img/`)
+      : "";
     const rendered = render(template, partials, {
       rootPath,
       assetVersion,
+      internalStyles: internalCriticalCss ? `<style data-critical-styles>${internalCriticalCss}</style>` : "",
       family: escapeHtml(page.family),
       title: escapeHtml(page.metadata.title),
       description: escapeHtml(page.metadata.description),
@@ -709,6 +716,7 @@ function main() {
   const outputCssDir = path.join(distDir, "assets", "css");
   const physicalCssLayers = createCssBundles(outputCssDir);
   for (const layer of physicalCssLayers) fs.rmSync(path.join(outputCssDir, layer), { force: true });
+  fs.rmSync(path.join(outputCssDir, "internal-critical.css"), { force: true });
   minifyCssFiles(outputCssDir);
 
   const partials = readPartials(buildHomeStructuredData(config, baseUrl));

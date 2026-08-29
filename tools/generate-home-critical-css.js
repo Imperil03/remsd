@@ -8,15 +8,35 @@ const { transform: transformCss } = require("lightningcss");
 
 const root = path.resolve(__dirname, "..");
 const distDir = path.join(root, "dist");
-const outputFile = path.join(root, "assets", "css", "home-critical.css");
 const host = "127.0.0.1";
 const port = Number(process.env.CRITICAL_PORT || 4178);
+const targets = [
+  {
+    name: "home",
+    file: "index.html",
+    css: "home.css",
+    heroClass: "v3-hero",
+    bodyClass: "v3-page",
+    output: "home-critical.css",
+    prepend: ".v3-page :where(main > :not(.v3-hero)){content-visibility:hidden;contain-intrinsic-block-size:900px}",
+  },
+  {
+    name: "internal",
+    file: "remont-gruzovyh-avtomobiley/index.html",
+    css: "internal.css",
+    heroClass: "internal-hero",
+    bodyClass: "internal-page internal-page--hub",
+    output: "internal-critical.css",
+    prepend: ".internal-page main>:not(.internal-hero){content-visibility:hidden;contain-intrinsic-block-size:900px}",
+  },
+];
 
-function criticalShell() {
-  const html = fs.readFileSync(path.join(distDir, "index.html"), "utf8");
-  const hero = html.match(/<section class="v3-hero"[\s\S]*?<\/section>/)?.[0];
-  if (!hero) throw new Error("Не удалось выделить первый экран главной");
-  return `<!doctype html><html lang="ru"><head><meta charset="utf-8"><base href="/"><link rel="stylesheet" href="./assets/css/home.css"></head><body class="v3-page"><main>${hero}</main></body></html>`;
+function criticalShell(target) {
+  const html = fs.readFileSync(path.join(distDir, target.file), "utf8");
+  const escapedClass = target.heroClass.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const hero = html.match(new RegExp(`<section class="[^"]*${escapedClass}[^"]*"[\\s\\S]*?<\\/section>`))?.[0];
+  if (!hero) throw new Error(`Не удалось выделить первый экран ${target.name}`);
+  return `<!doctype html><html lang="ru"><head><meta charset="utf-8"><base href="/"><link rel="stylesheet" href="./assets/css/${target.css}"></head><body class="${target.bodyClass}"><main>${hero}</main></body></html>`;
 }
 
 function resolveRequest(url) {
@@ -32,19 +52,16 @@ function startServer() {
   return new Promise((resolve) => {
     const server = http.createServer((request, response) => {
       const pathname = new URL(request.url, `http://${host}:${port}`).pathname;
-      if (pathname === "/__critical__/") {
-        response.writeHead(200, {
-          "cache-control": "no-store",
-          "content-type": "text/html; charset=utf-8",
-        });
-        response.end(criticalShell());
+      const match = pathname.match(/^\/__critical__\/([a-z]+)\/$/);
+      if (match) {
+        const target = targets.find((item) => item.name === match[1]);
+        if (!target) return response.writeHead(404).end();
+        response.writeHead(200, { "cache-control": "no-store", "content-type": "text/html; charset=utf-8" });
+        response.end(criticalShell(target));
         return;
       }
       const file = resolveRequest(request.url);
-      if (!file) {
-        response.writeHead(404).end();
-        return;
-      }
+      if (!file) return response.writeHead(404).end();
       response.writeHead(200, { "cache-control": "no-store" });
       fs.createReadStream(file).pipe(response);
     });
@@ -91,15 +108,41 @@ function keepUsedNodes(container, ranges) {
   return kept;
 }
 
-async function collectCoverage(browser, viewport) {
+async function collectCoverage(browser, target, viewport) {
   const page = await browser.newPage();
   await page.setViewport(viewport);
   await page.coverage.startCSSCoverage();
-  await page.goto(`http://${host}:${port}/__critical__/`, { waitUntil: "networkidle0" });
+  await page.goto(`http://${host}:${port}/__critical__/${target.name}/`, { waitUntil: "networkidle0" });
   await new Promise((resolve) => setTimeout(resolve, 350));
   const coverage = await page.coverage.stopCSSCoverage();
   await page.close();
-  return coverage.sort((a, b) => b.text.length - a.text.length)[0];
+  return coverage.find((entry) => entry.url.endsWith(`/assets/css/${target.css}`));
+}
+
+async function generateTarget(browser, target) {
+  const entries = [];
+  for (const viewport of [
+    { width: 390, height: 844, deviceScaleFactor: 1 },
+    { width: 1440, height: 900, deviceScaleFactor: 1 },
+  ]) {
+    const entry = await collectCoverage(browser, target, viewport);
+    if (!entry) throw new Error(`CSS coverage не нашёл ${target.css}`);
+    entries.push(entry);
+  }
+  const source = entries[0].text;
+  if (entries.some((entry) => entry.text !== source)) throw new Error(`${target.css}: coverage вернул разные исходники`);
+  const ranges = mergeRanges(entries.flatMap((entry) => entry.ranges));
+  const parsed = postcss.parse(source, { from: target.css });
+  const criticalRoot = postcss.root();
+  criticalRoot.append(postcss.parse(target.prepend));
+  criticalRoot.append(keepUsedNodes(parsed, ranges));
+  const normalized = criticalRoot.toString()
+    .replaceAll("./assets/fonts/", "../fonts/")
+    .replaceAll("./assets/img/", "../img/");
+  const outputFile = path.join(root, "assets", "css", target.output);
+  const minified = transformCss({ filename: outputFile, code: Buffer.from(normalized), minify: true }).code;
+  fs.writeFileSync(outputFile, minified);
+  console.log(`Generated ${path.relative(root, outputFile)}: ${minified.length} bytes from ${source.length}.`);
 }
 
 async function run() {
@@ -110,32 +153,8 @@ async function run() {
     headless: true,
     args: ["--no-sandbox", "--disable-dev-shm-usage"],
   });
-
   try {
-    const entries = [];
-    for (const viewport of [
-      { width: 390, height: 844, deviceScaleFactor: 1 },
-      { width: 1440, height: 900, deviceScaleFactor: 1 },
-    ]) {
-      entries.push(await collectCoverage(browser, viewport));
-    }
-    const source = entries[0].text;
-    if (entries.some((entry) => entry.text !== source)) throw new Error("CSS coverage вернул разные исходники");
-    const ranges = mergeRanges(entries.flatMap((entry) => entry.ranges));
-    const parsed = postcss.parse(source, { from: "home.css" });
-    const criticalRoot = postcss.root();
-    criticalRoot.append(postcss.parse(".v3-page :where(main > :not(.v3-hero)){content-visibility:hidden;contain-intrinsic-block-size:900px}"));
-    criticalRoot.append(keepUsedNodes(parsed, ranges));
-    const normalized = criticalRoot.toString()
-      .replaceAll("./assets/fonts/", "../fonts/")
-      .replaceAll("./assets/img/", "../img/");
-    const minified = transformCss({
-      filename: outputFile,
-      code: Buffer.from(normalized),
-      minify: true,
-    }).code;
-    fs.writeFileSync(outputFile, minified);
-    console.log(`Generated ${path.relative(root, outputFile)}: ${minified.length} bytes from ${source.length}.`);
+    for (const target of targets) await generateTarget(browser, target);
   } finally {
     await browser.close();
     await new Promise((resolve) => server.close(resolve));
