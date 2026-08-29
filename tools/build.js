@@ -10,7 +10,7 @@ const dataDir = path.join(srcDir, "data");
 const templatesDir = path.join(srcDir, "templates");
 const assetsDir = path.join(root, "assets");
 const distDir = path.join(root, "dist");
-const assetVersion = process.env.ASSET_VERSION || "20260829-internal-system-v1";
+const assetVersion = process.env.ASSET_VERSION || "20260830-reference-blocks-v1";
 
 const PAGE_FAMILIES = new Set(["hub", "service", "brand"]);
 const SECTION_TYPES = new Set([
@@ -396,7 +396,7 @@ function validateSection(section, label) {
     requireArray(section.items, `${label}.items`, { nonEmpty: true }).forEach((item, index) => {
       requireText(item.title, `${label}.items[${index}].title`);
       requireText(item.text, `${label}.items[${index}].text`);
-      if (type === "serviceGrid") requireText(item.icon, `${label}.items[${index}].icon`);
+      requireText(item.icon, `${label}.items[${index}].icon`);
     });
   } else if (type === "vehicleTypes") {
     requireArray(section.items, `${label}.items`, { nonEmpty: true }).forEach((item, index) => {
@@ -410,7 +410,13 @@ function validateSection(section, label) {
       requireText(item.name, `${label}.items[${index}].name`);
       validateAsset(item.image, `${label}.items[${index}].image`);
     });
-  } else if (["symptoms", "relatedIndex"].includes(type)) {
+  } else if (type === "symptoms") {
+    requireArray(section.items, `${label}.items`, { nonEmpty: true }).forEach((item, index) => {
+      requireObject(item, `${label}.items[${index}]`);
+      requireText(item.icon, `${label}.items[${index}].icon`);
+      requireText(item.text, `${label}.items[${index}].text`);
+    });
+  } else if (type === "relatedIndex") {
     requireArray(section.items, `${label}.items`, { nonEmpty: true }).forEach((item, index) => requireText(item, `${label}.items[${index}]`));
   } else if (type === "priceExamples") {
     requireArray(section.items, `${label}.items`, { nonEmpty: true }).forEach((item, index) => {
@@ -457,6 +463,7 @@ function validateInternalPages(data) {
     validateAsset(hero.image, `${label}.hero.image`);
     validateAsset(hero.mobileImage, `${label}.hero.mobileImage`);
     requireArray(hero.facts, `${label}.hero.facts`, { nonEmpty: true }).forEach((fact, factIndex) => {
+      requireText(fact.icon, `${label}.hero.facts[${factIndex}].icon`);
       requireText(fact.label, `${label}.hero.facts[${factIndex}].label`);
       requireText(fact.value, `${label}.hero.facts[${factIndex}].value`);
     });
@@ -489,7 +496,10 @@ function renderHeroTitle(hero) {
 }
 
 function renderHeroFacts(hero) {
-  return hero.facts.map((fact) => `            <div><dt>${escapeHtml(fact.label)}</dt><dd>${escapeHtml(fact.value)}</dd></div>`).join("\n");
+  return hero.facts.map((fact) => `            <div>
+              <svg class="internal-hero__fact-icon" aria-hidden="true"><use href="#internal-icon-${escapeHtml(fact.icon)}"></use></svg>
+              <dt>${escapeHtml(fact.label)}</dt><dd>${escapeHtml(fact.value)}</dd>
+            </div>`).join("\n");
 }
 
 function renderSectionHead(section, { centered = false } = {}) {
@@ -545,7 +555,7 @@ function renderBrandStrip(section, rootPath) {
 }
 
 function renderSymptoms(section) {
-  const items = section.items.map((item) => `<li>${escapeHtml(item)}</li>`).join("");
+  const items = section.items.map((item) => `<li><svg class="internal-symptom__icon" aria-hidden="true"><use href="#internal-icon-${escapeHtml(item.icon)}"></use></svg><span>${escapeHtml(item.text)}</span></li>`).join("");
   return `<section class="internal-section internal-section--symptoms" id="${escapeHtml(section.id)}" aria-labelledby="${escapeHtml(section.id)}-title">
   <div class="container">${renderSectionHead(section)}<ul class="internal-symptoms">${items}</ul></div>
 </section>`;
@@ -553,6 +563,7 @@ function renderSymptoms(section) {
 
 function renderWorkStages(section) {
   const items = section.items.map((item, index) => `<li class="internal-timeline__item">
+  <svg class="internal-timeline__icon" aria-hidden="true"><use href="#internal-icon-${escapeHtml(item.icon)}"></use></svg>
   <span class="internal-timeline__number">${String(index + 1).padStart(2, "0")}</span>
   <h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.text)}</p>
 </li>`).join("");
