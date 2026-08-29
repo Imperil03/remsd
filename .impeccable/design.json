@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-08-29T18:00:00+05:00",
+  "generatedAt": "2026-08-30T00:50:46+05:00",
   "title": "Design System: РемСД",
   "extensions": {
     "colorMeta": {
@@ -57,52 +57,59 @@
       "name": "Primary Button",
       "kind": "button",
       "refersTo": "button-primary",
-      "description": "The single prominent phone action.",
+      "description": "The prominent phone action used in the hero and contact prologue.",
       "html": "<a class=\"ds-button-primary\" href=\"#\">Позвонить мастеру</a>",
-      "css": ".ds-button-primary { display:inline-flex; min-width:250px; min-height:56px; align-items:center; justify-content:center; padding:0 30px; color:var(--text-on-accent); background:var(--action-primary); border-radius:var(--radius-md); font-family:var(--font-heading); font-size:15px; font-weight:700; text-decoration:none; transition:background-color 180ms var(--ease-standard), transform 180ms var(--ease-standard); } .ds-button-primary:hover { background:#ffb22a; transform:translateY(-3px); } .ds-button-primary:focus-visible { outline:var(--focus-ring); outline-offset:4px; }"
+      "css": ".ds-button-primary { display:inline-flex; min-width:250px; min-height:56px; align-items:center; justify-content:center; gap:10px; padding:0 30px; color:var(--text-on-accent); background:var(--action-primary); border:1px solid transparent; border-radius:var(--radius-md); box-shadow:0 18px 46px rgba(245,162,26,.25), inset 0 -2px 0 rgba(0,0,0,.14); font-family:var(--font-heading); font-size:15px; font-weight:700; line-height:1; text-decoration:none; transition:background-color var(--duration-fast) var(--ease-standard), box-shadow var(--duration-fast) var(--ease-standard), transform var(--duration-fast) var(--ease-standard); } .ds-button-primary:hover { color:var(--text-on-accent); background:#ffb22a; box-shadow:0 22px 54px rgba(245,162,26,.34), inset 0 -2px 0 rgba(0,0,0,.1); transform:translateY(-3px); } .ds-button-primary:focus-visible { outline:var(--focus-ring); outline-offset:4px; }"
     },
     {
       "name": "Service Card",
       "kind": "card",
       "refersTo": "card-light",
-      "description": "A light technical summary with an SVG line icon.",
-      "html": "<article class=\"ds-service-card\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M4 12h16M12 4v16\"/></svg><div><strong>Двигатель</strong><p>Диагностика, ремонт и капитальный ремонт.</p></div></article>",
-      "css": ".ds-service-card { display:grid; grid-template-columns:auto 1fr; gap:18px; min-height:180px; padding:24px; color:var(--text-primary); background:var(--surface-card); border:1px solid var(--border-subtle); border-radius:var(--radius-md); } .ds-service-card svg { width:42px; height:42px; fill:none; stroke:var(--action-secondary); stroke-width:1.7; } .ds-service-card strong { font-family:var(--font-heading); font-size:18px; } .ds-service-card p { margin:8px 0 0; color:var(--text-secondary); }"
+      "description": "One of six equal repair-direction cards with a subject-specific SVG line icon.",
+      "html": "<article class=\"ds-service-card\"><svg viewBox=\"0 0 48 48\" aria-hidden=\"true\"><path d=\"M8 19h5l4-6h15l4 6h4v17h-6l-3 4H17l-3-4H8V19Zm8 2h16v11H16V21Zm-3-8V8m22 5V8M7 25H3m42 0h-4\"/></svg><div><strong>Двигатель</strong><p>Диагностика, ремонт и капитальный ремонт двигателя.</p></div></article>",
+      "css": ".ds-service-card { display:grid; gap:15px; align-content:start; min-height:286px; padding:26px 20px; color:var(--text-primary); background:var(--surface-card); border:1px solid var(--border-default); border-radius:var(--radius-md); text-align:center; } .ds-service-card svg { width:54px; height:54px; margin-inline:auto; color:var(--text-primary); fill:none; stroke:currentColor; stroke-linecap:round; stroke-linejoin:round; stroke-width:2; } .ds-service-card strong { font-family:var(--font-heading); font-size:19px; font-weight:850; line-height:1.2; } .ds-service-card p { margin:10px 0 0; color:var(--text-secondary); font-size:15px; }"
     },
     {
       "name": "Timeline Step",
       "kind": "custom",
-      "description": "A numbered operational step in the repair route.",
-      "html": "<div class=\"ds-timeline-step\"><span>03</span><strong>Согласование</strong><p>Сообщаем стоимость и срок ремонта.</p></div>",
-      "css": ".ds-timeline-step { position:relative; min-height:190px; padding:28px 22px; color:var(--text-primary); background:var(--surface-page); border-top:1px solid var(--border-default); } .ds-timeline-step span { color:var(--action-secondary); font-family:var(--font-heading); font-size:12px; font-weight:800; } .ds-timeline-step strong { display:block; margin-top:24px; font-family:var(--font-heading); font-size:17px; } .ds-timeline-step p { color:var(--text-secondary); }"
+      "description": "One of five icon-led repair stages connected into a directional route.",
+      "html": "<article class=\"ds-timeline-step\"><svg viewBox=\"0 0 48 48\" aria-hidden=\"true\"><circle cx=\"24\" cy=\"24\" r=\"17\"/><circle cx=\"24\" cy=\"24\" r=\"6\"/><path d=\"M24 7v11m0 12v11M7 24h11m12 0h11\"/></svg><span>03</span><strong>Согласование</strong><p>Сообщаем стоимость и сроки ремонта.</p></article>",
+      "css": ".ds-timeline-step { position:relative; min-height:250px; padding:24px 20px; color:var(--text-primary); background:var(--surface-card); border:1px solid var(--border-default); border-radius:var(--radius-md); } .ds-timeline-step::after { position:absolute; z-index:2; top:50%; right:-11px; width:12px; height:12px; background:var(--surface-card); border-top:2px solid var(--action-primary); border-right:2px solid var(--action-primary); content:\"\"; transform:translateY(-50%) rotate(45deg); } .ds-timeline-step svg { width:48px; height:48px; margin-bottom:24px; color:var(--text-primary); fill:none; stroke:currentColor; stroke-linecap:round; stroke-linejoin:round; stroke-width:2; } .ds-timeline-step span { display:inline-block; margin:0 8px 10px 0; color:var(--action-primary); font-family:var(--font-heading); font-size:13px; font-weight:900; } .ds-timeline-step strong { font-family:var(--font-heading); font-size:17px; line-height:1.2; } .ds-timeline-step p { margin:10px 0 0; color:var(--text-secondary); font-size:14px; }"
     },
     {
-      "name": "Related Index Row",
+      "name": "Related Index Tile",
       "kind": "nav",
-      "description": "Static future direction with no fake interactivity.",
-      "html": "<span class=\"ds-related-row\">Ремонт тягачей</span>",
-      "css": ".ds-related-row { display:flex; min-height:52px; align-items:center; gap:12px; color:rgba(255,255,255,.82); border-bottom:1px solid rgba(255,255,255,.12); font-family:var(--font-heading); font-weight:700; } .ds-related-row::before { width:7px; height:7px; background:var(--action-primary); content:\"\"; }"
+      "description": "A light static future direction with a compositional arrow and no fake interactivity.",
+      "html": "<span class=\"ds-related-tile\">Ремонт тягачей</span>",
+      "css": ".ds-related-tile { position:relative; display:flex; min-height:64px; align-items:center; padding:14px 44px 14px 18px; color:var(--text-primary); background:var(--surface-card); border:1px solid var(--border-default); border-radius:var(--radius-md); font-family:var(--font-heading); font-weight:750; } .ds-related-tile::after { position:absolute; top:50%; right:20px; width:8px; height:8px; border-top:2px solid var(--text-primary); border-right:2px solid var(--text-primary); content:\"\"; transform:translateY(-50%) rotate(45deg); }"
     },
     {
-      "name": "FAQ Row",
+      "name": "FAQ Item",
       "kind": "custom",
-      "description": "Native disclosure with a large keyboard-accessible target.",
+      "description": "One item in the two-column native disclosure grid.",
       "html": "<details class=\"ds-faq\"><summary>Сколько времени занимает диагностика?</summary><p>Срок зависит от симптомов и объёма проверки.</p></details>",
-      "css": ".ds-faq { border-top:1px solid var(--border-default); } .ds-faq summary { min-height:58px; display:flex; align-items:center; justify-content:space-between; padding:10px 0; color:var(--text-primary); font-family:var(--font-heading); font-weight:750; cursor:pointer; } .ds-faq summary:focus-visible { outline:var(--focus-ring); outline-offset:4px; } .ds-faq p { color:var(--text-secondary); }"
+      "css": ".ds-faq { align-self:start; overflow:hidden; color:var(--text-primary); background:var(--surface-card); border:1px solid var(--border-default); border-radius:var(--radius-md); } .ds-faq summary { position:relative; min-height:64px; padding:19px 54px 19px 20px; font-family:var(--font-heading); font-size:17px; font-weight:780; line-height:1.35; cursor:pointer; list-style:none; } .ds-faq summary::before, .ds-faq summary::after { position:absolute; top:31px; right:20px; width:16px; height:2px; background:var(--action-secondary); content:\"\"; transition:transform var(--duration-fast) var(--ease-standard); } .ds-faq summary::after { transform:rotate(90deg); } .ds-faq[open] summary::after { transform:rotate(0deg); } .ds-faq summary:focus-visible { outline:var(--focus-ring); outline-offset:-4px; } .ds-faq p { max-width:72ch; margin:0; padding:0 20px 22px; color:var(--text-secondary); }"
     },
     {
       "name": "Hero Fact",
       "kind": "custom",
-      "description": "Compact proof item under the hero.",
-      "html": "<dl class=\"ds-hero-fact\"><dt>Опыт</dt><dd>Более 10 лет</dd></dl>",
-      "css": ".ds-hero-fact { position:relative; display:grid; gap:4px; margin:0; padding-left:18px; color:#fff; } .ds-hero-fact::before { position:absolute; top:6px; left:0; width:7px; height:7px; background:var(--action-primary); border-radius:999px; content:\"\"; } .ds-hero-fact dt { opacity:.62; font-family:var(--font-heading); font-size:11px; font-weight:800; text-transform:uppercase; } .ds-hero-fact dd { margin:0; font-weight:800; }"
+      "description": "Compact icon-led proof item in the four-part hero fact rail.",
+      "html": "<dl class=\"ds-hero-fact\"><svg viewBox=\"0 0 48 48\" aria-hidden=\"true\"><path d=\"M24 5 39 11v11c0 10-6 17-15 21C15 39 9 32 9 22V11L24 5Z\"/><path d=\"m17 24 5 5 10-11\"/></svg><dt>Гарантия</dt><dd>На выполненные работы</dd></dl>",
+      "css": ".ds-hero-fact { display:grid; grid-template-rows:auto auto; grid-template-columns:34px minmax(0,1fr); align-items:center; gap:2px 11px; margin:0; color:var(--text-inverse); } .ds-hero-fact svg { grid-row:1 / 3; width:30px; height:30px; color:var(--action-primary); fill:none; stroke:currentColor; stroke-linecap:round; stroke-linejoin:round; stroke-width:2; } .ds-hero-fact dt { color:rgba(255,255,255,.62); font-family:var(--font-heading); font-size:11px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; } .ds-hero-fact dd { margin:0; color:var(--text-inverse); font-weight:800; }"
+    },
+    {
+      "name": "Contact Prologue",
+      "kind": "custom",
+      "description": "The dark pre-footer contact band and the only in-flow CTA after the hero.",
+      "html": "<section class=\"ds-contact\"><div><h2>Остались вопросы? Мы всегда на связи</h2><p>Позвоните мастеру и опишите неисправность.</p></div><dl><div><dt>Телефон</dt><dd>+7 (922) 448-88-22</dd></div><div><dt>График</dt><dd>Ежедневно с 08:00 до 22:00</dd></div></dl><a href=\"#\">Позвонить мастеру</a></section>",
+      "css": ".ds-contact { display:grid; grid-template-columns:minmax(240px,1.15fr) minmax(280px,1.2fr) auto; gap:clamp(28px,4vw,64px); align-items:center; padding:42px; color:var(--text-inverse); background:#0a1423; } .ds-contact h2 { margin:0; font-family:var(--font-heading); font-size:clamp(24px,2.2vw,34px); line-height:1.12; } .ds-contact p { margin:10px 0 0; color:rgba(255,255,255,.66); } .ds-contact dl { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; margin:0; } .ds-contact dt { color:var(--action-primary); font-family:var(--font-heading); font-size:10px; font-weight:850; letter-spacing:.06em; text-transform:uppercase; } .ds-contact dd { margin:4px 0 0; color:rgba(255,255,255,.82); font-size:14px; } .ds-contact>a { display:inline-flex; min-height:56px; align-items:center; justify-content:center; padding:0 30px; color:var(--text-on-accent); background:var(--action-primary); border-radius:var(--radius-md); font-family:var(--font-heading); font-size:15px; font-weight:700; text-decoration:none; } .ds-contact>a:hover { background:#ffb22a; transform:translateY(-3px); } .ds-contact>a:focus-visible { outline:var(--focus-ring); outline-offset:4px; }"
     },
     {
       "name": "Mobile Callbar",
       "kind": "nav",
-      "description": "Post-scroll phone action for compact screens.",
-      "html": "<div class=\"ds-callbar\"><span>Нужен ремонт?</span><a href=\"#\">Позвонить</a></div>",
-      "css": ".ds-callbar { display:flex; min-height:68px; align-items:center; justify-content:space-between; gap:16px; padding:10px 16px; color:#fff; background:var(--surface-dark); border-top:1px solid rgba(255,255,255,.14); } .ds-callbar span { font-family:var(--font-heading); font-weight:800; } .ds-callbar a { display:inline-flex; min-height:48px; align-items:center; padding:0 20px; color:var(--text-on-accent); background:var(--action-primary); border-radius:var(--radius-md); font-weight:800; text-decoration:none; } .ds-callbar a:focus-visible { outline:var(--focus-ring); outline-offset:3px; }"
+      "description": "Post-scroll phone action for compact screens, with safe-area padding in the live component.",
+      "html": "<div class=\"ds-callbar\"><span>Нужен ремонт?</span><a href=\"#\">Позвонить мастеру</a></div>",
+      "css": ".ds-callbar { display:grid; grid-template-columns:1fr auto; gap:12px; align-items:center; padding:10px 16px; color:var(--text-inverse); background:rgba(11,18,32,.96); border-top:1px solid rgba(255,255,255,.12); box-shadow:0 -18px 44px rgba(5,12,25,.22); } .ds-callbar span { color:#d8e1ee; font-size:14px; font-weight:800; } .ds-callbar a { display:inline-flex; min-height:52px; align-items:center; justify-content:center; padding:0 22px; color:var(--text-on-accent); background:var(--action-primary); border-radius:var(--radius-md); font-family:var(--font-heading); font-weight:900; text-decoration:none; white-space:nowrap; transition:background var(--duration-fast) var(--ease-standard), transform var(--duration-fast) var(--ease-standard); } .ds-callbar a:hover { background:var(--action-primary-hover); transform:translateY(-1px); } .ds-callbar a:focus-visible { outline:var(--focus-ring); outline-offset:3px; }"
     }
   ],
   "narrative": {
