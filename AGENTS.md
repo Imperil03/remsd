@@ -22,7 +22,10 @@
 
 - `.agent/SEO_STRUCTURE.md` — актуальная SEO-архитектура и запрет на тонкие страницы "услуга × марка".
 - `docs/project-handoff.md` — состояние проекта, что уже сделано и как продолжать.
-- `docs/design-guideline.md` — визуальные правила.
+- `docs/project-history.md` — краткая хронология решений и ключевые коммиты.
+- `docs/design-guideline.md` — визуальное направление и иерархия источников.
+- `docs/design-system.md` и `DESIGN.md` — кодовый и машиночитаемый дизайн-контракт.
+- `docs/references/internal-hub-block-reference.png` — утверждённый референс композиции блоков эталонного hub; его плотность, брендинг и реквизиты не копируются.
 - `src/data/site-config.json`, `entities.json`, `relations.json`, `internal-pages.json` — типизированная модель сайта и внутренних страниц.
 - `.agent/agents/` — роли текстового автора и ревьюера.
 - Подтвержденные публичные факты сейчас берутся из существующего контента сайта, сертификатов/документов в проекте, `.agent/SEO_STRUCTURE.md` и явно указанных пользователем источников. Не восстанавливать удаленные `.agent/CONTENT_GUIDE.md` и `.agent/CLAIMS_LEDGER.md` без отдельного запроса.
@@ -30,7 +33,8 @@
 
 ## Как работать
 
-- Сначала читать `.agent/SEO_STRUCTURE.md` и `docs/project-handoff.md`.
+- Сначала читать `.agent/SEO_STRUCTURE.md`, `docs/project-handoff.md` и `docs/project-history.md`.
+- Перед визуальными изменениями читать `docs/design-guideline.md`, затем `docs/design-system.md` и `DESIGN.md`.
 - Не добавлять отдельные страницы вида `/remont-gbc-kamaz/`, `/remont-kpp-maz/`, `/remont-elektriki-ural/` без отдельного решения.
 - Новые страницы сначала отнести к семейству `hub`, `service` или `brand`, затем добавить подтверждённые сущности, отношения и `PageDefinition` в `internal-pages.json`.
 - После изменений проверять:
