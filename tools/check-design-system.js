@@ -34,6 +34,8 @@ const requiredTokens = [
   "shadow-card",
   "shadow-card-hover",
   "shadow-overlay",
+  "section-space-compact",
+  "section-space-default",
   "layout-container",
   "layout-gutter",
   "radius-sm",
@@ -58,6 +60,11 @@ const consumerCssFiles = ["styles.css", "site-chrome.css", "styles-v3.css", "int
 for (const file of consumerCssFiles) {
   const source = fs.readFileSync(path.join(cssDir, file), "utf8");
   if (/:root\s*\{/.test(source)) fail(`assets/css/${file}: глобальные токены разрешены только в design-system.css`);
+}
+
+const internalPagesCss = read("assets/css/internal-pages.css");
+if (!/\.internal-section\s*\{[^}]*padding-block\s*:\s*var\(--section-space-default\)\s*;?[^}]*\}/s.test(internalPagesCss)) {
+  fail("assets/css/internal-pages.css: .internal-section должен использовать var(--section-space-default)");
 }
 
 const expectedBundles = {

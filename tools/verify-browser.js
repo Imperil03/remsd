@@ -141,9 +141,101 @@ async function materializePage(page) {
   await page.waitForTimeout(200);
 }
 
-async function verifyInternalContract(page, mobile) {
+function verifyMetricRange(label, measurements, min, max) {
+  if (!measurements.length) throw new Error(`Desktop-контракт: не найден ${label}`);
+  const invalid = measurements.filter(({ value }) => value < min || value > max);
+  if (invalid.length) {
+    const details = invalid.map(({ name, value }) => `${name}=${value.toFixed(1)}px`).join(", ");
+    throw new Error(`Desktop-контракт: ${label} вне ${min}–${max}px (${details})`);
+  }
+}
+
+async function verifyInternalDesktopVisualContract(page) {
+  await page.evaluate(() => document.fonts.ready);
+  const metrics = await page.evaluate(() => {
+    const measurements = (selector, readValue = (element) => element.getBoundingClientRect().height) =>
+      [...document.querySelectorAll(selector)].map((element, index) => ({
+        name: element.id || `${selector}[${index + 1}]`,
+        value: readValue(element),
+      }));
+    const lineCount = (element) => {
+      const range = document.createRange();
+      range.selectNodeContents(element);
+      const lineTops = [...range.getClientRects()]
+        .filter((rect) => rect.width > 0 && rect.height > 0)
+        .map((rect) => Math.round(rect.top));
+      return new Set(lineTops).size;
+    };
+    const tokenProbe = document.createElement("div");
+    tokenProbe.style.cssText = "position:absolute;visibility:hidden;pointer-events:none;padding-top:var(--section-space-default)";
+    document.body.append(tokenProbe);
+    const sectionSpaceDefault = parseFloat(getComputedStyle(tokenProbe).paddingTop);
+    tokenProbe.remove();
+    const introMedia = document.querySelector(".internal-intro__media");
+    const introMediaRect = introMedia?.getBoundingClientRect();
+
+    return {
+      sectionSpaceDefault,
+      sectionPaddings: [...document.querySelectorAll(".internal-section")].map((section, index) => {
+        const style = getComputedStyle(section);
+        return {
+          name: section.id || `.internal-section[${index + 1}]`,
+          top: parseFloat(style.paddingTop),
+          bottom: parseFloat(style.paddingBottom),
+        };
+      }),
+      headings: measurements(".internal-section h2", (element) => parseFloat(getComputedStyle(element).fontSize)),
+      introRatio: introMediaRect ? introMediaRect.width / introMediaRect.height : 0,
+      introStats: measurements(".internal-intro__stats > div"),
+      services: measurements(".internal-service-card"),
+      vehicles: measurements(".internal-vehicle-card"),
+      brands: measurements(".internal-brand-strip__item"),
+      symptoms: measurements(".internal-symptoms li"),
+      stages: measurements(".internal-timeline__item"),
+      priceRows: measurements(".internal-price-table tbody tr"),
+      related: measurements(".internal-related-index span"),
+      faq: [...document.querySelectorAll(".internal-faq summary")].map((element, index) => ({
+        name: `.internal-faq summary[${index + 1}]`,
+        value: element.getBoundingClientRect().height,
+        lines: lineCount(element),
+      })),
+    };
+  });
+
+  if (metrics.sectionSpaceDefault < 103 || metrics.sectionSpaceDefault > 105) {
+    throw new Error(`Desktop-контракт: --section-space-default=${metrics.sectionSpaceDefault}px, ожидалось около 104px`);
+  }
+  if (!metrics.sectionPaddings.length) throw new Error("Desktop-контракт: не найдены .internal-section");
+  const invalidSectionPaddings = metrics.sectionPaddings.filter(({ top, bottom }) =>
+    Math.abs(top - metrics.sectionSpaceDefault) > 1 || Math.abs(bottom - metrics.sectionSpaceDefault) > 1);
+  if (invalidSectionPaddings.length) {
+    const details = invalidSectionPaddings
+      .map(({ name, top, bottom }) => `${name}=${top.toFixed(1)}/${bottom.toFixed(1)}px`)
+      .join(", ");
+    throw new Error(`Desktop-контракт: padding секций не равен --section-space-default (${details})`);
+  }
+
+  verifyMetricRange("заголовки секций", metrics.headings, 28, 32);
+  if (metrics.introRatio < 1.95 || metrics.introRatio > 2.05) {
+    throw new Error(`Desktop-контракт: intro-фото имеет соотношение ${metrics.introRatio.toFixed(2)}, ожидалось 2:1`);
+  }
+  verifyMetricRange("показатели intro", metrics.introStats, 88, 98);
+  verifyMetricRange("карточки услуг", metrics.services, 220, 250);
+  verifyMetricRange("карточки техники", metrics.vehicles, 180, 215);
+  verifyMetricRange("ячейки марок", metrics.brands, 64, 72);
+  verifyMetricRange("карточки признаков", metrics.symptoms, 68, 82);
+  verifyMetricRange("карточки этапов", metrics.stages, 180, 205);
+  verifyMetricRange("строки цен", metrics.priceRows, 40, 50);
+  verifyMetricRange("связанные разделы", metrics.related, 52, 64);
+  verifyMetricRange("FAQ summary", metrics.faq, 52, Number.POSITIVE_INFINITY);
+  const oneLineFaq = metrics.faq.filter(({ lines }) => lines === 1);
+  if (!oneLineFaq.length) throw new Error("Desktop-контракт: не найден однострочный FAQ summary для проверки плотности");
+  verifyMetricRange("однострочные FAQ summary", oneLineFaq, 52, 64);
+}
+
+async function verifyInternalContract(page, compact) {
   const callbar = page.locator("[data-mobile-callbar]");
-  if (mobile && (await callbar.getAttribute("aria-hidden")) !== "true") throw new Error("Callbar видна до прокрутки");
+  if (compact && (await callbar.getAttribute("aria-hidden")) !== "true") throw new Error("Callbar видна до прокрутки");
   const expected = {
     ".internal-section": 9,
     ".internal-service-card": 6,
@@ -190,7 +282,7 @@ async function verifyInternalContract(page, mobile) {
   const brokenImages = await page.evaluate(() => [...document.images].filter((image) => image.complete && image.naturalWidth === 0).map((image) => image.src));
   if (brokenImages.length) throw new Error(`Не загрузились изображения: ${brokenImages.join(", ")}`);
 
-  if (mobile) {
+  if (compact) {
     const undersized = await page.evaluate(() => [...document.querySelectorAll("a, button, summary")]
       .filter((element) => {
         const rect = element.getBoundingClientRect();
@@ -237,6 +329,8 @@ async function run() {
     const internalViewports = [
       { name: "desktop", width: 1440, height: 900 },
       { name: "tablet", width: 1120, height: 900 },
+      { name: "compact-720", width: 720, height: 900 },
+      { name: "compact-520", width: 520, height: 900 },
       { name: "mobile-414", width: 414, height: 896 },
       { name: "mobile-390", width: 390, height: 844 },
       { name: "mobile-320", width: 320, height: 760 },
@@ -246,7 +340,8 @@ async function run() {
       const page = await context.newPage();
       await verifyPage(page, internalRoute, `Внутренняя ${viewport.name}`);
       await verifyNavigation(page, viewport.width <= 1120);
-      await verifyInternalContract(page, viewport.width <= 414);
+      await verifyInternalContract(page, viewport.width <= 720);
+      if (viewport.name === "desktop") await verifyInternalDesktopVisualContract(page);
       await page.evaluate(() => window.scrollTo(0, 0));
       const screenshotPath = path.join(resultDir, `internal-${viewport.name}-full.png`);
       await page.screenshot({ path: screenshotPath, fullPage: true });
@@ -263,7 +358,7 @@ async function run() {
     await browser.close();
     await new Promise((resolve) => server.close(resolve));
   }
-  console.log("Browser verification passed: главная 4 viewport, внутренний hub 5 viewport, burger, FAQ, callbar, images, targets и 404.");
+  console.log("Browser verification passed: главная 4 viewport, внутренний hub 7 viewport, desktop-геометрия, burger, FAQ, callbar, images, targets и 404.");
 }
 
 run().catch((error) => {
