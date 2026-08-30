@@ -1018,6 +1018,24 @@
     grid-column: 2 / span 2;
   }
 
+  .internal-timeline {
+    gap: 16px;
+  }
+
+  .internal-timeline__item {
+    column-gap: 10px;
+  }
+
+  .internal-timeline__item::after {
+    right: -12px;
+  }
+
+  .internal-timeline h3 {
+    min-width: 0;
+    font-size: 17px;
+    overflow-wrap: break-word;
+  }
+
   .internal-close__inner {
     grid-template-columns: 1fr;
   }
@@ -1152,6 +1170,7 @@
 
   .internal-timeline h3 {
     margin-top: 4px;
+    font-size: 18px;
   }
 
   .internal-timeline p {

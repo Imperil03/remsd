@@ -349,7 +349,7 @@ async function verifyInternalVisualContract(page, viewport) {
   verifyMetricRange("текст признаков", metrics.symptomText, 14.4, 15.6);
   verifyMetricRange("иконки признаков", metrics.symptomIcons, narrow ? 34 : 30, narrow ? 38 : 34);
   verifyMetricRange("иконки этапов", metrics.stageIcons, narrow ? 54 : 62, narrow ? 58 : 66);
-  verifyMetricRange("заголовки этапов", metrics.stageTitles, 17.4, 18.6);
+  verifyMetricRange("заголовки этапов", metrics.stageTitles, width === 1120 ? 16.4 : 17.4, width === 1120 ? 17.6 : 18.6);
   verifyMetricRange("текст этапов", metrics.stageBodies, 14.4, 15.6);
   verifyMetricRange("названия цен", metrics.priceLabels, 15.4, 16.6);
   verifyMetricRange("значения цен", metrics.priceValues, narrow ? 16.4 : 17.4, narrow ? 17.6 : 18.6);
