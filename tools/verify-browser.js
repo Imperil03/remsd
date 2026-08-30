@@ -297,6 +297,7 @@ async function verifyInternalVisualContract(page, viewport) {
 
   const width = viewport.width;
   const wide = width > 1020;
+  const referenceWide = width > 1120;
   const compact = width <= 720;
   const narrow = width <= 520;
   const compactSections = new Set(["repair-services", "vehicle-types", "truck-brands", "repair-process", "related-services"]);
@@ -331,25 +332,25 @@ async function verifyInternalVisualContract(page, viewport) {
   }
   verifyMetricRange("показатели intro", metrics.introStats, 104, 124);
 
-  verifyRows("услуги", metrics.rows.services, repeatedRows(wide ? 3 : narrow ? 1 : 2, 6));
-  verifyRows("техника", metrics.rows.vehicles, repeatedRows(wide ? 3 : narrow ? 1 : 2, 6));
-  verifyRows("марки", metrics.rows.brands, wide ? [5, 4] : repeatedRows(narrow ? 2 : 3, 9));
+  verifyRows("услуги", metrics.rows.services, repeatedRows(referenceWide ? 6 : wide ? 3 : narrow ? 1 : 2, 6));
+  verifyRows("техника", metrics.rows.vehicles, repeatedRows(referenceWide ? 6 : wide ? 3 : narrow ? 1 : 2, 6));
+  verifyRows("марки", metrics.rows.brands, referenceWide ? [9] : wide ? [5, 4] : repeatedRows(narrow ? 2 : 3, 9));
   verifyRows("признаки", metrics.rows.symptoms, repeatedRows(wide ? 3 : narrow ? 1 : 2, 6));
   verifyRows("этапы", metrics.rows.stages, repeatedRows(wide ? 5 : 1, 5));
   verifyRows("таблицы цен", metrics.rows.prices, repeatedRows(compact ? 1 : 2, 2));
   verifyRows("связанные разделы", metrics.rows.related, repeatedRows(wide ? 4 : narrow ? 1 : 2, 8));
   verifyRows("FAQ", metrics.rows.faq, repeatedRows(width > 720 ? 2 : 1, 11));
 
-  verifyMetricRange("заголовки услуг", metrics.serviceTitles, narrow ? 17.4 : 18.4, narrow ? 18.6 : 19.6);
-  verifyMetricRange("текст услуг", metrics.serviceBodies, 15.4, 16.6);
-  verifyMetricRange("иконки услуг", metrics.serviceIcons, narrow ? 50 : 54, narrow ? 54 : 58);
-  verifyMetricRange("заголовки техники", metrics.vehicleTitles, narrow ? 16.4 : 19.4, narrow ? 17.6 : 20.6);
-  verifyMetricRange("текст техники", metrics.vehicleBodies, 15.4, 16.6);
-  verifyMetricRange("текст признаков", metrics.symptomText, 15.4, 16.6);
-  verifyMetricRange("иконки признаков", metrics.symptomIcons, narrow ? 34 : 38, narrow ? 38 : 42);
+  verifyMetricRange("заголовки услуг", metrics.serviceTitles, narrow ? 17.4 : 16.4, narrow ? 18.6 : 17.6);
+  verifyMetricRange("текст услуг", metrics.serviceBodies, 14.4, 15.6);
+  verifyMetricRange("иконки услуг", metrics.serviceIcons, narrow ? 50 : referenceWide ? 58 : 54, narrow ? 54 : referenceWide ? 62 : 58);
+  verifyMetricRange("заголовки техники", metrics.vehicleTitles, 16.4, 17.6);
+  verifyMetricRange("текст техники", metrics.vehicleBodies, narrow ? 15.4 : 13.4, narrow ? 16.6 : 14.6);
+  verifyMetricRange("текст признаков", metrics.symptomText, 14.4, 15.6);
+  verifyMetricRange("иконки признаков", metrics.symptomIcons, narrow ? 34 : 30, narrow ? 38 : 34);
   verifyMetricRange("иконки этапов", metrics.stageIcons, narrow ? 54 : 62, narrow ? 58 : 66);
   verifyMetricRange("заголовки этапов", metrics.stageTitles, 17.4, 18.6);
-  verifyMetricRange("текст этапов", metrics.stageBodies, 15.4, 16.6);
+  verifyMetricRange("текст этапов", metrics.stageBodies, 14.4, 15.6);
   verifyMetricRange("названия цен", metrics.priceLabels, 15.4, 16.6);
   verifyMetricRange("значения цен", metrics.priceValues, narrow ? 16.4 : 17.4, narrow ? 17.6 : 18.6);
   verifyMetricRange("текст связанных разделов", metrics.relatedText, 15.4, 16.6);
@@ -360,14 +361,14 @@ async function verifyInternalVisualContract(page, viewport) {
     const fixedVehicles = metrics.vehicleCards.filter(({ minHeight }) => minHeight > 1);
     if (fixedServices.length || fixedVehicles.length) throw new Error("Визуальный контракт: горизонтальные mobile-карточки сохранили фиксированную высоту");
   } else {
-    verifyMetricRange("высота карточек услуг", metrics.serviceCards.map(({ name, height: value }) => ({ name, value })), 208, 290);
-    verifyMetricRange("высота карточек техники", metrics.vehicleCards.map(({ name, height: value }) => ({ name, value })), 298, 410);
+    verifyMetricRange("высота карточек услуг", metrics.serviceCards.map(({ name, height: value }) => ({ name, value })), 194, referenceWide ? 330 : 290);
+    verifyMetricRange("высота карточек техники", metrics.vehicleCards.map(({ name, height: value }) => ({ name, value })), referenceWide ? 230 : 260, referenceWide ? 310 : 410);
   }
-  verifyMetricRange("ячейки марок", metrics.brandCells.map(({ name, height: value }) => ({ name, value })), narrow ? 90 : 102, narrow ? 100 : 114);
+  verifyMetricRange("ячейки марок", metrics.brandCells.map(({ name, height: value }) => ({ name, value })), narrow ? 90 : referenceWide ? 74 : 82, narrow ? 100 : referenceWide ? 82 : 96);
   verifyMetricRange("ширина логотипов", metrics.brandLogoWidths, narrow ? 78 : width <= 1020 ? 88 : 98, narrow ? 114 : width <= 1020 ? 134 : 150);
-  verifyMetricRange("высота логотипов", metrics.brandLogoHeights, narrow ? 28 : width <= 1020 ? 30 : 34, narrow ? 50 : width <= 1020 ? 58 : 66);
-  verifyMetricRange("карточки признаков", metrics.symptoms.map(({ name, height: value }) => ({ name, value })), 94, 190);
-  if (wide) verifyMetricRange("этапы desktop", metrics.stages.map(({ name, height: value }) => ({ name, value })), 218, 310);
+  verifyMetricRange("высота логотипов", metrics.brandLogoHeights, narrow ? 28 : width <= 1020 ? 30 : 28, narrow ? 50 : width <= 1020 ? 58 : 66);
+  verifyMetricRange("карточки признаков", metrics.symptoms.map(({ name, height: value }) => ({ name, value })), 82, 190);
+  if (wide) verifyMetricRange("этапы desktop", metrics.stages.map(({ name, height: value }) => ({ name, value })), 152, 230);
   verifyMetricRange("строки цен", metrics.priceRows, 54, width <= 320 ? 110 : 90);
   verifyMetricRange("связанные разделы", metrics.related, narrow ? 62 : 66, 110);
   verifyMetricRange("FAQ summary", metrics.faq, narrow ? 62 : 66, Number.POSITIVE_INFINITY);
@@ -379,7 +380,7 @@ async function verifyInternalVisualContract(page, viewport) {
     const [label, main, cta] = placement;
     if (!main || !cta) throw new Error(`Визуальный контракт: не найден CTA блока «${label}»`);
     if (wide) {
-      if (cta.x < main.right + 14 || Math.abs(cta.y - main.y) > 2 || cta.width < 318 || cta.width > 348) {
+      if (cta.x < main.right + 13 || Math.abs(cta.y - main.y) > 2 || cta.width < 318 || cta.width > 362) {
         throw new Error(`Визуальный контракт: CTA «${label}» не расположен справа (${JSON.stringify({ main, cta })})`);
       }
     } else if (cta.y < main.bottom + 14 || Math.abs(cta.width - main.width) > 2) {
