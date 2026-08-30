@@ -10,7 +10,7 @@ const dataDir = path.join(srcDir, "data");
 const templatesDir = path.join(srcDir, "templates");
 const assetsDir = path.join(root, "assets");
 const distDir = path.join(root, "dist");
-const assetVersion = process.env.ASSET_VERSION || "20260830-internal-reference-v4";
+const assetVersion = process.env.ASSET_VERSION || "20260830-internal-hero-reference-v5";
 
 const PAGE_FAMILIES = new Set(["hub", "service", "brand"]);
 const SECTION_TYPES = new Set([
@@ -521,7 +521,7 @@ function renderIntroProof(section, rootPath) {
       <ul class="internal-intro__list">${bullets}</ul>
       <p class="internal-intro__statement">${escapeHtml(section.statement)}</p>
     </div>
-    <figure class="internal-intro__media"><img src="${rootPath}${escapeHtml(section.image)}" alt="${escapeHtml(section.imageAlt)}" loading="lazy" decoding="async"></figure>
+    <figure class="internal-intro__media"><img src="${rootPath}${escapeHtml(section.image)}" alt="${escapeHtml(section.imageAlt)}" width="937" height="1080" loading="lazy" decoding="async"></figure>
     <dl class="internal-intro__stats">${stats}</dl>
   </div>
 </section>`;
@@ -533,7 +533,7 @@ function renderServiceGrid(section) {
   <div><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.text)}</p></div>
 </article>`).join("\n");
   return `<section class="internal-section internal-section--serviceGrid" id="${escapeHtml(section.id)}" aria-labelledby="${escapeHtml(section.id)}-title">
-  <div class="container">${renderSectionHead(section, { centered: true })}<div class="internal-service-grid">${items}</div></div>
+  <div class="container">${renderSectionHead(section, { centered: true })}<div class="internal-service-grid">${items}</div><a class="internal-reference-link" href="#related-services">Смотреть все услуги</a></div>
 </section>`;
 }
 
@@ -550,7 +550,7 @@ function renderVehicleTypes(section, rootPath) {
 function renderBrandStrip(section, rootPath) {
   const items = section.items.map((item) => `<div class="internal-brand-strip__item"><img src="${rootPath}${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}" loading="lazy" decoding="async"></div>`).join("");
   return `<section class="internal-section internal-section--brandStrip" id="${escapeHtml(section.id)}" aria-labelledby="${escapeHtml(section.id)}-title">
-  <div class="container">${renderSectionHead(section, { centered: true })}<div class="internal-brand-strip" aria-label="Марки грузовых автомобилей">${items}</div></div>
+  <div class="container">${renderSectionHead(section, { centered: true })}<div class="internal-brand-strip" aria-label="Марки грузовых автомобилей">${items}</div><a class="internal-reference-link internal-reference-link--accent" href="${rootPath}#v3-truck-brands-title">Смотреть все марки</a></div>
 </section>`;
 }
 

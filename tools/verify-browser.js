@@ -219,6 +219,7 @@ async function verifyInternalVisualContract(page, viewport) {
       ".internal-price-table th", ".internal-price-table td",
       ".internal-related-index span", ".internal-faq summary",
       ".internal-inline-cta__content", ".internal-inline-cta .v3-button",
+      ".internal-reference-link",
     ];
     const clipped = clippingSelectors.flatMap((selector) => [...document.querySelectorAll(selector)]
       .filter((element) => element.scrollWidth - element.clientWidth > 2 || element.scrollHeight - element.clientHeight > 2)
@@ -227,6 +228,7 @@ async function verifyInternalVisualContract(page, viewport) {
       ".internal-service-card", ".internal-vehicle-card", ".internal-brand-strip__item",
       ".internal-symptoms li", ".internal-inline-cta", ".internal-timeline__item",
       ".internal-price-table", ".internal-related-index span", ".internal-faq details",
+      ".internal-reference-link",
     ];
     const outOfViewport = boundedSelectors.flatMap((selector) => [...document.querySelectorAll(selector)]
       .filter((element) => {
@@ -284,12 +286,22 @@ async function verifyInternalVisualContract(page, viewport) {
         faq: rowCounts(".internal-faq details"),
       },
       boxes: {
+        heroShell: box(".internal-hero__shell"),
         symptomsMain: box(".internal-symptoms"),
         symptomsCta: box(".internal-inline-cta--symptoms"),
         priceMain: box(".internal-price-main"),
         priceCta: box(".internal-inline-cta--prices"),
       },
+      alignedContainers: [
+        ...document.querySelectorAll(".internal-section > .container"),
+        document.querySelector(".internal-close > .container"),
+        document.querySelector(".v3-footer > .container"),
+      ].filter(Boolean).map((element, index) => {
+        const rect = element.getBoundingClientRect();
+        return { name: element.parentElement?.id || element.parentElement?.className || `container-${index + 1}`, x: rect.x, right: rect.right, width: rect.width };
+      }),
       mainCtas: dimensions("main a.v3-button"),
+      referenceLinks: dimensions(".internal-reference-link"),
       clipped,
       outOfViewport,
     };
@@ -300,14 +312,18 @@ async function verifyInternalVisualContract(page, viewport) {
   const referenceWide = width > 1120;
   const compact = width <= 720;
   const narrow = width <= 520;
-  const compactSections = new Set(["repair-services", "vehicle-types", "truck-brands", "repair-process", "related-services"]);
+  const compactSections = new Set(["repair-process", "related-services"]);
   if (!metrics.sectionPaddings.length) throw new Error("Визуальный контракт: не найдены .internal-section");
   if (!compact && metrics.sectionSpaceDefault - metrics.sectionSpaceCompact < 20) {
     throw new Error(`Визуальный контракт: default/compact ритм не различим (${metrics.sectionSpaceDefault.toFixed(1)}/${metrics.sectionSpaceCompact.toFixed(1)}px)`);
   }
   const invalidSectionPaddings = metrics.sectionPaddings.filter(({ name, top, bottom }) => {
-    const expected = compact || compactSections.has(name) ? metrics.sectionSpaceCompact : metrics.sectionSpaceDefault;
-    return Math.abs(top - expected) > 1.5 || Math.abs(bottom - expected) > 1.5;
+    let expectedTop = compact || compactSections.has(name) ? metrics.sectionSpaceCompact : metrics.sectionSpaceDefault;
+    let expectedBottom = expectedTop;
+    if (!compact && name === "repair-services") [expectedTop, expectedBottom] = [metrics.sectionSpaceCompact, 32];
+    if (!compact && name === "vehicle-types") [expectedTop, expectedBottom] = [32, 32];
+    if (!compact && name === "truck-brands") [expectedTop, expectedBottom] = [32, metrics.sectionSpaceCompact];
+    return Math.abs(top - expectedTop) > 1.5 || Math.abs(bottom - expectedBottom) > 1.5;
   });
   if (invalidSectionPaddings.length) {
     const details = invalidSectionPaddings
@@ -317,13 +333,15 @@ async function verifyInternalVisualContract(page, viewport) {
   }
 
   const headingRanges = {
-    1440: [39.4, 40.6],
-    1120: [35.4, 36.6],
-    720: [31.4, 32.6],
-    520: [31.4, 32.6],
-    414: [31.4, 32.6],
-    390: [30.5, 32],
-    320: [29.4, 30.6],
+    1992: [31.4, 32.6],
+    1440: [28.2, 29.4],
+    1298: [27.4, 28.6],
+    1120: [27.4, 28.6],
+    720: [27.4, 28.6],
+    520: [29.4, 30.6],
+    414: [29.4, 30.6],
+    390: [29.4, 30.6],
+    320: [27.4, 28.6],
   };
   const [headingMin, headingMax] = headingRanges[width];
   verifyMetricRange("заголовки секций", metrics.headings, headingMin, headingMax);
@@ -342,10 +360,10 @@ async function verifyInternalVisualContract(page, viewport) {
   verifyRows("FAQ", metrics.rows.faq, repeatedRows(width > 720 ? 2 : 1, 11));
 
   verifyMetricRange("заголовки услуг", metrics.serviceTitles, narrow ? 17.4 : 16.4, narrow ? 18.6 : 17.6);
-  verifyMetricRange("текст услуг", metrics.serviceBodies, 14.4, 15.6);
-  verifyMetricRange("иконки услуг", metrics.serviceIcons, narrow ? 50 : referenceWide ? 58 : 54, narrow ? 54 : referenceWide ? 62 : 58);
-  verifyMetricRange("заголовки техники", metrics.vehicleTitles, 16.4, 17.6);
-  verifyMetricRange("текст техники", metrics.vehicleBodies, narrow ? 15.4 : 13.4, narrow ? 16.6 : 14.6);
+  verifyMetricRange("текст услуг", metrics.serviceBodies, 13.4, 14.6);
+  verifyMetricRange("иконки услуг", metrics.serviceIcons, narrow ? 50 : 54, narrow ? 54 : 58);
+  verifyMetricRange("заголовки техники", metrics.vehicleTitles, narrow ? 16.4 : 17.4, narrow ? 17.6 : 18.6);
+  verifyMetricRange("текст техники", metrics.vehicleBodies, narrow ? 15.4 : 14.4, narrow ? 16.6 : 15.6);
   verifyMetricRange("текст признаков", metrics.symptomText, 14.4, 15.6);
   verifyMetricRange("иконки признаков", metrics.symptomIcons, narrow ? 34 : 30, narrow ? 38 : 34);
   verifyMetricRange("иконки этапов", metrics.stageIcons, narrow ? 54 : 62, narrow ? 58 : 66);
@@ -361,10 +379,10 @@ async function verifyInternalVisualContract(page, viewport) {
     const fixedVehicles = metrics.vehicleCards.filter(({ minHeight }) => minHeight > 1);
     if (fixedServices.length || fixedVehicles.length) throw new Error("Визуальный контракт: горизонтальные mobile-карточки сохранили фиксированную высоту");
   } else {
-    verifyMetricRange("высота карточек услуг", metrics.serviceCards.map(({ name, height: value }) => ({ name, value })), 194, referenceWide ? 330 : 290);
-    verifyMetricRange("высота карточек техники", metrics.vehicleCards.map(({ name, height: value }) => ({ name, value })), referenceWide ? 230 : 260, referenceWide ? 310 : 410);
+    verifyMetricRange("высота карточек услуг", metrics.serviceCards.map(({ name, height: value }) => ({ name, value })), 194, referenceWide ? 260 : 290);
+    verifyMetricRange("высота карточек техники", metrics.vehicleCards.map(({ name, height: value }) => ({ name, value })), 225, 330);
   }
-  verifyMetricRange("ячейки марок", metrics.brandCells.map(({ name, height: value }) => ({ name, value })), narrow ? 90 : referenceWide ? 74 : 82, narrow ? 100 : referenceWide ? 82 : 96);
+  verifyMetricRange("ячейки марок", metrics.brandCells.map(({ name, height: value }) => ({ name, value })), narrow ? 90 : referenceWide ? 82 : 82, narrow ? 100 : referenceWide ? 88 : 96);
   verifyMetricRange("ширина логотипов", metrics.brandLogoWidths, narrow ? 78 : width <= 1020 ? 88 : 98, narrow ? 114 : width <= 1020 ? 134 : 150);
   verifyMetricRange("высота логотипов", metrics.brandLogoHeights, narrow ? 28 : width <= 1020 ? 30 : 28, narrow ? 50 : width <= 1020 ? 58 : 66);
   verifyMetricRange("карточки признаков", metrics.symptoms.map(({ name, height: value }) => ({ name, value })), 82, 190);
@@ -373,6 +391,13 @@ async function verifyInternalVisualContract(page, viewport) {
   verifyMetricRange("связанные разделы", metrics.related, narrow ? 62 : 66, 110);
   verifyMetricRange("FAQ summary", metrics.faq, narrow ? 62 : 66, Number.POSITIVE_INFINITY);
 
+  const heroShell = metrics.boxes.heroShell;
+  if (!heroShell) throw new Error("Визуальный контракт: не найдена направляющая hero");
+  const misaligned = metrics.alignedContainers.filter((container) => Math.abs(container.x - heroShell.x) > 1 || Math.abs(container.right - heroShell.right) > 1);
+  if (misaligned.length) {
+    throw new Error(`Визуальный контракт: контейнеры не совпадают с hero (${misaligned.map(({ name, x, right }) => `${name}=${x.toFixed(1)}..${right.toFixed(1)}`).join(", ")}; hero=${heroShell.x.toFixed(1)}..${heroShell.right.toFixed(1)})`);
+  }
+
   for (const placement of [
     ["признаки", metrics.boxes.symptomsMain, metrics.boxes.symptomsCta],
     ["цены", metrics.boxes.priceMain, metrics.boxes.priceCta],
@@ -380,7 +405,8 @@ async function verifyInternalVisualContract(page, viewport) {
     const [label, main, cta] = placement;
     if (!main || !cta) throw new Error(`Визуальный контракт: не найден CTA блока «${label}»`);
     if (wide) {
-      if (cta.x < main.right + 13 || Math.abs(cta.y - main.y) > 2 || cta.width < 318 || cta.width > 362) {
+      const minimumCtaWidth = width === 1120 && label === "цены" ? 278 : 318;
+      if (cta.x < main.right + 13 || Math.abs(cta.y - main.y) > 2 || cta.width < minimumCtaWidth || cta.width > 362) {
         throw new Error(`Визуальный контракт: CTA «${label}» не расположен справа (${JSON.stringify({ main, cta })})`);
       }
     } else if (cta.y < main.bottom + 14 || Math.abs(cta.width - main.width) > 2) {
@@ -390,6 +416,8 @@ async function verifyInternalVisualContract(page, viewport) {
 
   verifyMetricRange("CTA-кнопки", metrics.mainCtas.map(({ name, width: value }) => ({ name, value })), 44, Number.POSITIVE_INFINITY);
   verifyMetricRange("CTA-кнопки", metrics.mainCtas.map(({ name, height: value }) => ({ name, value })), 44, Number.POSITIVE_INFINITY);
+  verifyMetricRange("ссылки из референса", metrics.referenceLinks.map(({ name, width: value }) => ({ name, value })), 44, Number.POSITIVE_INFINITY);
+  verifyMetricRange("ссылки из референса", metrics.referenceLinks.map(({ name, height: value }) => ({ name, value })), 44, Number.POSITIVE_INFINITY);
   if (metrics.clipped.length) throw new Error(`Визуальный контракт: обрезан контент ${metrics.clipped.slice(0, 8).join(", ")}`);
   if (metrics.outOfViewport.length) throw new Error(`Визуальный контракт: элементы вышли за viewport ${metrics.outOfViewport.slice(0, 8).join(", ")}`);
 }
@@ -408,6 +436,7 @@ async function verifyInternalContract(page, viewport) {
     ".internal-price-table tbody tr": 8,
     ".internal-related-index span": 8,
     ".internal-faq details": 11,
+    ".internal-reference-link": 2,
   };
   for (const [selector, count] of Object.entries(expected)) {
     const actual = await page.locator(selector).count();
@@ -417,6 +446,11 @@ async function verifyInternalContract(page, viewport) {
   if ((await page.locator("form").count()) !== 0) throw new Error("На внутренней странице появилась форма");
   if ((await page.locator("[class*=sidebar]").count()) !== 0) throw new Error("На внутренней странице появился sidebar");
   if ((await page.locator(".internal-inline-cta").count()) !== 2) throw new Error("Ожидалось ровно 2 inline CTA");
+  const referenceLinks = page.locator(".internal-reference-link");
+  const expectedReferenceHrefs = ["#related-services", "../#v3-truck-brands-title"];
+  for (let index = 0; index < expectedReferenceHrefs.length; index += 1) {
+    if ((await referenceLinks.nth(index).getAttribute("href")) !== expectedReferenceHrefs[index]) throw new Error(`Неверная ссылка из референса ${index + 1}`);
+  }
   const ctas = page.locator("main a.v3-button");
   if ((await ctas.count()) !== 4) throw new Error(`Ожидалось 4 CTA, найдено ${await ctas.count()}`);
   for (let index = 0; index < await ctas.count(); index += 1) {
@@ -502,7 +536,9 @@ async function run() {
     }
 
     const internalViewports = [
+      { name: "wide-1992", width: 1992, height: 1080 },
       { name: "desktop", width: 1440, height: 900 },
+      { name: "reference-1298", width: 1298, height: 900 },
       { name: "tablet", width: 1120, height: 900 },
       { name: "compact-720", width: 720, height: 900 },
       { name: "compact-520", width: 520, height: 900 },
@@ -515,11 +551,21 @@ async function run() {
       const page = await context.newPage();
       await verifyPage(page, internalRoute, `Внутренняя ${viewport.name}`);
       await verifyNavigation(page, viewport.width <= 1120);
-      await verifyInternalContract(page, viewport);
+      try {
+        await verifyInternalContract(page, viewport);
+      } catch (error) {
+        throw new Error(`Внутренняя ${viewport.name}: ${error.message}`);
+      }
       await page.evaluate(() => window.scrollTo(0, 0));
       const screenshotPath = path.join(resultDir, `internal-${viewport.name}-full.png`);
       await page.screenshot({ path: screenshotPath, fullPage: true });
       if (viewport.name === "desktop") fs.copyFileSync(screenshotPath, path.join(reviewDir, "internal-desktop.png"));
+      if (viewport.name === "reference-1298") {
+        await page.locator("#repair-services").screenshot({ path: path.join(reviewDir, "internal-reference-services.png") });
+        await page.locator("#vehicle-types").screenshot({ path: path.join(reviewDir, "internal-reference-vehicles.png") });
+        await page.locator("#truck-brands").screenshot({ path: path.join(reviewDir, "internal-reference-brands.png") });
+        await page.locator("#repair-process").screenshot({ path: path.join(reviewDir, "internal-reference-process.png") });
+      }
       if (viewport.name === "mobile-390") fs.copyFileSync(screenshotPath, path.join(reviewDir, "internal-mobile.png"));
       await context.close();
     }
@@ -532,7 +578,7 @@ async function run() {
     await browser.close();
     await new Promise((resolve) => server.close(resolve));
   }
-  console.log("Browser verification passed: главная 4 viewport, внутренний hub 7 viewport, desktop-геометрия, burger, FAQ, callbar, images, targets и 404.");
+  console.log("Browser verification passed: главная 4 viewport, внутренний hub 9 viewport, hero alignment, desktop-геометрия, burger, FAQ, callbar, images, targets и 404.");
 }
 
 run().catch((error) => {

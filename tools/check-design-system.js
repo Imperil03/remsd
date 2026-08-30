@@ -74,10 +74,23 @@ const compactRhythm = /padding-block\s*:\s*var\(--section-space-compact\)\s*;?/;
 if (!selectorDeclares(internalPagesCss, ".internal-section", defaultRhythm)) {
   fail("assets/css/internal-pages.css: .internal-section должен использовать var(--section-space-default)");
 }
-for (const modifier of ["serviceGrid", "vehicleTypes", "brandStrip", "workStages", "relatedIndex"]) {
+for (const modifier of ["workStages", "relatedIndex"]) {
   if (!selectorDeclares(internalPagesCss, `.internal-section--${modifier}`, compactRhythm)) {
     fail(`assets/css/internal-pages.css: .internal-section--${modifier} должен использовать var(--section-space-compact)`);
   }
+}
+const groupedRhythm = [
+  [".internal-section--serviceGrid", /padding-block\s*:\s*var\(--section-space-compact\)\s+32px\s*;?/],
+  [".internal-section--vehicleTypes", /padding-block\s*:\s*32px\s*;?/],
+  [".internal-section--brandStrip", /padding-block\s*:\s*32px\s+var\(--section-space-compact\)\s*;?/],
+];
+for (const [selector, pattern] of groupedRhythm) {
+  if (!selectorDeclares(internalPagesCss, selector, pattern)) {
+    fail(`assets/css/internal-pages.css: ${selector} должен поддерживать общий 64px-ритм связки`);
+  }
+}
+if (!selectorDeclares(internalPagesCss, ".internal-page .container", /width\s*:\s*min\(calc\(100%\s*-\s*72px\),\s*1360px\)\s*;?/)) {
+  fail("assets/css/internal-pages.css: контейнер внутренней страницы должен совпадать с desktop-shell hero 1360px");
 }
 
 const gridContracts = [
