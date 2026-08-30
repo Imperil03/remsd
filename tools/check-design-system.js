@@ -63,8 +63,49 @@ for (const file of consumerCssFiles) {
 }
 
 const internalPagesCss = read("assets/css/internal-pages.css");
-if (!/\.internal-section\s*\{[^}]*padding-block\s*:\s*var\(--section-space-default\)\s*;?[^}]*\}/s.test(internalPagesCss)) {
+function selectorDeclares(source, selector, declarationPattern) {
+  return Array.from(source.matchAll(/([^{}]+)\{([^{}]*)\}/g)).some(([, selectors, declarations]) => (
+    selectors.split(",").map((item) => item.trim()).includes(selector) && declarationPattern.test(declarations)
+  ));
+}
+
+const defaultRhythm = /padding-block\s*:\s*var\(--section-space-default\)\s*;?/;
+const compactRhythm = /padding-block\s*:\s*var\(--section-space-compact\)\s*;?/;
+if (!selectorDeclares(internalPagesCss, ".internal-section", defaultRhythm)) {
   fail("assets/css/internal-pages.css: .internal-section должен использовать var(--section-space-default)");
+}
+for (const modifier of ["serviceGrid", "vehicleTypes", "brandStrip", "workStages", "relatedIndex"]) {
+  if (!selectorDeclares(internalPagesCss, `.internal-section--${modifier}`, compactRhythm)) {
+    fail(`assets/css/internal-pages.css: .internal-section--${modifier} должен использовать var(--section-space-compact)`);
+  }
+}
+
+const gridContracts = [
+  [".internal-service-grid", 3],
+  [".internal-vehicle-mosaic", 3],
+  [".internal-timeline", 5],
+];
+for (const [selector, columns] of gridContracts) {
+  const columnsPattern = new RegExp(`grid-template-columns\\s*:\\s*repeat\\(\\s*${columns}\\s*,\\s*minmax\\(\\s*0\\s*,\\s*1fr\\s*\\)\\s*\\)\\s*;?`);
+  if (!selectorDeclares(internalPagesCss, selector, columnsPattern)) {
+    fail(`assets/css/internal-pages.css: ${selector} должен иметь desktop-сетку ${columns} колонок`);
+  }
+}
+const brandWallPattern = /grid-template-columns\s*:\s*repeat\(\s*(?:5\s*,\s*minmax\(\s*0\s*,\s*1fr\s*\)|10\s*,\s*minmax\(\s*0\s*,\s*1fr\s*\))\s*\)\s*;?/;
+if (!selectorDeclares(internalPagesCss, ".internal-brand-strip", brandWallPattern)) {
+  fail("assets/css/internal-pages.css: .internal-brand-strip должен формировать desktop-стену 5+4");
+}
+
+for (const selector of [".internal-symptoms-layout", ".internal-price-content", ".internal-inline-cta"]) {
+  if (!selectorDeclares(internalPagesCss, selector, /display\s*:\s*grid\s*;?/)) {
+    fail(`assets/css/internal-pages.css: отсутствует ${selector}`);
+  }
+}
+if (!/\.internal-inline-cta--symptoms\s*\{[^}]*chassis-repair\.webp[^}]*\}/s.test(internalPagesCss)) {
+  fail("assets/css/internal-pages.css: CTA признаков должна использовать chassis-repair.webp");
+}
+if (!/\.internal-inline-cta--prices\s*\{[^}]*engine-work\.webp[^}]*\}/s.test(internalPagesCss)) {
+  fail("assets/css/internal-pages.css: CTA цен должна использовать engine-work.webp");
 }
 
 const expectedBundles = {
@@ -115,7 +156,9 @@ const breakpointChecks = [
   ["assets/css/styles-v3.css", 1120],
   ["assets/css/styles-v3.css", 720],
   ["assets/css/internal-pages.css", 1120],
+  ["assets/css/internal-pages.css", 1020],
   ["assets/css/internal-pages.css", 720],
+  ["assets/css/internal-pages.css", 520],
 ];
 for (const [file, value] of breakpointChecks) {
   const source = read(file);

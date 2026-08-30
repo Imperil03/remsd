@@ -145,7 +145,30 @@ if (!fs.existsSync(distDir)) {
     if (actual !== expected) fail(`${internalFile}: ${section} должен содержать ${expected} элементов, найдено ${actual}`);
   }
   const buttons = [...internalHtml.matchAll(/<a\b[^>]*class=["'][^"']*v3-button[^"']*["'][^>]*href=["']([^"']+)["']/gi)].map((match) => match[1]);
-  if (buttons.length !== 2 || buttons.some((href) => href !== "tel:+79224488822")) fail(`${internalFile}: hero и контактный пролог должны содержать ровно два телефонных CTA`);
+  if (buttons.length !== 4 || buttons.some((href) => href !== "tel:+79224488822")) fail(`${internalFile}: hero, две встроенные панели и контактный пролог должны содержать ровно четыре телефонных CTA`);
+  const inlineCtas = [...internalHtml.matchAll(/<aside\b[^>]*class=["'][^"']*internal-inline-cta\b[^"']*["'][^>]*>/gi)];
+  if (inlineCtas.length !== 2) fail(`${internalFile}: ожидаются ровно две встроенные CTA-панели, найдено ${inlineCtas.length}`);
+  for (const modifier of ["symptoms", "prices"]) {
+    const cta = internalHtml.match(new RegExp(`<aside\\b[^>]*internal-inline-cta--${modifier}[^>]*>[\\s\\S]*?<\\/aside>`, "i"))?.[0] || "";
+    if (count(internalHtml, new RegExp(`internal-inline-cta--${modifier}`, "g")) !== 1 || !cta) {
+      fail(`${internalFile}: ожидается одна CTA-панель internal-inline-cta--${modifier}`);
+      continue;
+    }
+    if (!/<aside\b[^>]*aria-labelledby=["'][^"']+["']/i.test(cta) || !/<h3\b[^>]*id=["'][^"']+["']/i.test(cta)) {
+      fail(`${internalFile}: CTA-панель ${modifier} должна иметь связанный доступный заголовок`);
+    }
+    if (count(cta, /<a\b[^>]*class=["'][^"']*v3-button[^"']*["'][^>]*href=["']tel:\+79224488822["']/gi) !== 1) {
+      fail(`${internalFile}: CTA-панель ${modifier} должна содержать одну кнопку звонка`);
+    }
+  }
+  for (const copy of [
+    "Есть признаки неисправности?",
+    "Позвоните мастеру, назовите марку автомобиля и опишите неисправность — уточним, с чего начать диагностику.",
+    "Нужна точная стоимость?",
+    "Сначала мастер определяет причину неисправности и объём необходимых работ.",
+  ]) {
+    if (!internalHtml.includes(copy)) fail(`${internalFile}: встроенная CTA-панель не содержит утверждённый текст «${copy}»`);
+  }
   if (/<form\b/i.test(internalHtml)) fail(`${internalFile}: формы запрещены`);
   if (/sidebar/i.test(internalHtml)) fail(`${internalFile}: sidebar запрещён`);
   if (!internalHtml.includes("Точная стоимость определяется после диагностики. Цены указаны ориентировочно")) fail(`${internalFile}: отсутствует утверждённая оговорка о цене`);

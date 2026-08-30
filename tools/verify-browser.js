@@ -142,15 +142,28 @@ async function materializePage(page) {
 }
 
 function verifyMetricRange(label, measurements, min, max) {
-  if (!measurements.length) throw new Error(`Desktop-контракт: не найден ${label}`);
+  if (!measurements.length) throw new Error(`Визуальный контракт: не найден ${label}`);
   const invalid = measurements.filter(({ value }) => value < min || value > max);
   if (invalid.length) {
     const details = invalid.map(({ name, value }) => `${name}=${value.toFixed(1)}px`).join(", ");
-    throw new Error(`Desktop-контракт: ${label} вне ${min}–${max}px (${details})`);
+    throw new Error(`Визуальный контракт: ${label} вне ${min}–${max}px (${details})`);
   }
 }
 
-async function verifyInternalDesktopVisualContract(page) {
+function verifyRows(label, actual, expected) {
+  if (actual.length !== expected.length || actual.some((count, index) => count !== expected[index])) {
+    throw new Error(`Визуальный контракт: ${label} образует ряды ${actual.join("+")}, ожидалось ${expected.join("+")}`);
+  }
+}
+
+function repeatedRows(columns, items) {
+  const rows = [];
+  for (let remaining = items; remaining > 0; remaining -= columns) rows.push(Math.min(columns, remaining));
+  return rows;
+}
+
+async function verifyInternalVisualContract(page, viewport) {
+  await materializePage(page);
   await page.evaluate(() => document.fonts.ready);
   const metrics = await page.evaluate(() => {
     const measurements = (selector, readValue = (element) => element.getBoundingClientRect().height) =>
@@ -158,24 +171,73 @@ async function verifyInternalDesktopVisualContract(page) {
         name: element.id || `${selector}[${index + 1}]`,
         value: readValue(element),
       }));
-    const lineCount = (element) => {
-      const range = document.createRange();
-      range.selectNodeContents(element);
-      const lineTops = [...range.getClientRects()]
-        .filter((rect) => rect.width > 0 && rect.height > 0)
-        .map((rect) => Math.round(rect.top));
-      return new Set(lineTops).size;
+    const dimensions = (selector) => [...document.querySelectorAll(selector)].map((element, index) => {
+      const rect = element.getBoundingClientRect();
+      const style = getComputedStyle(element);
+      return {
+        name: element.id || `${selector}[${index + 1}]`,
+        width: rect.width,
+        height: rect.height,
+        minHeight: parseFloat(style.minHeight) || 0,
+      };
+    });
+    const box = (selector) => {
+      const element = document.querySelector(selector);
+      if (!element) return null;
+      const rect = element.getBoundingClientRect();
+      return { x: rect.x, y: rect.y, width: rect.width, height: rect.height, right: rect.right, bottom: rect.bottom };
     };
-    const tokenProbe = document.createElement("div");
-    tokenProbe.style.cssText = "position:absolute;visibility:hidden;pointer-events:none;padding-top:var(--section-space-default)";
-    document.body.append(tokenProbe);
-    const sectionSpaceDefault = parseFloat(getComputedStyle(tokenProbe).paddingTop);
-    tokenProbe.remove();
+    const rowCounts = (selector) => {
+      const rows = [];
+      [...document.querySelectorAll(selector)]
+        .map((element) => element.getBoundingClientRect())
+        .sort((left, right) => left.top - right.top || left.left - right.left)
+        .forEach((rect) => {
+          let row = rows.find((candidate) => Math.abs(candidate.top - rect.top) <= 3);
+          if (!row) {
+            row = { top: rect.top, count: 0 };
+            rows.push(row);
+          }
+          row.count += 1;
+        });
+      return rows.map(({ count }) => count);
+    };
+    const tokenValue = (token) => {
+      const probe = document.createElement("div");
+      probe.style.cssText = `position:absolute;visibility:hidden;pointer-events:none;padding-top:var(${token})`;
+      document.body.append(probe);
+      const value = parseFloat(getComputedStyle(probe).paddingTop);
+      probe.remove();
+      return value;
+    };
     const introMedia = document.querySelector(".internal-intro__media");
     const introMediaRect = introMedia?.getBoundingClientRect();
+    const clippingSelectors = [
+      ".internal-service-card h3", ".internal-service-card p",
+      ".internal-vehicle-card__copy", ".internal-symptoms span",
+      ".internal-timeline h3", ".internal-timeline p",
+      ".internal-price-table th", ".internal-price-table td",
+      ".internal-related-index span", ".internal-faq summary",
+      ".internal-inline-cta__content", ".internal-inline-cta .v3-button",
+    ];
+    const clipped = clippingSelectors.flatMap((selector) => [...document.querySelectorAll(selector)]
+      .filter((element) => element.scrollWidth - element.clientWidth > 2 || element.scrollHeight - element.clientHeight > 2)
+      .map((element, index) => `${selector}[${index + 1}]`));
+    const boundedSelectors = [
+      ".internal-service-card", ".internal-vehicle-card", ".internal-brand-strip__item",
+      ".internal-symptoms li", ".internal-inline-cta", ".internal-timeline__item",
+      ".internal-price-table", ".internal-related-index span", ".internal-faq details",
+    ];
+    const outOfViewport = boundedSelectors.flatMap((selector) => [...document.querySelectorAll(selector)]
+      .filter((element) => {
+        const rect = element.getBoundingClientRect();
+        return rect.left < -1.5 || rect.right > document.documentElement.clientWidth + 1.5;
+      })
+      .map((element, index) => `${selector}[${index + 1}]`));
 
     return {
-      sectionSpaceDefault,
+      sectionSpaceDefault: tokenValue("--section-space-default"),
+      sectionSpaceCompact: tokenValue("--section-space-compact"),
       sectionPaddings: [...document.querySelectorAll(".internal-section")].map((section, index) => {
         const style = getComputedStyle(section);
         return {
@@ -187,53 +249,152 @@ async function verifyInternalDesktopVisualContract(page) {
       headings: measurements(".internal-section h2", (element) => parseFloat(getComputedStyle(element).fontSize)),
       introRatio: introMediaRect ? introMediaRect.width / introMediaRect.height : 0,
       introStats: measurements(".internal-intro__stats > div"),
-      services: measurements(".internal-service-card"),
-      vehicles: measurements(".internal-vehicle-card"),
-      brands: measurements(".internal-brand-strip__item"),
-      symptoms: measurements(".internal-symptoms li"),
-      stages: measurements(".internal-timeline__item"),
+      serviceCards: dimensions(".internal-service-card"),
+      serviceTitles: measurements(".internal-service-card h3", (element) => parseFloat(getComputedStyle(element).fontSize)),
+      serviceBodies: measurements(".internal-service-card p", (element) => parseFloat(getComputedStyle(element).fontSize)),
+      serviceIcons: measurements(".internal-service-card__icon", (element) => element.getBoundingClientRect().width),
+      vehicleCards: dimensions(".internal-vehicle-card"),
+      vehicleTitles: measurements(".internal-vehicle-card h3", (element) => parseFloat(getComputedStyle(element).fontSize)),
+      vehicleBodies: measurements(".internal-vehicle-card p", (element) => parseFloat(getComputedStyle(element).fontSize)),
+      brandCells: dimensions(".internal-brand-strip__item"),
+      brandLogoWidths: measurements(".internal-brand-strip img", (element) => element.getBoundingClientRect().width),
+      brandLogoHeights: measurements(".internal-brand-strip img", (element) => element.getBoundingClientRect().height),
+      symptoms: dimensions(".internal-symptoms li"),
+      symptomText: measurements(".internal-symptoms li", (element) => parseFloat(getComputedStyle(element).fontSize)),
+      symptomIcons: measurements(".internal-symptom__icon", (element) => element.getBoundingClientRect().width),
+      stages: dimensions(".internal-timeline__item"),
+      stageIcons: measurements(".internal-timeline__icon", (element) => element.getBoundingClientRect().width),
+      stageTitles: measurements(".internal-timeline h3", (element) => parseFloat(getComputedStyle(element).fontSize)),
+      stageBodies: measurements(".internal-timeline p", (element) => parseFloat(getComputedStyle(element).fontSize)),
       priceRows: measurements(".internal-price-table tbody tr"),
+      priceLabels: measurements(".internal-price-table th", (element) => parseFloat(getComputedStyle(element).fontSize)),
+      priceValues: measurements(".internal-price-table td", (element) => parseFloat(getComputedStyle(element).fontSize)),
       related: measurements(".internal-related-index span"),
-      faq: [...document.querySelectorAll(".internal-faq summary")].map((element, index) => ({
-        name: `.internal-faq summary[${index + 1}]`,
-        value: element.getBoundingClientRect().height,
-        lines: lineCount(element),
-      })),
+      relatedText: measurements(".internal-related-index span", (element) => parseFloat(getComputedStyle(element).fontSize)),
+      faq: measurements(".internal-faq summary"),
+      faqText: measurements(".internal-faq summary", (element) => parseFloat(getComputedStyle(element).fontSize)),
+      rows: {
+        services: rowCounts(".internal-service-card"),
+        vehicles: rowCounts(".internal-vehicle-card"),
+        brands: rowCounts(".internal-brand-strip__item"),
+        symptoms: rowCounts(".internal-symptoms li"),
+        stages: rowCounts(".internal-timeline__item"),
+        prices: rowCounts(".internal-price-table"),
+        related: rowCounts(".internal-related-index span"),
+        faq: rowCounts(".internal-faq details"),
+      },
+      boxes: {
+        symptomsMain: box(".internal-symptoms"),
+        symptomsCta: box(".internal-inline-cta--symptoms"),
+        priceMain: box(".internal-price-main"),
+        priceCta: box(".internal-inline-cta--prices"),
+      },
+      mainCtas: dimensions("main a.v3-button"),
+      clipped,
+      outOfViewport,
     };
   });
 
-  if (metrics.sectionSpaceDefault < 103 || metrics.sectionSpaceDefault > 105) {
-    throw new Error(`Desktop-контракт: --section-space-default=${metrics.sectionSpaceDefault}px, ожидалось около 104px`);
+  const width = viewport.width;
+  const wide = width > 1020;
+  const compact = width <= 720;
+  const narrow = width <= 520;
+  const compactSections = new Set(["repair-services", "vehicle-types", "truck-brands", "repair-process", "related-services"]);
+  if (!metrics.sectionPaddings.length) throw new Error("Визуальный контракт: не найдены .internal-section");
+  if (!compact && metrics.sectionSpaceDefault - metrics.sectionSpaceCompact < 20) {
+    throw new Error(`Визуальный контракт: default/compact ритм не различим (${metrics.sectionSpaceDefault.toFixed(1)}/${metrics.sectionSpaceCompact.toFixed(1)}px)`);
   }
-  if (!metrics.sectionPaddings.length) throw new Error("Desktop-контракт: не найдены .internal-section");
-  const invalidSectionPaddings = metrics.sectionPaddings.filter(({ top, bottom }) =>
-    Math.abs(top - metrics.sectionSpaceDefault) > 1 || Math.abs(bottom - metrics.sectionSpaceDefault) > 1);
+  const invalidSectionPaddings = metrics.sectionPaddings.filter(({ name, top, bottom }) => {
+    const expected = compact || compactSections.has(name) ? metrics.sectionSpaceCompact : metrics.sectionSpaceDefault;
+    return Math.abs(top - expected) > 1.5 || Math.abs(bottom - expected) > 1.5;
+  });
   if (invalidSectionPaddings.length) {
     const details = invalidSectionPaddings
       .map(({ name, top, bottom }) => `${name}=${top.toFixed(1)}/${bottom.toFixed(1)}px`)
       .join(", ");
-    throw new Error(`Desktop-контракт: padding секций не равен --section-space-default (${details})`);
+    throw new Error(`Визуальный контракт: нарушен переменный ритм секций (${details})`);
   }
 
-  verifyMetricRange("заголовки секций", metrics.headings, 28, 32);
+  const headingRanges = {
+    1440: [39.4, 40.6],
+    1120: [35.4, 36.6],
+    720: [31.4, 32.6],
+    520: [31.4, 32.6],
+    414: [31.4, 32.6],
+    390: [30.5, 32],
+    320: [29.4, 30.6],
+  };
+  const [headingMin, headingMax] = headingRanges[width];
+  verifyMetricRange("заголовки секций", metrics.headings, headingMin, headingMax);
   if (metrics.introRatio < 1.95 || metrics.introRatio > 2.05) {
-    throw new Error(`Desktop-контракт: intro-фото имеет соотношение ${metrics.introRatio.toFixed(2)}, ожидалось 2:1`);
+    throw new Error(`Визуальный контракт: intro-фото имеет соотношение ${metrics.introRatio.toFixed(2)}, ожидалось 2:1`);
   }
-  verifyMetricRange("показатели intro", metrics.introStats, 88, 98);
-  verifyMetricRange("карточки услуг", metrics.services, 220, 250);
-  verifyMetricRange("карточки техники", metrics.vehicles, 180, 215);
-  verifyMetricRange("ячейки марок", metrics.brands, 64, 72);
-  verifyMetricRange("карточки признаков", metrics.symptoms, 68, 82);
-  verifyMetricRange("карточки этапов", metrics.stages, 180, 205);
-  verifyMetricRange("строки цен", metrics.priceRows, 40, 50);
-  verifyMetricRange("связанные разделы", metrics.related, 52, 64);
-  verifyMetricRange("FAQ summary", metrics.faq, 52, Number.POSITIVE_INFINITY);
-  const oneLineFaq = metrics.faq.filter(({ lines }) => lines === 1);
-  if (!oneLineFaq.length) throw new Error("Desktop-контракт: не найден однострочный FAQ summary для проверки плотности");
-  verifyMetricRange("однострочные FAQ summary", oneLineFaq, 52, 64);
+  verifyMetricRange("показатели intro", metrics.introStats, 104, 124);
+
+  verifyRows("услуги", metrics.rows.services, repeatedRows(wide ? 3 : narrow ? 1 : 2, 6));
+  verifyRows("техника", metrics.rows.vehicles, repeatedRows(wide ? 3 : narrow ? 1 : 2, 6));
+  verifyRows("марки", metrics.rows.brands, wide ? [5, 4] : repeatedRows(narrow ? 2 : 3, 9));
+  verifyRows("признаки", metrics.rows.symptoms, repeatedRows(wide ? 3 : narrow ? 1 : 2, 6));
+  verifyRows("этапы", metrics.rows.stages, repeatedRows(wide ? 5 : 1, 5));
+  verifyRows("таблицы цен", metrics.rows.prices, repeatedRows(compact ? 1 : 2, 2));
+  verifyRows("связанные разделы", metrics.rows.related, repeatedRows(wide ? 4 : narrow ? 1 : 2, 8));
+  verifyRows("FAQ", metrics.rows.faq, repeatedRows(width > 720 ? 2 : 1, 11));
+
+  verifyMetricRange("заголовки услуг", metrics.serviceTitles, narrow ? 17.4 : 18.4, narrow ? 18.6 : 19.6);
+  verifyMetricRange("текст услуг", metrics.serviceBodies, 15.4, 16.6);
+  verifyMetricRange("иконки услуг", metrics.serviceIcons, narrow ? 50 : 54, narrow ? 54 : 58);
+  verifyMetricRange("заголовки техники", metrics.vehicleTitles, narrow ? 16.4 : 19.4, narrow ? 17.6 : 20.6);
+  verifyMetricRange("текст техники", metrics.vehicleBodies, 15.4, 16.6);
+  verifyMetricRange("текст признаков", metrics.symptomText, 15.4, 16.6);
+  verifyMetricRange("иконки признаков", metrics.symptomIcons, narrow ? 34 : 38, narrow ? 38 : 42);
+  verifyMetricRange("иконки этапов", metrics.stageIcons, narrow ? 54 : 62, narrow ? 58 : 66);
+  verifyMetricRange("заголовки этапов", metrics.stageTitles, 17.4, 18.6);
+  verifyMetricRange("текст этапов", metrics.stageBodies, 15.4, 16.6);
+  verifyMetricRange("названия цен", metrics.priceLabels, 15.4, 16.6);
+  verifyMetricRange("значения цен", metrics.priceValues, narrow ? 16.4 : 17.4, narrow ? 17.6 : 18.6);
+  verifyMetricRange("текст связанных разделов", metrics.relatedText, 15.4, 16.6);
+  verifyMetricRange("текст FAQ", metrics.faqText, 16.4, 17.6);
+
+  if (narrow) {
+    const fixedServices = metrics.serviceCards.filter(({ minHeight }) => minHeight > 1);
+    const fixedVehicles = metrics.vehicleCards.filter(({ minHeight }) => minHeight > 1);
+    if (fixedServices.length || fixedVehicles.length) throw new Error("Визуальный контракт: горизонтальные mobile-карточки сохранили фиксированную высоту");
+  } else {
+    verifyMetricRange("высота карточек услуг", metrics.serviceCards.map(({ name, height: value }) => ({ name, value })), 208, 290);
+    verifyMetricRange("высота карточек техники", metrics.vehicleCards.map(({ name, height: value }) => ({ name, value })), 298, 410);
+  }
+  verifyMetricRange("ячейки марок", metrics.brandCells.map(({ name, height: value }) => ({ name, value })), narrow ? 90 : 102, narrow ? 100 : 114);
+  verifyMetricRange("ширина логотипов", metrics.brandLogoWidths, narrow ? 78 : width <= 1020 ? 88 : 98, narrow ? 114 : width <= 1020 ? 134 : 150);
+  verifyMetricRange("высота логотипов", metrics.brandLogoHeights, narrow ? 28 : width <= 1020 ? 30 : 34, narrow ? 50 : width <= 1020 ? 58 : 66);
+  verifyMetricRange("карточки признаков", metrics.symptoms.map(({ name, height: value }) => ({ name, value })), 94, 190);
+  if (wide) verifyMetricRange("этапы desktop", metrics.stages.map(({ name, height: value }) => ({ name, value })), 218, 310);
+  verifyMetricRange("строки цен", metrics.priceRows, 54, width <= 320 ? 110 : 90);
+  verifyMetricRange("связанные разделы", metrics.related, narrow ? 62 : 66, 110);
+  verifyMetricRange("FAQ summary", metrics.faq, narrow ? 62 : 66, Number.POSITIVE_INFINITY);
+
+  for (const placement of [
+    ["признаки", metrics.boxes.symptomsMain, metrics.boxes.symptomsCta],
+    ["цены", metrics.boxes.priceMain, metrics.boxes.priceCta],
+  ]) {
+    const [label, main, cta] = placement;
+    if (!main || !cta) throw new Error(`Визуальный контракт: не найден CTA блока «${label}»`);
+    if (wide) {
+      if (cta.x < main.right + 14 || Math.abs(cta.y - main.y) > 2 || cta.width < 318 || cta.width > 348) {
+        throw new Error(`Визуальный контракт: CTA «${label}» не расположен справа (${JSON.stringify({ main, cta })})`);
+      }
+    } else if (cta.y < main.bottom + 14 || Math.abs(cta.width - main.width) > 2) {
+      throw new Error(`Визуальный контракт: CTA «${label}» не расположен под содержимым (${JSON.stringify({ main, cta })})`);
+    }
+  }
+
+  verifyMetricRange("CTA-кнопки", metrics.mainCtas.map(({ name, width: value }) => ({ name, value })), 44, Number.POSITIVE_INFINITY);
+  verifyMetricRange("CTA-кнопки", metrics.mainCtas.map(({ name, height: value }) => ({ name, value })), 44, Number.POSITIVE_INFINITY);
+  if (metrics.clipped.length) throw new Error(`Визуальный контракт: обрезан контент ${metrics.clipped.slice(0, 8).join(", ")}`);
+  if (metrics.outOfViewport.length) throw new Error(`Визуальный контракт: элементы вышли за viewport ${metrics.outOfViewport.slice(0, 8).join(", ")}`);
 }
 
-async function verifyInternalContract(page, compact) {
+async function verifyInternalContract(page, viewport) {
+  const compact = viewport.width <= 720;
   const callbar = page.locator("[data-mobile-callbar]");
   if (compact && (await callbar.getAttribute("aria-hidden")) !== "true") throw new Error("Callbar видна до прокрутки");
   const expected = {
@@ -254,8 +415,9 @@ async function verifyInternalContract(page, compact) {
   if ((await page.locator('nav[aria-label="Хлебные крошки"]').count()) !== 1) throw new Error("Нет хлебных крошек");
   if ((await page.locator("form").count()) !== 0) throw new Error("На внутренней странице появилась форма");
   if ((await page.locator("[class*=sidebar]").count()) !== 0) throw new Error("На внутренней странице появился sidebar");
+  if ((await page.locator(".internal-inline-cta").count()) !== 2) throw new Error("Ожидалось ровно 2 inline CTA");
   const ctas = page.locator("main a.v3-button");
-  if ((await ctas.count()) !== 2) throw new Error(`Ожидалось 2 CTA, найдено ${await ctas.count()}`);
+  if ((await ctas.count()) !== 4) throw new Error(`Ожидалось 4 CTA, найдено ${await ctas.count()}`);
   for (let index = 0; index < await ctas.count(); index += 1) {
     if ((await ctas.nth(index).getAttribute("href")) !== "tel:+79224488822") throw new Error("CTA не ведёт на утверждённый телефон");
   }
@@ -270,15 +432,17 @@ async function verifyInternalContract(page, compact) {
   if (!await summary.locator("xpath=..").evaluate((details) => details.open)) throw new Error("FAQ не открывается с клавиатуры");
   await page.keyboard.press("Space");
   if (await summary.locator("xpath=..").evaluate((details) => details.open)) throw new Error("FAQ не закрывается с клавиатуры");
-  const focusStyle = await page.locator(".internal-hero a.v3-button").evaluate((element) => {
-    element.focus();
-    const style = getComputedStyle(element);
-    return { outline: style.outlineStyle, width: element.getBoundingClientRect().width, height: element.getBoundingClientRect().height };
-  });
-  if (focusStyle.outline === "none") throw new Error("CTA не показывает focus-visible");
-  if (focusStyle.width < 44 || focusStyle.height < 44) throw new Error("CTA меньше 44px");
+  for (let index = 0; index < await ctas.count(); index += 1) {
+    const focusStyle = await ctas.nth(index).evaluate((element) => {
+      element.focus();
+      const style = getComputedStyle(element);
+      return { outline: style.outlineStyle, width: element.getBoundingClientRect().width, height: element.getBoundingClientRect().height };
+    });
+    if (focusStyle.outline === "none") throw new Error(`CTA ${index + 1} не показывает focus-visible`);
+    if (focusStyle.width < 44 || focusStyle.height < 44) throw new Error(`CTA ${index + 1} меньше 44px`);
+  }
 
-  await materializePage(page);
+  await verifyInternalVisualContract(page, viewport);
   const brokenImages = await page.evaluate(() => [...document.images].filter((image) => image.complete && image.naturalWidth === 0).map((image) => image.src));
   if (brokenImages.length) throw new Error(`Не загрузились изображения: ${brokenImages.join(", ")}`);
 
@@ -300,6 +464,16 @@ async function verifyInternalContract(page, compact) {
       window.dispatchEvent(new Event("scroll"));
     });
     await page.waitForFunction(() => document.querySelector("[data-mobile-callbar]")?.getAttribute("aria-hidden") === "false", undefined, { timeout: 2000 });
+    const callbarTarget = await callbar.locator("a").evaluate((element) => {
+      const rect = element.getBoundingClientRect();
+      return { href: element.getAttribute("href"), width: rect.width, height: rect.height };
+    });
+    if (callbarTarget.href !== "tel:+79224488822" || callbarTarget.width < 44 || callbarTarget.height < 44) {
+      throw new Error(`Callbar нарушает телефонный/44px контракт: ${JSON.stringify(callbarTarget)}`);
+    }
+    await page.locator("[data-nav-toggle]").evaluate((element) => element.click());
+    await page.waitForFunction(() => document.querySelector("[data-mobile-callbar]")?.getAttribute("aria-hidden") === "true", undefined, { timeout: 2000 });
+    await page.keyboard.press("Escape");
   }
 }
 
@@ -340,8 +514,7 @@ async function run() {
       const page = await context.newPage();
       await verifyPage(page, internalRoute, `Внутренняя ${viewport.name}`);
       await verifyNavigation(page, viewport.width <= 1120);
-      await verifyInternalContract(page, viewport.width <= 720);
-      if (viewport.name === "desktop") await verifyInternalDesktopVisualContract(page);
+      await verifyInternalContract(page, viewport);
       await page.evaluate(() => window.scrollTo(0, 0));
       const screenshotPath = path.join(resultDir, `internal-${viewport.name}-full.png`);
       await page.screenshot({ path: screenshotPath, fullPage: true });

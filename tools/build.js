@@ -10,7 +10,7 @@ const dataDir = path.join(srcDir, "data");
 const templatesDir = path.join(srcDir, "templates");
 const assetsDir = path.join(root, "assets");
 const distDir = path.join(root, "dist");
-const assetVersion = process.env.ASSET_VERSION || "20260830-reference-blocks-v2";
+const assetVersion = process.env.ASSET_VERSION || "20260830-internal-bolder-v3";
 
 const PAGE_FAMILIES = new Set(["hub", "service", "brand"]);
 const SECTION_TYPES = new Set([
@@ -554,10 +554,26 @@ function renderBrandStrip(section, rootPath) {
 </section>`;
 }
 
-function renderSymptoms(section) {
+function renderInlineCta({ id, modifier, title, text }, site) {
+  return `<aside class="internal-inline-cta internal-inline-cta--${escapeHtml(modifier)}" aria-labelledby="${escapeHtml(id)}">
+  <div class="internal-inline-cta__content">
+    <h3 id="${escapeHtml(id)}">${escapeHtml(title)}</h3>
+    <p>${escapeHtml(text)}</p>
+    <a class="v3-button v3-button--primary" href="${escapeHtml(site.phoneHref)}">${escapeHtml(site.primaryCta.label)}</a>
+  </div>
+</aside>`;
+}
+
+function renderSymptoms(section, site) {
   const items = section.items.map((item) => `<li><svg class="internal-symptom__icon" aria-hidden="true"><use href="#internal-icon-${escapeHtml(item.icon)}"></use></svg><span>${escapeHtml(item.text)}</span></li>`).join("");
+  const cta = renderInlineCta({
+    id: `${section.id}-cta-title`,
+    modifier: "symptoms",
+    title: "Есть признаки неисправности?",
+    text: "Позвоните мастеру, назовите марку автомобиля и опишите неисправность — уточним, с чего начать диагностику.",
+  }, site);
   return `<section class="internal-section internal-section--symptoms" id="${escapeHtml(section.id)}" aria-labelledby="${escapeHtml(section.id)}-title">
-  <div class="container">${renderSectionHead(section)}<ul class="internal-symptoms">${items}</ul></div>
+  <div class="container">${renderSectionHead(section)}<div class="internal-symptoms-layout"><ul class="internal-symptoms">${items}</ul>${cta}</div></div>
 </section>`;
 }
 
@@ -577,7 +593,7 @@ function renderPriceTable(items) {
   return `<table class="internal-price-table"><thead class="visually-hidden"><tr><th>Услуга</th><th>Цена от</th></tr></thead><tbody>${rows}</tbody></table>`;
 }
 
-function renderPriceExamples(section) {
+function renderPriceExamples(section, site) {
   const midpoint = Math.ceil(section.items.length / 2);
   const metadata = [
     ["Действует с", "29 августа 2026 года"],
@@ -586,11 +602,19 @@ function renderPriceExamples(section) {
     ["Запчасти", section.metadata.partsAndMaterials],
     ["Источник", section.metadata.source],
   ].map(([label, value]) => `<div><dt>${escapeHtml(label)}:</dt><dd>${escapeHtml(value)}</dd></div>`).join("");
+  const cta = renderInlineCta({
+    id: `${section.id}-cta-title`,
+    modifier: "prices",
+    title: "Нужна точная стоимость?",
+    text: "Сначала мастер определяет причину неисправности и объём необходимых работ.",
+  }, site);
   return `<section class="internal-section internal-section--priceExamples" id="${escapeHtml(section.id)}" aria-labelledby="${escapeHtml(section.id)}-title">
   <div class="container">${renderSectionHead(section)}
-    <div class="internal-price-layout">${renderPriceTable(section.items.slice(0, midpoint))}${renderPriceTable(section.items.slice(midpoint))}</div>
-    <p class="internal-price-note">${escapeHtml(section.note)}</p>
-    <dl class="internal-price-meta">${metadata}</dl>
+    <div class="internal-price-content"><div class="internal-price-main">
+      <div class="internal-price-layout">${renderPriceTable(section.items.slice(0, midpoint))}${renderPriceTable(section.items.slice(midpoint))}</div>
+      <p class="internal-price-note">${escapeHtml(section.note)}</p>
+      <dl class="internal-price-meta">${metadata}</dl>
+    </div>${cta}</div>
   </div>
 </section>`;
 }
@@ -609,15 +633,15 @@ function renderFaq(section) {
 </section>`;
 }
 
-function renderSection(section, rootPath) {
+function renderSection(section, rootPath, site) {
   const renderers = {
     introProof: () => renderIntroProof(section, rootPath),
     serviceGrid: () => renderServiceGrid(section),
     vehicleTypes: () => renderVehicleTypes(section, rootPath),
     brandStrip: () => renderBrandStrip(section, rootPath),
-    symptoms: () => renderSymptoms(section),
+    symptoms: () => renderSymptoms(section, site),
     workStages: () => renderWorkStages(section),
-    priceExamples: () => renderPriceExamples(section),
+    priceExamples: () => renderPriceExamples(section, site),
     relatedIndex: () => renderRelatedIndex(section),
     faq: () => renderFaq(section),
   };
@@ -681,7 +705,7 @@ function buildInternalPages(pages, partials, config, mode, baseUrl, writtenRoute
       heroCtaLabel: escapeHtml(page.hero.ctaLabel),
       heroFacts: renderHeroFacts(page.hero),
       breadcrumbs: renderBreadcrumbs(page, rootPath),
-      sections: page.sections.map((section) => renderSection(section, rootPath)).join("\n"),
+      sections: page.sections.map((section) => renderSection(section, rootPath, config.site)).join("\n"),
       phoneHref: escapeHtml(config.site.phoneHref),
       phone: escapeHtml(config.site.phone),
       address: escapeHtml(`${config.site.address.locality}, ${config.site.address.street}`),
