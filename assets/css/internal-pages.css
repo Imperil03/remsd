@@ -63,8 +63,8 @@
   position: relative;
   z-index: 2;
   display: grid;
-  grid-template-rows: auto minmax(0, 1fr) auto;
-  width: min(calc(100% - 72px), 1360px);
+  grid-template-rows: minmax(0, 1fr) auto;
+  width: min(calc(100% - (2 * var(--layout-gutter))), var(--layout-container));
   min-height: 100%;
   margin-inline: auto;
   padding-block: clamp(16px, 1.7vw, 24px) 30px;
@@ -184,7 +184,7 @@
 }
 
 .internal-page .container {
-  width: min(calc(100% - 72px), 1360px);
+  width: min(calc(100% - (2 * var(--layout-gutter))), var(--layout-container));
 }
 
 .internal-section {
@@ -394,33 +394,33 @@
 
 .internal-service-grid {
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
 }
 
 .internal-service-card {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 10px;
-  align-content: start;
-  min-height: 230px;
-  padding: 18px 14px;
+  grid-template-columns: 64px minmax(0, 1fr);
+  gap: 16px;
+  align-content: center;
+  min-height: 196px;
+  padding: 22px 20px;
   background: var(--surface-card);
   border: 1px solid var(--border-default);
   border-radius: var(--radius-md);
-  text-align: center;
+  text-align: left;
 }
 
 .internal-service-card:nth-child(-n + 2) {
   grid-column: auto;
-  grid-template-columns: 1fr;
-  min-height: 230px;
+  grid-template-columns: 64px minmax(0, 1fr);
+  min-height: 196px;
 }
 
 .internal-service-card__icon {
   width: 56px;
   height: 56px;
-  margin-inline: auto;
+  margin: 0;
   color: var(--text-primary);
   fill: none;
   stroke: currentColor;
@@ -450,8 +450,8 @@
 
 .internal-vehicle-mosaic {
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
 }
 
 .internal-vehicle-card {
@@ -1061,10 +1061,12 @@
 
 .internal-timeline h3 {
   grid-area: title;
+  min-width: 0;
   margin: 4px 0 0;
   font-family: var(--font-heading);
   font-size: 18px;
   line-height: 1.25;
+  overflow-wrap: break-word;
 }
 
 .internal-timeline p {
@@ -1296,14 +1298,6 @@
 }
 
 @media (max-width: 1120px) {
-  .internal-hero__shell {
-    width: min(calc(100% - 40px), 1040px);
-  }
-
-  .internal-page .container {
-    width: min(calc(100% - 40px), 1040px);
-  }
-
   .internal-service-grid,
   .internal-vehicle-mosaic {
     grid-template-columns: repeat(3, minmax(0, 1fr));

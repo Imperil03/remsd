@@ -118,6 +118,93 @@ async function verifyNavigation(page, collapsed) {
   if (collapsed && (await nav.getAttribute("hidden")) === null) throw new Error("Закрытое мобильное меню осталось видимым");
 }
 
+function compareChromeBox(label, home, internal, tolerance = 1) {
+  if (!home || !internal) throw new Error(`Общий chrome: не найден ${label}`);
+  for (const property of ["x", "right", "width", "height"]) {
+    if (Math.abs(home[property] - internal[property]) > tolerance) {
+      throw new Error(`Общий chrome: ${label}.${property} различается (${home[property].toFixed(1)} / ${internal[property].toFixed(1)})`);
+    }
+  }
+}
+
+async function captureChrome(page, route, viewport) {
+  await verifyPage(page, route, `${route} chrome ${viewport.width}`);
+  await page.waitForLoadState("networkidle");
+  await page.evaluate(() => document.fonts.ready);
+  const collapsed = viewport.width <= 1120;
+  if (collapsed) {
+    await page.locator("[data-nav-toggle]").click();
+    await page.waitForFunction(() => document.querySelector("[data-nav-toggle]")?.getAttribute("aria-expanded") === "true");
+  }
+  const metrics = await page.evaluate(() => {
+    const box = (selector) => {
+      const element = document.querySelector(selector);
+      if (!element) return null;
+      const rect = element.getBoundingClientRect();
+      return { x: rect.x, right: rect.right, width: rect.width, height: rect.height };
+    };
+    const nav = document.querySelector(".v3-nav");
+    const navStyle = nav ? getComputedStyle(nav) : null;
+    const active = document.querySelector(".v3-nav .main-nav__group.is-current > .main-nav__trigger, .v3-nav > a[aria-current='page']");
+    const activeStyle = active ? getComputedStyle(active) : null;
+    const activeLine = active ? getComputedStyle(active, active.matches(".main-nav__trigger") ? "::before" : "::after") : null;
+    return {
+      headerRail: box(".site-header-rail"),
+      header: box(".v3-header"),
+      logo: box(".v3-logo"),
+      phone: box(".v3-header__phone"),
+      toggle: box(".v3-nav-toggle"),
+      navPanel: box(".v3-nav"),
+      footerRail: box(".v3-footer > .container"),
+      navStyle: navStyle && {
+        fontFamily: navStyle.fontFamily,
+        fontSize: parseFloat(navStyle.fontSize),
+        fontWeight: Number(navStyle.fontWeight),
+        color: navStyle.color,
+      },
+      activeStyle: activeStyle && { color: activeStyle.color },
+      activeLine: activeLine && {
+        height: parseFloat(activeLine.height),
+        opacity: parseFloat(activeLine.opacity),
+        backgroundColor: activeLine.backgroundColor,
+      },
+    };
+  });
+  if (collapsed) await page.keyboard.press("Escape");
+  return metrics;
+}
+
+async function verifySharedChrome(browser, viewport) {
+  const context = await browser.newContext({ viewport });
+  const homePage = await context.newPage();
+  const internalPage = await context.newPage();
+  const [home, internal] = await Promise.all([
+    captureChrome(homePage, "/", viewport),
+    captureChrome(internalPage, internalRoute, viewport),
+  ]);
+  for (const key of ["headerRail", "header", "logo", "phone", "toggle", "navPanel", "footerRail"]) {
+    compareChromeBox(key, home[key], internal[key]);
+  }
+  const expectedRail = viewport.width <= 720
+    ? Math.min(viewport.width - 28, 520)
+    : Math.min(viewport.width - 32, 1180);
+  if (Math.abs(home.headerRail.width - expectedRail) > 1 || Math.abs(home.footerRail.width - expectedRail) > 1) {
+    throw new Error(`Общий chrome ${viewport.width}: ожидалась направляющая ${expectedRail}px, получено header=${home.headerRail.width.toFixed(1)}, footer=${home.footerRail.width.toFixed(1)}`);
+  }
+  for (const [label, metrics] of [["главная", home], ["внутренняя", internal]]) {
+    if (!metrics.navStyle || metrics.navStyle.fontSize !== 14 || metrics.navStyle.fontWeight !== 600 || !metrics.navStyle.fontFamily.includes("Montserrat")) {
+      throw new Error(`Общий chrome ${viewport.width}: типографика меню «${label}» ${JSON.stringify(metrics.navStyle)}`);
+    }
+  }
+  if (!internal.activeStyle || internal.activeStyle.color !== internal.navStyle.color) {
+    throw new Error(`Общий chrome ${viewport.width}: активный раздел изменил цвет текста (${JSON.stringify(internal.activeStyle)} / ${internal.navStyle.color})`);
+  }
+  if (!internal.activeLine || Math.abs(internal.activeLine.height - 2) > 0.5 || internal.activeLine.opacity < 0.99 || internal.activeLine.backgroundColor !== "rgb(245, 162, 26)") {
+    throw new Error(`Общий chrome ${viewport.width}: активный раздел не отмечен янтарной линией (${JSON.stringify(internal.activeLine)})`);
+  }
+  await context.close();
+}
+
 async function verifyLightbox(page) {
   const opener = page.locator("[data-lightbox-item]").first();
   const dialog = page.locator("[data-media-lightbox]");
@@ -364,9 +451,9 @@ async function verifyInternalVisualContract(page, viewport) {
   }
   verifyMetricRange("показатели intro", metrics.introStats, 104, 124);
 
-  verifyRows("услуги", metrics.rows.services, repeatedRows(referenceWide ? 6 : wide ? 3 : narrow ? 1 : 2, 6));
+  verifyRows("услуги", metrics.rows.services, repeatedRows(wide ? 3 : narrow ? 1 : 2, 6));
   verifyRows("популярные работы", metrics.rows.popular, repeatedRows(wide ? 4 : narrow ? 1 : 2, 16));
-  verifyRows("техника", metrics.rows.vehicles, repeatedRows(referenceWide ? 6 : wide ? 3 : narrow ? 1 : 2, 6));
+  verifyRows("техника", metrics.rows.vehicles, repeatedRows(wide ? 3 : narrow ? 1 : 2, 6));
   verifyRows("официальные марки", metrics.rows.brandOfficial, [3]);
   verifyRows("матрица марок", metrics.rows.brandMatrix, repeatedRows(referenceWide ? 5 : compact ? 2 : 4, 20));
   verifyRows("признаки", metrics.rows.symptoms, repeatedRows(wide ? 3 : narrow ? 1 : 2, 6));
@@ -553,6 +640,19 @@ async function run() {
   const server = await startServer();
   const browser = await chromium.launch({ headless: true });
   try {
+    const chromeViewports = [
+      { name: "wide-1992", width: 1992, height: 1080 },
+      { name: "desktop", width: 1440, height: 900 },
+      { name: "reference-1298", width: 1298, height: 900 },
+      { name: "tablet", width: 1120, height: 900 },
+      { name: "compact-720", width: 720, height: 900 },
+      { name: "compact-520", width: 520, height: 900 },
+      { name: "mobile-414", width: 414, height: 896 },
+      { name: "mobile-390", width: 390, height: 844 },
+      { name: "mobile-320", width: 320, height: 760 },
+    ];
+    for (const viewport of chromeViewports) await verifySharedChrome(browser, viewport);
+
     const homeViewports = [
       { name: "desktop", width: 1440, height: 900 },
       { name: "tablet", width: 1120, height: 900 },
@@ -565,21 +665,19 @@ async function run() {
       await verifyPage(page, "/", `Главная ${viewport.name}`);
       await verifyNavigation(page, viewport.width <= 1120);
       if (viewport.name === "desktop") await verifyLightbox(page);
-      await page.screenshot({ path: path.join(resultDir, `home-${viewport.name}.png`) });
+      await page.evaluate(() => {
+        document.documentElement.style.scrollBehavior = "auto";
+        document.body.style.scrollBehavior = "auto";
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+        window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+      });
+      await page.waitForTimeout(50);
+      await page.locator(".v3-hero").screenshot({ path: path.join(resultDir, `home-${viewport.name}.png`) });
       await context.close();
     }
 
-    const internalViewports = [
-      { name: "wide-1992", width: 1992, height: 1080 },
-      { name: "desktop", width: 1440, height: 900 },
-      { name: "reference-1298", width: 1298, height: 900 },
-      { name: "tablet", width: 1120, height: 900 },
-      { name: "compact-720", width: 720, height: 900 },
-      { name: "compact-520", width: 520, height: 900 },
-      { name: "mobile-414", width: 414, height: 896 },
-      { name: "mobile-390", width: 390, height: 844 },
-      { name: "mobile-320", width: 320, height: 760 },
-    ];
+    const internalViewports = chromeViewports;
     for (const viewport of internalViewports) {
       const context = await browser.newContext({ viewport });
       const page = await context.newPage();
@@ -619,7 +717,7 @@ async function run() {
     await browser.close();
     await new Promise((resolve) => server.close(resolve));
   }
-  console.log("Browser verification passed: главная 4 viewport, внутренний hub 9 viewport, hero alignment, desktop-геометрия, burger, FAQ, callbar, images, targets и 404.");
+  console.log("Browser verification passed: общий chrome 9 viewport, главная 4 viewport, внутренний hub 9 viewport, hero alignment, desktop-геометрия, burger, FAQ, callbar, images, targets и 404.");
 }
 
 run().catch((error) => {

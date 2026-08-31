@@ -62,6 +62,14 @@ for (const file of consumerCssFiles) {
   if (/:root\s*\{/.test(source)) fail(`assets/css/${file}: глобальные токены разрешены только в design-system.css`);
 }
 
+for (const file of ["styles-v3.css", "internal-pages.css"]) {
+  const source = fs.readFileSync(path.join(cssDir, file), "utf8");
+  const sharedChromeSelector = source.match(/\.v3-(?:header|nav|logo|footer)[\w-]*/);
+  if (sharedChromeSelector) {
+    fail(`assets/css/${file}: ${sharedChromeSelector[0]} принадлежит только site-chrome.css`);
+  }
+}
+
 const internalPagesCss = read("assets/css/internal-pages.css");
 function selectorDeclares(source, selector, declarationPattern) {
   return Array.from(source.matchAll(/([^{}]+)\{([^{}]*)\}/g)).some(([, selectors, declarations]) => (
@@ -90,14 +98,14 @@ for (const [selector, pattern] of groupedRhythm) {
     fail(`assets/css/internal-pages.css: ${selector} должен поддерживать общий 64px-ритм связки`);
   }
 }
-if (!selectorDeclares(internalPagesCss, ".internal-page .container", /width\s*:\s*min\(calc\(100%\s*-\s*72px\),\s*1360px\)\s*;?/)) {
-  fail("assets/css/internal-pages.css: контейнер внутренней страницы должен совпадать с desktop-shell hero 1360px");
+if (!selectorDeclares(internalPagesCss, ".internal-page .container", /width\s*:\s*min\(calc\(100%\s*-\s*\(2\s*\*\s*var\(--layout-gutter\)\)\),\s*var\(--layout-container\)\)\s*;?/)) {
+  fail("assets/css/internal-pages.css: контейнер внутренней страницы должен использовать общую направляющую --layout-container");
 }
 
 const gridContracts = [
-  [".internal-service-grid", 6],
+  [".internal-service-grid", 3],
   [".internal-popular-works", 4],
-  [".internal-vehicle-mosaic", 6],
+  [".internal-vehicle-mosaic", 3],
   [".internal-timeline", 5],
 ];
 for (const [selector, columns] of gridContracts) {

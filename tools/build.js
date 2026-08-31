@@ -10,7 +10,7 @@ const dataDir = path.join(srcDir, "data");
 const templatesDir = path.join(srcDir, "templates");
 const assetsDir = path.join(root, "assets");
 const distDir = path.join(root, "dist");
-const assetVersion = process.env.ASSET_VERSION || "20260831-internal-content-hub-v6";
+const assetVersion = process.env.ASSET_VERSION || "20260831-unified-chrome-v7";
 
 const PAGE_FAMILIES = new Set(["hub", "service", "brand"]);
 const SECTION_TYPES = new Set([
