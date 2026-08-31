@@ -187,7 +187,7 @@ async function verifySharedChrome(browser, viewport) {
   }
   const expectedRail = viewport.width <= 720
     ? Math.min(viewport.width - 28, 520)
-    : Math.min(viewport.width - 32, 1180);
+    : Math.min(viewport.width - 72, 1312);
   if (Math.abs(home.headerRail.width - expectedRail) > 1 || Math.abs(home.footerRail.width - expectedRail) > 1) {
     throw new Error(`Общий chrome ${viewport.width}: ожидалась направляющая ${expectedRail}px, получено header=${home.headerRail.width.toFixed(1)}, footer=${home.footerRail.width.toFixed(1)}`);
   }
@@ -203,6 +203,49 @@ async function verifySharedChrome(browser, viewport) {
     throw new Error(`Общий chrome ${viewport.width}: активный раздел не отмечен янтарной линией (${JSON.stringify(internal.activeLine)})`);
   }
   await context.close();
+}
+
+async function verifyHomeLayout(page, viewport) {
+  await page.waitForLoadState("networkidle");
+  await page.evaluate(() => document.fonts.ready);
+  const metrics = await page.evaluate(() => {
+    const box = (elementOrSelector) => {
+      const element = typeof elementOrSelector === "string" ? document.querySelector(elementOrSelector) : elementOrSelector;
+      if (!element) return null;
+      const rect = element.getBoundingClientRect();
+      return { x: rect.x, y: rect.y, right: rect.right, bottom: rect.bottom, width: rect.width, height: rect.height };
+    };
+    return {
+      hero: box(".v3-hero"),
+      headerRail: box(".site-header-rail"),
+      heroShell: box(".v3-hero__shell"),
+      heading: box(".v3-hero h1"),
+      proof: box(".v3-proof"),
+      containers: [
+        ...document.querySelectorAll(".v3-section__inner.container"),
+        document.querySelector(".v3-footer > .container"),
+      ].filter(Boolean).map(box),
+    };
+  });
+  const expectedWidth = viewport.width <= 720
+    ? Math.min(viewport.width - 28, 520)
+    : Math.min(viewport.width - 72, 1312);
+  for (const [label, box] of [["шапка", metrics.headerRail], ["hero", metrics.heroShell], ...metrics.containers.map((item, index) => [`контейнер-${index + 1}`, item])]) {
+    if (!box || Math.abs(box.width - expectedWidth) > 1 || Math.abs(box.x - (viewport.width - expectedWidth) / 2) > 1) {
+      throw new Error(`Главная ${viewport.width}: ${label} не совпадает с направляющей ${expectedWidth}px (${JSON.stringify(box)})`);
+    }
+  }
+  if (viewport.width > 720 && (!metrics.proof || Math.abs(metrics.proof.x - metrics.heroShell.x) > 1 || Math.abs(metrics.proof.right - metrics.heroShell.right) > 1)) {
+    throw new Error(`Главная ${viewport.width}: факты hero не совпадают с общей направляющей`);
+  }
+  if (viewport.width === 1992 && viewport.height === 1200) {
+    if (!metrics.heading || metrics.heading.y < 273 || metrics.heading.y > 275) {
+      throw new Error(`Главная 1992×1200: H1 должен начинаться около 274px, получено ${metrics.heading?.y}`);
+    }
+    if (!metrics.proof || !metrics.hero || metrics.proof.bottom > metrics.hero.bottom + 1) {
+      throw new Error("Главная 1992×1200: нижние факты вышли за границу hero");
+    }
+  }
 }
 
 async function verifyLightbox(page) {
@@ -366,6 +409,29 @@ async function verifyInternalVisualContract(page, viewport) {
       stageIcons: measurements(".internal-timeline__icon", (element) => element.getBoundingClientRect().width),
       stageTitles: measurements(".internal-timeline h3", (element) => parseFloat(getComputedStyle(element).fontSize)),
       stageBodies: measurements(".internal-timeline p", (element) => parseFloat(getComputedStyle(element).fontSize)),
+      stageTitleLayouts: [...document.querySelectorAll(".internal-timeline h3")].map((element) => {
+        const style = getComputedStyle(element);
+        const rect = element.getBoundingClientRect();
+        return {
+          name: element.textContent.trim(),
+          lines: Math.round(rect.height / parseFloat(style.lineHeight)),
+          overflowWrap: style.overflowWrap,
+          wordBreak: style.wordBreak,
+          hyphens: style.hyphens,
+          overflows: element.scrollWidth > element.clientWidth + 1,
+        };
+      }),
+      stageLine: (() => {
+        const timeline = document.querySelector(".internal-timeline");
+        if (!timeline) return null;
+        const style = getComputedStyle(timeline, "::before");
+        return {
+          position: style.position,
+          width: parseFloat(style.width),
+          backgroundColor: style.backgroundColor,
+          content: style.content,
+        };
+      })(),
       priceRows: measurements(".internal-price-table tbody tr"),
       priceLabels: measurements(".internal-price-table th", (element) => parseFloat(getComputedStyle(element).fontSize)),
       priceValues: measurements(".internal-price-table td", (element) => parseFloat(getComputedStyle(element).fontSize)),
@@ -409,6 +475,7 @@ async function verifyInternalVisualContract(page, viewport) {
 
   const width = viewport.width;
   const wide = width > 1020;
+  const timelineWide = width >= 1280;
   const referenceWide = width > 1120;
   const compact = width <= 720;
   const narrow = width <= 520;
@@ -436,6 +503,8 @@ async function verifyInternalVisualContract(page, viewport) {
     1992: [31.4, 32.6],
     1440: [28.2, 29.4],
     1298: [27.4, 28.6],
+    1280: [27.4, 28.6],
+    1279: [27.4, 28.6],
     1120: [27.4, 28.6],
     720: [27.4, 28.6],
     520: [29.4, 30.6],
@@ -457,7 +526,7 @@ async function verifyInternalVisualContract(page, viewport) {
   verifyRows("официальные марки", metrics.rows.brandOfficial, [3]);
   verifyRows("матрица марок", metrics.rows.brandMatrix, repeatedRows(referenceWide ? 5 : compact ? 2 : 4, 20));
   verifyRows("признаки", metrics.rows.symptoms, repeatedRows(wide ? 3 : narrow ? 1 : 2, 6));
-  verifyRows("этапы", metrics.rows.stages, repeatedRows(wide ? 5 : 1, 5));
+  verifyRows("этапы", metrics.rows.stages, repeatedRows(timelineWide ? 5 : 1, 5));
   verifyRows("таблицы цен", metrics.rows.prices, repeatedRows(compact ? 1 : 2, 2));
   verifyRows("связанные разделы", metrics.rows.related, repeatedRows(wide ? 4 : narrow ? 1 : 2, 8));
   verifyRows("FAQ", metrics.rows.faq, repeatedRows(width > 720 ? 2 : 1, 11));
@@ -471,9 +540,21 @@ async function verifyInternalVisualContract(page, viewport) {
   verifyMetricRange("текст техники", metrics.vehicleBodies, narrow ? 15.4 : 14.4, narrow ? 16.6 : 15.6);
   verifyMetricRange("текст признаков", metrics.symptomText, 14.4, 15.6);
   verifyMetricRange("иконки признаков", metrics.symptomIcons, narrow ? 34 : 30, narrow ? 38 : 34);
-  verifyMetricRange("иконки этапов", metrics.stageIcons, narrow ? 54 : 62, narrow ? 58 : 66);
-  verifyMetricRange("заголовки этапов", metrics.stageTitles, width === 1120 ? 16.4 : 17.4, width === 1120 ? 17.6 : 18.6);
+  verifyMetricRange("иконки этапов", metrics.stageIcons, 54, 58);
+  verifyMetricRange("заголовки этапов", metrics.stageTitles, 17.4, 18.6);
   verifyMetricRange("текст этапов", metrics.stageBodies, 14.4, 15.6);
+  const invalidStageWrapping = metrics.stageTitleLayouts.filter(({ overflowWrap, wordBreak, hyphens, overflows }) => (
+    overflowWrap !== "normal" || wordBreak !== "normal" || hyphens !== "none" || overflows
+  ));
+  if (invalidStageWrapping.length) {
+    throw new Error(`Визуальный контракт: заголовки этапов допускают разрыв слова (${JSON.stringify(invalidStageWrapping)})`);
+  }
+  if (timelineWide) {
+    const agreement = metrics.stageTitleLayouts.find(({ name }) => name === "Согласование");
+    if (!agreement || agreement.lines !== 1) throw new Error(`Визуальный контракт: «Согласование» должно занимать одну строку (${JSON.stringify(agreement)})`);
+  } else if (!metrics.stageLine || metrics.stageLine.position !== "absolute" || Math.abs(metrics.stageLine.width - 3) > 0.5 || metrics.stageLine.backgroundColor !== "rgb(245, 162, 26)" || metrics.stageLine.content === "none") {
+    throw new Error(`Визуальный контракт: вертикальный маршрут потерял янтарную ось (${JSON.stringify(metrics.stageLine)})`);
+  }
   verifyMetricRange("названия цен", metrics.priceLabels, 15.4, 16.6);
   verifyMetricRange("значения цен", metrics.priceValues, narrow ? 16.4 : 17.4, narrow ? 17.6 : 18.6);
   verifyMetricRange("текст связанных разделов", metrics.relatedText, 15.4, 16.6);
@@ -492,7 +573,7 @@ async function verifyInternalVisualContract(page, viewport) {
   verifyMetricRange("логотипы официальных марок", metrics.brandOfficialLogos, compact ? 44 : 72, compact ? 48 : 80);
   verifyMetricRange("матрица марок", metrics.brandMatrixItems.map(({ name, height: value }) => ({ name, value })), compact ? 38 : 42, 60);
   verifyMetricRange("карточки признаков", metrics.symptoms.map(({ name, height: value }) => ({ name, value })), 82, 190);
-  if (wide) verifyMetricRange("этапы desktop", metrics.stages.map(({ name, height: value }) => ({ name, value })), 152, 230);
+  if (timelineWide) verifyMetricRange("этапы desktop", metrics.stages.map(({ name, height: value }) => ({ name, value })), 152, 230);
   verifyMetricRange("строки цен", metrics.priceRows, 54, width <= 320 ? 110 : 90);
   verifyMetricRange("связанные разделы", metrics.related, narrow ? 62 : 66, 110);
   verifyMetricRange("FAQ summary", metrics.faq, narrow ? 62 : 66, Number.POSITIVE_INFINITY);
@@ -641,9 +722,11 @@ async function run() {
   const browser = await chromium.launch({ headless: true });
   try {
     const chromeViewports = [
-      { name: "wide-1992", width: 1992, height: 1080 },
+      { name: "wide-1992", width: 1992, height: 1200 },
       { name: "desktop", width: 1440, height: 900 },
       { name: "reference-1298", width: 1298, height: 900 },
+      { name: "timeline-wide-1280", width: 1280, height: 900 },
+      { name: "timeline-stacked-1279", width: 1279, height: 900 },
       { name: "tablet", width: 1120, height: 900 },
       { name: "compact-720", width: 720, height: 900 },
       { name: "compact-520", width: 520, height: 900 },
@@ -654,18 +737,27 @@ async function run() {
     for (const viewport of chromeViewports) await verifySharedChrome(browser, viewport);
 
     const homeViewports = [
+      { name: "wide-1992", width: 1992, height: 1200 },
       { name: "desktop", width: 1440, height: 900 },
+      { name: "reference-1298", width: 1298, height: 900 },
+      { name: "timeline-wide-1280", width: 1280, height: 900 },
+      { name: "timeline-stacked-1279", width: 1279, height: 900 },
       { name: "tablet", width: 1120, height: 900 },
+      { name: "compact-720", width: 720, height: 900 },
+      { name: "compact-520", width: 520, height: 900 },
       { name: "mobile-414", width: 414, height: 896 },
       { name: "mobile-390", width: 390, height: 844 },
+      { name: "mobile-320", width: 320, height: 760 },
     ];
     for (const viewport of homeViewports) {
       const context = await browser.newContext({ viewport });
       const page = await context.newPage();
       await verifyPage(page, "/", `Главная ${viewport.name}`);
       await verifyNavigation(page, viewport.width <= 1120);
+      await verifyHomeLayout(page, viewport);
       if (viewport.name === "desktop") await verifyLightbox(page);
       await page.evaluate(() => {
+        if (document.activeElement instanceof HTMLElement) document.activeElement.blur();
         document.documentElement.style.scrollBehavior = "auto";
         document.body.style.scrollBehavior = "auto";
         document.documentElement.scrollTop = 0;
@@ -700,6 +792,9 @@ async function run() {
         await page.locator("#truck-repair-surgut").screenshot({ path: path.join(reviewDir, "internal-reference-editorial.png") });
         await page.locator("#repair-process").screenshot({ path: path.join(reviewDir, "internal-reference-process.png") });
       }
+      if (viewport.name === "timeline-stacked-1279") {
+        await page.locator("#repair-process").screenshot({ path: path.join(reviewDir, "internal-stacked-process.png") });
+      }
       if (viewport.name === "mobile-390") {
         fs.copyFileSync(screenshotPath, path.join(reviewDir, "internal-mobile.png"));
         await page.locator("#popular-repair-services").screenshot({ path: path.join(reviewDir, "internal-mobile-popular-works.png") });
@@ -717,7 +812,7 @@ async function run() {
     await browser.close();
     await new Promise((resolve) => server.close(resolve));
   }
-  console.log("Browser verification passed: общий chrome 9 viewport, главная 4 viewport, внутренний hub 9 viewport, hero alignment, desktop-геометрия, burger, FAQ, callbar, images, targets и 404.");
+  console.log("Browser verification passed: общий chrome 11 viewport, главная 11 viewport, внутренний hub 11 viewport, wide guide, H1 alignment, stage wrapping, burger, FAQ, callbar, images, targets и 404.");
 }
 
 run().catch((error) => {

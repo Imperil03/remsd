@@ -75,8 +75,8 @@
   --section-space-default: clamp(64px, 8vw, 104px);
 
   /* Layout and control geometry. */
-  --layout-container: 1180px;
-  --layout-gutter: 16px;
+  --layout-container: 1312px;
+  --layout-gutter: 36px;
   --header-height-default: 74px;
   --control-height-compact: 44px;
   --control-height-default: 48px;

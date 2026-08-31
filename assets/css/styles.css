@@ -256,6 +256,12 @@ button {
   margin-inline: auto;
 }
 
+@media (max-width: 720px) {
+  .container {
+    width: min(calc(100% - 28px), 520px);
+  }
+}
+
 .site-header {
   position: sticky;
   top: 0;

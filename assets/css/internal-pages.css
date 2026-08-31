@@ -1003,12 +1003,12 @@
 .internal-timeline__item {
   position: relative;
   display: grid;
-  grid-template-columns: 64px minmax(0, 1fr);
+  grid-template-columns: 56px minmax(0, 1fr);
   grid-template-areas:
     "icon number"
     "icon title"
     ". copy";
-  column-gap: 16px;
+  column-gap: 12px;
   align-content: start;
   min-height: 154px;
   padding: 0;
@@ -1033,10 +1033,10 @@
 .internal-timeline__icon {
   z-index: 1;
   grid-area: icon;
-  width: 64px;
-  height: 64px;
+  width: 56px;
+  height: 56px;
   margin: 0;
-  padding: 12px;
+  padding: 10px;
   color: var(--text-primary);
   background: var(--surface-card);
   border: 1px solid var(--border-default);
@@ -1066,7 +1066,10 @@
   font-family: var(--font-heading);
   font-size: 18px;
   line-height: 1.25;
-  overflow-wrap: break-word;
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: none;
+  text-wrap: balance;
 }
 
 .internal-timeline p {
@@ -1343,26 +1346,57 @@
     gap: 14px;
   }
 
+  .internal-close__inner {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 1279px) {
   .internal-timeline {
-    gap: 16px;
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding-left: 0;
+  }
+
+  .internal-timeline::before {
+    position: absolute;
+    top: 28px;
+    right: auto;
+    bottom: 28px;
+    left: 27px;
+    width: 3px;
+    height: auto;
+    background: var(--action-primary);
+    content: "";
   }
 
   .internal-timeline__item {
-    column-gap: 10px;
+    grid-template-columns: 56px minmax(0, 1fr);
+    grid-template-areas:
+      "icon number"
+      "icon title"
+      ". copy";
+    column-gap: 16px;
+    min-height: 0;
+    padding: 0;
   }
 
   .internal-timeline__item::after {
-    right: -12px;
+    content: none;
+  }
+
+  .internal-timeline__number {
+    align-self: start;
+    margin-top: 1px;
+    font-size: 24px;
   }
 
   .internal-timeline h3 {
-    min-width: 0;
-    font-size: 17px;
-    overflow-wrap: break-word;
+    margin-top: 4px;
   }
 
-  .internal-close__inner {
-    grid-template-columns: 1fr;
+  .internal-timeline p {
+    margin-top: 8px;
   }
 }
 
@@ -1466,53 +1500,6 @@
   .internal-inline-cta .v3-button {
     width: auto;
     min-width: 250px;
-  }
-
-  .internal-timeline {
-    grid-template-columns: 1fr;
-    gap: 24px;
-    padding-left: 0;
-  }
-
-  .internal-timeline::before {
-    top: 32px;
-    right: auto;
-    bottom: 32px;
-    left: 31px;
-    width: 3px;
-    height: auto;
-    background: var(--action-primary);
-    content: "";
-  }
-
-  .internal-timeline__item::after {
-    content: none;
-  }
-
-  .internal-timeline__item {
-    grid-template-columns: 64px minmax(0, 1fr);
-    grid-template-areas:
-      "icon number"
-      "icon title"
-      ". copy";
-    column-gap: 20px;
-    min-height: 0;
-    padding: 0;
-  }
-
-  .internal-timeline__number {
-    align-self: start;
-    margin-top: 1px;
-    font-size: 24px;
-  }
-
-  .internal-timeline h3 {
-    margin-top: 4px;
-    font-size: 18px;
-  }
-
-  .internal-timeline p {
-    margin-top: 8px;
   }
 
   .internal-related-index {

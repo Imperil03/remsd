@@ -52,6 +52,12 @@ for (const token of requiredTokens) {
   if (!new RegExp(`--${token}\\s*:`).test(tokenCss)) fail(`${tokenFile}: отсутствует --${token}`);
 }
 
+for (const [token, value] of [["layout-container", "1312px"], ["layout-gutter", "36px"]]) {
+  if (!new RegExp(`--${token}\\s*:\\s*${value}\\s*;`).test(tokenCss)) {
+    fail(`${tokenFile}: --${token} должен быть ${value}`);
+  }
+}
+
 if ((tokenCss.match(/:root\s*\{/g) || []).length !== 1) {
   fail(`${tokenFile}: должен содержать ровно один :root`);
 }
@@ -71,6 +77,8 @@ for (const file of ["styles-v3.css", "internal-pages.css"]) {
 }
 
 const internalPagesCss = read("assets/css/internal-pages.css");
+const homepageCss = read("assets/css/styles-v3.css");
+const siteChromeCss = read("assets/css/site-chrome.css");
 function selectorDeclares(source, selector, declarationPattern) {
   return Array.from(source.matchAll(/([^{}]+)\{([^{}]*)\}/g)).some(([, selectors, declarations]) => (
     selectors.split(",").map((item) => item.trim()).includes(selector) && declarationPattern.test(declarations)
@@ -100,6 +108,19 @@ for (const [selector, pattern] of groupedRhythm) {
 }
 if (!selectorDeclares(internalPagesCss, ".internal-page .container", /width\s*:\s*min\(calc\(100%\s*-\s*\(2\s*\*\s*var\(--layout-gutter\)\)\),\s*var\(--layout-container\)\)\s*;?/)) {
   fail("assets/css/internal-pages.css: контейнер внутренней страницы должен использовать общую направляющую --layout-container");
+}
+
+const sharedGuide = /width\s*:\s*min\(calc\(100%\s*-\s*\(2\s*\*\s*var\(--layout-gutter\)\)\),\s*var\(--layout-container\)\)\s*;?/;
+for (const [source, selector] of [
+  [homepageCss, ".v3-hero__shell"],
+  [siteChromeCss, ".site-header-rail"],
+  [internalPagesCss, ".internal-hero__shell"],
+  [internalPagesCss, ".internal-page .container"],
+]) {
+  if (!selectorDeclares(source, selector, sharedGuide)) fail(`${selector}: должен использовать общую направляющую --layout-container`);
+}
+if (!selectorDeclares(homepageCss, ".v3-hero__frame", /padding\s*:\s*0\s*;?/)) {
+  fail("assets/css/styles-v3.css: .v3-hero__frame не должен добавлять desktop inset");
 }
 
 const gridContracts = [
@@ -181,6 +202,7 @@ const breakpointChecks = [
   ["assets/css/styles-v3.css", 1120],
   ["assets/css/styles-v3.css", 720],
   ["assets/css/internal-pages.css", 1120],
+  ["assets/css/internal-pages.css", 1279],
   ["assets/css/internal-pages.css", 1020],
   ["assets/css/internal-pages.css", 720],
   ["assets/css/internal-pages.css", 520],
