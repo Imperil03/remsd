@@ -10,12 +10,13 @@ const dataDir = path.join(srcDir, "data");
 const templatesDir = path.join(srcDir, "templates");
 const assetsDir = path.join(root, "assets");
 const distDir = path.join(root, "dist");
-const assetVersion = process.env.ASSET_VERSION || "20260830-internal-hero-reference-v5";
+const assetVersion = process.env.ASSET_VERSION || "20260831-internal-content-hub-v6";
 
 const PAGE_FAMILIES = new Set(["hub", "service", "brand"]);
 const SECTION_TYPES = new Set([
-  "introProof", "serviceGrid", "vehicleTypes", "brandStrip", "symptoms",
-  "workStages", "priceExamples", "relatedIndex", "faq",
+  "introProof", "serviceGrid", "popularWorks", "vehicleTypes", "brandStrip",
+  "brandShowcase", "editorialContent", "symptoms", "workStages", "priceExamples",
+  "relatedIndex", "faq",
 ]);
 
 function fail(message) {
@@ -405,10 +406,28 @@ function validateSection(section, label) {
       validateAsset(item.image, `${label}.items[${index}].image`);
       requireText(item.alt, `${label}.items[${index}].alt`);
     });
+  } else if (type === "popularWorks") {
+    requireArray(section.items, `${label}.items`, { nonEmpty: true }).forEach((item, index) => {
+      requireText(item.title, `${label}.items[${index}].title`);
+      requireText(item.icon, `${label}.items[${index}].icon`);
+      if (item.href !== undefined) normalizeRoute(item.href, `${label}.items[${index}].href`);
+    });
   } else if (type === "brandStrip") {
     requireArray(section.items, `${label}.items`, { nonEmpty: true }).forEach((item, index) => {
       requireText(item.name, `${label}.items[${index}].name`);
       validateAsset(item.image, `${label}.items[${index}].image`);
+    });
+  } else if (type === "brandShowcase") {
+    requireArray(section.official, `${label}.official`, { nonEmpty: true }).forEach((item, index) => {
+      requireText(item.name, `${label}.official[${index}].name`);
+      validateAsset(item.image, `${label}.official[${index}].image`);
+    });
+    requireArray(section.items, `${label}.items`, { nonEmpty: true }).forEach((item, index) => requireText(item, `${label}.items[${index}]`));
+  } else if (type === "editorialContent") {
+    requireText(section.lead, `${label}.lead`);
+    requireArray(section.blocks, `${label}.blocks`, { nonEmpty: true }).forEach((item, index) => {
+      requireText(item.title, `${label}.blocks[${index}].title`);
+      requireText(item.text, `${label}.blocks[${index}].text`);
     });
   } else if (type === "symptoms") {
     requireArray(section.items, `${label}.items`, { nonEmpty: true }).forEach((item, index) => {
@@ -423,9 +442,6 @@ function validateSection(section, label) {
       requireText(item.service, `${label}.items[${index}].service`);
       requireText(item.price, `${label}.items[${index}].price`);
     });
-    const metadata = requireObject(section.metadata, `${label}.metadata`);
-    requireIsoDate(metadata.validFrom, `${label}.metadata.validFrom`);
-    ["unit", "vat", "partsAndMaterials", "source"].forEach((key) => requireText(metadata[key], `${label}.metadata.${key}`));
     requireText(section.note, `${label}.note`);
   } else if (type === "faq") {
     requireArray(section.items, `${label}.items`, { nonEmpty: true }).forEach((item, index) => {
@@ -537,6 +553,18 @@ function renderServiceGrid(section) {
 </section>`;
 }
 
+function renderPopularWorks(section, rootPath) {
+  const items = section.items.map((item) => {
+    const content = `<svg class="internal-popular-work__icon" aria-hidden="true"><use href="#internal-icon-${escapeHtml(item.icon)}"></use></svg><span>${escapeHtml(item.title)}</span>`;
+    return item.href
+      ? `<li class="internal-popular-work internal-popular-work--linked"><a href="${rootPath}${escapeHtml(item.href)}/">${content}</a></li>`
+      : `<li class="internal-popular-work">${content}</li>`;
+  }).join("");
+  return `<section class="internal-section internal-section--popularWorks" id="${escapeHtml(section.id)}" aria-labelledby="${escapeHtml(section.id)}-title">
+  <div class="container">${renderSectionHead(section)}<ul class="internal-popular-works" aria-label="Популярные работы по ремонту грузовых автомобилей">${items}</ul></div>
+</section>`;
+}
+
 function renderVehicleTypes(section, rootPath) {
   const items = section.items.map((item) => `<article class="internal-vehicle-card">
   <img src="${rootPath}${escapeHtml(item.image)}" alt="${escapeHtml(item.alt)}" loading="lazy" decoding="async">
@@ -551,6 +579,32 @@ function renderBrandStrip(section, rootPath) {
   const items = section.items.map((item) => `<div class="internal-brand-strip__item"><img src="${rootPath}${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}" loading="lazy" decoding="async"></div>`).join("");
   return `<section class="internal-section internal-section--brandStrip" id="${escapeHtml(section.id)}" aria-labelledby="${escapeHtml(section.id)}-title">
   <div class="container">${renderSectionHead(section, { centered: true })}<div class="internal-brand-strip" aria-label="Марки грузовых автомобилей">${items}</div><a class="internal-reference-link internal-reference-link--accent" href="${rootPath}#v3-truck-brands-title">Смотреть все марки</a></div>
+</section>`;
+}
+
+function renderBrandShowcase(section, rootPath) {
+  const official = section.official.map((item) => `<li class="v3-brand-card v3-brand-card--official">
+  <div class="v3-brand-card__body">
+    <span class="v3-brand-card__logo"><img src="${rootPath}${escapeHtml(item.image)}" alt="" width="220" height="120" loading="lazy" decoding="async"></span>
+    <strong class="v3-brand-card__name">Ремонт ${escapeHtml(item.name)}</strong>
+    <span class="v3-brand-card__status">Официальный сервис</span>
+  </div>
+</li>`).join("");
+  const matrix = section.items.map((item) => `<li>${escapeHtml(item)}</li>`).join("");
+  return `<section class="internal-section internal-section--brandShowcase v3-truck-brands" id="${escapeHtml(section.id)}" aria-labelledby="${escapeHtml(section.id)}-title">
+  <div class="container">
+    <header class="internal-brand-showcase__head"><h2 id="${escapeHtml(section.id)}-title">${escapeHtml(section.title)}</h2><p>${escapeHtml(section.intro)}</p></header>
+    <ul class="v3-brand-grid" aria-label="Официальный сервис грузовых автомобилей">${official}</ul>
+    <button class="v3-brand-toggle" type="button" aria-expanded="false" aria-controls="internal-brand-matrix" data-brand-toggle><span>Все марки, которые принимаем</span><span aria-hidden="true">${section.items.length}</span></button>
+    <ul class="v3-brand-matrix" id="internal-brand-matrix" aria-label="Другие марки грузовых автомобилей" data-brand-panel>${matrix}</ul>
+  </div>
+</section>`;
+}
+
+function renderEditorialContent(section) {
+  const blocks = section.blocks.map((item) => `<article><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.text)}</p></article>`).join("");
+  return `<section class="internal-section internal-section--editorialContent" id="${escapeHtml(section.id)}" aria-labelledby="${escapeHtml(section.id)}-title">
+  <div class="container internal-editorial"><header><h2 id="${escapeHtml(section.id)}-title">${escapeHtml(section.title)}</h2><p>${escapeHtml(section.lead)}</p></header><div class="internal-editorial__body">${blocks}</div></div>
 </section>`;
 }
 
@@ -595,13 +649,6 @@ function renderPriceTable(items) {
 
 function renderPriceExamples(section, site) {
   const midpoint = Math.ceil(section.items.length / 2);
-  const metadata = [
-    ["Действует с", "29 августа 2026 года"],
-    ["Единица", section.metadata.unit],
-    ["НДС", section.metadata.vat],
-    ["Запчасти", section.metadata.partsAndMaterials],
-    ["Источник", section.metadata.source],
-  ].map(([label, value]) => `<div><dt>${escapeHtml(label)}:</dt><dd>${escapeHtml(value)}</dd></div>`).join("");
   const cta = renderInlineCta({
     id: `${section.id}-cta-title`,
     modifier: "prices",
@@ -613,7 +660,6 @@ function renderPriceExamples(section, site) {
     <div class="internal-price-content"><div class="internal-price-main">
       <div class="internal-price-layout">${renderPriceTable(section.items.slice(0, midpoint))}${renderPriceTable(section.items.slice(midpoint))}</div>
       <p class="internal-price-note">${escapeHtml(section.note)}</p>
-      <dl class="internal-price-meta">${metadata}</dl>
     </div>${cta}</div>
   </div>
 </section>`;
@@ -637,8 +683,11 @@ function renderSection(section, rootPath, site) {
   const renderers = {
     introProof: () => renderIntroProof(section, rootPath),
     serviceGrid: () => renderServiceGrid(section),
+    popularWorks: () => renderPopularWorks(section, rootPath),
     vehicleTypes: () => renderVehicleTypes(section, rootPath),
     brandStrip: () => renderBrandStrip(section, rootPath),
+    brandShowcase: () => renderBrandShowcase(section, rootPath),
+    editorialContent: () => renderEditorialContent(section),
     symptoms: () => renderSymptoms(section, site),
     workStages: () => renderWorkStages(section),
     priceExamples: () => renderPriceExamples(section, site),

@@ -81,7 +81,8 @@ for (const modifier of ["workStages", "relatedIndex"]) {
 }
 const groupedRhythm = [
   [".internal-section--serviceGrid", /padding-block\s*:\s*var\(--section-space-compact\)\s+32px\s*;?/],
-  [".internal-section--vehicleTypes", /padding-block\s*:\s*32px\s*;?/],
+  [".internal-section--popularWorks", /padding-block\s*:\s*48px\s*;?/],
+  [".internal-section--vehicleTypes", /padding-block\s*:\s*48px\s+var\(--section-space-compact\)\s*;?/],
   [".internal-section--brandStrip", /padding-block\s*:\s*32px\s+var\(--section-space-compact\)\s*;?/],
 ];
 for (const [selector, pattern] of groupedRhythm) {
@@ -95,6 +96,7 @@ if (!selectorDeclares(internalPagesCss, ".internal-page .container", /width\s*:\
 
 const gridContracts = [
   [".internal-service-grid", 6],
+  [".internal-popular-works", 4],
   [".internal-vehicle-mosaic", 6],
   [".internal-timeline", 5],
 ];
@@ -104,9 +106,11 @@ for (const [selector, columns] of gridContracts) {
     fail(`assets/css/internal-pages.css: ${selector} должен иметь desktop-сетку ${columns} колонок`);
   }
 }
-const brandWallPattern = /grid-template-columns\s*:\s*repeat\(\s*9\s*,\s*minmax\(\s*0\s*,\s*1fr\s*\)\s*\)\s*;?/;
-if (!selectorDeclares(internalPagesCss, ".internal-brand-strip", brandWallPattern)) {
-  fail("assets/css/internal-pages.css: .internal-brand-strip должен формировать единый desktop-ряд из 9 марок");
+for (const [selector, columns] of [[".internal-section--brandShowcase .v3-brand-grid", 3], [".internal-section--brandShowcase .v3-brand-matrix", 5]]) {
+  const pattern = new RegExp(`grid-template-columns\\s*:\\s*repeat\\(\\s*${columns}\\s*,\\s*minmax\\(\\s*0\\s*,\\s*1fr\\s*\\)\\s*\\)\\s*;?`);
+  if (!selectorDeclares(internalPagesCss, selector, pattern)) {
+    fail(`assets/css/internal-pages.css: ${selector} должен иметь desktop-сетку ${columns} колонок`);
+  }
 }
 
 for (const selector of [".internal-symptoms-layout", ".internal-price-content", ".internal-inline-cta"]) {

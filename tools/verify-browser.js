@@ -220,6 +220,8 @@ async function verifyInternalVisualContract(page, viewport) {
       ".internal-related-index span", ".internal-faq summary",
       ".internal-inline-cta__content", ".internal-inline-cta .v3-button",
       ".internal-reference-link",
+      ".internal-popular-work span", ".v3-brand-card__name", ".v3-brand-card__status",
+      ".v3-brand-matrix li", ".internal-editorial p",
     ];
     const clipped = clippingSelectors.flatMap((selector) => [...document.querySelectorAll(selector)]
       .filter((element) => element.scrollWidth - element.clientWidth > 2 || element.scrollHeight - element.clientHeight > 2)
@@ -229,6 +231,8 @@ async function verifyInternalVisualContract(page, viewport) {
       ".internal-symptoms li", ".internal-inline-cta", ".internal-timeline__item",
       ".internal-price-table", ".internal-related-index span", ".internal-faq details",
       ".internal-reference-link",
+      ".internal-popular-work", ".v3-brand-card", ".v3-brand-matrix li",
+      ".internal-editorial article",
     ];
     const outOfViewport = boundedSelectors.flatMap((selector) => [...document.querySelectorAll(selector)]
       .filter((element) => {
@@ -248,19 +252,26 @@ async function verifyInternalVisualContract(page, viewport) {
           bottom: parseFloat(style.paddingBottom),
         };
       }),
-      headings: measurements(".internal-section h2", (element) => parseFloat(getComputedStyle(element).fontSize)),
+      headings: measurements(".internal-section:not(.internal-section--brandShowcase) h2", (element) => parseFloat(getComputedStyle(element).fontSize)),
+      brandHeading: measurements(".internal-brand-showcase__head h2", (element) => parseFloat(getComputedStyle(element).fontSize)),
       introRatio: introMediaRect ? introMediaRect.width / introMediaRect.height : 0,
       introStats: measurements(".internal-intro__stats > div"),
       serviceCards: dimensions(".internal-service-card"),
       serviceTitles: measurements(".internal-service-card h3", (element) => parseFloat(getComputedStyle(element).fontSize)),
       serviceBodies: measurements(".internal-service-card p", (element) => parseFloat(getComputedStyle(element).fontSize)),
       serviceIcons: measurements(".internal-service-card__icon", (element) => element.getBoundingClientRect().width),
+      popularCards: dimensions(".internal-popular-work"),
+      popularTitles: measurements(".internal-popular-work span", (element) => parseFloat(getComputedStyle(element).fontSize)),
+      popularIcons: measurements(".internal-popular-work__icon", (element) => element.getBoundingClientRect().width),
       vehicleCards: dimensions(".internal-vehicle-card"),
       vehicleTitles: measurements(".internal-vehicle-card h3", (element) => parseFloat(getComputedStyle(element).fontSize)),
       vehicleBodies: measurements(".internal-vehicle-card p", (element) => parseFloat(getComputedStyle(element).fontSize)),
       brandCells: dimensions(".internal-brand-strip__item"),
       brandLogoWidths: measurements(".internal-brand-strip img", (element) => element.getBoundingClientRect().width),
       brandLogoHeights: measurements(".internal-brand-strip img", (element) => element.getBoundingClientRect().height),
+      brandOfficialCards: dimensions(".internal-section--brandShowcase .v3-brand-card"),
+      brandOfficialLogos: measurements(".internal-section--brandShowcase .v3-brand-card__logo img", (element) => element.getBoundingClientRect().height),
+      brandMatrixItems: dimensions(".internal-section--brandShowcase .v3-brand-matrix li"),
       symptoms: dimensions(".internal-symptoms li"),
       symptomText: measurements(".internal-symptoms li", (element) => parseFloat(getComputedStyle(element).fontSize)),
       symptomIcons: measurements(".internal-symptom__icon", (element) => element.getBoundingClientRect().width),
@@ -277,8 +288,10 @@ async function verifyInternalVisualContract(page, viewport) {
       faqText: measurements(".internal-faq summary", (element) => parseFloat(getComputedStyle(element).fontSize)),
       rows: {
         services: rowCounts(".internal-service-card"),
+        popular: rowCounts(".internal-popular-work"),
         vehicles: rowCounts(".internal-vehicle-card"),
-        brands: rowCounts(".internal-brand-strip__item"),
+        brandOfficial: rowCounts(".internal-section--brandShowcase .v3-brand-card"),
+        brandMatrix: rowCounts(".internal-section--brandShowcase .v3-brand-matrix li"),
         symptoms: rowCounts(".internal-symptoms li"),
         stages: rowCounts(".internal-timeline__item"),
         prices: rowCounts(".internal-price-table"),
@@ -321,8 +334,8 @@ async function verifyInternalVisualContract(page, viewport) {
     let expectedTop = compact || compactSections.has(name) ? metrics.sectionSpaceCompact : metrics.sectionSpaceDefault;
     let expectedBottom = expectedTop;
     if (!compact && name === "repair-services") [expectedTop, expectedBottom] = [metrics.sectionSpaceCompact, 32];
-    if (!compact && name === "vehicle-types") [expectedTop, expectedBottom] = [32, 32];
-    if (!compact && name === "truck-brands") [expectedTop, expectedBottom] = [32, metrics.sectionSpaceCompact];
+    if (!compact && name === "popular-repair-services") [expectedTop, expectedBottom] = [48, 48];
+    if (!compact && name === "vehicle-types") [expectedTop, expectedBottom] = [48, metrics.sectionSpaceCompact];
     return Math.abs(top - expectedTop) > 1.5 || Math.abs(bottom - expectedBottom) > 1.5;
   });
   if (invalidSectionPaddings.length) {
@@ -345,14 +358,17 @@ async function verifyInternalVisualContract(page, viewport) {
   };
   const [headingMin, headingMax] = headingRanges[width];
   verifyMetricRange("заголовки секций", metrics.headings, headingMin, headingMax);
+  verifyMetricRange("заголовок блока марок", metrics.brandHeading, 29.4, 44.6);
   if (metrics.introRatio < 1.95 || metrics.introRatio > 2.05) {
     throw new Error(`Визуальный контракт: intro-фото имеет соотношение ${metrics.introRatio.toFixed(2)}, ожидалось 2:1`);
   }
   verifyMetricRange("показатели intro", metrics.introStats, 104, 124);
 
   verifyRows("услуги", metrics.rows.services, repeatedRows(referenceWide ? 6 : wide ? 3 : narrow ? 1 : 2, 6));
+  verifyRows("популярные работы", metrics.rows.popular, repeatedRows(wide ? 4 : narrow ? 1 : 2, 16));
   verifyRows("техника", metrics.rows.vehicles, repeatedRows(referenceWide ? 6 : wide ? 3 : narrow ? 1 : 2, 6));
-  verifyRows("марки", metrics.rows.brands, referenceWide ? [9] : wide ? [5, 4] : repeatedRows(narrow ? 2 : 3, 9));
+  verifyRows("официальные марки", metrics.rows.brandOfficial, [3]);
+  verifyRows("матрица марок", metrics.rows.brandMatrix, repeatedRows(referenceWide ? 5 : compact ? 2 : 4, 20));
   verifyRows("признаки", metrics.rows.symptoms, repeatedRows(wide ? 3 : narrow ? 1 : 2, 6));
   verifyRows("этапы", metrics.rows.stages, repeatedRows(wide ? 5 : 1, 5));
   verifyRows("таблицы цен", metrics.rows.prices, repeatedRows(compact ? 1 : 2, 2));
@@ -362,6 +378,8 @@ async function verifyInternalVisualContract(page, viewport) {
   verifyMetricRange("заголовки услуг", metrics.serviceTitles, narrow ? 17.4 : 16.4, narrow ? 18.6 : 17.6);
   verifyMetricRange("текст услуг", metrics.serviceBodies, 13.4, 14.6);
   verifyMetricRange("иконки услуг", metrics.serviceIcons, narrow ? 50 : 54, narrow ? 54 : 58);
+  verifyMetricRange("текст популярных работ", metrics.popularTitles, 15.4, 16.6);
+  verifyMetricRange("иконки популярных работ", metrics.popularIcons, 42, 46);
   verifyMetricRange("заголовки техники", metrics.vehicleTitles, narrow ? 16.4 : 17.4, narrow ? 17.6 : 18.6);
   verifyMetricRange("текст техники", metrics.vehicleBodies, narrow ? 15.4 : 14.4, narrow ? 16.6 : 15.6);
   verifyMetricRange("текст признаков", metrics.symptomText, 14.4, 15.6);
@@ -382,9 +400,10 @@ async function verifyInternalVisualContract(page, viewport) {
     verifyMetricRange("высота карточек услуг", metrics.serviceCards.map(({ name, height: value }) => ({ name, value })), 194, referenceWide ? 260 : 290);
     verifyMetricRange("высота карточек техники", metrics.vehicleCards.map(({ name, height: value }) => ({ name, value })), 225, 330);
   }
-  verifyMetricRange("ячейки марок", metrics.brandCells.map(({ name, height: value }) => ({ name, value })), narrow ? 90 : referenceWide ? 82 : 82, narrow ? 100 : referenceWide ? 88 : 96);
-  verifyMetricRange("ширина логотипов", metrics.brandLogoWidths, narrow ? 78 : width <= 1020 ? 88 : 98, narrow ? 114 : width <= 1020 ? 134 : 150);
-  verifyMetricRange("высота логотипов", metrics.brandLogoHeights, narrow ? 28 : width <= 1020 ? 30 : 28, narrow ? 50 : width <= 1020 ? 58 : 66);
+  verifyMetricRange("карточки популярных работ", metrics.popularCards.map(({ name, height: value }) => ({ name, value })), 90, 150);
+  verifyMetricRange("официальные карточки марок", metrics.brandOfficialCards.map(({ name, height: value }) => ({ name, value })), 124, 150);
+  verifyMetricRange("логотипы официальных марок", metrics.brandOfficialLogos, compact ? 44 : 72, compact ? 48 : 80);
+  verifyMetricRange("матрица марок", metrics.brandMatrixItems.map(({ name, height: value }) => ({ name, value })), compact ? 38 : 42, 60);
   verifyMetricRange("карточки признаков", metrics.symptoms.map(({ name, height: value }) => ({ name, value })), 82, 190);
   if (wide) verifyMetricRange("этапы desktop", metrics.stages.map(({ name, height: value }) => ({ name, value })), 152, 230);
   verifyMetricRange("строки цен", metrics.priceRows, 54, width <= 320 ? 110 : 90);
@@ -427,16 +446,19 @@ async function verifyInternalContract(page, viewport) {
   const callbar = page.locator("[data-mobile-callbar]");
   if (compact && (await callbar.getAttribute("aria-hidden")) !== "true") throw new Error("Callbar видна до прокрутки");
   const expected = {
-    ".internal-section": 9,
+    ".internal-section": 11,
     ".internal-service-card": 6,
+    ".internal-popular-work": 16,
     ".internal-vehicle-card": 6,
-    ".internal-brand-strip__item": 9,
+    ".internal-section--brandShowcase .v3-brand-card": 3,
+    ".internal-section--brandShowcase .v3-brand-matrix li": 20,
+    ".internal-editorial__body article": 3,
     ".internal-symptoms li": 6,
     ".internal-timeline__item": 5,
     ".internal-price-table tbody tr": 8,
     ".internal-related-index span": 8,
     ".internal-faq details": 11,
-    ".internal-reference-link": 2,
+    ".internal-reference-link": 1,
   };
   for (const [selector, count] of Object.entries(expected)) {
     const actual = await page.locator(selector).count();
@@ -447,9 +469,21 @@ async function verifyInternalContract(page, viewport) {
   if ((await page.locator("[class*=sidebar]").count()) !== 0) throw new Error("На внутренней странице появился sidebar");
   if ((await page.locator(".internal-inline-cta").count()) !== 2) throw new Error("Ожидалось ровно 2 inline CTA");
   const referenceLinks = page.locator(".internal-reference-link");
-  const expectedReferenceHrefs = ["#related-services", "../#v3-truck-brands-title"];
+  const expectedReferenceHrefs = ["#related-services"];
   for (let index = 0; index < expectedReferenceHrefs.length; index += 1) {
     if ((await referenceLinks.nth(index).getAttribute("href")) !== expectedReferenceHrefs[index]) throw new Error(`Неверная ссылка из референса ${index + 1}`);
+  }
+  if ((await page.locator(".internal-popular-work a").count()) !== 0) throw new Error("Неопубликованные популярные работы не должны быть ложными ссылками");
+  if ((await page.locator(".internal-price-meta").count()) !== 0) throw new Error("Удалённые реквизиты цен снова появились на странице");
+  const editorialLength = await page.locator("#truck-repair-surgut").evaluate((section) => section.textContent.replace(/\s+/g, " ").trim().length);
+  if (editorialLength < 1000 || editorialLength > 1600) throw new Error(`Полезный текст вне согласованного объёма: ${editorialLength} знаков`);
+  const brandToggle = page.locator("[data-brand-toggle]");
+  const brandPanel = page.locator("[data-brand-panel]");
+  if (compact) {
+    if ((await brandToggle.getAttribute("aria-expanded")) !== "false" || !await brandPanel.isHidden()) throw new Error("Матрица марок должна быть свёрнута на mobile");
+    await brandToggle.focus();
+    await page.keyboard.press("Enter");
+    if ((await brandToggle.getAttribute("aria-expanded")) !== "true" || !await brandPanel.isVisible()) throw new Error("Матрица марок не раскрывается с клавиатуры");
   }
   const ctas = page.locator("main a.v3-button");
   if ((await ctas.count()) !== 4) throw new Error(`Ожидалось 4 CTA, найдено ${await ctas.count()}`);
@@ -562,11 +596,18 @@ async function run() {
       if (viewport.name === "desktop") fs.copyFileSync(screenshotPath, path.join(reviewDir, "internal-desktop.png"));
       if (viewport.name === "reference-1298") {
         await page.locator("#repair-services").screenshot({ path: path.join(reviewDir, "internal-reference-services.png") });
+        await page.locator("#popular-repair-services").screenshot({ path: path.join(reviewDir, "internal-reference-popular-works.png") });
         await page.locator("#vehicle-types").screenshot({ path: path.join(reviewDir, "internal-reference-vehicles.png") });
         await page.locator("#truck-brands").screenshot({ path: path.join(reviewDir, "internal-reference-brands.png") });
+        await page.locator("#truck-repair-surgut").screenshot({ path: path.join(reviewDir, "internal-reference-editorial.png") });
         await page.locator("#repair-process").screenshot({ path: path.join(reviewDir, "internal-reference-process.png") });
       }
-      if (viewport.name === "mobile-390") fs.copyFileSync(screenshotPath, path.join(reviewDir, "internal-mobile.png"));
+      if (viewport.name === "mobile-390") {
+        fs.copyFileSync(screenshotPath, path.join(reviewDir, "internal-mobile.png"));
+        await page.locator("#popular-repair-services").screenshot({ path: path.join(reviewDir, "internal-mobile-popular-works.png") });
+        await page.locator("#truck-brands").screenshot({ path: path.join(reviewDir, "internal-mobile-brands.png") });
+        await page.locator("#truck-repair-surgut").screenshot({ path: path.join(reviewDir, "internal-mobile-editorial.png") });
+      }
       await context.close();
     }
 

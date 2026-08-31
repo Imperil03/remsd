@@ -39,7 +39,7 @@
 - `home.css = base + homepage`;
 - `internal.css = base + internal pages`.
 
-Поддерживаемые секции первой версии: `introProof`, `serviceGrid`, `vehicleTypes`, `brandStrip`, `symptoms`, `workStages`, `priceExamples`, `relatedIndex`, `faq`. Их набор и порядок определяет сама страница.
+Поддерживаемые секции: `introProof`, `serviceGrid`, `popularWorks`, `vehicleTypes`, `brandStrip`, `brandShowcase`, `editorialContent`, `symptoms`, `workStages`, `priceExamples`, `relatedIndex`, `faq`. Их набор и порядок определяет сама страница.
 
 ## Команды
 

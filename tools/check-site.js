@@ -126,13 +126,15 @@ if (!fs.existsSync(distDir)) {
   for (const forbidden of ["FAQPage", "Offer", "AggregateRating", "Review"]) {
     if (typesByPage.get(internalFile)?.has(forbidden)) fail(`${internalFile}: JSON-LD не должен содержать ${forbidden}`);
   }
-  if (count(internalHtml, /<section\b[^>]*class=["'][^"']*internal-section\b/gi) !== 9) fail(`${internalFile}: ожидается 9 модульных секций`);
+  if (count(internalHtml, /<section\b[^>]*class=["'][^"']*internal-section\b/gi) !== 11) fail(`${internalFile}: ожидается 11 модульных секций`);
   if (count(internalHtml, /<nav\b[^>]+aria-label=["']Хлебные крошки["']/gi) !== 1) fail(`${internalFile}: нет хлебных крошек`);
-  if (count(internalHtml, /<div><dt>[^<]+<\/dt><dd>[^<]+<\/dd><\/div>/gi) < 8) fail(`${internalFile}: не выведены hero-факты и показатели intro`);
+  if (count(internalHtml, /<dt\b/gi) < 8) fail(`${internalFile}: не выведены hero-факты и показатели intro`);
   const expectedCounts = {
     serviceGrid: [/<article class="internal-service-card">/g, 6],
+    popularWorks: [/<li class="internal-popular-work">/g, 16],
     vehicleTypes: [/<article class="internal-vehicle-card">/g, 6],
-    brandStrip: [/<div class="internal-brand-strip__item">/g, 9],
+    brandShowcase: [/<li\b/gi, 23],
+    editorialContent: [/<article>/g, 3],
     symptoms: [/<li>/gi, 6],
     workStages: [/<li class="internal-timeline__item">/g, 5],
     priceExamples: [/<th scope="row">/g, 8],
@@ -171,8 +173,15 @@ if (!fs.existsSync(distDir)) {
   }
   if (/<form\b/i.test(internalHtml)) fail(`${internalFile}: формы запрещены`);
   if (/sidebar/i.test(internalHtml)) fail(`${internalFile}: sidebar запрещён`);
+  if (/internal-price-meta|Действует с:|Утверждено владельцем РемСД/i.test(internalHtml)) fail(`${internalFile}: удалённые реквизиты цен снова появились на странице`);
+  if (!internalHtml.includes("Ремонтируем грузовики любых марок")) fail(`${internalFile}: отсутствует утверждённый заголовок intro`);
+  if (!internalHtml.includes("срок выполнения многих типовых работ")) fail(`${internalFile}: не уточнена формулировка срока типовых работ`);
   if (!internalHtml.includes("Точная стоимость определяется после диагностики. Цены указаны ориентировочно")) fail(`${internalFile}: отсутствует утверждённая оговорка о цене`);
   if (!internalHtml.includes("Ежедневно с 08:00 до 22:00")) fail(`${internalFile}: отсутствует утверждённый график`);
+
+  const editorialSection = internalData.pages[0].sections.find((section) => section.type === "editorialContent");
+  const editorialLength = [editorialSection?.lead, ...(editorialSection?.blocks || []).flatMap((block) => [block.title, block.text])].filter(Boolean).join(" ").length;
+  if (editorialLength < 1000 || editorialLength > 1500) fail(`${internalFile}: полезный текст должен содержать 1000–1500 знаков, найдено ${editorialLength}`);
   const pageDefinition = internalData.pages.find((page) => page.path === "remont-gruzovyh-avtomobiley");
   const faqDefinition = pageDefinition?.sections.find((section) => section.type === "faq");
   for (const item of faqDefinition?.items || []) {
