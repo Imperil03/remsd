@@ -520,7 +520,8 @@ async function verifyInternalVisualContract(page, viewport) {
   }
   verifyMetricRange("показатели intro", metrics.introStats, 104, 124);
 
-  verifyRows("услуги", metrics.rows.services, repeatedRows(wide ? 3 : narrow ? 1 : 2, 6));
+  const serviceColumns = width > 1120 ? 6 : width > 1020 ? 3 : narrow ? 1 : 2;
+  verifyRows("услуги", metrics.rows.services, repeatedRows(serviceColumns, 6));
   verifyRows("популярные работы", metrics.rows.popular, repeatedRows(wide ? 4 : narrow ? 1 : 2, 16));
   verifyRows("техника", metrics.rows.vehicles, repeatedRows(wide ? 3 : narrow ? 1 : 2, 6));
   verifyRows("официальные марки", metrics.rows.brandOfficial, [3]);

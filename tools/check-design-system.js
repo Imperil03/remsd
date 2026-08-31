@@ -124,7 +124,7 @@ if (!selectorDeclares(homepageCss, ".v3-hero__frame", /padding\s*:\s*0\s*;?/)) {
 }
 
 const gridContracts = [
-  [".internal-service-grid", 3],
+  [".internal-service-grid", 6],
   [".internal-popular-works", 4],
   [".internal-vehicle-mosaic", 3],
   [".internal-timeline", 5],
