@@ -10,7 +10,7 @@ const dataDir = path.join(srcDir, "data");
 const templatesDir = path.join(srcDir, "templates");
 const assetsDir = path.join(root, "assets");
 const distDir = path.join(root, "dist");
-const assetVersion = process.env.ASSET_VERSION || "20260831-service-row-v9";
+const assetVersion = process.env.ASSET_VERSION || "20260902-related-faq-v10";
 
 const PAGE_FAMILIES = new Set(["hub", "service", "brand"]);
 const SECTION_TYPES = new Set([
@@ -436,7 +436,13 @@ function validateSection(section, label) {
       requireText(item.text, `${label}.items[${index}].text`);
     });
   } else if (type === "relatedIndex") {
-    requireArray(section.items, `${label}.items`, { nonEmpty: true }).forEach((item, index) => requireText(item, `${label}.items[${index}]`));
+    requireArray(section.items, `${label}.items`, { nonEmpty: true }).forEach((item, index) => {
+      requireObject(item, `${label}.items[${index}]`);
+      requireText(item.title, `${label}.items[${index}].title`);
+      requireText(item.text, `${label}.items[${index}].text`);
+      requireText(item.icon, `${label}.items[${index}].icon`);
+      if (item.href !== undefined) normalizeRoute(item.href, `${label}.items[${index}].href`);
+    });
   } else if (type === "priceExamples") {
     requireArray(section.items, `${label}.items`, { nonEmpty: true }).forEach((item, index) => {
       requireText(item.service, `${label}.items[${index}].service`);
@@ -665,17 +671,30 @@ function renderPriceExamples(section, site) {
 </section>`;
 }
 
-function renderRelatedIndex(section) {
-  const items = section.items.map((item) => `<span>${escapeHtml(item)}</span>`).join("");
+function renderRelatedIndex(section, rootPath) {
+  const items = section.items.map((item) => {
+    const content = `<svg class="internal-related-card__icon" aria-hidden="true"><use href="#internal-icon-${escapeHtml(item.icon)}"></use></svg>
+  <div class="internal-related-card__copy"><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.text)}</p></div>
+  <span class="internal-related-card__arrow" aria-hidden="true"></span>`;
+    if (item.href === undefined) return `<article class="internal-related-card">${content}</article>`;
+    const href = `${rootPath}${item.href.replace(/^\/+|\/+$/g, "")}/`;
+    return `<a class="internal-related-card internal-related-card--link" href="${escapeHtml(href)}">${content}</a>`;
+  }).join("");
   return `<section class="internal-section internal-section--relatedIndex" id="${escapeHtml(section.id)}" aria-labelledby="${escapeHtml(section.id)}-title">
   <div class="container">${renderSectionHead(section)}<div class="internal-related-index" aria-label="Будущие направления сайта">${items}</div></div>
 </section>`;
 }
 
-function renderFaq(section) {
+function renderFaq(section, site) {
   const items = section.items.map((item) => `<details><summary>${escapeHtml(item.question)}</summary><p>${escapeHtml(item.answer)}</p></details>`).join("");
   return `<section class="internal-section internal-section--faq" id="${escapeHtml(section.id)}" aria-labelledby="${escapeHtml(section.id)}-title">
-  <div class="container internal-faq-layout">${renderSectionHead(section)}<div class="internal-faq">${items}</div></div>
+  <div class="container internal-faq-layout"><div class="internal-faq__intro">${renderSectionHead(section)}
+    <aside class="internal-faq__contact" aria-labelledby="${escapeHtml(section.id)}-contact-title">
+      <h3 id="${escapeHtml(section.id)}-contact-title">Не нашли ответ?</h3>
+      <p>Расскажите о неисправности — мастер уточнит, с чего начать.</p>
+      <a class="internal-faq__contact-link" href="${escapeHtml(site.phoneHref)}">Позвонить мастеру</a>
+    </aside>
+  </div><div class="internal-faq">${items}</div></div>
 </section>`;
 }
 
@@ -691,8 +710,8 @@ function renderSection(section, rootPath, site) {
     symptoms: () => renderSymptoms(section, site),
     workStages: () => renderWorkStages(section),
     priceExamples: () => renderPriceExamples(section, site),
-    relatedIndex: () => renderRelatedIndex(section),
-    faq: () => renderFaq(section),
+    relatedIndex: () => renderRelatedIndex(section, rootPath),
+    faq: () => renderFaq(section, site),
   };
   return renderers[section.type]();
 }

@@ -138,7 +138,7 @@ if (!fs.existsSync(distDir)) {
     symptoms: [/<li>/gi, 6],
     workStages: [/<li class="internal-timeline__item">/g, 5],
     priceExamples: [/<th scope="row">/g, 8],
-    relatedIndex: [/<span>/gi, 8],
+    relatedIndex: [/class="internal-related-card(?:\s|")/g, 8],
     faq: [/<details>/g, 11],
   };
   for (const [section, [itemPattern, expected]] of Object.entries(expectedCounts)) {

@@ -127,6 +127,7 @@ const gridContracts = [
   [".internal-service-grid", 6],
   [".internal-popular-works", 4],
   [".internal-vehicle-mosaic", 3],
+  [".internal-related-index", 4],
   [".internal-timeline", 5],
 ];
 for (const [selector, columns] of gridContracts) {

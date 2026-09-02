@@ -347,7 +347,7 @@ async function verifyInternalVisualContract(page, viewport) {
       ".internal-vehicle-card__copy", ".internal-symptoms span",
       ".internal-timeline h3", ".internal-timeline p",
       ".internal-price-table th", ".internal-price-table td",
-      ".internal-related-index span", ".internal-faq summary",
+      ".internal-related-card h3", ".internal-related-card p", ".internal-faq summary",
       ".internal-inline-cta__content", ".internal-inline-cta .v3-button",
       ".internal-reference-link",
       ".internal-popular-work span", ".v3-brand-card__name", ".v3-brand-card__status",
@@ -359,7 +359,7 @@ async function verifyInternalVisualContract(page, viewport) {
     const boundedSelectors = [
       ".internal-service-card", ".internal-vehicle-card", ".internal-brand-strip__item",
       ".internal-symptoms li", ".internal-inline-cta", ".internal-timeline__item",
-      ".internal-price-table", ".internal-related-index span", ".internal-faq details",
+      ".internal-price-table", ".internal-related-card", ".internal-faq details",
       ".internal-reference-link",
       ".internal-popular-work", ".v3-brand-card", ".v3-brand-matrix li",
       ".internal-editorial article",
@@ -435,8 +435,10 @@ async function verifyInternalVisualContract(page, viewport) {
       priceRows: measurements(".internal-price-table tbody tr"),
       priceLabels: measurements(".internal-price-table th", (element) => parseFloat(getComputedStyle(element).fontSize)),
       priceValues: measurements(".internal-price-table td", (element) => parseFloat(getComputedStyle(element).fontSize)),
-      related: measurements(".internal-related-index span"),
-      relatedText: measurements(".internal-related-index span", (element) => parseFloat(getComputedStyle(element).fontSize)),
+      related: measurements(".internal-related-card"),
+      relatedText: measurements(".internal-related-card h3", (element) => parseFloat(getComputedStyle(element).fontSize)),
+      relatedBodies: measurements(".internal-related-card p", (element) => parseFloat(getComputedStyle(element).fontSize)),
+      relatedIcons: measurements(".internal-related-card__icon", (element) => element.getBoundingClientRect().width),
       faq: measurements(".internal-faq summary"),
       faqText: measurements(".internal-faq summary", (element) => parseFloat(getComputedStyle(element).fontSize)),
       rows: {
@@ -448,7 +450,7 @@ async function verifyInternalVisualContract(page, viewport) {
         symptoms: rowCounts(".internal-symptoms li"),
         stages: rowCounts(".internal-timeline__item"),
         prices: rowCounts(".internal-price-table"),
-        related: rowCounts(".internal-related-index span"),
+        related: rowCounts(".internal-related-card"),
         faq: rowCounts(".internal-faq details"),
       },
       boxes: {
@@ -457,6 +459,8 @@ async function verifyInternalVisualContract(page, viewport) {
         symptomsCta: box(".internal-inline-cta--symptoms"),
         priceMain: box(".internal-price-main"),
         priceCta: box(".internal-inline-cta--prices"),
+        faqIntro: box(".internal-faq__intro"),
+        faqList: box(".internal-faq"),
       },
       alignedContainers: [
         ...document.querySelectorAll(".internal-section > .container"),
@@ -530,7 +534,7 @@ async function verifyInternalVisualContract(page, viewport) {
   verifyRows("этапы", metrics.rows.stages, repeatedRows(timelineWide ? 5 : 1, 5));
   verifyRows("таблицы цен", metrics.rows.prices, repeatedRows(compact ? 1 : 2, 2));
   verifyRows("связанные разделы", metrics.rows.related, repeatedRows(wide ? 4 : narrow ? 1 : 2, 8));
-  verifyRows("FAQ", metrics.rows.faq, repeatedRows(width > 720 ? 2 : 1, 11));
+  verifyRows("FAQ", metrics.rows.faq, repeatedRows(1, 11));
 
   verifyMetricRange("заголовки услуг", metrics.serviceTitles, narrow ? 17.4 : 16.4, narrow ? 18.6 : 17.6);
   verifyMetricRange("текст услуг", metrics.serviceBodies, 13.4, 14.6);
@@ -559,6 +563,8 @@ async function verifyInternalVisualContract(page, viewport) {
   verifyMetricRange("названия цен", metrics.priceLabels, 15.4, 16.6);
   verifyMetricRange("значения цен", metrics.priceValues, narrow ? 16.4 : 17.4, narrow ? 17.6 : 18.6);
   verifyMetricRange("текст связанных разделов", metrics.relatedText, 15.4, 16.6);
+  verifyMetricRange("описания связанных разделов", metrics.relatedBodies, 13.4, 14.6);
+  verifyMetricRange("иконки связанных разделов", metrics.relatedIcons, 42, 46);
   verifyMetricRange("текст FAQ", metrics.faqText, 16.4, 17.6);
 
   if (narrow) {
@@ -576,7 +582,7 @@ async function verifyInternalVisualContract(page, viewport) {
   verifyMetricRange("карточки признаков", metrics.symptoms.map(({ name, height: value }) => ({ name, value })), 82, 190);
   if (timelineWide) verifyMetricRange("этапы desktop", metrics.stages.map(({ name, height: value }) => ({ name, value })), 152, 230);
   verifyMetricRange("строки цен", metrics.priceRows, 54, width <= 320 ? 110 : 90);
-  verifyMetricRange("связанные разделы", metrics.related, narrow ? 62 : 66, 110);
+  verifyMetricRange("связанные разделы", metrics.related, narrow ? 116 : 128, 190);
   verifyMetricRange("FAQ summary", metrics.faq, narrow ? 62 : 66, Number.POSITIVE_INFINITY);
 
   const heroShell = metrics.boxes.heroShell;
@@ -602,6 +608,17 @@ async function verifyInternalVisualContract(page, viewport) {
     }
   }
 
+  const faqIntro = metrics.boxes.faqIntro;
+  const faqList = metrics.boxes.faqList;
+  if (!faqIntro || !faqList) throw new Error("Визуальный контракт: не найдена split-композиция FAQ");
+  if (width > 1020) {
+    if (faqList.x < faqIntro.right + 39 || Math.abs(faqList.y - faqIntro.y) > 2) {
+      throw new Error(`Визуальный контракт: список FAQ не расположен справа от вводной колонки (${JSON.stringify({ faqIntro, faqList })})`);
+    }
+  } else if (faqList.y < faqIntro.bottom + 34 || Math.abs(faqList.width - faqIntro.width) > 2) {
+    throw new Error(`Визуальный контракт: список FAQ не расположен под вводной колонкой (${JSON.stringify({ faqIntro, faqList })})`);
+  }
+
   verifyMetricRange("CTA-кнопки", metrics.mainCtas.map(({ name, width: value }) => ({ name, value })), 44, Number.POSITIVE_INFINITY);
   verifyMetricRange("CTA-кнопки", metrics.mainCtas.map(({ name, height: value }) => ({ name, value })), 44, Number.POSITIVE_INFINITY);
   verifyMetricRange("ссылки из референса", metrics.referenceLinks.map(({ name, width: value }) => ({ name, value })), 44, Number.POSITIVE_INFINITY);
@@ -625,7 +642,7 @@ async function verifyInternalContract(page, viewport) {
     ".internal-symptoms li": 6,
     ".internal-timeline__item": 5,
     ".internal-price-table tbody tr": 8,
-    ".internal-related-index span": 8,
+    ".internal-related-card": 8,
     ".internal-faq details": 11,
     ".internal-reference-link": 1,
   };
@@ -658,6 +675,18 @@ async function verifyInternalContract(page, viewport) {
   if ((await ctas.count()) !== 4) throw new Error(`Ожидалось 4 CTA, найдено ${await ctas.count()}`);
   for (let index = 0; index < await ctas.count(); index += 1) {
     if ((await ctas.nth(index).getAttribute("href")) !== "tel:+79224488822") throw new Error("CTA не ведёт на утверждённый телефон");
+  }
+  const faqContact = page.locator(".internal-faq__contact-link");
+  if ((await faqContact.count()) !== 1 || (await faqContact.getAttribute("href")) !== "tel:+79224488822") {
+    throw new Error("В FAQ отсутствует утверждённая вторичная ссылка на мастера");
+  }
+  const faqContactTarget = await faqContact.evaluate((element) => {
+    element.focus();
+    const rect = element.getBoundingClientRect();
+    return { width: rect.width, height: rect.height, outline: getComputedStyle(element).outlineStyle };
+  });
+  if (faqContactTarget.width < 44 || faqContactTarget.height < 44 || faqContactTarget.outline === "none") {
+    throw new Error(`Ссылка FAQ нарушает focus/44px контракт: ${JSON.stringify(faqContactTarget)}`);
   }
   const jsonLdValid = await page.evaluate(() => [...document.querySelectorAll('script[type="application/ld+json"]')].every((script) => {
     try { JSON.parse(script.textContent); return true; } catch { return false; }
