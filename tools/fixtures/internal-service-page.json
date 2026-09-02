@@ -1,0 +1,78 @@
+{
+  "path": "fixture-remont-gbc",
+  "family": "service",
+  "entityRef": "service-gbc",
+  "metadata": {
+    "title": "Fixture: ремонт ГБЦ в Сургуте",
+    "description": "Непубликуемый fixture сокращённой сервисной страницы для проверки генератора.",
+    "socialImage": "assets/img/hero-industrial-base-v3.webp",
+    "serviceType": "Ремонт ГБЦ грузовых автомобилей"
+  },
+  "breadcrumbs": [
+    {
+      "label": "Главная",
+      "href": ""
+    },
+    {
+      "label": "Ремонт ГБЦ"
+    }
+  ],
+  "hero": {
+    "image": "assets/img/hero-industrial-base-v3.webp",
+    "mobileImage": "assets/img/hero-industrial-base-v3-mobile.webp",
+    "h1": "Ремонт ГБЦ в Сургуте",
+    "accent": "в Сургуте",
+    "lead": "Диагностика и восстановление головок блока цилиндров грузовых автомобилей.",
+    "ctaLabel": "Позвонить мастеру",
+    "facts": [
+      {
+        "icon": "shield",
+        "label": "Контроль",
+        "value": "После ремонта"
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "fixture-intro",
+      "type": "introProof",
+      "title": "Проверяем ГБЦ перед восстановлением",
+      "intro": "Сначала определяем состояние детали и согласовываем необходимый объём работ.",
+      "bullets": [
+        "Осмотр и дефектовка",
+        "Согласование работ"
+      ],
+      "statement": "Fixture проверяет сокращённую композицию без обязательного полного набора секций hub-страницы.",
+      "image": "assets/img/gallery/large/volvo-service-bay.webp",
+      "imageAlt": "Грузовые автомобили в ремонтном цехе",
+      "stats": [
+        {
+          "value": "1",
+          "label": "сервисная секция"
+        }
+      ]
+    },
+    {
+      "id": "fixture-faq",
+      "type": "faq",
+      "title": "Вопросы о ремонте ГБЦ",
+      "intro": "Короткий набор вопросов для проверки компонента.",
+      "contact": {
+        "title": "Остался вопрос?",
+        "text": "Позвоните мастеру и опишите неисправность.",
+        "linkLabel": "Позвонить мастеру"
+      },
+      "items": [
+        {
+          "question": "Нужна ли предварительная диагностика?",
+          "answer": "Да, объём работ определяют после проверки детали."
+        }
+      ]
+    }
+  ],
+  "closingCta": {
+    "title": "Нужна консультация мастера?",
+    "text": "Позвоните и опишите неисправность автомобиля.",
+    "buttonLabel": "Позвонить мастеру"
+  }
+}

@@ -1,6 +1,6 @@
 # Project Handoff
 
-Дата: 2026-08-30
+Дата: 2026-09-02
 
 ## Быстрый вход для нового агента
 
@@ -11,7 +11,7 @@
 3. Этот файл — текущее состояние и ближайший рабочий контракт.
 4. `docs/project-history.md` — почему проект пришёл к текущему состоянию.
 5. Для дизайна: `docs/design-guideline.md` → `docs/design-system.md` → `DESIGN.md`.
-6. Для реализации: `src/data/internal-pages.json`, `src/templates/internal-page.html`, `assets/css/internal-pages.css`.
+6. Для реализации: `src/data/internal-pages/index.json`, отдельные PageDefinition, `tools/lib/internal-pages.js`, `src/templates/internal-page.html`, `assets/css/internal-pages.css`.
 
 ## Текущий статус
 
@@ -56,23 +56,23 @@
 ## Дизайн-система
 
 - `design-system.css` — токены;
-- `styles.css` — foundations/shared;
-- `site-chrome.css` — общая шапка, футер и служебная 404;
+- `styles.css` — минимальный foundation;
+- `site-chrome.css` — общая навигация, кнопка, callbar, шапка, футер и служебная 404;
 - `styles-v3.css` — только главная;
 - `internal-pages.css` — внутренние страницы.
 
 Публичные бандлы: `base.css`, `home.css`, `internal.css`. Контракт проверяет `tools/check-design-system.js`.
 
-`src/data/internal-pages.json` хранит `PageDefinition`: `path`, `family`, `metadata`, `breadcrumbs`, `hero`, `sections`. Семейства — `hub`, `service`, `brand`; набор секций определяется страницей.
+`src/data/internal-pages/index.json` — manifest схемы v3 с `referenceByFamily`; каждая страница хранится отдельным JSON. `PageDefinition` включает `entityRef`, `metadata.serviceType`, настраиваемые CTA, контакт FAQ и `closingCta`. Семейства — `hub`, `service`, `brand`; набор секций определяется страницей. Сущности и обе стороны отношений валидируются до сборки.
 
 ## Как добавлять следующую страницу
 
 1. Определить интент и семейство страницы.
 2. Подтвердить факты и текст по `.agent/SEO_STRUCTURE.md`.
-3. Добавить новый `PageDefinition` в `internal-pages.json`.
+3. Добавить отдельный `PageDefinition` в `src/data/internal-pages/` и включить его в manifest.
 4. Переиспользовать существующие секции; новый тип секции вводить только для повторяемой задачи.
 5. Сделать ссылку интерактивной только после появления маршрута в сборке.
-6. Выполнить `npm run verify`, `npm run test:browser`, `git diff --check`.
+6. Выполнить `npm run verify`, `npm run test:browser`, `npm run test:lighthouse`, `git diff --check`.
 
 Не создавать тонкие страницы формата «услуга × марка» без отдельного решения и достаточной фактуры.
 

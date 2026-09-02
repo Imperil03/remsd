@@ -25,11 +25,14 @@
 ## Кодовый контракт
 
 - `src/data/site-config.json` — режимы сборки, NAP, график, CTA и подтверждённые владельцем факты.
-- `src/data/internal-pages.json` — типизированные определения внутренних страниц семейств `hub`, `service`, `brand`.
+- `src/data/internal-pages/index.json` — manifest схемы v3 с опубликованными файлами страниц и `referenceByFamily`.
+- `src/data/internal-pages/*.json` — отдельные типизированные `PageDefinition` семейств `hub`, `service`, `brand`.
+- `tools/lib/internal-pages.js` — реестр секций: validator и renderer каждого типа находятся рядом.
 - `src/templates/internal-page.html` — общий каркас внутренних страниц.
 - `src/partials/v3-header.html`, `main-nav.html`, `v3-footer.html` — общая шапка, навигация и футер.
 - `assets/css/design-system.css` — единственный источник глобальных токенов.
-- `assets/css/styles.css` и `site-chrome.css` — общие foundations и компоненты.
+- `assets/css/styles.css` — только variable fonts, reset, `body` и `.container`.
+- `assets/css/site-chrome.css` — навигация, skip-link, mobile callbar, единая `.v3-button`, шапка, футер и 404.
 - `assets/css/styles-v3.css` — композиция утверждённой главной.
 - `assets/css/internal-pages.css` — композиционный слой внутренних страниц.
 
@@ -39,7 +42,9 @@
 - `home.css = base + homepage`;
 - `internal.css = base + internal pages`.
 
-Поддерживаемые секции: `introProof`, `serviceGrid`, `popularWorks`, `vehicleTypes`, `brandStrip`, `brandShowcase`, `editorialContent`, `symptoms`, `workStages`, `priceExamples`, `relatedIndex`, `faq`. Их набор и порядок определяет сама страница.
+Поддерживаемые секции: `introProof`, `serviceGrid`, `popularWorks`, `vehicleTypes`, `brandShowcase`, `editorialContent`, `symptoms`, `workStages`, `priceExamples`, `relatedIndex`, `faq`. Их набор и порядок определяет сама страница; заменённый `brandStrip` удалён.
+
+Лимиты несжатых minified-бандлов: `base.css ≤45 KB`, `home.css ≤85 KB`, `internal.css ≤70 KB`.
 
 ## Команды
 
@@ -50,7 +55,7 @@ npm run test:browser
 git diff --check
 ```
 
-`npm run verify` собирает preview и проверяет структуру, ссылки, JSON-LD, точное число страниц и контракт дизайн-системы. `npm run test:browser` проверяет главную на четырёх viewport, внутреннюю страницу на desktop, tablet, 414×896, 390×844 и 320 px, а также burger, клавиатурный FAQ, callbar, изображения, цели 44 px, отсутствие overflow и ошибки консоли.
+`npm run verify` собирает preview и проверяет manifest, сущности/отношения, маршруты, ссылки, JSON-LD, service-fixture, лимиты CSS и контракт владения стилями. `npm run test:browser` проверяет главную и эталонный hub на 11 ширинах от 1992 до 320 px; каждая следующая внутренняя страница автоматически получает smoke-проходы на 1440 и 390 px.
 
 Для production-like проверки:
 

@@ -2,6 +2,7 @@ const fs = require("fs");
 const http = require("http");
 const path = require("path");
 const { chromium } = require("playwright");
+const { loadInternalPageCatalog } = require("./lib/internal-pages");
 
 const root = path.resolve(__dirname, "..");
 const distDir = path.join(root, "dist");
@@ -9,7 +10,12 @@ const resultDir = path.join(root, "test-results", "browser");
 const reviewDir = path.join(root, ".impeccable", "review");
 const host = "127.0.0.1";
 const port = Number(process.env.PORT || 4173);
-const internalRoute = "/remont-gruzovyh-avtomobiley/";
+const dataDir = path.join(root, "src", "data");
+const siteConfig = JSON.parse(fs.readFileSync(path.join(dataDir, "site-config.json"), "utf8"));
+const internalCatalog = loadInternalPageCatalog({ root, dataDir, assetsDir: path.join(root, "assets"), siteConfig });
+const referencePath = internalCatalog.manifest.referenceByFamily.hub;
+const internalRoute = `/${referencePath}/`;
+const smokeRoutes = internalCatalog.pages.filter((page) => page.path !== referencePath).map((page) => `/${page.path}/`);
 
 const mime = {
   ".css": "text/css; charset=utf-8",
@@ -834,6 +840,16 @@ async function run() {
       await context.close();
     }
 
+    for (const route of smokeRoutes) {
+      for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 }]) {
+        const context = await browser.newContext({ viewport });
+        const page = await context.newPage();
+        await verifyPage(page, route, `${route} smoke ${viewport.width}`);
+        await verifyNavigation(page, viewport.width <= 1120);
+        await context.close();
+      }
+    }
+
     const page404Context = await browser.newContext({ viewport: { width: 390, height: 844 } });
     const page404 = await page404Context.newPage();
     await verifyPage(page404, "/route-that-must-not-exist/", "404", { expectedStatus: 404 });
@@ -842,7 +858,7 @@ async function run() {
     await browser.close();
     await new Promise((resolve) => server.close(resolve));
   }
-  console.log("Browser verification passed: общий chrome 11 viewport, главная 11 viewport, внутренний hub 11 viewport, wide guide, H1 alignment, stage wrapping, burger, FAQ, callbar, images, targets и 404.");
+  console.log(`Browser verification passed: общий chrome 11 viewport, главная 11 viewport, эталонный hub 11 viewport, ${smokeRoutes.length} дополнительных внутренних маршрутов × 2 smoke viewport, burger, FAQ, callbar, images, targets и 404.`);
 }
 
 run().catch((error) => {

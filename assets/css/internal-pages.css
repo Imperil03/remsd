@@ -113,7 +113,7 @@
   max-width: 760px;
   margin: 0;
   color: var(--text-inverse);
-  font-family: "Geologica V3", var(--font-heading);
+  font-family: var(--font-heading);
   font-size: clamp(42px, 3.6vw, 60px);
   font-weight: 700;
   letter-spacing: -0.025em;
@@ -210,14 +210,9 @@
   padding-block: 48px var(--section-space-compact);
 }
 
-.internal-section--brandStrip {
-  padding-block: 32px var(--section-space-compact);
-}
-
 .internal-section--introProof,
 .internal-section--serviceGrid,
 .internal-section--vehicleTypes,
-.internal-section--brandStrip,
 .internal-section--editorialContent,
 .internal-section--symptoms,
 .internal-section--priceExamples {
@@ -411,12 +406,6 @@
   text-align: center;
 }
 
-.internal-service-card:nth-child(-n + 2) {
-  grid-column: auto;
-  grid-template-columns: minmax(0, 1fr);
-  min-height: 230px;
-}
-
 .internal-service-card__icon {
   width: 56px;
   height: 56px;
@@ -466,11 +455,6 @@
   border-radius: var(--radius-md);
 }
 
-.internal-vehicle-card:first-child {
-  grid-row: auto;
-  grid-column: auto;
-}
-
 .internal-vehicle-card img {
   width: 100%;
   aspect-ratio: 16 / 9;
@@ -507,35 +491,6 @@
   color: var(--text-secondary);
   font-size: 15px;
   line-height: 1.4;
-}
-
-.internal-brand-strip {
-  display: grid;
-  grid-template-columns: repeat(9, minmax(0, 1fr));
-  gap: 12px;
-  width: 100%;
-  margin-inline: auto;
-}
-
-.internal-brand-strip__item {
-  display: grid;
-  min-height: 84px;
-  place-items: center;
-  padding: 12px 10px;
-  background: var(--surface-card);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-md);
-}
-
-.internal-brand-strip__item:nth-child(6) {
-  grid-column: auto;
-}
-
-.internal-brand-strip img {
-  width: 100%;
-  max-width: 132px;
-  max-height: 52px;
-  object-fit: contain;
 }
 
 .internal-reference-link {
@@ -1410,8 +1365,7 @@
     gap: 14px;
   }
 
-  .internal-service-card,
-  .internal-service-card:nth-child(-n + 2) {
+  .internal-service-card {
     grid-template-columns: 64px minmax(0, 1fr);
     gap: 16px;
     min-height: 196px;
@@ -1423,21 +1377,6 @@
     width: 56px;
     height: 56px;
     margin: 0;
-  }
-
-  .internal-brand-strip {
-    grid-template-columns: repeat(10, minmax(0, 1fr));
-    gap: 10px;
-    width: min(100%, 920px);
-  }
-
-  .internal-brand-strip__item {
-    grid-column: span 2;
-    min-height: 84px;
-  }
-
-  .internal-brand-strip__item:nth-child(6) {
-    grid-column: 2 / span 2;
   }
 
   .internal-section--brandShowcase .v3-brand-matrix {
@@ -1531,33 +1470,15 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .internal-service-card,
-  .internal-service-card:nth-child(-n + 2) {
+  .internal-service-card {
     grid-column: auto;
     grid-template-columns: 64px minmax(0, 1fr);
     min-height: 196px;
   }
 
-  .internal-vehicle-card,
-  .internal-vehicle-card:first-child {
+  .internal-vehicle-card {
     grid-column: auto;
     grid-row: auto;
-  }
-
-  .internal-brand-strip {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    width: min(100%, 720px);
-  }
-
-  .internal-brand-strip__item,
-  .internal-brand-strip__item:nth-child(6) {
-    grid-column: auto;
-    min-height: 88px;
-  }
-
-  .internal-brand-strip img {
-    max-width: 132px;
-    max-height: 56px;
   }
 
   .internal-popular-works {
@@ -1692,8 +1613,7 @@
     text-align: left;
   }
 
-  .internal-service-card,
-  .internal-service-card:nth-child(-n + 2) {
+  .internal-service-card {
     grid-template-columns: 56px minmax(0, 1fr);
     gap: 10px;
     padding: 18px 14px;
@@ -1867,8 +1787,7 @@
     grid-auto-rows: auto;
   }
 
-  .internal-service-card,
-  .internal-service-card:nth-child(-n + 2) {
+  .internal-service-card {
     grid-template-columns: 58px minmax(0, 1fr);
     gap: 16px;
     min-height: 0;
@@ -1910,27 +1829,6 @@
 
   .internal-vehicle-card p {
     font-size: 16px;
-  }
-
-  .internal-brand-strip {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
-  }
-
-  .internal-brand-strip__item,
-  .internal-brand-strip__item:nth-child(6) {
-    min-height: 92px;
-  }
-
-  .internal-brand-strip__item:last-child:nth-child(odd) {
-    grid-column: 1 / -1;
-    width: calc(50% - 5px);
-    justify-self: center;
-  }
-
-  .internal-brand-strip img {
-    max-width: 112px;
-    max-height: 48px;
   }
 
   .internal-symptoms li {
@@ -2028,4 +1926,9 @@
   .internal-faq summary::after {
     transition: none;
   }
+}
+
+
+.internal-section--brandShowcase .v3-brand-matrix[hidden] {
+  display: none !important;
 }

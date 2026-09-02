@@ -2,6 +2,8 @@ const fs = require("fs");
 const http = require("http");
 const path = require("path");
 const zlib = require("zlib");
+const { chromium } = require("playwright");
+const { loadInternalPageCatalog } = require("./lib/internal-pages");
 
 const root = path.resolve(__dirname, "..");
 const distDir = path.join(root, "dist");
@@ -9,7 +11,11 @@ const resultDir = path.join(root, "test-results", "lighthouse");
 const host = "127.0.0.1";
 const port = Number(process.env.LIGHTHOUSE_PORT || 4175);
 const minScore = Number(process.env.LIGHTHOUSE_MIN_SCORE || 0.95);
-const routes = ["/", "/remont-gruzovyh-avtomobiley/"];
+const blockedUrlPatterns = ["*://gc.kis.v2.scr.kaspersky-labs.com/*"];
+const dataDir = path.join(root, "src", "data");
+const siteConfig = JSON.parse(fs.readFileSync(path.join(dataDir, "site-config.json"), "utf8"));
+const internalCatalog = loadInternalPageCatalog({ root, dataDir, assetsDir: path.join(root, "assets"), siteConfig });
+const routes = ["/", ...new Set(Object.values(internalCatalog.manifest.referenceByFamily).map((route) => `/${route}/`))];
 
 const mime = {
   ".css": "text/css; charset=utf-8",
@@ -89,7 +95,8 @@ async function run() {
   ]);
   const server = await startServer();
   const chrome = await chromeLauncher.launch({
-    chromeFlags: ["--headless", "--no-sandbox", "--disable-gpu", "--disable-dev-shm-usage"],
+    chromePath: chromium.executablePath(),
+    chromeFlags: ["--headless", "--no-sandbox", "--disable-gpu", "--disable-dev-shm-usage", "--disable-extensions"],
   });
   const failures = [];
 
@@ -99,6 +106,7 @@ async function run() {
       logLevel: "error",
       output: "json",
       onlyCategories: ["performance"],
+      blockedUrlPatterns,
     });
     console.log("Lighthouse browser warm-up complete.");
 
@@ -109,6 +117,7 @@ async function run() {
         logLevel: "error",
         output: "json",
         onlyCategories: ["performance", "accessibility", "best-practices", "seo"],
+        blockedUrlPatterns,
       });
       const lhr = result.lhr;
       const metrics = {

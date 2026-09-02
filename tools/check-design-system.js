@@ -70,9 +70,42 @@ for (const file of consumerCssFiles) {
 
 for (const file of ["styles-v3.css", "internal-pages.css"]) {
   const source = fs.readFileSync(path.join(cssDir, file), "utf8");
-  const sharedChromeSelector = source.match(/\.v3-(?:header|nav|logo|footer)[\w-]*/);
+  const sharedChromeSelector = source.match(/\.(?:v3-(?:header|nav|logo|footer)|main-nav|mobile-callbar|skip-link)[\w-]*/);
   if (sharedChromeSelector) {
     fail(`assets/css/${file}: ${sharedChromeSelector[0]} принадлежит только site-chrome.css`);
+  }
+}
+
+const foundationCss = read("assets/css/styles.css");
+for (const selector of ["main-nav", "mobile-callbar", "skip-link", "media-lightbox", "v3-button"]) {
+  if (new RegExp(`\\.${selector}(?:[\\w-]|\\b)`).test(foundationCss)) {
+    fail(`assets/css/styles.css: .${selector} не принадлежит базовому слою`);
+  }
+}
+
+function declaredSelectors(source) {
+  return Array.from(source.matchAll(/([^{}]+)\{[^{}]*\}/g), (match) => match[1])
+    .flatMap((group) => group.split(",").map((selector) => selector.trim()));
+}
+
+for (const file of ["styles-v3.css", "internal-pages.css"]) {
+  const ownedElsewhere = declaredSelectors(read(`assets/css/${file}`)).find((selector) => (
+    /^\.v3-button(?:$|:|--primary\b|--secondary\b|__icon\b)/.test(selector)
+  ));
+  if (ownedElsewhere) fail(`assets/css/${file}: базовый селектор ${ownedElsewhere} принадлежит только site-chrome.css`);
+}
+
+for (const file of ["styles.css", "site-chrome.css", "internal-pages.css"]) {
+  if (/\.media-lightbox\b/.test(read(`assets/css/${file}`))) {
+    fail(`assets/css/${file}: lightbox принадлежит только styles-v3.css`);
+  }
+}
+if (!/\.media-lightbox\b/.test(read("assets/css/styles-v3.css"))) {
+  fail("assets/css/styles-v3.css: отсутствует компонент lightbox главной");
+}
+for (const file of ["styles.css", "site-chrome.css", "styles-v3.css"]) {
+  if (/\.internal-(?:section|hero|close|faq|service|vehicle|timeline|related|popular|editorial|price|symptom|intro)\b/.test(read(`assets/css/${file}`))) {
+    fail(`assets/css/${file}: внутренние компоненты принадлежат только internal-pages.css`);
   }
 }
 
@@ -99,7 +132,6 @@ const groupedRhythm = [
   [".internal-section--serviceGrid", /padding-block\s*:\s*var\(--section-space-compact\)\s+32px\s*;?/],
   [".internal-section--popularWorks", /padding-block\s*:\s*48px\s*;?/],
   [".internal-section--vehicleTypes", /padding-block\s*:\s*48px\s+var\(--section-space-compact\)\s*;?/],
-  [".internal-section--brandStrip", /padding-block\s*:\s*32px\s+var\(--section-space-compact\)\s*;?/],
 ];
 for (const [selector, pattern] of groupedRhythm) {
   if (!selectorDeclares(internalPagesCss, selector, pattern)) {
@@ -190,6 +222,19 @@ for (const file of htmlFiles(srcDir)) {
   }
 }
 
+const partialDir = path.join(srcDir, "partials");
+const sourceHtml = htmlFiles(srcDir).map((file) => ({ file, source: fs.readFileSync(file, "utf8") }));
+for (const partial of fs.readdirSync(partialDir).filter((file) => file.endsWith(".html"))) {
+  const name = path.basename(partial, ".html");
+  const token = `{{${name}}}`;
+  const referenced = sourceHtml.some(({ file, source }) => file !== path.join(partialDir, partial) && source.includes(token));
+  if (!referenced) fail(`src/partials/${partial}: partial недостижим из страниц, шаблонов и других partials`);
+}
+
+if (/brandStrip/.test(read("tools/lib/internal-pages.js")) || /internal-(?:section--brandStrip|brand-strip)/.test(internalPagesCss)) {
+  fail("brandStrip удалён из контракта и не должен оставаться в renderer или CSS");
+}
+
 const mainJs = read("assets/js/main.js");
 for (const [name, value] of Object.entries({ compact: 720, internalNav: 1020, homeNav: 1120 })) {
   if (!new RegExp(`${name}\\s*:\\s*${value}(?:,|\\s)`).test(mainJs)) {
@@ -198,7 +243,7 @@ for (const [name, value] of Object.entries({ compact: 720, internalNav: 1020, ho
 }
 
 const breakpointChecks = [
-  ["assets/css/styles.css", 1020],
+  ["assets/css/site-chrome.css", 1020],
   ["assets/css/site-chrome.css", 1120],
   ["assets/css/styles-v3.css", 1120],
   ["assets/css/styles-v3.css", 720],

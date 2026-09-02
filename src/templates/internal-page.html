@@ -45,15 +45,15 @@
       <section class="internal-close" aria-labelledby="internal-close-title">
         <div class="container internal-close__inner">
           <div class="internal-close__copy">
-            <h2 id="internal-close-title">Остались вопросы? Мы всегда на связи</h2>
-            <p>Позвоните мастеру, назовите марку автомобиля и опишите неисправность — уточним, с чего начать диагностику.</p>
+            <h2 id="internal-close-title">{{closingTitle}}</h2>
+            <p>{{closingText}}</p>
           </div>
           <dl class="internal-close__contacts">
             <div><dt>Телефон</dt><dd><a href="{{phoneHref}}">{{phone}}</a></dd></div>
             <div><dt>Адрес</dt><dd>{{address}}</dd></div>
             <div><dt>График</dt><dd>{{openingHoursLabel}}</dd></div>
           </dl>
-          <a class="v3-button v3-button--primary" href="{{phoneHref}}">Позвонить мастеру</a>
+          <a class="v3-button v3-button--primary" href="{{phoneHref}}">{{closingButtonLabel}}</a>
         </div>
       </section>
     </main>

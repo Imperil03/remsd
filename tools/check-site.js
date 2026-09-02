@@ -1,14 +1,38 @@
 const fs = require("fs");
 const path = require("path");
+const {
+  loadContentModel,
+  loadInternalPageCatalog,
+  renderSection,
+  validatePageDefinition,
+} = require("./lib/internal-pages");
 
 const root = path.resolve(__dirname, "..");
 const distDir = path.join(root, "dist");
 const mode = process.env.SITE_MODE || "preview";
-const internalData = JSON.parse(fs.readFileSync(path.join(root, "src", "data", "internal-pages.json"), "utf8"));
-const expectedHtml = ["404.html", "index.html", "remont-gruzovyh-avtomobiley/index.html"];
-const internalFile = "remont-gruzovyh-avtomobiley/index.html";
+const dataDir = path.join(root, "src", "data");
+const assetsDir = path.join(root, "assets");
+const siteConfig = JSON.parse(fs.readFileSync(path.join(dataDir, "site-config.json"), "utf8"));
+const internalCatalog = loadInternalPageCatalog({ root, dataDir, assetsDir, siteConfig });
+const expectedHtml = ["404.html", "index.html", ...internalCatalog.pages.map((page) => `${page.path}/index.html`)].sort();
+const referenceRoute = internalCatalog.manifest.referenceByFamily.hub;
+const internalFile = `${referenceRoute}/index.html`;
+const pageDefinition = internalCatalog.pages.find((page) => page.path === referenceRoute);
 const failures = [];
 const fail = (message) => failures.push(message);
+
+try {
+  const fixtureFile = path.join(root, "tools", "fixtures", "internal-service-page.json");
+  const fixture = JSON.parse(fs.readFileSync(fixtureFile, "utf8"));
+  const { entityMap } = loadContentModel(dataDir);
+  validatePageDefinition(fixture, "tools/fixtures/internal-service-page.json", { root, assetsDir, entityMap });
+  const renderedSections = fixture.sections.map((section) => renderSection(section, "../", siteConfig.site)).join("\n");
+  if (!renderedSections.includes("internal-section--introProof") || !renderedSections.includes("internal-section--faq")) {
+    fail("service fixture: сокращённый набор секций не отрендерен");
+  }
+} catch (error) {
+  fail(`service fixture: ${error.message}`);
+}
 
 function getFiles(dir) {
   if (!fs.existsSync(dir)) return [];
@@ -78,6 +102,11 @@ if (!fs.existsSync(distDir)) {
   if (JSON.stringify(publicCss) !== JSON.stringify(expectedCss)) {
     fail(`публичный CSS должен содержать только ${expectedCss.join(", ")}; найдено: ${publicCss.join(", ")}`);
   }
+  const cssLimits = { "base.css": 45 * 1024, "home.css": 85 * 1024, "internal.css": 70 * 1024 };
+  for (const [file, limit] of Object.entries(cssLimits)) {
+    const size = fs.statSync(path.join(distDir, "assets", "css", file)).size;
+    if (size > limit) fail(`${file}: ${size} байт превышает лимит ${limit} байт`);
+  }
 
   const titles = new Map();
   const descriptions = new Map();
@@ -118,14 +147,23 @@ if (!fs.existsSync(distDir)) {
     if (!typesByPage.get("index.html")?.has(type)) fail(`index.html: JSON-LD не содержит ${type}`);
   }
 
+  for (const page of internalCatalog.pages) {
+    const relative = `${page.path}/index.html`;
+    const html = fs.readFileSync(path.join(distDir, relative), "utf8");
+    for (const type of ["BreadcrumbList", "Service", "LocalBusiness", "AutoRepair"]) {
+      if (!typesByPage.get(relative)?.has(type)) fail(`${relative}: JSON-LD не содержит ${type}`);
+    }
+    for (const forbidden of ["FAQPage", "Offer", "AggregateRating", "Review"]) {
+      if (typesByPage.get(relative)?.has(forbidden)) fail(`${relative}: JSON-LD не должен содержать ${forbidden}`);
+    }
+    if (count(html, /<nav\b[^>]+aria-label=["']Хлебные крошки["']/gi) !== 1) fail(`${relative}: нет хлебных крошек`);
+    if (!/<section\b[^>]*class=["'][^"']*internal-close\b/i.test(html)) fail(`${relative}: нет заключительного CTA`);
+    if (/<form\b/i.test(html)) fail(`${relative}: формы запрещены`);
+    if (/sidebar/i.test(html)) fail(`${relative}: sidebar запрещён`);
+  }
+
   const internalPath = path.join(distDir, internalFile);
   const internalHtml = fs.existsSync(internalPath) ? fs.readFileSync(internalPath, "utf8") : "";
-  for (const type of ["BreadcrumbList", "Service", "LocalBusiness", "AutoRepair"]) {
-    if (!typesByPage.get(internalFile)?.has(type)) fail(`${internalFile}: JSON-LD не содержит ${type}`);
-  }
-  for (const forbidden of ["FAQPage", "Offer", "AggregateRating", "Review"]) {
-    if (typesByPage.get(internalFile)?.has(forbidden)) fail(`${internalFile}: JSON-LD не должен содержать ${forbidden}`);
-  }
   if (count(internalHtml, /<section\b[^>]*class=["'][^"']*internal-section\b/gi) !== 11) fail(`${internalFile}: ожидается 11 модульных секций`);
   if (count(internalHtml, /<nav\b[^>]+aria-label=["']Хлебные крошки["']/gi) !== 1) fail(`${internalFile}: нет хлебных крошек`);
   if (count(internalHtml, /<dt\b/gi) < 8) fail(`${internalFile}: не выведены hero-факты и показатели intro`);
@@ -171,18 +209,15 @@ if (!fs.existsSync(distDir)) {
   ]) {
     if (!internalHtml.includes(copy)) fail(`${internalFile}: встроенная CTA-панель не содержит утверждённый текст «${copy}»`);
   }
-  if (/<form\b/i.test(internalHtml)) fail(`${internalFile}: формы запрещены`);
-  if (/sidebar/i.test(internalHtml)) fail(`${internalFile}: sidebar запрещён`);
   if (/internal-price-meta|Действует с:|Утверждено владельцем РемСД/i.test(internalHtml)) fail(`${internalFile}: удалённые реквизиты цен снова появились на странице`);
   if (!internalHtml.includes("Ремонтируем грузовики любых марок")) fail(`${internalFile}: отсутствует утверждённый заголовок intro`);
   if (!internalHtml.includes("срок выполнения многих типовых работ")) fail(`${internalFile}: не уточнена формулировка срока типовых работ`);
   if (!internalHtml.includes("Точная стоимость определяется после диагностики. Цены указаны ориентировочно")) fail(`${internalFile}: отсутствует утверждённая оговорка о цене`);
   if (!internalHtml.includes("Ежедневно с 08:00 до 22:00")) fail(`${internalFile}: отсутствует утверждённый график`);
 
-  const editorialSection = internalData.pages[0].sections.find((section) => section.type === "editorialContent");
+  const editorialSection = pageDefinition.sections.find((section) => section.type === "editorialContent");
   const editorialLength = [editorialSection?.lead, ...(editorialSection?.blocks || []).flatMap((block) => [block.title, block.text])].filter(Boolean).join(" ").length;
   if (editorialLength < 1000 || editorialLength > 1500) fail(`${internalFile}: полезный текст должен содержать 1000–1500 знаков, найдено ${editorialLength}`);
-  const pageDefinition = internalData.pages.find((page) => page.path === "remont-gruzovyh-avtomobiley");
   const faqDefinition = pageDefinition?.sections.find((section) => section.type === "faq");
   for (const item of faqDefinition?.items || []) {
     if (!internalHtml.includes(item.question) || !internalHtml.includes(item.answer)) fail(`${internalFile}: FAQ изменён: ${item.question}`);
@@ -201,4 +236,4 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.log(`Проверка сайта пройдена: режим ${mode}, опубликованы главная, эталонный hub и 404.`);
+console.log(`Проверка сайта пройдена: режим ${mode}, ${internalCatalog.pages.length} внутренних страниц и непубликуемый service fixture.`);

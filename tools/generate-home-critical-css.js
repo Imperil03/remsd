@@ -5,9 +5,15 @@ const postcss = require("postcss");
 const puppeteer = require("puppeteer-core");
 const { chromium } = require("playwright");
 const { transform: transformCss } = require("lightningcss");
+const { loadInternalPageCatalog } = require("./lib/internal-pages");
 
 const root = path.resolve(__dirname, "..");
 const distDir = path.join(root, "dist");
+const dataDir = path.join(root, "src", "data");
+const siteConfig = JSON.parse(fs.readFileSync(path.join(dataDir, "site-config.json"), "utf8"));
+const internalCatalog = loadInternalPageCatalog({ root, dataDir, assetsDir: path.join(root, "assets"), siteConfig });
+const referenceRoute = internalCatalog.manifest.referenceByFamily.hub;
+const referencePage = internalCatalog.pages.find((page) => page.path === referenceRoute);
 const host = "127.0.0.1";
 const port = Number(process.env.CRITICAL_PORT || 4178);
 const targets = [
@@ -22,10 +28,10 @@ const targets = [
   },
   {
     name: "internal",
-    file: "remont-gruzovyh-avtomobiley/index.html",
+    file: `${referenceRoute}/index.html`,
     css: "internal.css",
     heroClass: "internal-hero",
-    bodyClass: "internal-page internal-page--hub",
+    bodyClass: `internal-page internal-page--${referencePage.family}`,
     output: "internal-critical.css",
     prepend: ".internal-page main>:not(.internal-hero){content-visibility:hidden;contain-intrinsic-block-size:900px}",
   },

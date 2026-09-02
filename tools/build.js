@@ -1,6 +1,13 @@
 const fs = require("fs");
 const path = require("path");
 const { transform: transformCss } = require("lightningcss");
+const {
+  loadInternalPageCatalog,
+  renderBreadcrumbs: renderCatalogBreadcrumbs,
+  renderHeroFacts: renderCatalogHeroFacts,
+  renderHeroTitle: renderCatalogHeroTitle,
+  renderSection: renderCatalogSection,
+} = require("./lib/internal-pages");
 
 const root = path.resolve(__dirname, "..");
 const srcDir = path.join(root, "src");
@@ -10,14 +17,7 @@ const dataDir = path.join(srcDir, "data");
 const templatesDir = path.join(srcDir, "templates");
 const assetsDir = path.join(root, "assets");
 const distDir = path.join(root, "dist");
-const assetVersion = process.env.ASSET_VERSION || "20260902-related-faq-v10";
-
-const PAGE_FAMILIES = new Set(["hub", "service", "brand"]);
-const SECTION_TYPES = new Set([
-  "introProof", "serviceGrid", "popularWorks", "vehicleTypes", "brandStrip",
-  "brandShowcase", "editorialContent", "symptoms", "workStages", "priceExamples",
-  "relatedIndex", "faq",
-]);
+const assetVersion = process.env.ASSET_VERSION || "20260902-template-refactor-v11";
 
 function fail(message) {
   throw new Error(`[build] ${message}`);
@@ -278,7 +278,7 @@ function buildInternalStructuredData(page, config, baseUrl) {
         "@type": "Service",
         "@id": `${url}#service`,
         name: page.hero.h1,
-        serviceType: "Ремонт грузовых автомобилей",
+        serviceType: page.metadata.serviceType,
         description: page.metadata.description,
         url,
         provider: { "@id": `${baseUrl}#auto-repair` },
@@ -376,346 +376,6 @@ function validateClaimExpiry(claims, mode, timeZone) {
   }
 }
 
-function validateSection(section, label) {
-  requireObject(section, label);
-  requireText(section.id, `${label}.id`);
-  const type = requireText(section.type, `${label}.type`);
-  if (!SECTION_TYPES.has(type)) fail(`${label}.type: неизвестный тип ${type}`);
-  requireText(section.title, `${label}.title`);
-  if (section.intro !== undefined) requireText(section.intro, `${label}.intro`);
-
-  if (type === "introProof") {
-    requireArray(section.bullets, `${label}.bullets`, { nonEmpty: true }).forEach((item, index) => requireText(item, `${label}.bullets[${index}]`));
-    requireText(section.statement, `${label}.statement`);
-    validateAsset(section.image, `${label}.image`);
-    requireText(section.imageAlt, `${label}.imageAlt`);
-    requireArray(section.stats, `${label}.stats`, { nonEmpty: true }).forEach((item, index) => {
-      requireText(item.value, `${label}.stats[${index}].value`);
-      requireText(item.label, `${label}.stats[${index}].label`);
-    });
-  } else if (["serviceGrid", "workStages"].includes(type)) {
-    requireArray(section.items, `${label}.items`, { nonEmpty: true }).forEach((item, index) => {
-      requireText(item.title, `${label}.items[${index}].title`);
-      requireText(item.text, `${label}.items[${index}].text`);
-      requireText(item.icon, `${label}.items[${index}].icon`);
-    });
-  } else if (type === "vehicleTypes") {
-    requireArray(section.items, `${label}.items`, { nonEmpty: true }).forEach((item, index) => {
-      requireText(item.title, `${label}.items[${index}].title`);
-      requireText(item.text, `${label}.items[${index}].text`);
-      validateAsset(item.image, `${label}.items[${index}].image`);
-      requireText(item.alt, `${label}.items[${index}].alt`);
-    });
-  } else if (type === "popularWorks") {
-    requireArray(section.items, `${label}.items`, { nonEmpty: true }).forEach((item, index) => {
-      requireText(item.title, `${label}.items[${index}].title`);
-      requireText(item.icon, `${label}.items[${index}].icon`);
-      if (item.href !== undefined) normalizeRoute(item.href, `${label}.items[${index}].href`);
-    });
-  } else if (type === "brandStrip") {
-    requireArray(section.items, `${label}.items`, { nonEmpty: true }).forEach((item, index) => {
-      requireText(item.name, `${label}.items[${index}].name`);
-      validateAsset(item.image, `${label}.items[${index}].image`);
-    });
-  } else if (type === "brandShowcase") {
-    requireArray(section.official, `${label}.official`, { nonEmpty: true }).forEach((item, index) => {
-      requireText(item.name, `${label}.official[${index}].name`);
-      validateAsset(item.image, `${label}.official[${index}].image`);
-    });
-    requireArray(section.items, `${label}.items`, { nonEmpty: true }).forEach((item, index) => requireText(item, `${label}.items[${index}]`));
-  } else if (type === "editorialContent") {
-    requireText(section.lead, `${label}.lead`);
-    requireArray(section.blocks, `${label}.blocks`, { nonEmpty: true }).forEach((item, index) => {
-      requireText(item.title, `${label}.blocks[${index}].title`);
-      requireText(item.text, `${label}.blocks[${index}].text`);
-    });
-  } else if (type === "symptoms") {
-    requireArray(section.items, `${label}.items`, { nonEmpty: true }).forEach((item, index) => {
-      requireObject(item, `${label}.items[${index}]`);
-      requireText(item.icon, `${label}.items[${index}].icon`);
-      requireText(item.text, `${label}.items[${index}].text`);
-    });
-  } else if (type === "relatedIndex") {
-    requireArray(section.items, `${label}.items`, { nonEmpty: true }).forEach((item, index) => {
-      requireObject(item, `${label}.items[${index}]`);
-      requireText(item.title, `${label}.items[${index}].title`);
-      requireText(item.text, `${label}.items[${index}].text`);
-      requireText(item.icon, `${label}.items[${index}].icon`);
-      if (item.href !== undefined) normalizeRoute(item.href, `${label}.items[${index}].href`);
-    });
-  } else if (type === "priceExamples") {
-    requireArray(section.items, `${label}.items`, { nonEmpty: true }).forEach((item, index) => {
-      requireText(item.service, `${label}.items[${index}].service`);
-      requireText(item.price, `${label}.items[${index}].price`);
-    });
-    requireText(section.note, `${label}.note`);
-  } else if (type === "faq") {
-    requireArray(section.items, `${label}.items`, { nonEmpty: true }).forEach((item, index) => {
-      requireText(item.question, `${label}.items[${index}].question`);
-      requireText(item.answer, `${label}.items[${index}].answer`);
-    });
-  }
-}
-
-function validateInternalPages(data) {
-  requireObject(data, "internal-pages.json");
-  if (data.schemaVersion !== 2) fail("internal-pages.json: поддерживается schemaVersion 2");
-  const pages = requireArray(data.pages, "internal-pages.pages", { nonEmpty: true });
-  const paths = new Set();
-  const titles = new Set();
-  pages.forEach((page, index) => {
-    const label = `internal-pages.pages[${index}]`;
-    requireObject(page, label);
-    page.path = normalizeRoute(page.path, `${label}.path`);
-    if (paths.has(page.path)) fail(`${label}.path: маршрут дублируется`);
-    paths.add(page.path);
-    if (!PAGE_FAMILIES.has(page.family)) fail(`${label}.family: ожидается hub, service или brand`);
-    const metadata = requireObject(page.metadata, `${label}.metadata`);
-    ["title", "description"].forEach((key) => requireText(metadata[key], `${label}.metadata.${key}`));
-    if (titles.has(metadata.title)) fail(`${label}.metadata.title: title должен быть уникальным`);
-    titles.add(metadata.title);
-    validateAsset(metadata.socialImage, `${label}.metadata.socialImage`);
-    requireArray(page.breadcrumbs, `${label}.breadcrumbs`, { nonEmpty: true }).forEach((crumb, crumbIndex) => {
-      requireText(crumb.label, `${label}.breadcrumbs[${crumbIndex}].label`);
-      if (crumb.href !== undefined) normalizeRoute(crumb.href, `${label}.breadcrumbs[${crumbIndex}].href`, { allowEmpty: true });
-    });
-    const hero = requireObject(page.hero, `${label}.hero`);
-    ["h1", "lead", "ctaLabel"].forEach((key) => requireText(hero[key], `${label}.hero.${key}`));
-    if (hero.accent !== undefined) requireText(hero.accent, `${label}.hero.accent`);
-    validateAsset(hero.image, `${label}.hero.image`);
-    validateAsset(hero.mobileImage, `${label}.hero.mobileImage`);
-    requireArray(hero.facts, `${label}.hero.facts`, { nonEmpty: true }).forEach((fact, factIndex) => {
-      requireText(fact.icon, `${label}.hero.facts[${factIndex}].icon`);
-      requireText(fact.label, `${label}.hero.facts[${factIndex}].label`);
-      requireText(fact.value, `${label}.hero.facts[${factIndex}].value`);
-    });
-    const sectionIds = new Set();
-    requireArray(page.sections, `${label}.sections`, { nonEmpty: true }).forEach((section, sectionIndex) => {
-      validateSection(section, `${label}.sections[${sectionIndex}]`);
-      if (sectionIds.has(section.id)) fail(`${label}.sections: дублируется id ${section.id}`);
-      sectionIds.add(section.id);
-    });
-  });
-  validateNoHtml(data, "internal-pages.json");
-  return pages;
-}
-
-function renderBreadcrumbs(page, rootPath) {
-  const items = page.breadcrumbs.map((crumb, index) => {
-    const last = index === page.breadcrumbs.length - 1;
-    if (last || crumb.href === undefined) return `              <li aria-current="page">${escapeHtml(crumb.label)}</li>`;
-    const href = crumb.href === "" ? rootPath : `${rootPath}${crumb.href.replace(/^\/+|\/+$/g, "")}/`;
-    return `              <li><a href="${escapeHtml(href)}">${escapeHtml(crumb.label)}</a></li>`;
-  }).join("\n");
-  return `            <nav class="internal-breadcrumbs" aria-label="Хлебные крошки">\n              <ol>\n${items}\n              </ol>\n            </nav>`;
-}
-
-function renderHeroTitle(hero) {
-  const title = requireText(hero.h1, "hero.h1");
-  if (!hero.accent || !title.endsWith(hero.accent)) return escapeHtml(title);
-  const base = title.slice(0, -hero.accent.length).trim();
-  return `${escapeHtml(base)} <span>${escapeHtml(hero.accent)}</span>`;
-}
-
-function renderHeroFacts(hero) {
-  return hero.facts.map((fact) => `            <div>
-              <svg class="internal-hero__fact-icon" aria-hidden="true"><use href="#internal-icon-${escapeHtml(fact.icon)}"></use></svg>
-              <dt>${escapeHtml(fact.label)}</dt><dd>${escapeHtml(fact.value)}</dd>
-            </div>`).join("\n");
-}
-
-function renderSectionHead(section, { centered = false } = {}) {
-  const intro = section.intro ? `<p>${escapeHtml(section.intro)}</p>` : "";
-  return `        <header class="internal-section__head${centered ? " internal-section__head--center" : ""}">
-          <h2 id="${escapeHtml(section.id)}-title">${escapeHtml(section.title)}</h2>
-          ${intro}
-        </header>`;
-}
-
-function renderIntroProof(section, rootPath) {
-  const bullets = section.bullets.map((item) => `<li>${escapeHtml(item)}</li>`).join("");
-  const stats = section.stats.map((item) => `<div><dt>${escapeHtml(item.label)}</dt><dd>${escapeHtml(item.value)}</dd></div>`).join("");
-  return `<section class="internal-section internal-section--introProof" id="${escapeHtml(section.id)}" aria-labelledby="${escapeHtml(section.id)}-title">
-  <div class="container internal-intro">
-    <div class="internal-intro__copy">
-      <h2 id="${escapeHtml(section.id)}-title">${escapeHtml(section.title)}</h2>
-      <p class="internal-intro__lead">${escapeHtml(section.intro)}</p>
-      <ul class="internal-intro__list">${bullets}</ul>
-      <p class="internal-intro__statement">${escapeHtml(section.statement)}</p>
-    </div>
-    <figure class="internal-intro__media"><img src="${rootPath}${escapeHtml(section.image)}" alt="${escapeHtml(section.imageAlt)}" width="937" height="1080" loading="lazy" decoding="async"></figure>
-    <dl class="internal-intro__stats">${stats}</dl>
-  </div>
-</section>`;
-}
-
-function renderServiceGrid(section) {
-  const items = section.items.map((item) => `<article class="internal-service-card">
-  <svg class="internal-service-card__icon" aria-hidden="true"><use href="#internal-icon-${escapeHtml(item.icon)}"></use></svg>
-  <div><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.text)}</p></div>
-</article>`).join("\n");
-  return `<section class="internal-section internal-section--serviceGrid" id="${escapeHtml(section.id)}" aria-labelledby="${escapeHtml(section.id)}-title">
-  <div class="container">${renderSectionHead(section, { centered: true })}<div class="internal-service-grid">${items}</div><a class="internal-reference-link" href="#related-services">Смотреть все услуги</a></div>
-</section>`;
-}
-
-function renderPopularWorks(section, rootPath) {
-  const items = section.items.map((item) => {
-    const content = `<svg class="internal-popular-work__icon" aria-hidden="true"><use href="#internal-icon-${escapeHtml(item.icon)}"></use></svg><span>${escapeHtml(item.title)}</span>`;
-    return item.href
-      ? `<li class="internal-popular-work internal-popular-work--linked"><a href="${rootPath}${escapeHtml(item.href)}/">${content}</a></li>`
-      : `<li class="internal-popular-work">${content}</li>`;
-  }).join("");
-  return `<section class="internal-section internal-section--popularWorks" id="${escapeHtml(section.id)}" aria-labelledby="${escapeHtml(section.id)}-title">
-  <div class="container">${renderSectionHead(section)}<ul class="internal-popular-works" aria-label="Популярные работы по ремонту грузовых автомобилей">${items}</ul></div>
-</section>`;
-}
-
-function renderVehicleTypes(section, rootPath) {
-  const items = section.items.map((item) => `<article class="internal-vehicle-card">
-  <img src="${rootPath}${escapeHtml(item.image)}" alt="${escapeHtml(item.alt)}" loading="lazy" decoding="async">
-  <div class="internal-vehicle-card__copy"><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.text)}</p></div>
-</article>`).join("\n");
-  return `<section class="internal-section internal-section--vehicleTypes" id="${escapeHtml(section.id)}" aria-labelledby="${escapeHtml(section.id)}-title">
-  <div class="container">${renderSectionHead(section, { centered: true })}<div class="internal-vehicle-mosaic">${items}</div></div>
-</section>`;
-}
-
-function renderBrandStrip(section, rootPath) {
-  const items = section.items.map((item) => `<div class="internal-brand-strip__item"><img src="${rootPath}${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}" loading="lazy" decoding="async"></div>`).join("");
-  return `<section class="internal-section internal-section--brandStrip" id="${escapeHtml(section.id)}" aria-labelledby="${escapeHtml(section.id)}-title">
-  <div class="container">${renderSectionHead(section, { centered: true })}<div class="internal-brand-strip" aria-label="Марки грузовых автомобилей">${items}</div><a class="internal-reference-link internal-reference-link--accent" href="${rootPath}#v3-truck-brands-title">Смотреть все марки</a></div>
-</section>`;
-}
-
-function renderBrandShowcase(section, rootPath) {
-  const official = section.official.map((item) => `<li class="v3-brand-card v3-brand-card--official">
-  <div class="v3-brand-card__body">
-    <span class="v3-brand-card__logo"><img src="${rootPath}${escapeHtml(item.image)}" alt="" width="220" height="120" loading="lazy" decoding="async"></span>
-    <strong class="v3-brand-card__name">Ремонт ${escapeHtml(item.name)}</strong>
-    <span class="v3-brand-card__status">Официальный сервис</span>
-  </div>
-</li>`).join("");
-  const matrix = section.items.map((item) => `<li>${escapeHtml(item)}</li>`).join("");
-  return `<section class="internal-section internal-section--brandShowcase v3-truck-brands" id="${escapeHtml(section.id)}" aria-labelledby="${escapeHtml(section.id)}-title">
-  <div class="container">
-    <header class="internal-brand-showcase__head"><h2 id="${escapeHtml(section.id)}-title">${escapeHtml(section.title)}</h2><p>${escapeHtml(section.intro)}</p></header>
-    <ul class="v3-brand-grid" aria-label="Официальный сервис грузовых автомобилей">${official}</ul>
-    <button class="v3-brand-toggle" type="button" aria-expanded="false" aria-controls="internal-brand-matrix" data-brand-toggle><span>Все марки, которые принимаем</span><span aria-hidden="true">${section.items.length}</span></button>
-    <ul class="v3-brand-matrix" id="internal-brand-matrix" aria-label="Другие марки грузовых автомобилей" data-brand-panel>${matrix}</ul>
-  </div>
-</section>`;
-}
-
-function renderEditorialContent(section) {
-  const blocks = section.blocks.map((item) => `<article><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.text)}</p></article>`).join("");
-  return `<section class="internal-section internal-section--editorialContent" id="${escapeHtml(section.id)}" aria-labelledby="${escapeHtml(section.id)}-title">
-  <div class="container internal-editorial"><header><h2 id="${escapeHtml(section.id)}-title">${escapeHtml(section.title)}</h2><p>${escapeHtml(section.lead)}</p></header><div class="internal-editorial__body">${blocks}</div></div>
-</section>`;
-}
-
-function renderInlineCta({ id, modifier, title, text }, site) {
-  return `<aside class="internal-inline-cta internal-inline-cta--${escapeHtml(modifier)}" aria-labelledby="${escapeHtml(id)}">
-  <div class="internal-inline-cta__content">
-    <h3 id="${escapeHtml(id)}">${escapeHtml(title)}</h3>
-    <p>${escapeHtml(text)}</p>
-    <a class="v3-button v3-button--primary" href="${escapeHtml(site.phoneHref)}">${escapeHtml(site.primaryCta.label)}</a>
-  </div>
-</aside>`;
-}
-
-function renderSymptoms(section, site) {
-  const items = section.items.map((item) => `<li><svg class="internal-symptom__icon" aria-hidden="true"><use href="#internal-icon-${escapeHtml(item.icon)}"></use></svg><span>${escapeHtml(item.text)}</span></li>`).join("");
-  const cta = renderInlineCta({
-    id: `${section.id}-cta-title`,
-    modifier: "symptoms",
-    title: "Есть признаки неисправности?",
-    text: "Позвоните мастеру, назовите марку автомобиля и опишите неисправность — уточним, с чего начать диагностику.",
-  }, site);
-  return `<section class="internal-section internal-section--symptoms" id="${escapeHtml(section.id)}" aria-labelledby="${escapeHtml(section.id)}-title">
-  <div class="container">${renderSectionHead(section)}<div class="internal-symptoms-layout"><ul class="internal-symptoms">${items}</ul>${cta}</div></div>
-</section>`;
-}
-
-function renderWorkStages(section) {
-  const items = section.items.map((item, index) => `<li class="internal-timeline__item">
-  <svg class="internal-timeline__icon" aria-hidden="true"><use href="#internal-icon-${escapeHtml(item.icon)}"></use></svg>
-  <span class="internal-timeline__number">${String(index + 1).padStart(2, "0")}</span>
-  <h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.text)}</p>
-</li>`).join("");
-  return `<section class="internal-section internal-section--workStages" id="${escapeHtml(section.id)}" aria-labelledby="${escapeHtml(section.id)}-title">
-  <div class="container">${renderSectionHead(section)}<ol class="internal-timeline">${items}</ol></div>
-</section>`;
-}
-
-function renderPriceTable(items) {
-  const rows = items.map((item) => `<tr><th scope="row">${escapeHtml(item.service)}</th><td>${escapeHtml(item.price)}</td></tr>`).join("");
-  return `<table class="internal-price-table"><thead class="visually-hidden"><tr><th>Услуга</th><th>Цена от</th></tr></thead><tbody>${rows}</tbody></table>`;
-}
-
-function renderPriceExamples(section, site) {
-  const midpoint = Math.ceil(section.items.length / 2);
-  const cta = renderInlineCta({
-    id: `${section.id}-cta-title`,
-    modifier: "prices",
-    title: "Нужна точная стоимость?",
-    text: "Сначала мастер определяет причину неисправности и объём необходимых работ.",
-  }, site);
-  return `<section class="internal-section internal-section--priceExamples" id="${escapeHtml(section.id)}" aria-labelledby="${escapeHtml(section.id)}-title">
-  <div class="container">${renderSectionHead(section)}
-    <div class="internal-price-content"><div class="internal-price-main">
-      <div class="internal-price-layout">${renderPriceTable(section.items.slice(0, midpoint))}${renderPriceTable(section.items.slice(midpoint))}</div>
-      <p class="internal-price-note">${escapeHtml(section.note)}</p>
-    </div>${cta}</div>
-  </div>
-</section>`;
-}
-
-function renderRelatedIndex(section, rootPath) {
-  const items = section.items.map((item) => {
-    const content = `<svg class="internal-related-card__icon" aria-hidden="true"><use href="#internal-icon-${escapeHtml(item.icon)}"></use></svg>
-  <div class="internal-related-card__copy"><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.text)}</p></div>
-  <span class="internal-related-card__arrow" aria-hidden="true"></span>`;
-    if (item.href === undefined) return `<article class="internal-related-card">${content}</article>`;
-    const href = `${rootPath}${item.href.replace(/^\/+|\/+$/g, "")}/`;
-    return `<a class="internal-related-card internal-related-card--link" href="${escapeHtml(href)}">${content}</a>`;
-  }).join("");
-  return `<section class="internal-section internal-section--relatedIndex" id="${escapeHtml(section.id)}" aria-labelledby="${escapeHtml(section.id)}-title">
-  <div class="container">${renderSectionHead(section)}<div class="internal-related-index" aria-label="Будущие направления сайта">${items}</div></div>
-</section>`;
-}
-
-function renderFaq(section, site) {
-  const items = section.items.map((item) => `<details><summary>${escapeHtml(item.question)}</summary><p>${escapeHtml(item.answer)}</p></details>`).join("");
-  return `<section class="internal-section internal-section--faq" id="${escapeHtml(section.id)}" aria-labelledby="${escapeHtml(section.id)}-title">
-  <div class="container internal-faq-layout"><div class="internal-faq__intro">${renderSectionHead(section)}
-    <aside class="internal-faq__contact" aria-labelledby="${escapeHtml(section.id)}-contact-title">
-      <h3 id="${escapeHtml(section.id)}-contact-title">Не нашли ответ?</h3>
-      <p>Расскажите о неисправности — мастер уточнит, с чего начать.</p>
-      <a class="internal-faq__contact-link" href="${escapeHtml(site.phoneHref)}">Позвонить мастеру</a>
-    </aside>
-  </div><div class="internal-faq">${items}</div></div>
-</section>`;
-}
-
-function renderSection(section, rootPath, site) {
-  const renderers = {
-    introProof: () => renderIntroProof(section, rootPath),
-    serviceGrid: () => renderServiceGrid(section),
-    popularWorks: () => renderPopularWorks(section, rootPath),
-    vehicleTypes: () => renderVehicleTypes(section, rootPath),
-    brandStrip: () => renderBrandStrip(section, rootPath),
-    brandShowcase: () => renderBrandShowcase(section, rootPath),
-    editorialContent: () => renderEditorialContent(section),
-    symptoms: () => renderSymptoms(section, site),
-    workStages: () => renderWorkStages(section),
-    priceExamples: () => renderPriceExamples(section, site),
-    relatedIndex: () => renderRelatedIndex(section, rootPath),
-    faq: () => renderFaq(section, site),
-  };
-  return renderers[section.type]();
-}
-
 function writeHtml(route, html, writtenRoutes) {
   if (writtenRoutes.has(route)) fail(`попытка повторно записать маршрут ${route || "/"}`);
   const normalized = html.replace(/[ \t]+$/gm, "").replace(/<!--[\s\S]*?-->/g, "").replace(/>\s+</g, "> <").trim();
@@ -768,12 +428,15 @@ function buildInternalPages(pages, partials, config, mode, baseUrl, writtenRoute
       description: escapeHtml(page.metadata.description),
       heroImage: escapeHtml(page.hero.image),
       heroMobileImage: escapeHtml(page.hero.mobileImage),
-      h1: renderHeroTitle(page.hero),
+      h1: renderCatalogHeroTitle(page.hero),
       lead: escapeHtml(page.hero.lead),
       heroCtaLabel: escapeHtml(page.hero.ctaLabel),
-      heroFacts: renderHeroFacts(page.hero),
-      breadcrumbs: renderBreadcrumbs(page, rootPath),
-      sections: page.sections.map((section) => renderSection(section, rootPath, config.site)).join("\n"),
+      heroFacts: renderCatalogHeroFacts(page.hero),
+      breadcrumbs: renderCatalogBreadcrumbs(page, rootPath),
+      sections: page.sections.map((section) => renderCatalogSection(section, rootPath, config.site)).join("\n"),
+      closingTitle: escapeHtml(page.closingCta.title),
+      closingText: escapeHtml(page.closingCta.text),
+      closingButtonLabel: escapeHtml(page.closingCta.buttonLabel),
       phoneHref: escapeHtml(config.site.phoneHref),
       phone: escapeHtml(config.site.phone),
       address: escapeHtml(`${config.site.address.locality}, ${config.site.address.street}`),
@@ -800,8 +463,9 @@ function writeSeoFiles(mode, baseUrl, finalRoutes) {
 
 function main() {
   const config = readJson(path.join(dataDir, "site-config.json"));
-  const internalPages = validateInternalPages(readJson(path.join(dataDir, "internal-pages.json")));
   validateConfig(config);
+  const internalCatalog = loadInternalPageCatalog({ root, dataDir, assetsDir, siteConfig: config });
+  const internalPages = internalCatalog.pages;
   const mode = process.env.SITE_MODE || process.env.BUILD_MODE || config.defaultMode;
   if (!config.modes[mode]) fail(`SITE_MODE: неизвестный режим ${mode}`);
   validateClaimExpiry(config.claims, mode, config.site.timeZone);

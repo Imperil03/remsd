@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 3,
+  "referenceByFamily": {
+    "hub": "remont-gruzovyh-avtomobiley"
+  },
+  "pages": [
+    "remont-gruzovyh-avtomobiley.json"
+  ]
+}
