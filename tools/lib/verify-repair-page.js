@@ -73,6 +73,19 @@ module.exports = async function verifyRepairPage(page, viewport, definition, mat
   assert.deepEqual(metrics.vehicles, repeated(viewport.width <= 520 ? 1 : viewport.width <= 1020 ? 2 : 3, 6));
   assert.deepEqual(metrics.stages, repeated(viewport.width >= 1280 ? 5 : 1, 5));
   assert(metrics.serviceText.every((size) => size >= 14), "Шрифт карточек уменьшен");
+  if (viewport.width === 1120) {
+    // A Linux browser may not have the same hyphenation dictionary as Windows.
+    const clippedWithoutDictionary = await page.locator(".internal-related-card__copy").evaluateAll((copies) => {
+      const texts = copies.flatMap((copy) => [...copy.querySelectorAll("h3, p")]);
+      texts.forEach((element) => { element.style.hyphens = "none"; });
+      const clipped = texts
+        .filter((element) => element.scrollWidth > element.clientWidth + 1)
+        .map((element) => element.textContent.trim());
+      texts.forEach((element) => { element.style.removeProperty("hyphens"); });
+      return clipped;
+    });
+    assert.deepEqual(clippedWithoutDictionary, [], "Длинные слова не помещаются без словаря переносов");
+  }
   if (viewport.width <= 720) {
     const undersized = await page.evaluate(() => [...document.querySelectorAll("a, button, summary")].filter((element) => {
       const box = element.getBoundingClientRect();

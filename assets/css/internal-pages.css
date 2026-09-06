@@ -1130,6 +1130,7 @@
 
 .internal-related-card__copy {
   min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .internal-related-card h3 {
