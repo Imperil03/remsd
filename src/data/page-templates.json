@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 1,
+  "templates": {
+    "repair-v1": {
+      "sectionOrder": [
+        "introProof",
+        "serviceGrid",
+        "popularWorks",
+        "vehicleTypes",
+        "brandShowcase",
+        "editorialContent",
+        "symptoms",
+        "workStages",
+        "priceExamples",
+        "relatedIndex",
+        "faq"
+      ],
+      "heroFacts": [
+        {
+          "icon": "experience",
+          "label": "Опыт",
+          "value": "Более 10 лет"
+        },
+        {
+          "icon": "shield",
+          "label": "Гарантия",
+          "value": "На все работы"
+        },
+        {
+          "icon": "stock",
+          "label": "Запчасти",
+          "value": "Собственный склад"
+        },
+        {
+          "icon": "clock",
+          "label": "График",
+          "value": "Без выходных"
+        }
+      ],
+      "proofStats": [
+        {
+          "value": "10+",
+          "label": "лет опыта"
+        },
+        {
+          "value": "500+",
+          "label": "довольных клиентов"
+        },
+        {
+          "value": "80%",
+          "label": "клиентов по рекомендации"
+        },
+        {
+          "value": "1–2 дня",
+          "label": "срок выполнения многих типовых работ"
+        }
+      ],
+      "brands": {
+        "title": "Работаем с основными марками",
+        "intro": "Принимаем российские, европейские и китайские грузовики на базе в Сургуте: диагностика, ТО, двигатель, КПП, ходовая, тормоза, автоэлектрика и гидравлика. КАМАЗ, МАЗ и УРАЛ обслуживаем как официальный сервис.",
+        "official": [
+          {
+            "name": "КАМАЗ",
+            "image": "assets/img/brands/kamaz.webp"
+          },
+          {
+            "name": "МАЗ",
+            "image": "assets/img/brands/maz.webp"
+          },
+          {
+            "name": "УРАЛ",
+            "image": "assets/img/brands/ural.webp"
+          }
+        ],
+        "items": [
+          "DAF",
+          "Dongfeng",
+          "FAW",
+          "Foton",
+          "ГАЗ",
+          "Hino",
+          "Howo",
+          "Hyundai",
+          "Isuzu",
+          "Iveco",
+          "JAC",
+          "MAN",
+          "Mercedes-Benz",
+          "Mitsubishi Fuso",
+          "Renault Trucks",
+          "SANY",
+          "Scania",
+          "Shacman",
+          "Sitrak",
+          "Volvo"
+        ]
+      },
+      "workStages": [
+        {
+          "icon": "request",
+          "title": "Заявка или звонок",
+          "text": "Вы оставляете заявку или звоните нам."
+        },
+        {
+          "icon": "diagnostics",
+          "title": "Диагностика",
+          "text": "Проводим диагностику и определяем проблему."
+        },
+        {
+          "icon": "agreement",
+          "title": "Согласование",
+          "text": "Сообщаем стоимость и сроки ремонта."
+        },
+        {
+          "icon": "repair",
+          "title": "Ремонт",
+          "text": "Выполняем работы с гарантией качества."
+        },
+        {
+          "icon": "delivery",
+          "title": "Выдача техники",
+          "text": "Проверяем и выдаём исправную технику."
+        }
+      ],
+      "faqContact": {
+        "title": "Не нашли ответ?",
+        "text": "Расскажите о неисправности — мастер уточнит, с чего начать.",
+        "linkLabel": "Позвонить мастеру"
+      }
+    }
+  }
+}

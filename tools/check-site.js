@@ -22,6 +22,12 @@ const failures = [];
 const fail = (message) => failures.push(message);
 
 try {
+  require("./lib/check-repair-templates")({ root, dataDir, catalog: internalCatalog, siteConfig });
+} catch (error) {
+  fail(`repair-v1: ${error.message}`);
+}
+
+try {
   const fixtureFile = path.join(root, "tools", "fixtures", "internal-service-page.json");
   const fixture = JSON.parse(fs.readFileSync(fixtureFile, "utf8"));
   const { entityMap } = loadContentModel(dataDir);

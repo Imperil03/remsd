@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const { loadPageTemplates, resolvePageTemplate } = require("./page-templates");
 
 const PAGE_FAMILIES = new Set(["hub", "service", "brand"]);
 const ENTITY_TYPE_BY_FAMILY = { hub: "service", service: "service", brand: "brand" };
@@ -78,6 +79,20 @@ function validateCta(cta, label) {
   requireText(cta.buttonLabel, `${label}.buttonLabel`);
 }
 
+function imageDimensions(item) {
+  return item.imageWidth && item.imageHeight ? ` width="${item.imageWidth}" height="${item.imageHeight}"` : "";
+}
+
+function validateMediaAndIcons(value, label, icons) {
+  if (!value || typeof value !== "object") return;
+  if (value.icon !== undefined && !icons.has(value.icon)) fail(`${label}.icon: неизвестная пиктограмма ${value.icon}`);
+  for (const key of ["imageWidth", "imageHeight"]) {
+    if (value[key] !== undefined && (!Number.isInteger(value[key]) || value[key] <= 0)) fail(`${label}.${key}: нужен положительный целый размер`);
+  }
+  if ((value.imageWidth === undefined) !== (value.imageHeight === undefined)) fail(`${label}: нужны оба размера изображения`);
+  for (const [key, item] of Object.entries(value)) validateMediaAndIcons(item, `${label}.${key}`, icons);
+}
+
 function renderSectionHead(section, { centered = false } = {}) {
   const intro = section.intro ? `<p>${escapeHtml(section.intro)}</p>` : "";
   return `        <header class="internal-section__head${centered ? " internal-section__head--center" : ""}">
@@ -120,7 +135,7 @@ const SECTION_REGISTRY = {
       <ul class="internal-intro__list">${bullets}</ul>
       <p class="internal-intro__statement">${escapeHtml(section.statement)}</p>
     </div>
-    <figure class="internal-intro__media"><img src="${rootPath}${escapeHtml(section.image)}" alt="${escapeHtml(section.imageAlt)}" width="937" height="1080" loading="lazy" decoding="async"></figure>
+    <figure class="internal-intro__media"><img src="${rootPath}${escapeHtml(section.image)}" alt="${escapeHtml(section.imageAlt)}"${imageDimensions(section) || ' width="937" height="1080"'} loading="lazy" decoding="async"></figure>
     <dl class="internal-intro__stats">${stats}</dl>
   </div>
 </section>`;
@@ -186,7 +201,7 @@ const SECTION_REGISTRY = {
     },
     render(section, { rootPath }) {
       const items = section.items.map((item) => `<article class="internal-vehicle-card">
-  <img src="${rootPath}${escapeHtml(item.image)}" alt="${escapeHtml(item.alt)}" loading="lazy" decoding="async">
+  <img src="${rootPath}${escapeHtml(item.image)}" alt="${escapeHtml(item.alt)}"${imageDimensions(item)} loading="lazy" decoding="async">
   <div class="internal-vehicle-card__copy"><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.text)}</p></div>
 </article>`).join("\n");
       return `<section class="internal-section internal-section--vehicleTypes" id="${escapeHtml(section.id)}" aria-labelledby="${escapeHtml(section.id)}-title">
@@ -439,6 +454,9 @@ function validatePageDefinition(page, label, context) {
   });
   validateCta(page.closingCta, `${label}.closingCta`);
   validateNoHtml(page, label);
+  const sprite = fs.readFileSync(path.join(context.root, "src/partials/internal-icon-sprite.html"), "utf8");
+  const icons = new Set([...sprite.matchAll(/<symbol id="internal-icon-([^"]+)"/g)].map((match) => match[1]));
+  validateMediaAndIcons(page, label, icons);
   return page;
 }
 
@@ -448,6 +466,7 @@ function loadInternalPageCatalog({ root, dataDir, assetsDir, siteConfig }) {
   requireObject(manifest, "internal-pages/index.json");
   if (manifest.schemaVersion !== 3) fail("internal-pages/index.json: поддерживается schemaVersion 3");
   const contentModel = loadContentModel(dataDir);
+  const templates = loadPageTemplates(dataDir);
   for (const [index, claim] of (siteConfig?.claims || []).entries()) {
     const entityRefs = claim.entityRefs === undefined
       ? []
@@ -466,7 +485,8 @@ function loadInternalPageCatalog({ root, dataDir, assetsDir, siteConfig }) {
     if (!/^[a-z0-9-]+\.json$/.test(name) || name === "index.json") fail(`${label}: недопустимое имя файла ${name}`);
     if (seenFiles.has(name)) fail(`${label}: файл дублируется ${name}`);
     seenFiles.add(name);
-    return validatePageDefinition(readJson(path.join(catalogDir, name), `internal-pages/${name}`), `internal-pages/${name}`, context);
+    const source = readJson(path.join(catalogDir, name), `internal-pages/${name}`);
+    return validatePageDefinition(resolvePageTemplate(source, templates, `internal-pages/${name}`), `internal-pages/${name}`, context);
   });
   const paths = new Set();
   const titles = new Set();

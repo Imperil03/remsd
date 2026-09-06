@@ -6,61 +6,16 @@
     </div>
 
     <ul class="v3-brand-grid" aria-label="Официальный сервис грузовых автомобилей">
-      <li class="v3-brand-card v3-brand-card--official" data-brand="kamaz">
-        <div class="v3-brand-card__body">
-          <span class="v3-brand-card__logo">
-            <img src="{{rootPath}}assets/img/brands/kamaz.webp" alt="" width="220" height="120" loading="lazy" decoding="async">
-          </span>
-          <strong class="v3-brand-card__name">Ремонт КАМАЗ</strong>
-          <span class="v3-brand-card__status">Официальный сервис</span>
-        </div>
-      </li>
-      <li class="v3-brand-card v3-brand-card--official" data-brand="maz">
-        <div class="v3-brand-card__body">
-          <span class="v3-brand-card__logo">
-            <img src="{{rootPath}}assets/img/brands/maz.webp" alt="" width="220" height="120" loading="lazy" decoding="async">
-          </span>
-          <strong class="v3-brand-card__name">Ремонт МАЗ</strong>
-          <span class="v3-brand-card__status">Официальный сервис</span>
-        </div>
-      </li>
-      <li class="v3-brand-card v3-brand-card--official" data-brand="ural">
-        <div class="v3-brand-card__body">
-          <span class="v3-brand-card__logo">
-            <img src="{{rootPath}}assets/img/brands/ural.webp" alt="" width="220" height="120" loading="lazy" decoding="async">
-          </span>
-          <strong class="v3-brand-card__name">Ремонт УРАЛ</strong>
-          <span class="v3-brand-card__status">Официальный сервис</span>
-        </div>
-      </li>
+{{home-official-brands}}
     </ul>
 
     <button class="v3-brand-toggle" type="button" aria-expanded="false" aria-controls="v3-brand-matrix" data-brand-toggle>
       <span>Все марки, которые принимаем</span>
-      <span aria-hidden="true">20</span>
+      <span aria-hidden="true">{{home-brand-count}}</span>
     </button>
 
     <ul class="v3-brand-matrix" id="v3-brand-matrix" aria-label="Другие марки грузовых автомобилей" data-brand-panel>
-      <li>DAF</li>
-      <li>Dongfeng</li>
-      <li>FAW</li>
-      <li>Foton</li>
-      <li>ГАЗ</li>
-      <li>Hino</li>
-      <li>Howo</li>
-      <li>Hyundai</li>
-      <li>Isuzu</li>
-      <li>Iveco</li>
-      <li>JAC</li>
-      <li>MAN</li>
-      <li>Mercedes-Benz</li>
-      <li>Mitsubishi Fuso</li>
-      <li>Renault Trucks</li>
-      <li>SANY</li>
-      <li>Scania</li>
-      <li>Shacman</li>
-      <li>Sitrak</li>
-      <li>Volvo</li>
+{{home-brand-matrix}}
     </ul>
   </div>
 </section>

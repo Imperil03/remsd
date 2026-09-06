@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "created": "2026-09-06",
+  "tool": "imagegen",
+  "purpose": "Иллюстрации техники и деталей, не фотографии базы РемСД и не доказательство выполненных работ.",
+  "output": {
+    "format": "WebP",
+    "width": 960,
+    "height": 540,
+    "quality": 82
+  },
+  "images": [
+    {
+      "name": "tractor-4x2",
+      "output": "assets/img/repair-pages/tractor-4x2.webp",
+      "prompt": "Create one photorealistic landscape 16:9 editorial vehicle illustration for a Russian commercial truck repair website. An unbranded white European cab-over SEMI TRACTOR UNIT 4x2, no trailer, parked on a neutral empty industrial paved yard, clean overcast daylight, left side profile with slight front angle. Exactly TWO axles visible: ONE front steering axle and ONE rear driven axle with dual tyres; short bare rear chassis and fifth-wheel coupling clearly visible. Entire vehicle fits frame with generous margin, wheels uncropped. Technically accurate chassis proportions, subdued steel/navy industrial palette, realistic used but maintained truck, no people, no signs, no text, no logos, no watermark. This is a neutral illustration, not a claimed RemSD job-site photo.",
+      "generationFile": "exec-3780e8a7-3072-4926-9fb7-f11c489512a9.png"
+    },
+    {
+      "name": "tractor-6x2",
+      "output": "assets/img/repair-pages/tractor-6x2.webp",
+      "prompt": "One photorealistic 16:9 landscape editorial illustration for commercial vehicle repair website: An unbranded white cab-over semi tractor unit WITHOUT trailer, 6x2 axle layout. Precise left SIDE PROFILE, slightly rear angle to see chassis. Exactly THREE axles: single front steering axle, single driven rear axle with dual tyres, and rearmost undriven TAG axle with SINGLE tyres, lifted visibly 8 cm off the ground. Fifth-wheel coupling visible. Axle geometry must be correct. Neutral empty industrial paved yard, overcast natural daylight, subdued steel gray navy palette, clean realistic maintained vehicle, wide composition with whole vehicle and uncropped wheels, no people, text, logos or watermarks. NOT a RemSD base photo. Technical realism is essential.",
+      "generationFile": "exec-8b3ce568-dbc9-461b-a343-abae668936e2.png"
+    },
+    {
+      "name": "tractor-6x4",
+      "output": "assets/img/repair-pages/tractor-6x4.webp",
+      "prompt": "One photorealistic 16:9 landscape editorial illustration for commercial vehicle repair website: An unbranded white heavy cab-over semi tractor unit WITHOUT trailer, 6x4. Left side profile slightly rear three-quarter, chassis and rear bogie visible. Exactly THREE axles: front steering axle and TWO closely spaced rear DRIVEN axles with dual tyres, both touching the ground. Two real differential housings and driveline, heavy fifth wheel. No extra axles. Neutral empty industrial paved yard, overcast natural daylight, subdued steel gray navy palette, clean realistic maintained vehicle, wide composition with whole vehicle and uncropped wheels, no people, text, logos or watermarks. NOT a RemSD base photo. Technical realism is essential.",
+      "generationFile": "exec-4d80f0df-c2d1-4c3e-b522-98fb346d904e.png"
+    },
+    {
+      "name": "tractor-chinese",
+      "output": "assets/img/repair-pages/tractor-chinese.webp",
+      "prompt": "One photorealistic 16:9 landscape editorial illustration for commercial vehicle repair website: A modern Chinese-style heavy long-haul cab-over semi tractor unit without trailer, metallic charcoal cab with broad black horizontal grille, high sleeper roof, 6x4 tandem rear bogie, parked, entire truck visible. Unbranded generic Chinese design, no fake trademark. Front three-quarter side view. Neutral empty industrial paved yard, overcast natural daylight, subdued steel gray navy palette, clean realistic maintained vehicle, wide composition with whole vehicle and uncropped wheels, no people, text, logos or watermarks. NOT a RemSD base photo. Technical realism is essential.",
+      "generationFile": "exec-3f9200f1-2ba7-486f-9149-3cf53440bb43.png"
+    },
+    {
+      "name": "trailer-curtain",
+      "output": "assets/img/repair-pages/trailer-curtain.webp",
+      "prompt": "One realistic landscape 16:9 photograph-style vehicle illustration: A detached European tri-axle curtain-sided semitrailer, navy blue taut side curtain with vertical buckles, closed full-length roof, rear doors, landing legs firmly down, NO truck cab attached. Whole trailer. Side three-quarter view, entire vehicle visible with 10% safe margin, wheels uncropped. Neutral industrial paved yard, overcast daylight, subdued realistic steel and navy palette, accurate engineering proportions. No signs, no people, no text, logos, watermarks. Generic illustration not a RemSD job-site photograph.",
+      "generationFile": "exec-20e4d5fd-5a45-4336-ab6f-5c929105cc84.png"
+    },
+    {
+      "name": "trailer-flatbed",
+      "output": "assets/img/repair-pages/trailer-flatbed.webp",
+      "prompt": "One realistic landscape 16:9 photograph-style vehicle illustration: A detached tri-axle flatbed semitrailer with low hinged blue metal sideboards, open top, empty flat timber deck, landing legs down. NO truck cab. Whole trailer. Side three-quarter view, entire vehicle visible with 10% safe margin, wheels uncropped. Neutral industrial paved yard, overcast daylight, subdued realistic steel and navy palette, accurate engineering proportions. No signs, no people, no text, logos, watermarks. Generic illustration not a RemSD job-site photograph.",
+      "generationFile": "exec-149e8d58-3ba3-430d-8252-6385a16fc5b8.png"
+    },
+    {
+      "name": "trailer-tipper",
+      "output": "assets/img/repair-pages/trailer-tipper.webp",
+      "prompt": "One realistic landscape 16:9 photograph-style vehicle illustration: A detached tri-axle tipping semitrailer with gray steel half-pipe dump body lowered flat onto chassis, support landing legs down, NO truck cab. Whole trailer. Side three-quarter view, entire vehicle visible with 10% safe margin, wheels uncropped. Neutral industrial paved yard, overcast daylight, subdued realistic steel and navy palette, accurate engineering proportions. No signs, no people, no text, logos, watermarks. Generic illustration not a RemSD job-site photograph.",
+      "generationFile": "exec-a61210bb-a08e-48f9-b2d5-dc7d1e097018.png"
+    },
+    {
+      "name": "trailer-refrigerated",
+      "output": "assets/img/repair-pages/trailer-refrigerated.webp",
+      "prompt": "One realistic landscape 16:9 photograph-style vehicle illustration: A detached white refrigerated box semitrailer with refrigeration unit visibly mounted at upper front wall, three rear axles, landing legs down, NO cab. Whole trailer. Side three-quarter view, entire vehicle visible with 10% safe margin, wheels uncropped. Neutral industrial paved yard, overcast daylight, subdued realistic steel and navy palette, accurate engineering proportions. No signs, no people, no text, logos, watermarks. Generic illustration not a RemSD job-site photograph.",
+      "generationFile": "exec-a48a8722-42db-4966-94d5-724d7e706158.png"
+    },
+    {
+      "name": "trailer-container",
+      "output": "assets/img/repair-pages/trailer-container.webp",
+      "prompt": "One realistic landscape 16:9 photograph-style vehicle illustration: An EMPTY skeletal container chassis semitrailer, tri-axle blue steel frame with twist-lock fittings visible, landing legs down, no container and no truck cab. Whole trailer. Side three-quarter view, entire vehicle visible with 10% safe margin, wheels uncropped. Neutral industrial paved yard, overcast daylight, subdued realistic steel and navy palette, accurate engineering proportions. No signs, no people, no text, logos, watermarks. Generic illustration not a RemSD job-site photograph.",
+      "generationFile": "exec-5978f5f1-85ef-466c-a9ce-2e6829fceb7c.png"
+    },
+    {
+      "name": "bus-city",
+      "output": "assets/img/repair-pages/bus-city.webp",
+      "prompt": "One photorealistic landscape 16:9 editorial illustration for a commercial vehicle repair website. One modern unbranded full-size city transit bus, white and navy low-floor body, broad passenger windows, TWO wide folding passenger doors on visible side, 2 axles. Front and right side three-quarter view. Natural soft light, subdued industrial gray, white and navy colors with restrained orange accents where appropriate, accurate realistic engineering, whole subject with generous safe margins. No text, logos, signage, watermark or humans. Illustrative image only, must not depict or claim an actual RemSD repair or base.",
+      "generationFile": "exec-771f8aba-419b-4b17-b72f-899408eb549b.png"
+    },
+    {
+      "name": "bus-shift",
+      "output": "assets/img/repair-pages/bus-shift.webp",
+      "prompt": "One photorealistic landscape 16:9 editorial illustration for a commercial vehicle repair website. One Russian-style off-road workforce transport bus (вахтовый автобус), orange truck cab on 6x6 high-clearance chassis, three axles, tall white enclosed passenger module with a row of six rectangular windows, passenger door and foldable access steps. Not a cargo box truck. Side three-quarter view. Natural soft light, subdued industrial gray, white and navy colors with restrained orange accents where appropriate, accurate realistic engineering, whole subject with generous safe margins. No text, logos, signage, watermark or humans. Illustrative image only, must not depict or claim an actual RemSD repair or base.",
+      "generationFile": "exec-5885f1b6-e9a0-4b1d-9c29-24d1e4dff3b4.png"
+    },
+    {
+      "name": "bus-minibus",
+      "output": "assets/img/repair-pages/bus-minibus.webp",
+      "prompt": "One photorealistic landscape 16:9 editorial illustration for a commercial vehicle repair website. One unbranded commercial 18-seat white passenger minibus on a van chassis, short bonnet, high roof, glazed passenger compartment with side windows, sliding passenger door. Not a cargo van. Three-quarter side view. Natural soft light, subdued industrial gray, white and navy colors with restrained orange accents where appropriate, accurate realistic engineering, whole subject with generous safe margins. No text, logos, signage, watermark or humans. Illustrative image only, must not depict or claim an actual RemSD repair or base.",
+      "generationFile": "exec-9cde8a15-8ba0-473d-bc86-86ef25a290d9.png"
+    },
+    {
+      "name": "bus-fleet",
+      "output": "assets/img/repair-pages/bus-fleet.webp",
+      "prompt": "One photorealistic landscape 16:9 editorial illustration for a commercial vehicle repair website. Three maintained white commercial passenger buses of different sizes parked neatly side-by-side in a neutral paved depot: full-size coach, medium bus and minibus. All facing at slight angle, clear windshield and passenger windows. No company signs. Natural soft light, subdued industrial gray, white and navy colors with restrained orange accents where appropriate, accurate realistic engineering, whole subject with generous safe margins. No text, logos, signage, watermark or humans. Illustrative image only, must not depict or claim an actual RemSD repair or base.",
+      "generationFile": "exec-15735cf6-e47f-4eaf-9249-72d1ea982589.png"
+    },
+    {
+      "name": "body-door",
+      "output": "assets/img/repair-pages/body-door.webp",
+      "prompt": "One photorealistic landscape 16:9 editorial illustration for a commercial vehicle repair website. One detached cab-over heavy truck metal door, white with a rectangular glass window, visible shallow dent in lower skin, upright secured to a stable bodywork stand. Neutral industrial workshop, no people, no active work. Entire door visible, photographic mechanical detail illustration. Natural soft light, subdued industrial gray, white and navy colors with restrained orange accents where appropriate, accurate realistic engineering, whole subject with generous safe margins. No text, logos, signage, watermark or humans. Illustrative image only, must not depict or claim an actual RemSD repair or base.",
+      "generationFile": "exec-c8a73712-1eba-4818-81e3-2582debc0eda.png"
+    },
+    {
+      "name": "body-panels",
+      "output": "assets/img/repair-pages/body-panels.webp",
+      "prompt": "One photorealistic landscape 16:9 editorial illustration for a commercial vehicle repair website. Heavy truck detached front bumper, steel entry step and curved wheel wing laid separately on sturdy trestles in a neutral bodywork workshop. Three visually identifiable large parts, worn gray and white surfaces with minor dents, not automobile car parts. Natural soft light, subdued industrial gray, white and navy colors with restrained orange accents where appropriate, accurate realistic engineering, whole subject with generous safe margins. No text, logos, signage, watermark or humans. Illustrative image only, must not depict or claim an actual RemSD repair or base.",
+      "generationFile": "exec-41dea366-ad46-4c62-912c-370a6cd09efb.png"
+    },
+    {
+      "name": "body-paint",
+      "output": "assets/img/repair-pages/body-paint.webp",
+      "prompt": "One photorealistic landscape 16:9 editorial illustration for a commercial vehicle repair website. Two detached heavy truck cab panels: a large white door and a side panel, prepared with gray primer, each secured to individual stable painting stands in a ventilated white industrial spray booth. No workers, no spraying, no machinery motion. Whole panels visible. Natural soft light, subdued industrial gray, white and navy colors with restrained orange accents where appropriate, accurate realistic engineering, whole subject with generous safe margins. No text, logos, signage, watermark or humans. Illustrative image only, must not depict or claim an actual RemSD repair or base.",
+      "generationFile": "exec-67207760-abfb-481c-a3c9-f93a5eb92eb7.png"
+    }
+  ]
+}

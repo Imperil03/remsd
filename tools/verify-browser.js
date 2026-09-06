@@ -16,6 +16,10 @@ const internalCatalog = loadInternalPageCatalog({ root, dataDir, assetsDir: path
 const referencePath = internalCatalog.manifest.referenceByFamily.hub;
 const internalRoute = `/${referencePath}/`;
 const smokeRoutes = internalCatalog.pages.filter((page) => page.path !== referencePath).map((page) => `/${page.path}/`);
+const repairTemplatePaths = new Set(internalCatalog.manifest.pages
+  .map((file) => JSON.parse(fs.readFileSync(path.join(dataDir, "internal-pages", file), "utf8")))
+  .filter((page) => page.template === "repair-v1")
+  .map((page) => page.path));
 
 const mime = {
   ".css": "text/css; charset=utf-8",
@@ -841,11 +845,26 @@ async function run() {
     }
 
     for (const route of smokeRoutes) {
-      for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 }]) {
+      const definition = internalCatalog.pages.find((page) => `/${page.path}/` === route);
+      const isRepairTemplate = repairTemplatePaths.has(definition.path);
+      const viewports = isRepairTemplate ? chromeViewports : chromeViewports.filter((viewport) => [1440, 390].includes(viewport.width));
+      for (const viewport of viewports) {
         const context = await browser.newContext({ viewport });
         const page = await context.newPage();
         await verifyPage(page, route, `${route} smoke ${viewport.width}`);
         await verifyNavigation(page, viewport.width <= 1120);
+        try {
+          if (isRepairTemplate) await require("./lib/verify-repair-page")(page, viewport, definition, materializePage);
+          else await materializePage(page);
+        } catch (error) {
+          throw new Error(`${route} ${viewport.width}px: ${error.message}`);
+        }
+        if ([1440, 390].includes(viewport.width)) {
+          await page.screenshot({ path: path.join(resultDir, `${definition.path}-${viewport.width}.png`), fullPage: true });
+          for (const id of isRepairTemplate ? ["repair-services", "vehicle-types", "repair-signs", "related-services", "faq"] : []) {
+            await page.locator(`#${id}`).screenshot({ path: path.join(resultDir, `${definition.path}-${viewport.width}-${id}.png`) });
+          }
+        }
         await context.close();
       }
     }
@@ -858,7 +877,7 @@ async function run() {
     await browser.close();
     await new Promise((resolve) => server.close(resolve));
   }
-  console.log(`Browser verification passed: общий chrome 11 viewport, главная 11 viewport, эталонный hub 11 viewport, ${smokeRoutes.length} дополнительных внутренних маршрутов × 2 smoke viewport, burger, FAQ, callbar, images, targets и 404.`);
+  console.log(`Browser verification passed: общий chrome 11 viewport, главная 11 viewport, эталонный hub 11 viewport, ${smokeRoutes.length} дополнительных внутренних маршрутов (repair-v1: 11 viewport, остальные: 2 smoke), burger, FAQ, callbar, images, targets и 404.`);
 }
 
 run().catch((error) => {

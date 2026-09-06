@@ -10,12 +10,13 @@ const distDir = path.join(root, "dist");
 const resultDir = path.join(root, "test-results", "lighthouse");
 const host = "127.0.0.1";
 const port = Number(process.env.LIGHTHOUSE_PORT || 4175);
+const chromePort = Number(process.env.LIGHTHOUSE_CHROME_PORT || 4176);
 const minScore = Number(process.env.LIGHTHOUSE_MIN_SCORE || 0.95);
 const blockedUrlPatterns = ["*://gc.kis.v2.scr.kaspersky-labs.com/*"];
 const dataDir = path.join(root, "src", "data");
 const siteConfig = JSON.parse(fs.readFileSync(path.join(dataDir, "site-config.json"), "utf8"));
 const internalCatalog = loadInternalPageCatalog({ root, dataDir, assetsDir: path.join(root, "assets"), siteConfig });
-const routes = ["/", ...new Set(Object.values(internalCatalog.manifest.referenceByFamily).map((route) => `/${route}/`))];
+const routes = ["/", ...internalCatalog.pages.map((page) => `/${page.path}/`)];
 
 const mime = {
   ".css": "text/css; charset=utf-8",
@@ -89,20 +90,19 @@ async function run() {
   }
 
   fs.mkdirSync(resultDir, { recursive: true });
-  const [{ default: lighthouse }, chromeLauncher] = await Promise.all([
-    import("lighthouse"),
-    import("chrome-launcher"),
-  ]);
+  const { default: lighthouse } = await import("lighthouse");
   const server = await startServer();
-  const chrome = await chromeLauncher.launch({
-    chromePath: chromium.executablePath(),
-    chromeFlags: ["--headless", "--no-sandbox", "--disable-gpu", "--disable-dev-shm-usage", "--disable-extensions"],
+  // Use the same bundled headless browser as the visual tests. Local desktop
+  // browser integrations can otherwise rewrite HTML and remove gzip in transit.
+  const chrome = await chromium.launch({
+    headless: true,
+    args: [`--remote-debugging-port=${chromePort}`, "--remote-debugging-address=127.0.0.1", "--disable-gpu", "--disable-dev-shm-usage"],
   });
   const failures = [];
 
   try {
     await lighthouse(`http://${host}:${port}/__lighthouse-warmup__`, {
-      port: chrome.port,
+      port: chromePort,
       logLevel: "error",
       output: "json",
       onlyCategories: ["performance"],
@@ -113,7 +113,7 @@ async function run() {
     for (const route of routes) {
       const url = `http://${host}:${port}${route}`;
       const result = await lighthouse(url, {
-        port: chrome.port,
+        port: chromePort,
         logLevel: "error",
         output: "json",
         onlyCategories: ["performance", "accessibility", "best-practices", "seo"],
@@ -144,12 +144,7 @@ async function run() {
       if (metrics.consoleErrors) failures.push(`${route}: ошибок в консоли ${metrics.consoleErrors}`);
     }
   } finally {
-    try {
-      await chrome.kill();
-    } catch (error) {
-      if (error.code !== "EPERM") throw error;
-      console.warn(`Chrome завершён, но временный профиль не удалён: ${error.message}`);
-    }
+    await chrome.close();
     await new Promise((resolve) => server.close(resolve));
   }
 

@@ -4,6 +4,11 @@
     "hub": "remont-gruzovyh-avtomobiley"
   },
   "pages": [
-    "remont-gruzovyh-avtomobiley.json"
+    "remont-gruzovyh-avtomobiley.json",
+    "remont-sedelnyh-tyagachey.json",
+    "remont-polupricepov-i-tralov.json",
+    "remont-avtobusov.json",
+    "remont-spectehniki.json",
+    "kuzovnoy-remont-gruzovoy-tehniki.json"
   ]
 }

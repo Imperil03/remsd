@@ -457,13 +457,19 @@
 
 .internal-vehicle-card img {
   width: 100%;
+  height: auto;
   aspect-ratio: 16 / 9;
   object-fit: cover;
 }
 
-.internal-vehicle-card:last-child img {
+.internal-vehicle-card img[src$="/hero-industrial-base-v3.webp"] {
   transform: scale(1.65);
   transform-origin: 58% 68%;
+}
+
+.internal-vehicle-card img[src*="/repair-pages/"] {
+  object-fit: contain;
+  background: var(--surface-muted);
 }
 
 .internal-vehicle-card__copy {
@@ -1132,6 +1138,7 @@
   font-size: 16px;
   font-weight: 800;
   line-height: 1.25;
+  hyphens: auto;
 }
 
 .internal-related-card p {

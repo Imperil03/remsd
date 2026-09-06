@@ -6,9 +6,14 @@
 
 - `/` — утверждённая главная.
 - `/remont-gruzovyh-avtomobiley/` — эталонная внутренняя страница семейства `hub`.
+- `/remont-sedelnyh-tyagachey/` — ремонт седельных тягачей, `hub`.
+- `/remont-polupricepov-i-tralov/` — ремонт полуприцепов и тралов, `hub`.
+- `/remont-avtobusov/` — ремонт автобусов, `hub`.
+- `/remont-spectehniki/` — ремонт спецтехники, `hub`.
+- `/kuzovnoy-remont-gruzovoy-tehniki/` — кузовной ремонт грузовой техники, `service`.
 - `/404.html` — служебная страница ошибки.
 
-Других внутренних страниц в исходниках и сборке сейчас нет. Будущие услуги, марки и разделы показываются только как неинтерактивные элементы, пока для них не создан и не опубликован отдельный `PageDefinition`.
+Будущие услуги, марки и разделы показываются только как неинтерактивные элементы, пока для них не создан и не опубликован отдельный `PageDefinition`.
 
 ## Контекст для нового агента
 
@@ -27,6 +32,7 @@
 - `src/data/site-config.json` — режимы сборки, NAP, график, CTA и подтверждённые владельцем факты.
 - `src/data/internal-pages/index.json` — manifest схемы v3 с опубликованными файлами страниц и `referenceByFamily`.
 - `src/data/internal-pages/*.json` — отдельные типизированные `PageDefinition` семейств `hub`, `service`, `brand`.
+- `src/data/page-templates.json` — общие данные `repair-v1`; `tools/lib/page-templates.js` разворачивает их до полной валидации.
 - `tools/lib/internal-pages.js` — реестр секций: validator и renderer каждого типа находятся рядом.
 - `src/templates/internal-page.html` — общий каркас внутренних страниц.
 - `src/partials/v3-header.html`, `main-nav.html`, `v3-footer.html` — общая шапка, навигация и футер.
@@ -42,9 +48,11 @@
 - `home.css = base + homepage`;
 - `internal.css = base + internal pages`.
 
-Поддерживаемые секции: `introProof`, `serviceGrid`, `popularWorks`, `vehicleTypes`, `brandShowcase`, `editorialContent`, `symptoms`, `workStages`, `priceExamples`, `relatedIndex`, `faq`. Их набор и порядок определяет сама страница; заменённый `brandStrip` удалён.
+Поддерживаемые секции: `introProof`, `serviceGrid`, `popularWorks`, `vehicleTypes`, `brandShowcase`, `editorialContent`, `symptoms`, `workStages`, `priceExamples`, `relatedIndex`, `faq`. В `repair-v1` зафиксированы 11 секций, у страниц без `template` набор и порядок остаются свободными.
 
 Лимиты несжатых minified-бандлов: `base.css ≤45 KB`, `home.css ≤85 KB`, `internal.css ≤70 KB`.
+
+Подробный контракт, источник Word, редакционные исправления, цены и изображения: `docs/repair-pages-wave-one.md`.
 
 ## Команды
 
@@ -55,7 +63,7 @@ npm run test:browser
 git diff --check
 ```
 
-`npm run verify` собирает preview и проверяет manifest, сущности/отношения, маршруты, ссылки, JSON-LD, service-fixture, лимиты CSS и контракт владения стилями. `npm run test:browser` проверяет главную и эталонный hub на 11 ширинах от 1992 до 320 px; каждая следующая внутренняя страница автоматически получает smoke-проходы на 1440 и 390 px.
+`npm run verify` собирает preview и проверяет manifest, сущности/отношения, маршруты, ссылки, JSON-LD, service-fixture, лимиты CSS и контракт владения стилями. `npm run test:browser` проверяет главную и эталонный hub на 11 ширинах от 1992 до 320 px; новые страницы ремонта проверяются на тех же 11 ширинах, со скриншотами и интерактивными сценариями на 1440 и 390 px. Lighthouse охватывает главную и все страницы manifest.
 
 Для production-like проверки:
 

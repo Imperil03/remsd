@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const { transform: transformCss } = require("lightningcss");
+const { loadPageTemplates } = require("./lib/page-templates");
 const {
   loadInternalPageCatalog,
   renderBreadcrumbs: renderCatalogBreadcrumbs,
@@ -17,7 +18,7 @@ const dataDir = path.join(srcDir, "data");
 const templatesDir = path.join(srcDir, "templates");
 const assetsDir = path.join(root, "assets");
 const distDir = path.join(root, "dist");
-const assetVersion = process.env.ASSET_VERSION || "20260902-template-refactor-v11";
+const assetVersion = process.env.ASSET_VERSION || "20260906-repair-pages-v12";
 
 function fail(message) {
   throw new Error(`[build] ${message}`);
@@ -487,6 +488,16 @@ function main() {
   minifyCssFiles(outputCssDir);
 
   const partials = readPartials(buildHomeStructuredData(config, baseUrl));
+  const brands = loadPageTemplates(dataDir)["repair-v1"].brands;
+  partials["home-official-brands"] = brands.official.map((brand) => `      <li class="v3-brand-card v3-brand-card--official" data-brand="${path.basename(brand.image, ".webp")}">
+        <div class="v3-brand-card__body">
+          <span class="v3-brand-card__logo"><img src="{{rootPath}}${escapeHtml(brand.image)}" alt="" width="220" height="120" loading="lazy" decoding="async"></span>
+          <strong class="v3-brand-card__name">Ремонт ${escapeHtml(brand.name)}</strong>
+          <span class="v3-brand-card__status">Официальный сервис</span>
+        </div>
+      </li>`).join("\n");
+  partials["home-brand-matrix"] = brands.items.map((brand) => `      <li>${escapeHtml(brand)}</li>`).join("\n");
+  partials["home-brand-count"] = String(brands.items.length);
   const writtenRoutes = new Set();
   buildStaticPages(staticFiles, partials, config, mode, baseUrl, writtenRoutes);
   buildInternalPages(internalPages, partials, config, mode, baseUrl, writtenRoutes);

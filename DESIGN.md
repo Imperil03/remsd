@@ -209,3 +209,7 @@ FAQ использует редакционную split-композицию: с
 - **Don't** возвращать в эталонный hub асимметричную фотомозаику, тёмный индекс, тёмную стартовую карточку этапов или sticky-поведение FAQ.
 - **Don't** использовать градиентный текст, emoji/glyph-иконки, боковые акцентные полосы или тяжёлые hard-offset тени.
 - **Don't** копировать одну и ту же карточную сетку из секции в секцию.
+
+## Repair page authoring contract
+
+As of 2026-09-06, six internal repair pages share `template: "repair-v1"`. `src/data/page-templates.json` owns the 11-section order, hero facts, proof metrics, brands, five stages and FAQ contact. The home brand lists use the same source without changing their layout. Per-page JSON owns thematic copy, images, symptoms, prices, related links and FAQ answers. New pages retain 8 symptoms / 10 FAQ and content-driven card heights. Generated illustrations are documented separately from existing site photographs; never present them as proof of RemSD work. No public schema version, framework or CSS redesign is introduced.

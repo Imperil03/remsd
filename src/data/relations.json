@@ -436,6 +436,76 @@
       "predicate": "verifiedBy",
       "predicateLabel": "показан на фотографии поста",
       "object": "proof-maz-service-photo"
+    },
+    {
+      "id": "rel-service-tractor-repair-surgut",
+      "subject": "service-tractor-repair",
+      "predicate": "locatedIn",
+      "predicateLabel": "работает в",
+      "object": "location-surgut"
+    },
+    {
+      "id": "rel-repair-includes-service-tractor-repair",
+      "subject": "service-repair",
+      "predicate": "includes",
+      "predicateLabel": "включает",
+      "object": "service-tractor-repair"
+    },
+    {
+      "id": "rel-service-trailer-repair-surgut",
+      "subject": "service-trailer-repair",
+      "predicate": "locatedIn",
+      "predicateLabel": "работает в",
+      "object": "location-surgut"
+    },
+    {
+      "id": "rel-repair-includes-service-trailer-repair",
+      "subject": "service-repair",
+      "predicate": "includes",
+      "predicateLabel": "включает",
+      "object": "service-trailer-repair"
+    },
+    {
+      "id": "rel-service-bus-repair-surgut",
+      "subject": "service-bus-repair",
+      "predicate": "locatedIn",
+      "predicateLabel": "работает в",
+      "object": "location-surgut"
+    },
+    {
+      "id": "rel-repair-includes-service-bus-repair",
+      "subject": "service-repair",
+      "predicate": "includes",
+      "predicateLabel": "включает",
+      "object": "service-bus-repair"
+    },
+    {
+      "id": "rel-service-special-repair-surgut",
+      "subject": "service-special-repair",
+      "predicate": "locatedIn",
+      "predicateLabel": "работает в",
+      "object": "location-surgut"
+    },
+    {
+      "id": "rel-repair-includes-service-special-repair",
+      "subject": "service-repair",
+      "predicate": "includes",
+      "predicateLabel": "включает",
+      "object": "service-special-repair"
+    },
+    {
+      "id": "rel-service-body-repair-surgut",
+      "subject": "service-body-repair",
+      "predicate": "locatedIn",
+      "predicateLabel": "работает в",
+      "object": "location-surgut"
+    },
+    {
+      "id": "rel-repair-includes-service-body-repair",
+      "subject": "service-repair",
+      "predicate": "includes",
+      "predicateLabel": "включает",
+      "object": "service-body-repair"
     }
   ]
 }
