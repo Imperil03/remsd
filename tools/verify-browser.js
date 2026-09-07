@@ -20,6 +20,7 @@ const repairTemplatePaths = new Set(internalCatalog.manifest.pages
   .map((file) => JSON.parse(fs.readFileSync(path.join(dataDir, "internal-pages", file), "utf8")))
   .filter((page) => page.template === "repair-v1")
   .map((page) => page.path));
+const specialtyRoutes = require("./fixtures/special-equipment-contract.json").map((page) => page.path);
 
 const mime = {
   ".css": "text/css; charset=utf-8",
@@ -121,6 +122,19 @@ async function verifyNavigation(page, collapsed) {
   if ((await trigger.getAttribute("aria-expanded")) !== "true") throw new Error("Подменю не открылось");
   const panel = page.locator(`#${await trigger.getAttribute("aria-controls")}`);
   if (await panel.getAttribute("hidden") !== null || await panel.getAttribute("inert") !== null) throw new Error("Открытое подменю осталось hidden/inert");
+  for (const route of specialtyRoutes) {
+    const link = panel.locator(`a[href$="/${route}/"]`);
+    if (await link.count() !== 1) throw new Error(`В меню нет самостоятельной ссылки ${route}`);
+  }
+  const lastSpecialty = panel.locator('a[href$="/remont-traktorov/"]');
+  await lastSpecialty.focus();
+  await lastSpecialty.scrollIntoViewIfNeeded();
+  const reachable = await lastSpecialty.evaluate((element) => {
+    const box = element.getBoundingClientRect();
+    const hit = document.elementFromPoint(box.x + box.width / 2, box.y + box.height / 2);
+    return box.top >= 0 && box.bottom <= innerHeight && element.contains(hit);
+  });
+  if (!reachable) throw new Error("Последняя ссылка расширенного меню недоступна");
   await page.keyboard.press("Escape");
   if ((await trigger.getAttribute("aria-expanded")) !== "false" || await panel.getAttribute("hidden") === null) throw new Error("Escape не закрыл подменю");
   if (collapsed && (await toggle.getAttribute("aria-expanded")) === "true") await page.keyboard.press("Escape");
@@ -861,8 +875,9 @@ async function run() {
         }
         if ([1440, 390].includes(viewport.width)) {
           await page.screenshot({ path: path.join(resultDir, `${definition.path}-${viewport.width}.png`), fullPage: true });
-          for (const id of isRepairTemplate ? ["repair-services", "vehicle-types", "repair-signs", "related-services", "faq"] : []) {
-            await page.locator(`#${id}`).screenshot({ path: path.join(resultDir, `${definition.path}-${viewport.width}-${id}.png`) });
+          for (const id of isRepairTemplate ? ["repair-services", "popular-repair-services", "vehicle-types", "repair-signs", "related-services", "faq"] : []) {
+            // Callbar behavior is tested above; keep fixed UI out of content crops.
+            await page.locator(`#${id}`).screenshot({ path: path.join(resultDir, `${definition.path}-${viewport.width}-${id}.png`), style: "[data-mobile-callbar] { visibility: hidden !important; }" });
           }
         }
         await context.close();

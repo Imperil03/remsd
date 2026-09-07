@@ -105,6 +105,241 @@
       "output": "assets/img/repair-pages/body-paint.webp",
       "prompt": "One photorealistic landscape 16:9 editorial illustration for a commercial vehicle repair website. Two detached heavy truck cab panels: a large white door and a side panel, prepared with gray primer, each secured to individual stable painting stands in a ventilated white industrial spray booth. No workers, no spraying, no machinery motion. Whole panels visible. Natural soft light, subdued industrial gray, white and navy colors with restrained orange accents where appropriate, accurate realistic engineering, whole subject with generous safe margins. No text, logos, signage, watermark or humans. Illustrative image only, must not depict or claim an actual RemSD repair or base.",
       "generationFile": "exec-67207760-abfb-481c-a3c9-f93a5eb92eb7.png"
+    },
+    {
+      "name": "hydraulic-cylinder",
+      "output": "assets/img/repair-pages/components/hydraulic-cylinder.webp",
+      "prompt": "Use case: photorealistic-natural. Asset type: 16:9 landscape component illustration for a heavy-equipment repair website, to be displayed at 960x540. Photorealistic, technically plausible mechanical construction, natural overcast light, muted steel/navy and worn industrial yellow. One coherent close-up scene, central component clearly recognizable with 12% safe margins. Neutral unbranded workshop backdrop, no people, no signs, no text, no logos, no watermarks. This is an illustrative image, NOT a claimed photograph of RemSD premises or completed work. Subject: A large double-acting hydraulic cylinder removed from a construction machine, chrome rod partly extended, yellow painted barrel, two clearly defined hydraulic ports and sturdy eye mounts, resting horizontally on wooden supports on a concrete floor. Entire cylinder visible, no other machinery.",
+      "generationFile": "exec-15260dd1-7c1d-4861-9eae-afd7672f2197.png",
+      "created": "2026-09-07",
+      "wave": "special-equipment",
+      "alt": "Иллюстрация гидроцилиндра рабочего оборудования"
+    },
+    {
+      "name": "powershift-transmission",
+      "output": "assets/img/repair-pages/components/powershift-transmission.webp",
+      "prompt": "Use case: photorealistic-natural. Asset type: 16:9 landscape component illustration for a heavy-equipment repair website, to be displayed at 960x540. Photorealistic, technically plausible mechanical construction, natural overcast light, muted steel/navy and worn industrial yellow. One coherent close-up scene, central component clearly recognizable with 12% safe margins. Neutral unbranded workshop backdrop, no people, no signs, no text, no logos, no watermarks. This is an illustrative image, NOT a claimed photograph of RemSD premises or completed work. Subject: A heavy construction-machine hydromechanical powershift transmission removed as one assembly, substantial cast iron gearbox housing, bolted cover, large round torque-converter bell housing and output flange, on a low workshop stand. External complete assembly, not a cutaway, no floating internals.",
+      "generationFile": "exec-b0173ff8-cb33-4679-a646-e27ce32e3add.png",
+      "created": "2026-09-07",
+      "wave": "special-equipment",
+      "alt": "Иллюстрация гидромеханической коробки передач строительной машины"
+    },
+    {
+      "name": "crawler-undercarriage",
+      "output": "assets/img/repair-pages/components/crawler-undercarriage.webp",
+      "prompt": "Use case: photorealistic-natural. Asset type: 16:9 landscape component illustration for a heavy-equipment repair website, to be displayed at 960x540. Photorealistic, technically plausible mechanical construction, natural overcast light, muted steel/navy and worn industrial yellow. One coherent close-up scene, central component clearly recognizable with 12% safe margins. Neutral unbranded workshop backdrop, no people, no signs, no text, no logos, no watermarks. This is an illustrative image, NOT a claimed photograph of RemSD premises or completed work. Subject: Low side close-up of a tracked construction machine's steel crawler undercarriage, a complete clear sequence of bottom rollers, track chain, sprocket and steel shoes. Crop the upper vehicle out; the undercarriage itself is the subject. Believable wear, normal straight aligned track.",
+      "generationFile": "exec-423d3b63-fb78-47a4-becf-4192ead0c218.png",
+      "created": "2026-09-07",
+      "wave": "special-equipment",
+      "alt": "Иллюстрация гусеничной ходовой с катками, цепью и ведущим колесом"
+    },
+    {
+      "name": "final-drive",
+      "output": "assets/img/repair-pages/components/final-drive.webp",
+      "prompt": "Use case: photorealistic-natural. Asset type: 16:9 landscape component illustration for a heavy-equipment repair website, to be displayed at 960x540. Photorealistic, technically plausible mechanical construction, natural overcast light, muted steel/navy and worn industrial yellow. One coherent close-up scene, central component clearly recognizable with 12% safe margins. Neutral unbranded workshop backdrop, no people, no signs, no text, no logos, no watermarks. This is an illustrative image, NOT a claimed photograph of RemSD premises or completed work. Subject: A detached heavy tracked-machine planetary final drive gearbox, circular bolted hub housing with mounting flange and short drive shaft on a low pallet. It is a final drive, NOT an engine or complete transmission.",
+      "generationFile": "exec-90360c21-cd20-4f60-b799-351433bb9b03.png",
+      "created": "2026-09-07",
+      "wave": "special-equipment",
+      "alt": "Иллюстрация снятого бортового редуктора гусеничной машины"
+    },
+    {
+      "name": "dozer-blade",
+      "output": "assets/img/repair-pages/components/dozer-blade.webp",
+      "prompt": "Use case: photorealistic-natural. Asset type: 16:9 landscape component illustration for a heavy-equipment repair website, to be displayed at 960x540. Photorealistic, technically plausible mechanical construction, natural overcast light, muted steel/navy and worn industrial yellow. One coherent close-up scene, central component clearly recognizable with 12% safe margins. Neutral unbranded workshop backdrop, no people, no signs, no text, no logos, no watermarks. This is an illustrative image, NOT a claimed photograph of RemSD premises or completed work. Subject: A bulldozer's wide curved steel dozer blade and its stout push arms, viewed from a front side angle close enough to make the blade and cutting edge the main subject, attached to a cropped tracked chassis. Blade entirely visible, modest industrial wear.",
+      "generationFile": "exec-cb9294ed-6c42-4ff0-b08a-37b73d37f984.png",
+      "created": "2026-09-07",
+      "wave": "special-equipment",
+      "alt": "Иллюстрация отвала и толкающих брусьев бульдозера"
+    },
+    {
+      "name": "slew-drive",
+      "output": "assets/img/repair-pages/components/slew-drive.webp",
+      "prompt": "Use case: photorealistic-natural. Asset type: 16:9 landscape component illustration for a heavy-equipment repair website, to be displayed at 960x540. Photorealistic, technically plausible mechanical construction, natural overcast light, muted steel/navy and worn industrial yellow. One coherent close-up scene, central component clearly recognizable with 12% safe margins. Neutral unbranded workshop backdrop, no people, no signs, no text, no logos, no watermarks. This is an illustrative image, NOT a claimed photograph of RemSD premises or completed work. Subject: An excavator slewing drive assembly removed from the machine: vertical hydraulic slew motor mounted on a heavy planetary reduction gearbox with pinion visible at bottom, on a workshop support. One integrated unit.",
+      "generationFile": "exec-83d77e31-800f-4518-9c4e-0e546f295d74.png",
+      "created": "2026-09-07",
+      "wave": "special-equipment",
+      "alt": "Иллюстрация гидромотора и редуктора поворота"
+    },
+    {
+      "name": "excavator-bucket",
+      "output": "assets/img/repair-pages/components/excavator-bucket.webp",
+      "prompt": "Use case: photorealistic-natural. Asset type: 16:9 landscape component illustration for a heavy-equipment repair website, to be displayed at 960x540. Photorealistic, technically plausible mechanical construction, natural overcast light, muted steel/navy and worn industrial yellow. One coherent close-up scene, central component clearly recognizable with 12% safe margins. Neutral unbranded workshop backdrop, no people, no signs, no text, no logos, no watermarks. This is an illustrative image, NOT a claimed photograph of RemSD premises or completed work. Subject: Close side detail of a yellow excavator stick-to-bucket linkage, steel digging bucket with five teeth, two visible heavy pivot pins, linkage and cylinder rod. The bucket is resting safely on ground, the upper machine is cropped out.",
+      "generationFile": "exec-33868644-4767-4135-a26a-e6e233dc619c.png",
+      "created": "2026-09-07",
+      "wave": "special-equipment",
+      "alt": "Иллюстрация ковша экскаватора и его шарнирного привода"
+    },
+    {
+      "name": "electrical-harness",
+      "output": "assets/img/repair-pages/components/electrical-harness.webp",
+      "prompt": "Use case: photorealistic-natural. Asset type: 16:9 landscape component illustration for a heavy-equipment repair website, to be displayed at 960x540. Photorealistic, technically plausible mechanical construction, natural overcast light, muted steel/navy and worn industrial yellow. One coherent close-up scene, central component clearly recognizable with 12% safe margins. Neutral unbranded workshop backdrop, no people, no signs, no text, no logos, no watermarks. This is an illustrative image, NOT a claimed photograph of RemSD premises or completed work. Subject: A coiled heavy-equipment wiring harness laid out on a clean dark workshop table, corrugated protective conduit, rugged sealed automotive connectors, branch junctions and a compact metal electronic controller. Realistic cable routing, no loose bright computer wires, no labels.",
+      "generationFile": "exec-e306a483-f20f-4ef1-9a26-e531f23055a0.png",
+      "created": "2026-09-07",
+      "wave": "special-equipment",
+      "alt": "Иллюстрация жгута проводки и электронного блока техники"
+    },
+    {
+      "name": "planetary-axle",
+      "output": "assets/img/repair-pages/components/planetary-axle.webp",
+      "prompt": "Use case: photorealistic-natural. Asset type: 16:9 landscape component illustration for a heavy-equipment repair website, to be displayed at 960x540. Photorealistic, technically plausible mechanical construction, natural overcast light, muted steel/navy and worn industrial yellow. One coherent close-up scene, central component clearly recognizable with 12% safe margins. Neutral unbranded workshop backdrop, no people, no signs, no text, no logos, no watermarks. This is an illustrative image, NOT a claimed photograph of RemSD premises or completed work. Subject: A heavy wheeled-construction-machine driven axle assembly on wooden supports: solid beam, central differential housing and two large planetary hub reductions at the ends. No tyres, entire assembly visible, suitable for a wheel loader or tractor.",
+      "generationFile": "exec-06a52e25-99c7-4736-b4f3-89b224da26f9.png",
+      "created": "2026-09-07",
+      "wave": "special-equipment",
+      "alt": "Иллюстрация ведущего моста с колёсными планетарными редукторами"
+    },
+    {
+      "name": "articulation-joint",
+      "output": "assets/img/repair-pages/components/articulation-joint.webp",
+      "prompt": "Use case: photorealistic-natural. Asset type: 16:9 landscape component illustration for a heavy-equipment repair website, to be displayed at 960x540. Photorealistic, technically plausible mechanical construction, natural overcast light, muted steel/navy and worn industrial yellow. One coherent close-up scene, central component clearly recognizable with 12% safe margins. Neutral unbranded workshop backdrop, no people, no signs, no text, no logos, no watermarks. This is an illustrative image, NOT a claimed photograph of RemSD premises or completed work. Subject: Close side view of the central articulated frame joint on a yellow construction vehicle. Stout interlocking steel frame lugs, large vertical pivot pin, bearing housings, grease fittings and one steering hydraulic cylinder are clearly visible. Front and rear frame extend out of frame, no wheels or cab, the joint is the only main subject.",
+      "generationFile": "exec-51ef170b-9529-4568-b699-e2df593913ac.png",
+      "created": "2026-09-07",
+      "wave": "special-equipment",
+      "alt": "Иллюстрация центрального шарнира сочленённой рамы"
+    },
+    {
+      "name": "loader-bucket",
+      "output": "assets/img/repair-pages/components/loader-bucket.webp",
+      "prompt": "Use case: photorealistic-natural. Asset type: 16:9 landscape component illustration for a heavy-equipment repair website, to be displayed at 960x540. Photorealistic, technically plausible mechanical construction, natural overcast light, muted steel/navy and worn industrial yellow. One coherent close-up scene, central component clearly recognizable with 12% safe margins. Neutral unbranded workshop backdrop, no people, no signs, no text, no logos, no watermarks. This is an illustrative image, NOT a claimed photograph of RemSD premises or completed work. Subject: Front-side close-up of a large wheel loader bucket resting on concrete, lift arms and Z-bar bucket linkage visible behind it. Worn yellow paint, heavy flat cutting edge, no excavator stick, no forklift tines, the whole bucket visible.",
+      "generationFile": "exec-03710bcd-263b-45d4-ad9e-20d43d169afa.png",
+      "created": "2026-09-07",
+      "wave": "special-equipment",
+      "alt": "Иллюстрация ковша и рычажного механизма фронтального погрузчика"
+    },
+    {
+      "name": "pto-pump",
+      "output": "assets/img/repair-pages/components/pto-pump.webp",
+      "prompt": "Use case: photorealistic-natural. Asset type: 16:9 landscape component illustration for a heavy-equipment repair website, to be displayed at 960x540. Photorealistic, technically plausible mechanical construction, natural overcast light, muted steel/navy and worn industrial yellow. One coherent close-up scene, central component clearly recognizable with 12% safe margins. Neutral unbranded workshop backdrop, no people, no signs, no text, no logos, no watermarks. This is an illustrative image, NOT a claimed photograph of RemSD premises or completed work. Subject: A truck power take-off gearbox with a hydraulic pump directly flange-mounted as a compact assembly, short splined input interface, recognizable PTO box and hydraulic pump body with two ports, resting on a workshop bench. Complete exterior mechanical unit, no electric motor.",
+      "generationFile": "exec-eecb4369-d018-4d4b-934d-526e14984160.png",
+      "created": "2026-09-07",
+      "wave": "special-equipment",
+      "alt": "Иллюстрация гидравлического насоса с приводным фланцем"
+    },
+    {
+      "name": "outrigger",
+      "output": "assets/img/repair-pages/components/outrigger.webp",
+      "prompt": "Use case: photorealistic-natural. Asset type: 16:9 landscape component illustration for a heavy-equipment repair website, to be displayed at 960x540. Photorealistic, technically plausible mechanical construction, natural overcast light, muted steel/navy and worn industrial yellow. One coherent close-up scene, central component clearly recognizable with 12% safe margins. Neutral unbranded workshop backdrop, no people, no signs, no text, no logos, no watermarks. This is an illustrative image, NOT a claimed photograph of RemSD premises or completed work. Subject: Close view of one deployed hydraulic outrigger of a truck mounted crane: horizontal rectangular telescopic steel beam and vertical jack with circular ground pad on level concrete, hydraulic hoses correctly connected. Focus on jack, seals and beam, upper crane mostly outside frame.",
+      "generationFile": "exec-93c38096-caf0-4cf9-91e6-11ee38ea6c1f.png",
+      "created": "2026-09-07",
+      "wave": "special-equipment",
+      "alt": "Иллюстрация гидравлической выносной опоры"
+    },
+    {
+      "name": "knuckle-boom",
+      "output": "assets/img/repair-pages/components/knuckle-boom.webp",
+      "prompt": "Use case: photorealistic-natural. Asset type: 16:9 landscape component illustration for a heavy-equipment repair website, to be displayed at 960x540. Photorealistic, technically plausible mechanical construction, natural overcast light, muted steel/navy and worn industrial yellow. One coherent close-up scene, central component clearly recognizable with 12% safe margins. Neutral unbranded workshop backdrop, no people, no signs, no text, no logos, no watermarks. This is an illustrative image, NOT a claimed photograph of RemSD premises or completed work. Subject: Close side view of two folded sections of a truck-mounted articulated loader crane boom. Yellow box-section arms, one large elbow pivot pin with bearing lugs, hydraulic cylinder and neatly routed black hydraulic hoses. Main focus on articulated joint, not entire truck.",
+      "generationFile": "exec-2d92c763-4022-460c-aed1-b2f8054aac83.png",
+      "created": "2026-09-07",
+      "wave": "special-equipment",
+      "alt": "Иллюстрация шарнирного соединения стрелы КМУ"
+    },
+    {
+      "name": "tipper-cylinder",
+      "output": "assets/img/repair-pages/components/tipper-cylinder.webp",
+      "prompt": "Use case: photorealistic-natural. Asset type: 16:9 landscape component illustration for a heavy-equipment repair website, to be displayed at 960x540. Photorealistic, technically plausible mechanical construction, natural overcast light, muted steel/navy and worn industrial yellow. One coherent close-up scene, central component clearly recognizable with 12% safe margins. Neutral unbranded workshop backdrop, no people, no signs, no text, no logos, no watermarks. This is an illustrative image, NOT a claimed photograph of RemSD premises or completed work. Subject: Close side detail beneath a safely raised empty truck tipper body. One large central telescopic hydraulic lift cylinder with several concentric polished stages and pivot mounts, dark steel subframe, body held by a visible rigid safety prop. No people. Cylinder and subframe the main subject, not full vehicle.",
+      "generationFile": "exec-1e23fc6f-f840-4ff3-916b-29f86cebcada.png",
+      "created": "2026-09-07",
+      "wave": "special-equipment",
+      "alt": "Иллюстрация телескопического гидроцилиндра подъёма кузова"
+    },
+    {
+      "name": "truck-drive-axle",
+      "output": "assets/img/repair-pages/components/truck-drive-axle.webp",
+      "prompt": "Use case: photorealistic-natural. Asset type: 16:9 landscape component illustration for a heavy-equipment repair website, to be displayed at 960x540. Photorealistic, technically plausible mechanical construction, natural overcast light, muted steel/navy and worn industrial yellow. One coherent close-up scene, central component clearly recognizable with 12% safe margins. Neutral unbranded workshop backdrop, no people, no signs, no text, no logos, no watermarks. This is an illustrative image, NOT a claimed photograph of RemSD premises or completed work. Subject: A detached heavy road truck rear driven axle on strong wooden supports: black axle beam, large central differential bowl, input flange and dual-wheel hub mounting faces at both ends. No wheels or tyres, exterior complete axle, not a front steering axle.",
+      "generationFile": "exec-c940d4b3-b231-4dc7-883a-5d7429cf51cf.png",
+      "created": "2026-09-07",
+      "wave": "special-equipment",
+      "alt": "Иллюстрация заднего ведущего моста грузового автомобиля"
+    },
+    {
+      "name": "pipelayer-winch",
+      "output": "assets/img/repair-pages/components/pipelayer-winch.webp",
+      "prompt": "Use case: photorealistic-natural. Asset type: 16:9 landscape component illustration for a heavy-equipment repair website, to be displayed at 960x540. Photorealistic, technically plausible mechanical construction, natural overcast light, muted steel/navy and worn industrial yellow. One coherent close-up scene, central component clearly recognizable with 12% safe margins. Neutral unbranded workshop backdrop, no people, no signs, no text, no logos, no watermarks. This is an illustrative image, NOT a claimed photograph of RemSD premises or completed work. Subject: Close-up of a crawler pipelayer's cable winch mechanism mounted on a yellow machinery deck. Heavy grooved steel cable drum with neatly spooled wire rope, gearbox and stout mounting plates. Cable winding physically plausible. No suspended load, no crane operation, only mechanical component illustration.",
+      "generationFile": "exec-9e4d36d7-85ab-4e7b-a40d-8bf3f944245f.png",
+      "created": "2026-09-07",
+      "wave": "special-equipment",
+      "alt": "Иллюстрация лебёдки грузового механизма трубоукладчика"
+    },
+    {
+      "name": "grader-tandem",
+      "output": "assets/img/repair-pages/components/grader-tandem.webp",
+      "prompt": "Use case: photorealistic-natural. Asset type: 16:9 landscape component illustration for a heavy-equipment repair website, to be displayed at 960x540. Photorealistic, technically plausible mechanical construction, natural overcast light, muted steel/navy and worn industrial yellow. One coherent close-up scene, central component clearly recognizable with 12% safe margins. Neutral unbranded workshop backdrop, no people, no signs, no text, no logos, no watermarks. This is an illustrative image, NOT a claimed photograph of RemSD premises or completed work. Subject: Side close-up of a motor grader rear tandem drive assembly, long cast chain-case housing connecting two driven rear wheel hubs, one large tyre partly visible at each end, focus on central tandem case and hubs, not entire grader.",
+      "generationFile": "exec-02a927a7-9ef6-485c-81cc-4b452c8d6bda.png",
+      "created": "2026-09-07",
+      "wave": "special-equipment",
+      "alt": "Иллюстрация тандемной передачи автогрейдера"
+    },
+    {
+      "name": "steering-cylinder",
+      "output": "assets/img/repair-pages/components/steering-cylinder.webp",
+      "prompt": "Use case: photorealistic-natural. Asset type: 16:9 landscape component illustration for a heavy-equipment repair website, to be displayed at 960x540. Photorealistic, technically plausible mechanical construction, natural overcast light, muted steel/navy and worn industrial yellow. One coherent close-up scene, central component clearly recognizable with 12% safe margins. Neutral unbranded workshop backdrop, no people, no signs, no text, no logos, no watermarks. This is an illustrative image, NOT a claimed photograph of RemSD premises or completed work. Subject: Close-up of a wheeled industrial machine hydraulic steering linkage. One double acting steering cylinder, polished piston rod with ball-joint end, tie rod and sturdy steering arm attached to a hub, realistic joints and geometry. No whole vehicle.",
+      "generationFile": "exec-60b18d80-55c2-4c24-8b04-44198d8c9059.png",
+      "created": "2026-09-07",
+      "wave": "special-equipment",
+      "alt": "Иллюстрация рулевого гидроцилиндра и шарнирной тяги"
+    },
+    {
+      "name": "grader-circle",
+      "output": "assets/img/repair-pages/components/grader-circle.webp",
+      "prompt": "Use case: photorealistic-natural. Asset type: 16:9 landscape component illustration for a heavy-equipment repair website, to be displayed at 960x540. Photorealistic, technically plausible mechanical construction, natural overcast light, muted steel/navy and worn industrial yellow. One coherent close-up scene, central component clearly recognizable with 12% safe margins. Neutral unbranded workshop backdrop, no people, no signs, no text, no logos, no watermarks. This is an illustrative image, NOT a claimed photograph of RemSD premises or completed work. Subject: Low close-up of a motor grader moldboard and its toothed circular rotation ring mounted beneath the drawbar. Clearly visible circle-drive gear case, steel ring and yellow blade support, blade resting on concrete. No machine cabin.",
+      "generationFile": "exec-a19ae8cb-45bf-414a-a057-7431df753ee1.png",
+      "created": "2026-09-07",
+      "wave": "special-equipment",
+      "alt": "Иллюстрация поворотного круга и механизма отвала грейдера"
+    },
+    {
+      "name": "hydraulic-motor",
+      "output": "assets/img/repair-pages/components/hydraulic-motor.webp",
+      "prompt": "Use case: photorealistic-natural. Asset type: 16:9 landscape component illustration for a heavy-equipment repair website, to be displayed at 960x540. Photorealistic, technically plausible mechanical construction, natural overcast light, muted steel/navy and worn industrial yellow. One coherent close-up scene, central component clearly recognizable with 12% safe margins. Neutral unbranded workshop backdrop, no people, no signs, no text, no logos, no watermarks. This is an illustrative image, NOT a claimed photograph of RemSD premises or completed work. Subject: A compact heavy-duty hydraulic travel motor removed from a road roller, cast housing, short splined output shaft and hydraulic line ports, entire motor on a steel bench. Industrial cylinder-shaped motor, no electric terminals, no complete engine.",
+      "generationFile": "exec-ac576ac8-0315-4d6e-a92e-84479accff48.png",
+      "created": "2026-09-07",
+      "wave": "special-equipment",
+      "alt": "Иллюстрация гидромотора привода хода"
+    },
+    {
+      "name": "roller-exciter",
+      "output": "assets/img/repair-pages/components/roller-exciter.webp",
+      "prompt": "Use case: photorealistic-natural. Asset type: 16:9 landscape component illustration for a heavy-equipment repair website, to be displayed at 960x540. Photorealistic, technically plausible mechanical construction, natural overcast light, muted steel/navy and worn industrial yellow. One coherent close-up scene, central component clearly recognizable with 12% safe margins. Neutral unbranded workshop backdrop, no people, no signs, no text, no logos, no watermarks. This is an illustrative image, NOT a claimed photograph of RemSD premises or completed work. Subject: A removed road roller vibration exciter assembly on a workshop bench: thick eccentric shaft with offset steel counterweights between two sturdy bearing housings. One mechanically connected shaft assembly, not a drum or crankshaft. Distinct eccentric weights visible, no exploded/floating parts.",
+      "generationFile": "exec-d49473d0-edbe-4892-9c22-b26433b9c12d.png",
+      "created": "2026-09-07",
+      "wave": "special-equipment",
+      "alt": "Иллюстрация вибровозбудителя дорожного катка"
+    },
+    {
+      "name": "roller-drum",
+      "output": "assets/img/repair-pages/components/roller-drum.webp",
+      "prompt": "Use case: photorealistic-natural. Asset type: 16:9 landscape component illustration for a heavy-equipment repair website, to be displayed at 960x540. Photorealistic, technically plausible mechanical construction, natural overcast light, muted steel/navy and worn industrial yellow. One coherent close-up scene, central component clearly recognizable with 12% safe margins. Neutral unbranded workshop backdrop, no people, no signs, no text, no logos, no watermarks. This is an illustrative image, NOT a claimed photograph of RemSD premises or completed work. Subject: Close front-side view of a smooth single road-roller steel drum with yellow side support yoke, hub mounting and scraper bar visible. Drum clean slightly worn steel, entire drum width visible, upper cab outside frame, no people.",
+      "generationFile": "exec-94fbc810-9693-4952-be07-d021dd51ffed.png",
+      "created": "2026-09-07",
+      "wave": "special-equipment",
+      "alt": "Иллюстрация вальца дорожного катка и его крепления"
+    },
+    {
+      "name": "tractor-pto",
+      "output": "assets/img/repair-pages/components/tractor-pto.webp",
+      "prompt": "Use case: photorealistic-natural. Asset type: 16:9 landscape component illustration for a heavy-equipment repair website, to be displayed at 960x540. Photorealistic, technically plausible mechanical construction, natural overcast light, muted steel/navy and worn industrial yellow. One coherent close-up scene, central component clearly recognizable with 12% safe margins. Neutral unbranded workshop backdrop, no people, no signs, no text, no logos, no watermarks. This is an illustrative image, NOT a claimed photograph of RemSD premises or completed work. Subject: Rear close-up of an agricultural wheeled tractor transmission housing and power take-off output. One short six-spline PTO shaft with a protective U-shaped metal shield, three-point hitch lower mounting lugs partly visible. Tractor stationary with no implement connected. Focus on PTO casing and guarded shaft, no labels.",
+      "generationFile": "exec-5eda68d8-27b7-4bb5-a62a-3ca67c30b753.png",
+      "created": "2026-09-07",
+      "wave": "special-equipment",
+      "alt": "Иллюстрация выходного вала отбора мощности трактора с защитным кожухом"
+    },
+    {
+      "name": "tractor-hitch",
+      "output": "assets/img/repair-pages/components/tractor-hitch.webp",
+      "prompt": "Use case: photorealistic-natural. Asset type: 16:9 landscape component illustration for a heavy-equipment repair website, to be displayed at 960x540. Photorealistic, technically plausible mechanical construction, natural overcast light, muted steel/navy and worn industrial yellow. One coherent close-up scene, central component clearly recognizable with 12% safe margins. Neutral unbranded workshop backdrop, no people, no signs, no text, no logos, no watermarks. This is an illustrative image, NOT a claimed photograph of RemSD premises or completed work. Subject: Rear close-up of an agricultural tractor's three-point linkage: two lower lift arms, adjustable lift rods and central top link clearly arranged correctly, hydraulic lift housing and connections visible. No attached implement, no PTO shaft in focus, tractor parked safely.",
+      "generationFile": "exec-c69416ce-7223-44bd-9493-3906d8fff255.png",
+      "created": "2026-09-07",
+      "wave": "special-equipment",
+      "alt": "Иллюстрация трёхточечного навесного механизма трактора"
+    },
+    {
+      "name": "tractor-gearbox",
+      "output": "assets/img/repair-pages/components/tractor-gearbox.webp",
+      "prompt": "Use case: photorealistic-natural. Asset type: 16:9 landscape component illustration for a heavy-equipment repair website, to be displayed at 960x540. Photorealistic, technically plausible mechanical construction, natural overcast light, muted steel/navy and worn industrial yellow. One coherent close-up scene, central component clearly recognizable with 12% safe margins. Neutral unbranded workshop backdrop, no people, no signs, no text, no logos, no watermarks. This is an illustrative image, NOT a claimed photograph of RemSD premises or completed work. Subject: A removed mechanical agricultural tractor transmission and clutch bell housing on wooden supports: cast gearbox case with bolted cover, short splined input shaft inside open bell housing, mechanical selector levers, differential end housing. Complete externally assembled unit, no torque converter, no floating internal gears. Entire assembly visible.",
+      "generationFile": "exec-877de7d4-04e4-4282-8714-2992c7bc89c7.png",
+      "created": "2026-09-07",
+      "wave": "special-equipment",
+      "alt": "Иллюстрация механической коробки передач трактора"
     }
-  ]
+  ],
+  "updated": "2026-09-07"
 }

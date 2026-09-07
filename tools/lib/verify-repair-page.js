@@ -61,7 +61,7 @@ module.exports = async function verifyRepairPage(page, viewport, definition, mat
       }).map((word) => word[0]);
     });
     return { overflow: document.documentElement.scrollWidth - innerWidth, hero: { left: hero.left, right: hero.right }, boundaries, clipped, brokenWords,
-      services: rows(".internal-service-card"), vehicles: rows(".internal-vehicle-card"), stages: rows(".internal-timeline__item"),
+      services: rows(".internal-service-card"), popular: rows(".internal-popular-work"), vehicles: rows(".internal-vehicle-card"), stages: rows(".internal-timeline__item"),
       serviceText: [...document.querySelectorAll(".internal-service-card p")].map((e) => parseFloat(getComputedStyle(e).fontSize)) };
   });
   assert(metrics.overflow <= 1, "Горизонтальная прокрутка");
@@ -71,6 +71,7 @@ module.exports = async function verifyRepairPage(page, viewport, definition, mat
   const repeated = (columns, length) => Array.from({ length: Math.ceil(length / columns) }, (_, i) => Math.min(columns, length - i * columns));
   assert.deepEqual(metrics.services, repeated(viewport.width <= 520 ? 1 : viewport.width <= 1020 ? 2 : viewport.width <= 1120 ? 3 : 6, 6));
   assert.deepEqual(metrics.vehicles, repeated(viewport.width <= 520 ? 1 : viewport.width <= 1020 ? 2 : 3, 6));
+  assert.deepEqual(metrics.popular, repeated(viewport.width <= 520 ? 1 : viewport.width <= 1020 ? 2 : 4, sections.get("popularWorks").items.length), "Неполный ряд популярных работ нарушает сетку");
   assert.deepEqual(metrics.stages, repeated(viewport.width >= 1280 ? 5 : 1, 5));
   assert(metrics.serviceText.every((size) => size >= 14), "Шрифт карточек уменьшен");
   if (viewport.width === 1120) {

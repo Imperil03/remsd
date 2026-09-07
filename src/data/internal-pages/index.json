@@ -9,6 +9,16 @@
     "remont-polupricepov-i-tralov.json",
     "remont-avtobusov.json",
     "remont-spectehniki.json",
-    "kuzovnoy-remont-gruzovoy-tehniki.json"
+    "kuzovnoy-remont-gruzovoy-tehniki.json",
+    "remont-buldozerov.json",
+    "remont-ekskavatorov.json",
+    "remont-pogruzchikov.json",
+    "remont-avtokranov.json",
+    "remont-manipulyatorov.json",
+    "remont-samosvalov.json",
+    "remont-truboukladchikov.json",
+    "remont-greyderov.json",
+    "remont-dorozhnyh-katkov.json",
+    "remont-traktorov.json"
   ]
 }

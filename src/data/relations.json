@@ -506,6 +506,153 @@
       "predicate": "includes",
       "predicateLabel": "включает",
       "object": "service-body-repair"
+    },
+    {
+      "id": "rel-special-includes-remont-buldozerov",
+      "subject": "service-special-repair",
+      "predicate": "includes",
+      "predicateLabel": "включает",
+      "object": "service-bulldozer-repair"
+    },
+    {
+      "id": "rel-remont-buldozerov-surgut",
+      "subject": "service-bulldozer-repair",
+      "predicate": "locatedIn",
+      "predicateLabel": "работает в",
+      "object": "location-surgut"
+    },
+    {
+      "id": "rel-special-includes-remont-ekskavatorov",
+      "subject": "service-special-repair",
+      "predicate": "includes",
+      "predicateLabel": "включает",
+      "object": "service-excavator-repair"
+    },
+    {
+      "id": "rel-remont-ekskavatorov-surgut",
+      "subject": "service-excavator-repair",
+      "predicate": "locatedIn",
+      "predicateLabel": "работает в",
+      "object": "location-surgut"
+    },
+    {
+      "id": "rel-special-includes-remont-pogruzchikov",
+      "subject": "service-special-repair",
+      "predicate": "includes",
+      "predicateLabel": "включает",
+      "object": "service-loader-repair"
+    },
+    {
+      "id": "rel-remont-pogruzchikov-surgut",
+      "subject": "service-loader-repair",
+      "predicate": "locatedIn",
+      "predicateLabel": "работает в",
+      "object": "location-surgut"
+    },
+    {
+      "id": "rel-special-includes-remont-avtokranov",
+      "subject": "service-special-repair",
+      "predicate": "includes",
+      "predicateLabel": "включает",
+      "object": "service-mobile-crane-repair"
+    },
+    {
+      "id": "rel-remont-avtokranov-surgut",
+      "subject": "service-mobile-crane-repair",
+      "predicate": "locatedIn",
+      "predicateLabel": "работает в",
+      "object": "location-surgut"
+    },
+    {
+      "id": "rel-special-includes-remont-manipulyatorov",
+      "subject": "service-special-repair",
+      "predicate": "includes",
+      "predicateLabel": "включает",
+      "object": "service-manipulator-repair"
+    },
+    {
+      "id": "rel-remont-manipulyatorov-surgut",
+      "subject": "service-manipulator-repair",
+      "predicate": "locatedIn",
+      "predicateLabel": "работает в",
+      "object": "location-surgut"
+    },
+    {
+      "id": "rel-special-includes-remont-samosvalov",
+      "subject": "service-special-repair",
+      "predicate": "includes",
+      "predicateLabel": "включает",
+      "object": "service-dump-truck-repair"
+    },
+    {
+      "id": "rel-remont-samosvalov-surgut",
+      "subject": "service-dump-truck-repair",
+      "predicate": "locatedIn",
+      "predicateLabel": "работает в",
+      "object": "location-surgut"
+    },
+    {
+      "id": "rel-special-includes-remont-truboukladchikov",
+      "subject": "service-special-repair",
+      "predicate": "includes",
+      "predicateLabel": "включает",
+      "object": "service-pipelayer-repair"
+    },
+    {
+      "id": "rel-remont-truboukladchikov-surgut",
+      "subject": "service-pipelayer-repair",
+      "predicate": "locatedIn",
+      "predicateLabel": "работает в",
+      "object": "location-surgut"
+    },
+    {
+      "id": "rel-special-includes-remont-greyderov",
+      "subject": "service-special-repair",
+      "predicate": "includes",
+      "predicateLabel": "включает",
+      "object": "service-grader-repair"
+    },
+    {
+      "id": "rel-remont-greyderov-surgut",
+      "subject": "service-grader-repair",
+      "predicate": "locatedIn",
+      "predicateLabel": "работает в",
+      "object": "location-surgut"
+    },
+    {
+      "id": "rel-special-includes-remont-dorozhnyh-katkov",
+      "subject": "service-special-repair",
+      "predicate": "includes",
+      "predicateLabel": "включает",
+      "object": "service-road-roller-repair"
+    },
+    {
+      "id": "rel-remont-dorozhnyh-katkov-surgut",
+      "subject": "service-road-roller-repair",
+      "predicate": "locatedIn",
+      "predicateLabel": "работает в",
+      "object": "location-surgut"
+    },
+    {
+      "id": "rel-special-includes-remont-traktorov",
+      "subject": "service-special-repair",
+      "predicate": "includes",
+      "predicateLabel": "включает",
+      "object": "service-tractor-equipment-repair"
+    },
+    {
+      "id": "rel-remont-traktorov-surgut",
+      "subject": "service-tractor-equipment-repair",
+      "predicate": "locatedIn",
+      "predicateLabel": "работает в",
+      "object": "location-surgut"
+    },
+    {
+      "id": "rel-truck-repair-includes-dump-truck",
+      "subject": "service-repair",
+      "predicate": "includes",
+      "predicateLabel": "включает",
+      "object": "service-dump-truck-repair"
     }
   ]
 }

@@ -1,0 +1,52 @@
+[
+  {
+    "path": "remont-buldozerov",
+    "popularWorks": 14,
+    "introBullets": 7
+  },
+  {
+    "path": "remont-ekskavatorov",
+    "popularWorks": 14,
+    "introBullets": 7
+  },
+  {
+    "path": "remont-pogruzchikov",
+    "popularWorks": 16,
+    "introBullets": 8
+  },
+  {
+    "path": "remont-avtokranov",
+    "popularWorks": 14,
+    "introBullets": 7
+  },
+  {
+    "path": "remont-manipulyatorov",
+    "popularWorks": 13,
+    "introBullets": 7
+  },
+  {
+    "path": "remont-samosvalov",
+    "popularWorks": 15,
+    "introBullets": 8
+  },
+  {
+    "path": "remont-truboukladchikov",
+    "popularWorks": 14,
+    "introBullets": 8
+  },
+  {
+    "path": "remont-greyderov",
+    "popularWorks": 14,
+    "introBullets": 8
+  },
+  {
+    "path": "remont-dorozhnyh-katkov",
+    "popularWorks": 13,
+    "introBullets": 7
+  },
+  {
+    "path": "remont-traktorov",
+    "popularWorks": 16,
+    "introBullets": 9
+  }
+]

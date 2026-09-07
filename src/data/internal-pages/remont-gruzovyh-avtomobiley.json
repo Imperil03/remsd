@@ -323,7 +323,8 @@
         {
           "title": "Ремонт самосвалов",
           "text": "Диагностика узлов и ремонт грузовых самосвалов",
-          "icon": "transmission"
+          "icon": "transmission",
+          "href": "remont-samosvalov"
         },
         {
           "title": "Ремонт фургонов",
