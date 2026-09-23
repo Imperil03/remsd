@@ -124,6 +124,14 @@ async function run() {
         blockedUrlPatterns,
       });
       const lhr = result.lhr;
+      const fontRequests = (lhr.audits["network-requests"]?.details?.items || [])
+        .filter((request) => /\.woff2(?:\?|$)/.test(request.url) && request.transferSize > 0);
+      const seenFonts = new Set();
+      const repeatedFonts = new Set();
+      for (const request of fontRequests) {
+        if (seenFonts.has(request.url)) repeatedFonts.add(request.url);
+        seenFonts.add(request.url);
+      }
       const metrics = {
         performance: score(lhr, "performance"),
         accessibility: score(lhr, "accessibility"),
@@ -146,6 +154,7 @@ async function run() {
       if (metrics.lcp >= 2500) failures.push(`${route}: LCP ${metrics.lcp}ms >= 2500ms`);
       if (metrics.cls >= 0.1) failures.push(`${route}: CLS ${metrics.cls} >= 0.1`);
       if (metrics.consoleErrors) failures.push(`${route}: ошибок в консоли ${metrics.consoleErrors}`);
+      if (repeatedFonts.size) failures.push(`${route}: повторная загрузка шрифтов ${[...repeatedFonts].map((url) => new URL(url).pathname).join(", ")}`);
     }
   } finally {
     await chrome.close();

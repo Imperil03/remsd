@@ -5,6 +5,7 @@ const postcss = require("postcss");
 const puppeteer = require("puppeteer-core");
 const { chromium } = require("playwright");
 const { transform: transformCss } = require("lightningcss");
+const { extractFontFaces } = require("./lib/font-faces");
 const { loadInternalPageCatalog } = require("./lib/internal-pages");
 
 const root = path.resolve(__dirname, "..");
@@ -21,6 +22,7 @@ const targets = [
     name: "home",
     file: "index.html",
     css: "home.css",
+    fontSources: ["styles.css", "styles-v3.css"],
     heroClass: "v3-hero",
     bodyClass: "v3-page",
     output: "home-critical.css",
@@ -30,6 +32,7 @@ const targets = [
     name: "internal",
     file: `${referenceRoute}/index.html`,
     css: "internal.css",
+    fontSources: ["styles.css"],
     heroClass: "internal-hero",
     bodyClass: `internal-page internal-page--${referencePage.family}`,
     output: "internal-critical.css",
@@ -37,12 +40,21 @@ const targets = [
   },
 ];
 
+// Read canonical sources rather than previously generated critical CSS or bundles,
+// which may already omit definitions supplied by the inline critical stylesheet.
+for (const target of targets) {
+  target.fontFaces = extractFontFaces(target.fontSources
+    .map((file) => fs.readFileSync(path.join(root, "assets", "css", file), "utf8"))
+    .join("\n"));
+}
+
 function criticalShell(target) {
   const html = fs.readFileSync(path.join(distDir, target.file), "utf8");
   const escapedClass = target.heroClass.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   const hero = html.match(new RegExp(`<section class="[^"]*${escapedClass}[^"]*"[\\s\\S]*?<\\/section>`))?.[0];
   if (!hero) throw new Error(`Не удалось выделить первый экран ${target.name}`);
-  return `<!doctype html><html lang="ru"><head><meta charset="utf-8"><base href="/"><link rel="stylesheet" href="./assets/css/${target.css}"></head><body class="${target.bodyClass}"><main>${hero}</main></body></html>`;
+  const fontFaces = target.fontFaces.replaceAll("../fonts/", "./assets/fonts/");
+  return `<!doctype html><html lang="ru"><head><meta charset="utf-8"><base href="/"><style>${fontFaces}</style><link rel="stylesheet" href="./assets/css/${target.css}"></head><body class="${target.bodyClass}"><main>${hero}</main></body></html>`;
 }
 
 function resolveRequest(url) {
@@ -95,15 +107,12 @@ function overlaps(node, ranges) {
 function keepUsedNodes(container, ranges) {
   const kept = [];
   for (const node of container.nodes || []) {
-    const criticalFont = node.type === "atrule"
-      && node.name === "font-face"
-      && /(?:Montserrat Variable|Source Sans 3 Variable|Geologica V3)/.test(node.toString());
+    // Font definitions are appended explicitly from the canonical source once.
+    if (node.type === "atrule" && node.name.toLowerCase() === "font-face") continue;
     const nestedAtRule = node.type === "atrule"
       && node.nodes
       && ["media", "supports", "layer", "container", "document"].includes(node.name);
-    if (criticalFont) {
-      kept.push(node.clone());
-    } else if (nestedAtRule) {
+    if (nestedAtRule) {
       const clone = node.clone({ nodes: [] });
       clone.append(keepUsedNodes(node, ranges));
       if (clone.nodes.length) kept.push(clone);
@@ -141,6 +150,7 @@ async function generateTarget(browser, target) {
   const parsed = postcss.parse(source, { from: target.css });
   const criticalRoot = postcss.root();
   criticalRoot.append(postcss.parse(target.prepend));
+  criticalRoot.append(postcss.parse(target.fontFaces));
   criticalRoot.append(keepUsedNodes(parsed, ranges));
   const normalized = criticalRoot.toString()
     .replaceAll("./assets/fonts/", "../fonts/")

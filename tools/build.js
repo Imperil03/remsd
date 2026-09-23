@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const { transform: transformCss } = require("lightningcss");
+const { removeCoveredFontFaces } = require("./lib/font-faces");
 const { loadPageTemplates } = require("./lib/page-templates");
 const { renderOfficialBrands, renderBrandMatrix, renderBrandNavigation } = require("./lib/brand-catalog");
 const {
@@ -19,7 +20,7 @@ const dataDir = path.join(srcDir, "data");
 const templatesDir = path.join(srcDir, "templates");
 const assetsDir = path.join(root, "assets");
 const distDir = path.join(root, "dist");
-const assetVersion = process.env.ASSET_VERSION || "20260923-brand-pages-v15";
+const assetVersion = process.env.ASSET_VERSION || "20260923-brand-fonts-v16";
 
 function fail(message) {
   throw new Error(`[build] ${message}`);
@@ -94,7 +95,13 @@ function createCssBundles(cssDir) {
     "internal.css": ["design-system.css", "styles.css", "site-chrome.css", "internal-pages.css"],
   };
   for (const [target, sources] of Object.entries(bundles)) {
-    const css = sources.map((source) => fs.readFileSync(path.join(cssDir, source), "utf8")).join("\n");
+    let css = sources.map((source) => fs.readFileSync(path.join(cssDir, source), "utf8")).join("\n");
+    if (target === "home.css" || target === "internal.css") {
+      const criticalFile = path.join(cssDir, target.replace(".css", "-critical.css"));
+      if (fs.existsSync(criticalFile)) {
+        css = removeCoveredFontFaces(css, fs.readFileSync(criticalFile, "utf8"));
+      }
+    }
     fs.writeFileSync(path.join(cssDir, target), css, "utf8");
   }
   return new Set(Object.values(bundles).flat());
