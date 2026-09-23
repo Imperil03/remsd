@@ -209,6 +209,8 @@ if (siteNav instanceof HTMLElement) {
   siteNav.querySelectorAll("a[href]").forEach((link) => {
     if (!(link instanceof HTMLAnchorElement)) return;
     const url = new URL(link.href, window.location.href);
+    // Section anchors must not be marked as the current page.
+    if (url.hash) return;
     const isCurrent = url.origin === window.location.origin && normalizedPath(url.pathname) === currentPath;
     if (isCurrent && !currentLinkAssigned) {
       link.setAttribute("aria-current", "page");

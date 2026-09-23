@@ -76,11 +76,22 @@ async function verifyPage(page, route, label, { expectedStatus = 200 } = {}) {
     hrefHash: document.querySelectorAll('a[href="#"]').length,
     overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
     title: document.title,
+    currentNavLinks: [...document.querySelectorAll('[data-site-nav] a[aria-current="page"]')].map((link) => ({
+      href: link.href,
+      hash: new URL(link.href).hash,
+    })),
   }));
   if (state.h1 !== 1) throw new Error(`${label}: найдено H1: ${state.h1}`);
   if (state.hrefHash) throw new Error(`${label}: найдено href=\"#\": ${state.hrefHash}`);
   if (state.overflow > 1) throw new Error(`${label}: горизонтальное переполнение ${state.overflow}px`);
   if (!state.title) throw new Error(`${label}: пустой title`);
+  if (state.currentNavLinks.some((link) => link.hash)) {
+    throw new Error(`${label}: якорная ссылка ошибочно отмечена как текущая страница`);
+  }
+  const requestPath = new URL(route, `http://${host}:${port}`).pathname;
+  if (["/", "/index.html", "/remsd/", "/remsd/index.html"].includes(requestPath) && state.currentNavLinks.length) {
+    throw new Error(`${label}: при загрузке главной не должно быть активного пункта меню`);
+  }
   const relevantErrors = expectedStatus === 404
     ? errors.filter((error) => !/^console: Failed to load resource: the server responded with a status of 404/.test(error))
     : errors;
@@ -775,6 +786,15 @@ async function run() {
   const server = await startServer();
   const browser = await chromium.launch({ headless: true });
   try {
+    for (const width of [1440, 390]) {
+      const context = await browser.newContext({ viewport: { width, height: 900 } });
+      for (const route of ["/index.html", "/remsd/", "/remsd/index.html", "/#v3-company-proof-title", "/#v3-contact-title", "/remsd/#v3-contact-title"]) {
+        const page = await context.newPage();
+        await verifyPage(page, route, `Активный пункт ${route} ${width}`);
+        await page.close();
+      }
+      await context.close();
+    }
     const chromeViewports = [
       { name: "wide-1992", width: 1992, height: 1200 },
       { name: "desktop", width: 1440, height: 900 },

@@ -18,7 +18,7 @@ const dataDir = path.join(srcDir, "data");
 const templatesDir = path.join(srcDir, "templates");
 const assetsDir = path.join(root, "assets");
 const distDir = path.join(root, "dist");
-const assetVersion = process.env.ASSET_VERSION || "20260907-special-equipment-v13";
+const assetVersion = process.env.ASSET_VERSION || "20260923-active-nav-v14";
 
 function fail(message) {
   throw new Error(`[build] ${message}`);
