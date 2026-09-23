@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const { loadPageTemplates, resolvePageTemplate } = require("./page-templates");
+const { renderOfficialBrands, renderBrandMatrix } = require("./brand-catalog");
 
 const PAGE_FAMILIES = new Set(["hub", "service", "brand"]);
 const ENTITY_TYPE_BY_FAMILY = { hub: "service", service: "service", brand: "brand" };
@@ -148,6 +149,10 @@ const SECTION_REGISTRY = {
         requireText(item.title, `${label}.items[${index}].title`);
         requireText(item.text, `${label}.items[${index}].text`);
         requireText(item.icon, `${label}.items[${index}].icon`);
+        if (item.details !== undefined) {
+          requireArray(item.details, `${label}.items[${index}].details`, { nonEmpty: true })
+            .forEach((detail, detailIndex) => requireText(detail, `${label}.items[${index}].details[${detailIndex}]`));
+        }
       });
       if (section.link !== undefined) {
         requireObject(section.link, `${label}.link`);
@@ -156,10 +161,15 @@ const SECTION_REGISTRY = {
       }
     },
     render(section) {
-      const items = section.items.map((item) => `<article class="internal-service-card">
+      const items = section.items.map((item) => {
+        const details = item.details
+          ? `<ul class="internal-service-card__details">${item.details.map((detail) => `<li>${escapeHtml(detail)}</li>`).join("")}</ul>`
+          : "";
+        return `<article class="internal-service-card">
   <svg class="internal-service-card__icon" aria-hidden="true"><use href="#internal-icon-${escapeHtml(item.icon)}"></use></svg>
-  <div><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.text)}</p></div>
-</article>`).join("\n");
+  <div><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.text)}</p>${details}</div>
+</article>`;
+      }).join("\n");
       const link = section.link
         ? `<a class="internal-reference-link" href="#${escapeHtml(section.link.targetSectionId)}">${escapeHtml(section.link.label)}</a>`
         : "";
@@ -209,6 +219,34 @@ const SECTION_REGISTRY = {
 </section>`;
     },
   },
+  modelRange: {
+    validate(section, label) {
+      requireArray(section.items, `${label}.items`, { nonEmpty: true }).forEach((item, index) => {
+        requireObject(item, `${label}.items[${index}]`);
+        requireText(item.title, `${label}.items[${index}].title`);
+        requireText(item.text, `${label}.items[${index}].text`);
+        if (item.models !== undefined) {
+          requireArray(item.models, `${label}.items[${index}].models`, { nonEmpty: true })
+            .forEach((model, modelIndex) => requireText(model, `${label}.items[${index}].models[${modelIndex}]`));
+        }
+      });
+      if (section.note !== undefined) requireText(section.note, `${label}.note`);
+    },
+    render(section) {
+      const items = section.items.map((item) => {
+        const models = item.models
+          ? `<ul class="internal-model-range__models">${item.models.map((model) => `<li>${escapeHtml(model)}</li>`).join("")}</ul>`
+          : "";
+        return `<article class="internal-model-range__item">
+  <h3>${escapeHtml(item.title)}</h3><div class="internal-model-range__body">${models}<p>${escapeHtml(item.text)}</p></div>
+</article>`;
+      }).join("\n");
+      const note = section.note ? `<p class="internal-model-range__note">${escapeHtml(section.note)}</p>` : "";
+      return `<section class="internal-section internal-section--modelRange" id="${escapeHtml(section.id)}" aria-labelledby="${escapeHtml(section.id)}-title">
+  <div class="container">${renderSectionHead(section)}<div class="internal-model-range">${items}</div>${note}</div>
+</section>`;
+    },
+  },
   brandShowcase: {
     validate(section, label, context) {
       requireArray(section.official, `${label}.official`, { nonEmpty: true }).forEach((item, index) => {
@@ -217,16 +255,17 @@ const SECTION_REGISTRY = {
         validateAsset(item.image, `${label}.official[${index}].image`, context);
       });
       requireArray(section.items, `${label}.items`, { nonEmpty: true }).forEach((item, index) => requireText(item, `${label}.items[${index}]`));
+      if (section.entityRefs !== undefined) {
+        requireObject(section.entityRefs, `${label}.entityRefs`);
+        for (const name of [...section.official.map((item) => item.name), ...section.items]) {
+          const ref = requireText(section.entityRefs[name], `${label}.entityRefs.${name}`);
+          if (context.entityMap.get(ref)?.type !== "brand") fail(`${label}.entityRefs.${name}: неизвестная марка ${ref}`);
+        }
+      }
     },
-    render(section, { rootPath }) {
-      const official = section.official.map((item) => `<li class="v3-brand-card v3-brand-card--official">
-  <div class="v3-brand-card__body">
-    <span class="v3-brand-card__logo"><img src="${rootPath}${escapeHtml(item.image)}" alt="" width="220" height="120" loading="lazy" decoding="async"></span>
-    <strong class="v3-brand-card__name">Ремонт ${escapeHtml(item.name)}</strong>
-    <span class="v3-brand-card__status">Официальный сервис</span>
-  </div>
-</li>`).join("");
-      const matrix = section.items.map((item) => `<li>${escapeHtml(item)}</li>`).join("");
+    render(section, context) {
+      const official = renderOfficialBrands(section, context);
+      const matrix = renderBrandMatrix(section, context);
       return `<section class="internal-section internal-section--brandShowcase v3-truck-brands" id="${escapeHtml(section.id)}" aria-labelledby="${escapeHtml(section.id)}-title">
   <div class="container">
     <header class="internal-brand-showcase__head"><h2 id="${escapeHtml(section.id)}-title">${escapeHtml(section.title)}</h2><p>${escapeHtml(section.intro)}</p></header>
@@ -312,6 +351,32 @@ const SECTION_REGISTRY = {
     <div class="internal-price-content"><div class="internal-price-main">
       <div class="internal-price-layout">${renderTable(section.items.slice(0, midpoint))}${renderTable(section.items.slice(midpoint))}</div>
       <p class="internal-price-note">${escapeHtml(section.note)}</p>
+    </div>${cta}</div>
+  </div>
+</section>`;
+    },
+  },
+  costEstimate: {
+    validate(section, label) {
+      requireArray(section.items, `${label}.items`, { nonEmpty: true }).forEach((item, index) => {
+        requireObject(item, `${label}.items[${index}]`);
+        requireText(item.title, `${label}.items[${index}].title`);
+        requireText(item.text, `${label}.items[${index}].text`);
+        requireText(item.icon, `${label}.items[${index}].icon`);
+      });
+      requireText(section.note, `${label}.note`);
+      validateCta(section.cta, `${label}.cta`);
+    },
+    render(section, { site }) {
+      const items = section.items.map((item) => `<li class="internal-cost-factor">
+  <svg class="internal-cost-factor__icon" aria-hidden="true"><use href="#internal-icon-${escapeHtml(item.icon)}"></use></svg>
+  <div><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.text)}</p></div>
+</li>`).join("\n");
+      const cta = renderInlineCta({ id: `${section.id}-cta-title`, modifier: "cost", cta: section.cta }, site);
+      return `<section class="internal-section internal-section--costEstimate" id="${escapeHtml(section.id)}" aria-labelledby="${escapeHtml(section.id)}-title">
+  <div class="container">${renderSectionHead(section)}
+    <div class="internal-cost-layout"><div class="internal-cost-main">
+      <ul class="internal-cost-factors">${items}</ul><p class="internal-cost-note">${escapeHtml(section.note)}</p>
     </div>${cta}</div>
   </div>
 </section>`;
@@ -532,8 +597,8 @@ function renderHeroFacts(hero) {
             </div>`).join("\n");
 }
 
-function renderSection(section, rootPath, site) {
-  return SECTION_REGISTRY[section.type].render(section, { rootPath, site });
+function renderSection(section, rootPath, site, context = {}) {
+  return SECTION_REGISTRY[section.type].render(section, { ...context, rootPath, site });
 }
 
 module.exports = {

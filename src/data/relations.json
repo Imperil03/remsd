@@ -653,6 +653,328 @@
       "predicate": "includes",
       "predicateLabel": "включает",
       "object": "service-dump-truck-repair"
+    },
+    {
+      "id": "rel-brand-kamaz-servicedAt",
+      "subject": "brand-kamaz",
+      "predicate": "servicedAt",
+      "predicateLabel": "обслуживается на базе в",
+      "object": "location-surgut"
+    },
+    {
+      "id": "rel-brand-kamaz-servicedBy",
+      "subject": "brand-kamaz",
+      "predicate": "servicedBy",
+      "predicateLabel": "ремонтируется в рамках",
+      "object": "service-repair"
+    },
+    {
+      "id": "rel-brand-maz-servicedAt",
+      "subject": "brand-maz",
+      "predicate": "servicedAt",
+      "predicateLabel": "обслуживается на базе в",
+      "object": "location-surgut"
+    },
+    {
+      "id": "rel-brand-maz-servicedBy",
+      "subject": "brand-maz",
+      "predicate": "servicedBy",
+      "predicateLabel": "ремонтируется в рамках",
+      "object": "service-repair"
+    },
+    {
+      "id": "rel-brand-ural-servicedAt",
+      "subject": "brand-ural",
+      "predicate": "servicedAt",
+      "predicateLabel": "обслуживается на базе в",
+      "object": "location-surgut"
+    },
+    {
+      "id": "rel-brand-ural-servicedBy",
+      "subject": "brand-ural",
+      "predicate": "servicedBy",
+      "predicateLabel": "ремонтируется в рамках",
+      "object": "service-repair"
+    },
+    {
+      "id": "rel-brand-daf-servicedAt",
+      "subject": "brand-daf",
+      "predicate": "servicedAt",
+      "predicateLabel": "обслуживается на базе в",
+      "object": "location-surgut"
+    },
+    {
+      "id": "rel-brand-daf-servicedBy",
+      "subject": "brand-daf",
+      "predicate": "servicedBy",
+      "predicateLabel": "ремонтируется в рамках",
+      "object": "service-repair"
+    },
+    {
+      "id": "rel-brand-dongfeng-servicedAt",
+      "subject": "brand-dongfeng",
+      "predicate": "servicedAt",
+      "predicateLabel": "обслуживается на базе в",
+      "object": "location-surgut"
+    },
+    {
+      "id": "rel-brand-dongfeng-servicedBy",
+      "subject": "brand-dongfeng",
+      "predicate": "servicedBy",
+      "predicateLabel": "ремонтируется в рамках",
+      "object": "service-repair"
+    },
+    {
+      "id": "rel-brand-faw-servicedAt",
+      "subject": "brand-faw",
+      "predicate": "servicedAt",
+      "predicateLabel": "обслуживается на базе в",
+      "object": "location-surgut"
+    },
+    {
+      "id": "rel-brand-faw-servicedBy",
+      "subject": "brand-faw",
+      "predicate": "servicedBy",
+      "predicateLabel": "ремонтируется в рамках",
+      "object": "service-repair"
+    },
+    {
+      "id": "rel-brand-foton-servicedAt",
+      "subject": "brand-foton",
+      "predicate": "servicedAt",
+      "predicateLabel": "обслуживается на базе в",
+      "object": "location-surgut"
+    },
+    {
+      "id": "rel-brand-foton-servicedBy",
+      "subject": "brand-foton",
+      "predicate": "servicedBy",
+      "predicateLabel": "ремонтируется в рамках",
+      "object": "service-repair"
+    },
+    {
+      "id": "rel-brand-gaz-servicedAt",
+      "subject": "brand-gaz",
+      "predicate": "servicedAt",
+      "predicateLabel": "обслуживается на базе в",
+      "object": "location-surgut"
+    },
+    {
+      "id": "rel-brand-gaz-servicedBy",
+      "subject": "brand-gaz",
+      "predicate": "servicedBy",
+      "predicateLabel": "ремонтируется в рамках",
+      "object": "service-repair"
+    },
+    {
+      "id": "rel-brand-hino-servicedAt",
+      "subject": "brand-hino",
+      "predicate": "servicedAt",
+      "predicateLabel": "обслуживается на базе в",
+      "object": "location-surgut"
+    },
+    {
+      "id": "rel-brand-hino-servicedBy",
+      "subject": "brand-hino",
+      "predicate": "servicedBy",
+      "predicateLabel": "ремонтируется в рамках",
+      "object": "service-repair"
+    },
+    {
+      "id": "rel-brand-howo-servicedAt",
+      "subject": "brand-howo",
+      "predicate": "servicedAt",
+      "predicateLabel": "обслуживается на базе в",
+      "object": "location-surgut"
+    },
+    {
+      "id": "rel-brand-howo-servicedBy",
+      "subject": "brand-howo",
+      "predicate": "servicedBy",
+      "predicateLabel": "ремонтируется в рамках",
+      "object": "service-repair"
+    },
+    {
+      "id": "rel-brand-hyundai-servicedAt",
+      "subject": "brand-hyundai",
+      "predicate": "servicedAt",
+      "predicateLabel": "обслуживается на базе в",
+      "object": "location-surgut"
+    },
+    {
+      "id": "rel-brand-hyundai-servicedBy",
+      "subject": "brand-hyundai",
+      "predicate": "servicedBy",
+      "predicateLabel": "ремонтируется в рамках",
+      "object": "service-repair"
+    },
+    {
+      "id": "rel-brand-isuzu-servicedAt",
+      "subject": "brand-isuzu",
+      "predicate": "servicedAt",
+      "predicateLabel": "обслуживается на базе в",
+      "object": "location-surgut"
+    },
+    {
+      "id": "rel-brand-isuzu-servicedBy",
+      "subject": "brand-isuzu",
+      "predicate": "servicedBy",
+      "predicateLabel": "ремонтируется в рамках",
+      "object": "service-repair"
+    },
+    {
+      "id": "rel-brand-iveco-servicedAt",
+      "subject": "brand-iveco",
+      "predicate": "servicedAt",
+      "predicateLabel": "обслуживается на базе в",
+      "object": "location-surgut"
+    },
+    {
+      "id": "rel-brand-iveco-servicedBy",
+      "subject": "brand-iveco",
+      "predicate": "servicedBy",
+      "predicateLabel": "ремонтируется в рамках",
+      "object": "service-repair"
+    },
+    {
+      "id": "rel-brand-jac-servicedAt",
+      "subject": "brand-jac",
+      "predicate": "servicedAt",
+      "predicateLabel": "обслуживается на базе в",
+      "object": "location-surgut"
+    },
+    {
+      "id": "rel-brand-jac-servicedBy",
+      "subject": "brand-jac",
+      "predicate": "servicedBy",
+      "predicateLabel": "ремонтируется в рамках",
+      "object": "service-repair"
+    },
+    {
+      "id": "rel-brand-man-servicedAt",
+      "subject": "brand-man",
+      "predicate": "servicedAt",
+      "predicateLabel": "обслуживается на базе в",
+      "object": "location-surgut"
+    },
+    {
+      "id": "rel-brand-man-servicedBy",
+      "subject": "brand-man",
+      "predicate": "servicedBy",
+      "predicateLabel": "ремонтируется в рамках",
+      "object": "service-repair"
+    },
+    {
+      "id": "rel-brand-mercedes-benz-servicedAt",
+      "subject": "brand-mercedes-benz",
+      "predicate": "servicedAt",
+      "predicateLabel": "обслуживается на базе в",
+      "object": "location-surgut"
+    },
+    {
+      "id": "rel-brand-mercedes-benz-servicedBy",
+      "subject": "brand-mercedes-benz",
+      "predicate": "servicedBy",
+      "predicateLabel": "ремонтируется в рамках",
+      "object": "service-repair"
+    },
+    {
+      "id": "rel-brand-mitsubishi-fuso-servicedAt",
+      "subject": "brand-mitsubishi-fuso",
+      "predicate": "servicedAt",
+      "predicateLabel": "обслуживается на базе в",
+      "object": "location-surgut"
+    },
+    {
+      "id": "rel-brand-mitsubishi-fuso-servicedBy",
+      "subject": "brand-mitsubishi-fuso",
+      "predicate": "servicedBy",
+      "predicateLabel": "ремонтируется в рамках",
+      "object": "service-repair"
+    },
+    {
+      "id": "rel-brand-renault-trucks-servicedAt",
+      "subject": "brand-renault-trucks",
+      "predicate": "servicedAt",
+      "predicateLabel": "обслуживается на базе в",
+      "object": "location-surgut"
+    },
+    {
+      "id": "rel-brand-renault-trucks-servicedBy",
+      "subject": "brand-renault-trucks",
+      "predicate": "servicedBy",
+      "predicateLabel": "ремонтируется в рамках",
+      "object": "service-repair"
+    },
+    {
+      "id": "rel-brand-sany-servicedAt",
+      "subject": "brand-sany",
+      "predicate": "servicedAt",
+      "predicateLabel": "обслуживается на базе в",
+      "object": "location-surgut"
+    },
+    {
+      "id": "rel-brand-sany-servicedBy",
+      "subject": "brand-sany",
+      "predicate": "servicedBy",
+      "predicateLabel": "ремонтируется в рамках",
+      "object": "service-repair"
+    },
+    {
+      "id": "rel-brand-scania-servicedAt",
+      "subject": "brand-scania",
+      "predicate": "servicedAt",
+      "predicateLabel": "обслуживается на базе в",
+      "object": "location-surgut"
+    },
+    {
+      "id": "rel-brand-scania-servicedBy",
+      "subject": "brand-scania",
+      "predicate": "servicedBy",
+      "predicateLabel": "ремонтируется в рамках",
+      "object": "service-repair"
+    },
+    {
+      "id": "rel-brand-shacman-servicedAt",
+      "subject": "brand-shacman",
+      "predicate": "servicedAt",
+      "predicateLabel": "обслуживается на базе в",
+      "object": "location-surgut"
+    },
+    {
+      "id": "rel-brand-shacman-servicedBy",
+      "subject": "brand-shacman",
+      "predicate": "servicedBy",
+      "predicateLabel": "ремонтируется в рамках",
+      "object": "service-repair"
+    },
+    {
+      "id": "rel-brand-sitrak-servicedAt",
+      "subject": "brand-sitrak",
+      "predicate": "servicedAt",
+      "predicateLabel": "обслуживается на базе в",
+      "object": "location-surgut"
+    },
+    {
+      "id": "rel-brand-sitrak-servicedBy",
+      "subject": "brand-sitrak",
+      "predicate": "servicedBy",
+      "predicateLabel": "ремонтируется в рамках",
+      "object": "service-repair"
+    },
+    {
+      "id": "rel-brand-volvo-servicedAt",
+      "subject": "brand-volvo",
+      "predicate": "servicedAt",
+      "predicateLabel": "обслуживается на базе в",
+      "object": "location-surgut"
+    },
+    {
+      "id": "rel-brand-volvo-servicedBy",
+      "subject": "brand-volvo",
+      "predicate": "servicedBy",
+      "predicateLabel": "ремонтируется в рамках",
+      "object": "service-repair"
     }
   ]
 }

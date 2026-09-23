@@ -15,7 +15,11 @@ const siteConfig = JSON.parse(fs.readFileSync(path.join(dataDir, "site-config.js
 const internalCatalog = loadInternalPageCatalog({ root, dataDir, assetsDir: path.join(root, "assets"), siteConfig });
 const referencePath = internalCatalog.manifest.referenceByFamily.hub;
 const internalRoute = `/${referencePath}/`;
-const smokeRoutes = internalCatalog.pages.filter((page) => page.path !== referencePath).map((page) => `/${page.path}/`);
+const requestedPaths = (process.env.BROWSER_ROUTES || "").split(",").map((route) => route.trim().replace(/^\/+|\/+$/g, "")).filter(Boolean);
+for (const route of requestedPaths) {
+  if (!internalCatalog.pages.some((page) => page.path === route) || route === referencePath) throw new Error(`BROWSER_ROUTES: неизвестный дополнительный маршрут ${route}`);
+}
+const smokeRoutes = internalCatalog.pages.filter((page) => page.path !== referencePath && (!requestedPaths.length || requestedPaths.includes(page.path))).map((page) => `/${page.path}/`);
 const repairTemplatePaths = new Set(internalCatalog.manifest.pages
   .map((file) => JSON.parse(fs.readFileSync(path.join(dataDir, "internal-pages", file), "utf8")))
   .filter((page) => page.template === "repair-v1")
@@ -808,101 +812,123 @@ async function run() {
       { name: "mobile-390", width: 390, height: 844 },
       { name: "mobile-320", width: 320, height: 760 },
     ];
-    for (const viewport of chromeViewports) await verifySharedChrome(browser, viewport);
+    if (!requestedPaths.length) {
+      for (const viewport of chromeViewports) await verifySharedChrome(browser, viewport);
 
-    const homeViewports = [
-      { name: "wide-1992", width: 1992, height: 1200 },
-      { name: "desktop", width: 1440, height: 900 },
-      { name: "reference-1298", width: 1298, height: 900 },
-      { name: "timeline-wide-1280", width: 1280, height: 900 },
-      { name: "timeline-stacked-1279", width: 1279, height: 900 },
-      { name: "tablet", width: 1120, height: 900 },
-      { name: "compact-720", width: 720, height: 900 },
-      { name: "compact-520", width: 520, height: 900 },
-      { name: "mobile-414", width: 414, height: 896 },
-      { name: "mobile-390", width: 390, height: 844 },
-      { name: "mobile-320", width: 320, height: 760 },
-    ];
-    for (const viewport of homeViewports) {
-      const context = await browser.newContext({ viewport });
-      const page = await context.newPage();
-      await verifyPage(page, "/", `Главная ${viewport.name}`);
-      await verifyNavigation(page, viewport.width <= 1120);
-      await verifyHomeLayout(page, viewport);
-      if (viewport.name === "desktop") await verifyLightbox(page);
-      await page.evaluate(() => {
-        if (document.activeElement instanceof HTMLElement) document.activeElement.blur();
-        document.documentElement.style.scrollBehavior = "auto";
-        document.body.style.scrollBehavior = "auto";
-        document.documentElement.scrollTop = 0;
-        document.body.scrollTop = 0;
-        window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-      });
-      await page.waitForTimeout(50);
-      await page.locator(".v3-hero").screenshot({ path: path.join(resultDir, `home-${viewport.name}.png`) });
-      await context.close();
-    }
-
-    const internalViewports = chromeViewports;
-    for (const viewport of internalViewports) {
-      const context = await browser.newContext({ viewport });
-      const page = await context.newPage();
-      await verifyPage(page, internalRoute, `Внутренняя ${viewport.name}`);
-      await verifyNavigation(page, viewport.width <= 1120);
-      try {
-        await verifyInternalContract(page, viewport);
-      } catch (error) {
-        throw new Error(`Внутренняя ${viewport.name}: ${error.message}`);
-      }
-      await page.evaluate(() => window.scrollTo(0, 0));
-      const screenshotPath = path.join(resultDir, `internal-${viewport.name}-full.png`);
-      await page.screenshot({ path: screenshotPath, fullPage: true });
-      if (viewport.name === "desktop") fs.copyFileSync(screenshotPath, path.join(reviewDir, "internal-desktop.png"));
-      if (viewport.name === "reference-1298") {
-        await page.locator("#repair-services").screenshot({ path: path.join(reviewDir, "internal-reference-services.png") });
-        await page.locator("#popular-repair-services").screenshot({ path: path.join(reviewDir, "internal-reference-popular-works.png") });
-        await page.locator("#vehicle-types").screenshot({ path: path.join(reviewDir, "internal-reference-vehicles.png") });
-        await page.locator("#truck-brands").screenshot({ path: path.join(reviewDir, "internal-reference-brands.png") });
-        await page.locator("#truck-repair-surgut").screenshot({ path: path.join(reviewDir, "internal-reference-editorial.png") });
-        await page.locator("#repair-process").screenshot({ path: path.join(reviewDir, "internal-reference-process.png") });
-      }
-      if (viewport.name === "timeline-stacked-1279") {
-        await page.locator("#repair-process").screenshot({ path: path.join(reviewDir, "internal-stacked-process.png") });
-      }
-      if (viewport.name === "mobile-390") {
-        fs.copyFileSync(screenshotPath, path.join(reviewDir, "internal-mobile.png"));
-        await page.locator("#popular-repair-services").screenshot({ path: path.join(reviewDir, "internal-mobile-popular-works.png") });
-        await page.locator("#truck-brands").screenshot({ path: path.join(reviewDir, "internal-mobile-brands.png") });
-        await page.locator("#truck-repair-surgut").screenshot({ path: path.join(reviewDir, "internal-mobile-editorial.png") });
-      }
-      await context.close();
-    }
-
-    for (const route of smokeRoutes) {
-      const definition = internalCatalog.pages.find((page) => `/${page.path}/` === route);
-      const isRepairTemplate = repairTemplatePaths.has(definition.path);
-      const viewports = isRepairTemplate ? chromeViewports : chromeViewports.filter((viewport) => [1440, 390].includes(viewport.width));
-      for (const viewport of viewports) {
+      const homeViewports = [
+        { name: "wide-1992", width: 1992, height: 1200 },
+        { name: "desktop", width: 1440, height: 900 },
+        { name: "reference-1298", width: 1298, height: 900 },
+        { name: "timeline-wide-1280", width: 1280, height: 900 },
+        { name: "timeline-stacked-1279", width: 1279, height: 900 },
+        { name: "tablet", width: 1120, height: 900 },
+        { name: "compact-720", width: 720, height: 900 },
+        { name: "compact-520", width: 520, height: 900 },
+        { name: "mobile-414", width: 414, height: 896 },
+        { name: "mobile-390", width: 390, height: 844 },
+        { name: "mobile-320", width: 320, height: 760 },
+      ];
+      for (const viewport of homeViewports) {
         const context = await browser.newContext({ viewport });
         const page = await context.newPage();
-        await verifyPage(page, route, `${route} smoke ${viewport.width}`);
+        await verifyPage(page, "/", `Главная ${viewport.name}`);
+        await verifyNavigation(page, viewport.width <= 1120);
+        await verifyHomeLayout(page, viewport);
+        if (viewport.name === "desktop") await verifyLightbox(page);
+        await page.evaluate(() => {
+          if (document.activeElement instanceof HTMLElement) document.activeElement.blur();
+          document.documentElement.style.scrollBehavior = "auto";
+          document.body.style.scrollBehavior = "auto";
+          document.documentElement.scrollTop = 0;
+          document.body.scrollTop = 0;
+          window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+        });
+        await page.waitForTimeout(50);
+        await page.locator(".v3-hero").screenshot({ path: path.join(resultDir, `home-${viewport.name}.png`) });
+        await context.close();
+      }
+
+      const internalViewports = chromeViewports;
+      for (const viewport of internalViewports) {
+        const context = await browser.newContext({ viewport });
+        const page = await context.newPage();
+        await verifyPage(page, internalRoute, `Внутренняя ${viewport.name}`);
         await verifyNavigation(page, viewport.width <= 1120);
         try {
-          if (isRepairTemplate) await require("./lib/verify-repair-page")(page, viewport, definition, materializePage);
-          else await materializePage(page);
+          await verifyInternalContract(page, viewport);
         } catch (error) {
-          throw new Error(`${route} ${viewport.width}px: ${error.message}`);
+          throw new Error(`Внутренняя ${viewport.name}: ${error.message}`);
         }
-        if ([1440, 390].includes(viewport.width)) {
-          await page.screenshot({ path: path.join(resultDir, `${definition.path}-${viewport.width}.png`), fullPage: true });
-          for (const id of isRepairTemplate ? ["repair-services", "popular-repair-services", "vehicle-types", "repair-signs", "related-services", "faq"] : []) {
-            // Callbar behavior is tested above; keep fixed UI out of content crops.
-            await page.locator(`#${id}`).screenshot({ path: path.join(resultDir, `${definition.path}-${viewport.width}-${id}.png`), style: "[data-mobile-callbar] { visibility: hidden !important; }" });
-          }
+        await page.evaluate(() => window.scrollTo(0, 0));
+        const screenshotPath = path.join(resultDir, `internal-${viewport.name}-full.png`);
+        await page.screenshot({ path: screenshotPath, fullPage: true });
+        if (viewport.name === "desktop") fs.copyFileSync(screenshotPath, path.join(reviewDir, "internal-desktop.png"));
+        if (viewport.name === "reference-1298") {
+          await page.locator("#repair-services").screenshot({ path: path.join(reviewDir, "internal-reference-services.png") });
+          await page.locator("#popular-repair-services").screenshot({ path: path.join(reviewDir, "internal-reference-popular-works.png") });
+          await page.locator("#vehicle-types").screenshot({ path: path.join(reviewDir, "internal-reference-vehicles.png") });
+          await page.locator("#truck-brands").screenshot({ path: path.join(reviewDir, "internal-reference-brands.png") });
+          await page.locator("#truck-repair-surgut").screenshot({ path: path.join(reviewDir, "internal-reference-editorial.png") });
+          await page.locator("#repair-process").screenshot({ path: path.join(reviewDir, "internal-reference-process.png") });
+        }
+        if (viewport.name === "timeline-stacked-1279") {
+          await page.locator("#repair-process").screenshot({ path: path.join(reviewDir, "internal-stacked-process.png") });
+        }
+        if (viewport.name === "mobile-390") {
+          fs.copyFileSync(screenshotPath, path.join(reviewDir, "internal-mobile.png"));
+          await page.locator("#popular-repair-services").screenshot({ path: path.join(reviewDir, "internal-mobile-popular-works.png") });
+          await page.locator("#truck-brands").screenshot({ path: path.join(reviewDir, "internal-mobile-brands.png") });
+          await page.locator("#truck-repair-surgut").screenshot({ path: path.join(reviewDir, "internal-mobile-editorial.png") });
         }
         await context.close();
       }
+
     }
+
+    // Each route owns an isolated context and unique screenshot paths. Keep the
+    // expanded catalogue bounded in time without dropping viewport coverage.
+    const routesToCheck = [...smokeRoutes].sort((a, b) => Number(!a.startsWith("/remont/")) - Number(!b.startsWith("/remont/")));
+    let routeIndex = 0;
+    async function verifyNextRoutes() {
+      while (routeIndex < routesToCheck.length) {
+        const route = routesToCheck[routeIndex++];
+        const definition = internalCatalog.pages.find((page) => `/${page.path}/` === route);
+        const isRepairTemplate = repairTemplatePaths.has(definition.path);
+        const isBrand = definition.family === "brand";
+        const brandReference = ["kamaz", "ural", "sany", "sitrak", "mitsubishi-fuso"].some((slug) => definition.path === `remont/${slug}`);
+        const viewports = isRepairTemplate || brandReference ? chromeViewports : chromeViewports.filter((viewport) => [1440, 390].includes(viewport.width));
+        for (const viewport of viewports) {
+          const context = await browser.newContext({ viewport });
+          const page = await context.newPage();
+          await verifyPage(page, route, `${route} smoke ${viewport.width}`);
+          await verifyNavigation(page, viewport.width <= 1120);
+          try {
+            if (isRepairTemplate) await require("./lib/verify-repair-page")(page, viewport, definition, materializePage);
+            else if (isBrand) await require("./lib/verify-brand-page")(page, viewport, definition, materializePage);
+            else await materializePage(page);
+          } catch (error) {
+            throw new Error(`${route} ${viewport.width}px: ${error.message}`);
+          }
+          if ([1440, 390].includes(viewport.width)) {
+            const fileSlug = definition.path.replaceAll("/", "-");
+            await page.screenshot({ path: path.join(resultDir, `${fileSlug}-${viewport.width}.png`), fullPage: true });
+            const cropIds = isRepairTemplate ? ["repair-services", "popular-repair-services", "vehicle-types", "repair-signs", "related-services", "faq"] : isBrand && brandReference ? definition.sections.filter((section) => ["introProof", "serviceGrid", "modelRange", "editorialContent", "costEstimate"].includes(section.type)).map((section) => section.id) : [];
+            for (const id of cropIds) {
+              // Callbar behavior is tested above; keep fixed UI out of content crops.
+              await page.locator(`#${id}`).screenshot({ path: path.join(resultDir, `${fileSlug}-${viewport.width}-${id}.png`), style: "[data-mobile-callbar] { visibility: hidden !important; }" });
+            }
+          }
+          await context.close();
+        }
+        console.log(`Browser checked ${definition.path} (${viewports.length} widths)`);
+      }
+    }
+    const routeResults = await Promise.allSettled(Array.from({ length: 3 }, () => verifyNextRoutes().catch((error) => {
+      console.error(`Browser route failed: ${error.message}`);
+      throw error;
+    })));
+    const failedRoute = routeResults.find((result) => result.status === "rejected");
+    if (failedRoute) throw failedRoute.reason;
 
     const page404Context = await browser.newContext({ viewport: { width: 390, height: 844 } });
     const page404 = await page404Context.newPage();
@@ -912,7 +938,9 @@ async function run() {
     await browser.close();
     await new Promise((resolve) => server.close(resolve));
   }
-  console.log(`Browser verification passed: общий chrome 11 viewport, главная 11 viewport, эталонный hub 11 viewport, ${smokeRoutes.length} дополнительных внутренних маршрутов (repair-v1: 11 viewport, остальные: 2 smoke), burger, FAQ, callbar, images, targets и 404.`);
+  console.log(requestedPaths.length
+    ? `Focused browser verification passed: ${smokeRoutes.length} маршрутов, все назначенные ширины, FAQ, навигация, CTA и 404.`
+    : `Browser verification passed: общий chrome, главная и эталонный hub — 11 viewport; ${smokeRoutes.length} дополнительных маршрутов (repair-v1 и 5 эталонов brand: 11 viewport, остальные марки: 2), burger, FAQ, callbar, images, targets и 404.`);
 }
 
 run().catch((error) => {

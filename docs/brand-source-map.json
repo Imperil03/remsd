@@ -1,0 +1,3267 @@
+{
+  "schemaVersion": 1,
+  "source": {
+    "fileName": "Бренды.docx",
+    "sha256": "d4829ff17f0574d4776e592ac8a27534cf8fc203024329affade83ba19353412",
+    "paragraphNumbering": "One-based non-filtered Word document.xml w:p order, including empty paragraphs.",
+    "paragraphCount": 1448
+  },
+  "policy": "User-supplied document is content data, not an instruction source. Editorial shortening and deduplication authorized. No new numerical prices or repair durations added.",
+  "commercialSources": [
+    "AGENTS.md: owner-approved contract, work order, estimate and extra-work agreement, completion act and warranty documents",
+    "src/data/site-config.json: identity, contacts, opening hours and scoped owner-approved claims",
+    "src/data/page-templates.json: shared hero facts, proof statistics, brand directory and work stages",
+    "src/data/internal-pages/remont-gruzovyh-avtomobiley.json: diagnostics before estimate and scoped repair warranty"
+  ],
+  "pages": [
+    {
+      "brand": "КАМАЗ",
+      "file": "src/data/internal-pages/brand-kamaz.json",
+      "route": "remont/kamaz",
+      "sourceParagraphRange": [
+        1,
+        73
+      ],
+      "sourceCounts": {
+        "serviceGroups": 6,
+        "popularWorks": 17,
+        "features": 3,
+        "faq": 4
+      },
+      "publishedCounts": {
+        "serviceGroups": 6,
+        "popularWorks": 17,
+        "features": 3,
+        "faq": 3,
+        "symptoms": 5
+      },
+      "models": [
+        "КАМАЗ-5490",
+        "КАМАЗ-54901",
+        "КАМАЗ-43118",
+        "КАМАЗ-65115",
+        "КАМАЗ-6520",
+        "КАМАЗ-6522"
+      ],
+      "sourceSystemList": [
+        "двигатель и топливная система",
+        "КПП и сцепление",
+        "карданная передача",
+        "ведущие мосты и редукторы",
+        "ходовая часть",
+        "рулевое управление",
+        "пневматическая система",
+        "тормоза, ABS и EBS",
+        "автоэлектрика",
+        "SCR/AdBlue"
+      ],
+      "mapping": [
+        {
+          "sourceParagraphRange": [
+            2,
+            3
+          ],
+          "destination": [
+            "hero.h1",
+            "hero.lead",
+            "serviceGrid",
+            "popularWorks",
+            "modelRange"
+          ],
+          "action": "Lead shortened; unique vehicle types and systems retained in their detailed sections."
+        },
+        {
+          "sourceParagraphRange": [
+            4,
+            15
+          ],
+          "destination": [
+            "editorialContent.lead",
+            "serviceGrid",
+            "popularWorks"
+          ],
+          "action": "Technical introduction retained; separate duplicate system list distributed across services and work index."
+        },
+        {
+          "sourceParagraphRange": [
+            16,
+            34
+          ],
+          "destination": [
+            "serviceGrid.items",
+            "editorialContent.blocks"
+          ],
+          "action": "Every source service group retained. Additional diagnostics condensed in card details; duplicate KAMAZ driveline explanation merged into the corresponding feature."
+        },
+        {
+          "sourceParagraphRange": [
+            35,
+            52
+          ],
+          "destination": [
+            "popularWorks.items"
+          ],
+          "action": "All operations retained in source order; neutral section title replaces unverified popularity label."
+        },
+        {
+          "sourceParagraphRange": [
+            53,
+            55
+          ],
+          "destination": [
+            "modelRange.items",
+            "modelRange.note"
+          ],
+          "action": "All named models retained; no unprovided model names added."
+        },
+        {
+          "sourceParagraphRange": [
+            56,
+            73
+          ],
+          "destination": [
+            "editorialContent.blocks",
+            "faq.items[0]",
+            "symptoms.items"
+          ],
+          "action": "Features and technical FAQ merged by topic. Unique mechanisms, diagnostic checks and intake inputs retained; practical commercial FAQ uses current project sources."
+        }
+      ],
+      "technicalFaqPreserved": [
+        {
+          "question": "Почему для заказа запчастей недостаточно знать только модель КАМАЗ?",
+          "answer": "В пределах одной модели встречаются разные двигатели, КПП, мосты и исполнения электронных систем. Для агрегатных деталей точнее ориентироваться на VIN и маркировку самого узла.",
+          "sourceParagraphs": [
+            65,
+            66
+          ]
+        },
+        {
+          "question": "Почему после появления ошибки AdBlue автомобиль может потерять мощность?",
+          "answer": "Система управления двигателем может ограничивать крутящий момент при неисправностях SCR. Причина при этом может находиться в датчике, проводке, дозировании реагента или другом элементе системы.",
+          "sourceParagraphs": [
+            67,
+            68
+          ]
+        },
+        {
+          "question": "Можно ли определить неисправный мост только по гулу?",
+          "answer": "Не всегда. Похожий шум способны создавать ступичный узел, карданная передача и подшипники. Источник определяют по характеру звука и режиму движения.",
+          "sourceParagraphs": [
+            69,
+            70
+          ]
+        },
+        {
+          "question": "Какие данные лучше сообщить при записи на ремонт?",
+          "answer": "Полезны модель, год выпуска, VIN, установленный двигатель и КПП, если они известны, а также условия, в которых проявляется неисправность.",
+          "sourceParagraphs": [
+            71,
+            72
+          ]
+        }
+      ],
+      "editorialNotes": []
+    },
+    {
+      "brand": "МАЗ",
+      "file": "src/data/internal-pages/brand-maz.json",
+      "route": "remont/maz",
+      "sourceParagraphRange": [
+        74,
+        143
+      ],
+      "sourceCounts": {
+        "serviceGroups": 6,
+        "popularWorks": 17,
+        "features": 3,
+        "faq": 4
+      },
+      "publishedCounts": {
+        "serviceGroups": 6,
+        "popularWorks": 17,
+        "features": 3,
+        "faq": 4,
+        "symptoms": 5
+      },
+      "models": [
+        "МАЗ-5440",
+        "МАЗ-6430",
+        "МАЗ-6312",
+        "МАЗ-6501",
+        "МАЗ-5516"
+      ],
+      "sourceSystemList": [
+        "двигатель и топливная система",
+        "КПП и сцепление",
+        "карданная передача",
+        "ведущие мосты",
+        "ходовая часть",
+        "рулевое управление",
+        "пневматическая система",
+        "тормоза, ABS и EBS",
+        "автоэлектрика",
+        "SCR/AdBlue"
+      ],
+      "mapping": [
+        {
+          "sourceParagraphRange": [
+            75,
+            76
+          ],
+          "destination": [
+            "hero.h1",
+            "hero.lead",
+            "serviceGrid",
+            "popularWorks",
+            "modelRange"
+          ],
+          "action": "Lead shortened; unique vehicle types and systems retained in their detailed sections."
+        },
+        {
+          "sourceParagraphRange": [
+            77,
+            88
+          ],
+          "destination": [
+            "editorialContent.lead",
+            "serviceGrid",
+            "popularWorks"
+          ],
+          "action": "Technical introduction retained; separate duplicate system list distributed across services and work index."
+        },
+        {
+          "sourceParagraphRange": [
+            89,
+            105
+          ],
+          "destination": [
+            "serviceGrid.items",
+            "editorialContent.blocks"
+          ],
+          "action": "Every source service group retained. Additional diagnostics condensed in card details; duplicate KAMAZ driveline explanation merged into the corresponding feature."
+        },
+        {
+          "sourceParagraphRange": [
+            106,
+            123
+          ],
+          "destination": [
+            "popularWorks.items"
+          ],
+          "action": "All operations retained in source order; neutral section title replaces unverified popularity label."
+        },
+        {
+          "sourceParagraphRange": [
+            124,
+            126
+          ],
+          "destination": [
+            "modelRange.items",
+            "modelRange.note"
+          ],
+          "action": "All named models retained; no unprovided model names added."
+        },
+        {
+          "sourceParagraphRange": [
+            127,
+            143
+          ],
+          "destination": [
+            "editorialContent.blocks",
+            "faq.items[0]",
+            "symptoms.items"
+          ],
+          "action": "Features and technical FAQ merged by topic. Unique mechanisms, diagnostic checks and intake inputs retained; practical commercial FAQ uses current project sources."
+        }
+      ],
+      "technicalFaqPreserved": [
+        {
+          "question": "Почему на МАЗ одной серии могут не подходить одинаковые детали КПП?",
+          "answer": "Автомобили одной серии могут иметь разные варианты трансмиссии. Перед заказом внутренних деталей коробки необходимо проверить её точную маркировку.",
+          "sourceParagraphs": [
+            135,
+            136
+          ]
+        },
+        {
+          "question": "Что означает вибрация, которая появляется только при разгоне?",
+          "answer": "Это один из признаков, по которому можно сузить область поиска в трансмиссии. Дополнительно проверяются карданные шарниры, шлицевые соединения и ведущий мост.",
+          "sourceParagraphs": [
+            137,
+            138
+          ]
+        },
+        {
+          "question": "Почему ошибка EBS может быть связана с пневматикой?",
+          "answer": "Электронная система управляет исполнительными элементами тормозов. Проблема клапана, давления или пневматического контура может сопровождаться электронной ошибкой.",
+          "sourceParagraphs": [
+            139,
+            140
+          ]
+        },
+        {
+          "question": "Какие данные нужны для точного подбора агрегатных деталей?",
+          "answer": "VIN автомобиля, модель, данные установленного двигателя, КПП или моста и маркировка самого агрегата.",
+          "sourceParagraphs": [
+            141,
+            142
+          ]
+        }
+      ],
+      "editorialNotes": []
+    },
+    {
+      "brand": "УРАЛ",
+      "file": "src/data/internal-pages/brand-ural.json",
+      "route": "remont/ural",
+      "sourceParagraphRange": [
+        144,
+        210
+      ],
+      "sourceCounts": {
+        "serviceGroups": 7,
+        "popularWorks": 15,
+        "features": 3,
+        "faq": 4
+      },
+      "publishedCounts": {
+        "serviceGroups": 7,
+        "popularWorks": 15,
+        "features": 3,
+        "faq": 3,
+        "symptoms": 4
+      },
+      "models": [
+        "УРАЛ NEXT",
+        "УРАЛ-4320"
+      ],
+      "sourceSystemList": [
+        "двигатель",
+        "сцепление и КПП",
+        "раздаточная коробка",
+        "карданные валы",
+        "ведущие мосты",
+        "ступичные узлы",
+        "подвеска",
+        "рулевое управление",
+        "тормозная система",
+        "автоэлектрика"
+      ],
+      "mapping": [
+        {
+          "sourceParagraphRange": [
+            145,
+            146
+          ],
+          "destination": [
+            "hero.h1",
+            "hero.lead",
+            "serviceGrid",
+            "popularWorks",
+            "modelRange"
+          ],
+          "action": "Lead shortened; unique vehicle types and systems retained in their detailed sections."
+        },
+        {
+          "sourceParagraphRange": [
+            147,
+            159
+          ],
+          "destination": [
+            "editorialContent.lead",
+            "serviceGrid",
+            "popularWorks"
+          ],
+          "action": "Technical introduction retained; separate duplicate system list distributed across services and work index."
+        },
+        {
+          "sourceParagraphRange": [
+            160,
+            175
+          ],
+          "destination": [
+            "serviceGrid.items",
+            "editorialContent.blocks"
+          ],
+          "action": "Every source service group retained. Additional diagnostics condensed in card details; duplicate KAMAZ driveline explanation merged into the corresponding feature."
+        },
+        {
+          "sourceParagraphRange": [
+            176,
+            191
+          ],
+          "destination": [
+            "popularWorks.items"
+          ],
+          "action": "All operations retained in source order; neutral section title replaces unverified popularity label."
+        },
+        {
+          "sourceParagraphRange": [
+            192,
+            193
+          ],
+          "destination": [
+            "modelRange.items",
+            "modelRange.note"
+          ],
+          "action": "All named models retained; no unprovided model names added."
+        },
+        {
+          "sourceParagraphRange": [
+            194,
+            210
+          ],
+          "destination": [
+            "editorialContent.blocks",
+            "faq.items[0]",
+            "symptoms.items"
+          ],
+          "action": "Features and technical FAQ merged by topic. Unique mechanisms, diagnostic checks and intake inputs retained; practical commercial FAQ uses current project sources."
+        }
+      ],
+      "technicalFaqPreserved": [
+        {
+          "question": "Почему сложно определить источник вибрации без проверки всей трансмиссии?",
+          "answer": "На полноприводном шасси несколько карданных валов и мостов соединены между собой. Вибрация от одного узла распространяется по раме и может ощущаться далеко от её источника.",
+          "sourceParagraphs": [
+            202,
+            203
+          ]
+        },
+        {
+          "question": "Почему шум раздаточной коробки можно перепутать с шумом моста?",
+          "answer": "Оба агрегата работают в одной силовой цепи. Частота и характер шума меняются в зависимости от нагрузки, поэтому источник определяют сравнением разных режимов движения.",
+          "sourceParagraphs": [
+            204,
+            205
+          ]
+        },
+        {
+          "question": "Что важно знать при заказе деталей раздаточной коробки или моста?",
+          "answer": "Нужно точное исполнение агрегата и его маркировка. У разных модификаций могут отличаться внутренние детали и передаточные отношения.",
+          "sourceParagraphs": [
+            206,
+            207
+          ]
+        },
+        {
+          "question": "Почему после замены крестовин вибрация иногда остаётся?",
+          "answer": "Причина может находиться в шлицевом соединении, самом карданном валу, фланцах или сопряжённом агрегате. Замена крестовины решает проблему только в том случае, если источник вибрации был именно в ней.",
+          "sourceParagraphs": [
+            208,
+            209
+          ]
+        }
+      ],
+      "editorialNotes": []
+    },
+    {
+      "brand": "DAF",
+      "file": "src/data/internal-pages/brand-daf.json",
+      "route": "remont/daf",
+      "sourceParagraphRange": [
+        211,
+        276
+      ],
+      "sourceCounts": {
+        "serviceGroups": 6,
+        "popularWorks": 16,
+        "features": 3,
+        "faq": 4
+      },
+      "publishedCounts": {
+        "serviceGroups": 6,
+        "popularWorks": 16,
+        "features": 3,
+        "faq": 3,
+        "symptoms": 4
+      },
+      "models": [
+        "DAF XF",
+        "DAF CF",
+        "DAF LF"
+      ],
+      "sourceSystemList": [
+        "двигатели PACCAR",
+        "топливная система",
+        "КПП и сцепление",
+        "карданная передача",
+        "ведущие мосты",
+        "пневматическая подвеска",
+        "тормоза и EBS",
+        "автоэлектрика",
+        "EGR",
+        "SCR/AdBlue"
+      ],
+      "mapping": [
+        {
+          "sourceParagraphRange": [
+            212,
+            213
+          ],
+          "destination": [
+            "hero.h1",
+            "hero.lead",
+            "serviceGrid",
+            "popularWorks",
+            "modelRange"
+          ],
+          "action": "Lead shortened; unique vehicle types and systems retained in their detailed sections."
+        },
+        {
+          "sourceParagraphRange": [
+            214,
+            225
+          ],
+          "destination": [
+            "editorialContent.lead",
+            "serviceGrid",
+            "popularWorks"
+          ],
+          "action": "Technical introduction retained; separate duplicate system list distributed across services and work index."
+        },
+        {
+          "sourceParagraphRange": [
+            226,
+            240
+          ],
+          "destination": [
+            "serviceGrid.items",
+            "editorialContent.blocks"
+          ],
+          "action": "Every source service group retained. Additional diagnostics condensed in card details; duplicate KAMAZ driveline explanation merged into the corresponding feature."
+        },
+        {
+          "sourceParagraphRange": [
+            241,
+            257
+          ],
+          "destination": [
+            "popularWorks.items"
+          ],
+          "action": "All operations retained in source order; neutral section title replaces unverified popularity label."
+        },
+        {
+          "sourceParagraphRange": [
+            258,
+            259
+          ],
+          "destination": [
+            "modelRange.items",
+            "modelRange.note"
+          ],
+          "action": "All named models retained; no unprovided model names added."
+        },
+        {
+          "sourceParagraphRange": [
+            260,
+            276
+          ],
+          "destination": [
+            "editorialContent.blocks",
+            "faq.items[0]",
+            "symptoms.items"
+          ],
+          "action": "Features and technical FAQ merged by topic. Unique mechanisms, diagnostic checks and intake inputs retained; practical commercial FAQ uses current project sources."
+        }
+      ],
+      "technicalFaqPreserved": [
+        {
+          "question": "Почему роботизированную КПП нельзя диагностировать только по кодам ошибок?",
+          "answer": "На качество переключения влияют сцепление, исполнительный привод, датчики положения и механическая часть коробки. Код ошибки показывает направление поиска, но не заменяет проверку системы.",
+          "sourceParagraphs": [
+            268,
+            269
+          ]
+        },
+        {
+          "question": "Почему двигатель может работать ровно, но мощность будет ограничена?",
+          "answer": "Ограничение способен вводить электронный блок из-за параметров EGR, SCR, наддува или топливной системы.",
+          "sourceParagraphs": [
+            270,
+            271
+          ]
+        },
+        {
+          "question": "Почему ошибка EBS иногда появляется без заметного изменения торможения?",
+          "answer": "Система может определить неисправность датчика или электрической цепи раньше, чем проблема станет заметной водителю.",
+          "sourceParagraphs": [
+            272,
+            273
+          ]
+        },
+        {
+          "question": "Что нужно для точного подбора деталей на DAF?",
+          "answer": "Желательно иметь VIN, данные автомобиля и номер конкретного агрегата — двигателя, КПП или моста.",
+          "sourceParagraphs": [
+            274,
+            275
+          ]
+        }
+      ],
+      "editorialNotes": []
+    },
+    {
+      "brand": "Dongfeng",
+      "file": "src/data/internal-pages/brand-dongfeng.json",
+      "route": "remont/dongfeng",
+      "sourceParagraphRange": [
+        277,
+        339
+      ],
+      "sourceCounts": {
+        "serviceGroups": 6,
+        "popularWorks": 15,
+        "features": 3,
+        "faq": 4
+      },
+      "publishedCounts": {
+        "serviceGroups": 6,
+        "popularWorks": 15,
+        "features": 3,
+        "faq": 3,
+        "symptoms": 3
+      },
+      "models": [
+        "GX",
+        "KL",
+        "KR"
+      ],
+      "sourceSystemList": [
+        "двигатель и топливная система",
+        "КПП и сцепление",
+        "карданная передача",
+        "ведущие мосты",
+        "ходовая часть",
+        "пневматика",
+        "тормоза",
+        "ABS/EBS",
+        "автоэлектрика",
+        "SCR/AdBlue"
+      ],
+      "mapping": [
+        {
+          "sourceParagraphRange": [
+            278,
+            279
+          ],
+          "destination": [
+            "hero.h1",
+            "hero.lead",
+            "serviceGrid",
+            "popularWorks",
+            "modelRange"
+          ],
+          "action": "Lead shortened; unique vehicle types and systems retained in their detailed sections."
+        },
+        {
+          "sourceParagraphRange": [
+            280,
+            291
+          ],
+          "destination": [
+            "editorialContent.lead",
+            "serviceGrid",
+            "popularWorks"
+          ],
+          "action": "Technical introduction retained; separate duplicate system list distributed across services and work index."
+        },
+        {
+          "sourceParagraphRange": [
+            292,
+            304
+          ],
+          "destination": [
+            "serviceGrid.items",
+            "editorialContent.blocks"
+          ],
+          "action": "Every source service group retained. Additional diagnostics condensed in card details; duplicate KAMAZ driveline explanation merged into the corresponding feature."
+        },
+        {
+          "sourceParagraphRange": [
+            305,
+            320
+          ],
+          "destination": [
+            "popularWorks.items"
+          ],
+          "action": "All operations retained in source order; neutral section title replaces unverified popularity label."
+        },
+        {
+          "sourceParagraphRange": [
+            321,
+            322
+          ],
+          "destination": [
+            "modelRange.items",
+            "modelRange.note"
+          ],
+          "action": "All named models retained; no unprovided model names added."
+        },
+        {
+          "sourceParagraphRange": [
+            323,
+            339
+          ],
+          "destination": [
+            "editorialContent.blocks",
+            "faq.items[0]",
+            "symptoms.items"
+          ],
+          "action": "Features and technical FAQ merged by topic. Unique mechanisms, diagnostic checks and intake inputs retained; practical commercial FAQ uses current project sources."
+        }
+      ],
+      "technicalFaqPreserved": [
+        {
+          "question": "Почему у одинаковых внешне Dongfeng могут отличаться агрегатные детали?",
+          "answer": "Производитель использует разные комплектации в зависимости от года и исполнения. Для точного подбора нужна маркировка конкретного узла.",
+          "sourceParagraphs": [
+            331,
+            332
+          ]
+        },
+        {
+          "question": "Какие данные лучше подготовить перед заказом запчастей?",
+          "answer": "VIN, фото заводской таблички и маркировку двигателя, КПП или моста.",
+          "sourceParagraphs": [
+            333,
+            334
+          ]
+        },
+        {
+          "question": "Почему периодическая ошибка датчика не всегда означает неисправность самого датчика?",
+          "answer": "Проблема может быть в контакте, проводке, питании или массе. Поэтому сначала проверяется электрическая цепь.",
+          "sourceParagraphs": [
+            335,
+            336
+          ]
+        },
+        {
+          "question": "Почему при неисправности SCR важно смотреть условия появления ошибки?",
+          "answer": "Температура, нагрузка и режим работы двигателя помогают понять, при каких условиях система выходит за допустимые параметры.",
+          "sourceParagraphs": [
+            337,
+            338
+          ]
+        }
+      ],
+      "editorialNotes": []
+    },
+    {
+      "brand": "FAW",
+      "file": "src/data/internal-pages/brand-faw.json",
+      "route": "remont/faw",
+      "sourceParagraphRange": [
+        340,
+        403
+      ],
+      "sourceCounts": {
+        "serviceGroups": 6,
+        "popularWorks": 16,
+        "features": 3,
+        "faq": 4
+      },
+      "publishedCounts": {
+        "serviceGroups": 6,
+        "popularWorks": 16,
+        "features": 3,
+        "faq": 3,
+        "symptoms": 3
+      },
+      "models": [
+        "J6",
+        "JH6",
+        "J7"
+      ],
+      "sourceSystemList": [
+        "двигатель",
+        "Common Rail",
+        "турбонаддув",
+        "КПП и сцепление",
+        "карданная передача",
+        "ведущие мосты",
+        "пневматическая система",
+        "тормоза и EBS",
+        "электрооборудование",
+        "SCR/AdBlue"
+      ],
+      "mapping": [
+        {
+          "sourceParagraphRange": [
+            341,
+            342
+          ],
+          "destination": [
+            "hero.h1",
+            "hero.lead",
+            "serviceGrid",
+            "popularWorks",
+            "modelRange"
+          ],
+          "action": "Lead shortened; unique vehicle types and systems retained in their detailed sections."
+        },
+        {
+          "sourceParagraphRange": [
+            343,
+            354
+          ],
+          "destination": [
+            "editorialContent.lead",
+            "serviceGrid",
+            "popularWorks"
+          ],
+          "action": "Technical introduction retained; separate duplicate system list distributed across services and work index."
+        },
+        {
+          "sourceParagraphRange": [
+            355,
+            367
+          ],
+          "destination": [
+            "serviceGrid.items",
+            "editorialContent.blocks"
+          ],
+          "action": "Every source service group retained. Additional diagnostics condensed in card details; duplicate KAMAZ driveline explanation merged into the corresponding feature."
+        },
+        {
+          "sourceParagraphRange": [
+            368,
+            384
+          ],
+          "destination": [
+            "popularWorks.items"
+          ],
+          "action": "All operations retained in source order; neutral section title replaces unverified popularity label."
+        },
+        {
+          "sourceParagraphRange": [
+            385,
+            386
+          ],
+          "destination": [
+            "modelRange.items",
+            "modelRange.note"
+          ],
+          "action": "All named models retained; no unprovided model names added."
+        },
+        {
+          "sourceParagraphRange": [
+            387,
+            403
+          ],
+          "destination": [
+            "editorialContent.blocks",
+            "faq.items[0]",
+            "symptoms.items"
+          ],
+          "action": "Features and technical FAQ merged by topic. Unique mechanisms, diagnostic checks and intake inputs retained; practical commercial FAQ uses current project sources."
+        }
+      ],
+      "technicalFaqPreserved": [
+        {
+          "question": "Почему на FAW особенно важно сверять номер агрегата?",
+          "answer": "Разные комплектации могут использовать внешне похожие, но конструктивно отличающиеся КПП, мосты и двигатели.",
+          "sourceParagraphs": [
+            395,
+            396
+          ]
+        },
+        {
+          "question": "Что может имитировать неисправность роботизированной коробки?",
+          "answer": "Изношенное сцепление, исполнительный привод, датчик положения или проблема электропитания способны давать симптомы, похожие на внутреннюю неисправность КПП.",
+          "sourceParagraphs": [
+            397,
+            398
+          ]
+        },
+        {
+          "question": "Почему при ошибке EBS проверяют питание?",
+          "answer": "Нестабильное напряжение может создавать ошибки электронных блоков даже при исправных механических компонентах.",
+          "sourceParagraphs": [
+            399,
+            400
+          ]
+        },
+        {
+          "question": "Какие данные полезно зафиксировать при периодической неисправности?",
+          "answer": "Скорость, нагрузку, передачу, температуру двигателя и сообщение на панели в момент появления ошибки.",
+          "sourceParagraphs": [
+            401,
+            402
+          ]
+        }
+      ],
+      "editorialNotes": []
+    },
+    {
+      "brand": "Foton",
+      "file": "src/data/internal-pages/brand-foton.json",
+      "route": "remont/foton",
+      "sourceParagraphRange": [
+        404,
+        470
+      ],
+      "sourceCounts": {
+        "serviceGroups": 6,
+        "popularWorks": 16,
+        "features": 3,
+        "faq": 4
+      },
+      "publishedCounts": {
+        "serviceGroups": 6,
+        "popularWorks": 16,
+        "features": 3,
+        "faq": 3,
+        "symptoms": 3
+      },
+      "models": [
+        "Foton Auman",
+        "Foton Aumark"
+      ],
+      "sourceSystemList": [
+        "двигатель",
+        "Common Rail",
+        "турбонаддув",
+        "КПП и сцепление",
+        "карданная передача",
+        "ведущие мосты",
+        "ходовая часть",
+        "тормозная система",
+        "EBS",
+        "автоэлектрика",
+        "SCR/AdBlue"
+      ],
+      "mapping": [
+        {
+          "sourceParagraphRange": [
+            405,
+            406
+          ],
+          "destination": [
+            "hero.h1",
+            "hero.lead",
+            "serviceGrid",
+            "popularWorks",
+            "modelRange"
+          ],
+          "action": "Lead shortened; unique vehicle types and systems retained in their detailed sections."
+        },
+        {
+          "sourceParagraphRange": [
+            407,
+            420
+          ],
+          "destination": [
+            "editorialContent.lead",
+            "serviceGrid",
+            "popularWorks"
+          ],
+          "action": "Technical introduction retained; separate duplicate system list distributed across services and work index."
+        },
+        {
+          "sourceParagraphRange": [
+            421,
+            434
+          ],
+          "destination": [
+            "serviceGrid.items",
+            "editorialContent.blocks"
+          ],
+          "action": "Every source service group retained. Additional diagnostics condensed in card details; duplicate KAMAZ driveline explanation merged into the corresponding feature."
+        },
+        {
+          "sourceParagraphRange": [
+            435,
+            451
+          ],
+          "destination": [
+            "popularWorks.items"
+          ],
+          "action": "All operations retained in source order; neutral section title replaces unverified popularity label."
+        },
+        {
+          "sourceParagraphRange": [
+            452,
+            453
+          ],
+          "destination": [
+            "modelRange.items",
+            "modelRange.note"
+          ],
+          "action": "All named models retained; no unprovided model names added."
+        },
+        {
+          "sourceParagraphRange": [
+            454,
+            470
+          ],
+          "destination": [
+            "editorialContent.blocks",
+            "faq.items[0]",
+            "symptoms.items"
+          ],
+          "action": "Features and technical FAQ merged by topic. Unique mechanisms, diagnostic checks and intake inputs retained; practical commercial FAQ uses current project sources."
+        }
+      ],
+      "technicalFaqPreserved": [
+        {
+          "question": "Почему одинаковый симптом на Auman и Aumark может иметь разные причины?",
+          "answer": "Автомобили отличаются по конструкции шасси, трансмиссии и тормозной системы. Одинаковое описание неисправности не означает одинаковый узел.",
+          "sourceParagraphs": [
+            462,
+            463
+          ]
+        },
+        {
+          "question": "Что полезно сообщить при проблеме с роботизированной КПП?",
+          "answer": "На каких передачах возникает неисправность, есть ли рывок или задержка, появляется ли ошибка на панели и зависит ли проблема от температуры автомобиля.",
+          "sourceParagraphs": [
+            464,
+            465
+          ]
+        },
+        {
+          "question": "Почему несколько электронных ошибок иногда появляются одновременно?",
+          "answer": "Общая причина может находиться в электропитании, массе или CAN-шине, а не в нескольких одновременно вышедших из строя датчиках.",
+          "sourceParagraphs": [
+            466,
+            467
+          ]
+        },
+        {
+          "question": "Что необходимо для точного подбора деталей КПП или двигателя?",
+          "answer": "VIN автомобиля и маркировка конкретного агрегата.",
+          "sourceParagraphs": [
+            468,
+            469
+          ]
+        }
+      ],
+      "editorialNotes": []
+    },
+    {
+      "brand": "ГАЗ",
+      "file": "src/data/internal-pages/brand-gaz.json",
+      "route": "remont/gaz",
+      "sourceParagraphRange": [
+        471,
+        538
+      ],
+      "sourceCounts": {
+        "serviceGroups": 6,
+        "popularWorks": 17,
+        "features": 3,
+        "faq": 4
+      },
+      "publishedCounts": {
+        "serviceGroups": 6,
+        "popularWorks": 17,
+        "features": 3,
+        "faq": 3,
+        "symptoms": 4
+      },
+      "models": [
+        "ГАЗель Бизнес",
+        "ГАЗель NEXT",
+        "ГАЗон NEXT",
+        "Садко NEXT",
+        "Валдай"
+      ],
+      "sourceSystemList": [
+        "двигатель и топливная система",
+        "КПП и сцепление",
+        "карданная передача",
+        "задний и ведущие мосты",
+        "ходовая часть",
+        "рулевое управление",
+        "тормозная система",
+        "стартер и генератор",
+        "датчики и проводка",
+        "ABS"
+      ],
+      "mapping": [
+        {
+          "sourceParagraphRange": [
+            472,
+            473
+          ],
+          "destination": [
+            "hero.h1",
+            "hero.lead",
+            "serviceGrid",
+            "popularWorks",
+            "modelRange"
+          ],
+          "action": "Lead shortened; unique vehicle types and systems retained in their detailed sections."
+        },
+        {
+          "sourceParagraphRange": [
+            474,
+            485
+          ],
+          "destination": [
+            "editorialContent.lead",
+            "serviceGrid",
+            "popularWorks"
+          ],
+          "action": "Technical introduction retained; separate duplicate system list distributed across services and work index."
+        },
+        {
+          "sourceParagraphRange": [
+            486,
+            501
+          ],
+          "destination": [
+            "serviceGrid.items",
+            "editorialContent.blocks"
+          ],
+          "action": "Every source service group retained. Additional diagnostics condensed in card details; duplicate KAMAZ driveline explanation merged into the corresponding feature."
+        },
+        {
+          "sourceParagraphRange": [
+            502,
+            519
+          ],
+          "destination": [
+            "popularWorks.items"
+          ],
+          "action": "All operations retained in source order; neutral section title replaces unverified popularity label."
+        },
+        {
+          "sourceParagraphRange": [
+            520,
+            521
+          ],
+          "destination": [
+            "modelRange.items",
+            "modelRange.note"
+          ],
+          "action": "All named models retained; no unprovided model names added."
+        },
+        {
+          "sourceParagraphRange": [
+            522,
+            538
+          ],
+          "destination": [
+            "editorialContent.blocks",
+            "faq.items[0]",
+            "symptoms.items"
+          ],
+          "action": "Features and technical FAQ merged by topic. Unique mechanisms, diagnostic checks and intake inputs retained; practical commercial FAQ uses current project sources."
+        }
+      ],
+      "technicalFaqPreserved": [
+        {
+          "question": "Почему после замены сцепления передачи иногда всё равно включаются тяжело?",
+          "answer": "Причина может быть в регулировке или приводе сцепления, механизме переключения либо самой коробке. После ремонта важно проверить весь путь от педали до КПП.",
+          "sourceParagraphs": [
+            530,
+            531
+          ]
+        },
+        {
+          "question": "Как отличают проблему карданного вала от заднего моста?",
+          "answer": "Сравнивают поведение автомобиля при разгоне, движении накатом и сбросе газа, затем проверяют карданные шарниры, подвесную опору, люфты и редуктор.",
+          "sourceParagraphs": [
+            532,
+            533
+          ]
+        },
+        {
+          "question": "Почему после замены шкворней может сохраниться люфт руля?",
+          "answer": "Люфт может находиться в рулевых наконечниках, тягах, ступичных подшипниках или других соединениях передней части шасси.",
+          "sourceParagraphs": [
+            534,
+            535
+          ]
+        },
+        {
+          "question": "Почему для деталей ГАЗ важен VIN, если модель автомобиля известна?",
+          "answer": "В пределах одной модели менялись двигатели, коробки передач и отдельные элементы шасси. VIN и маркировка агрегата помогают точнее определить нужную деталь.",
+          "sourceParagraphs": [
+            536,
+            537
+          ]
+        }
+      ],
+      "editorialNotes": []
+    },
+    {
+      "brand": "Hino",
+      "file": "src/data/internal-pages/brand-hino.json",
+      "route": "remont/hino",
+      "sourceParagraphRange": [
+        539,
+        601
+      ],
+      "sourceCounts": {
+        "serviceGroups": 6,
+        "popularWorks": 15,
+        "features": 3,
+        "faq": 3
+      },
+      "publishedCounts": {
+        "serviceGroups": 6,
+        "popularWorks": 15,
+        "features": 3,
+        "faq": 3,
+        "symptoms": 5
+      },
+      "models": [
+        "Hino 300",
+        "Hino 500",
+        "Hino 700"
+      ],
+      "sourceSystemList": [
+        "дизельный двигатель",
+        "топливная система Common Rail",
+        "турбонаддув",
+        "КПП и сцепление",
+        "карданная передача",
+        "ведущий мост",
+        "ходовая часть",
+        "тормозная система",
+        "автоэлектрика",
+        "электронные блоки управления"
+      ],
+      "mapping": [
+        {
+          "sourceParagraphRange": [
+            540,
+            541
+          ],
+          "destination": [
+            "hero.h1",
+            "hero.lead",
+            "serviceGrid",
+            "popularWorks",
+            "modelRange"
+          ],
+          "action": "Lead shortened; unique vehicle types and systems retained in their detailed sections."
+        },
+        {
+          "sourceParagraphRange": [
+            542,
+            553
+          ],
+          "destination": [
+            "editorialContent.lead",
+            "serviceGrid",
+            "popularWorks"
+          ],
+          "action": "Technical introduction retained; separate duplicate system list distributed across services and work index."
+        },
+        {
+          "sourceParagraphRange": [
+            554,
+            568
+          ],
+          "destination": [
+            "serviceGrid.items",
+            "editorialContent.blocks"
+          ],
+          "action": "Every source service group retained. Additional diagnostics condensed in card details; duplicate KAMAZ driveline explanation merged into the corresponding feature."
+        },
+        {
+          "sourceParagraphRange": [
+            569,
+            584
+          ],
+          "destination": [
+            "popularWorks.items"
+          ],
+          "action": "All operations retained in source order; neutral section title replaces unverified popularity label."
+        },
+        {
+          "sourceParagraphRange": [
+            585,
+            586
+          ],
+          "destination": [
+            "modelRange.items",
+            "modelRange.note"
+          ],
+          "action": "All named models retained; no unprovided model names added."
+        },
+        {
+          "sourceParagraphRange": [
+            587,
+            601
+          ],
+          "destination": [
+            "editorialContent.blocks",
+            "faq.items[0]",
+            "symptoms.items"
+          ],
+          "action": "Features and technical FAQ merged by topic. Unique mechanisms, diagnostic checks and intake inputs retained; practical commercial FAQ uses current project sources."
+        }
+      ],
+      "technicalFaqPreserved": [
+        {
+          "question": "Почему при плохом запуске не стоит сразу менять форсунки?",
+          "answer": "Недостаточное давление в топливной системе может быть связано не только с форсунками. Проверяется вся цепочка подачи топлива и фактическое давление при запуске.",
+          "sourceParagraphs": [
+            595,
+            596
+          ]
+        },
+        {
+          "question": "Почему одна и та же модель Hino может иметь разные запчасти?",
+          "answer": "Комплектация зависит от года выпуска и исполнения автомобиля. Для агрегатных деталей лучше использовать VIN и маркировку самого узла.",
+          "sourceParagraphs": [
+            597,
+            598
+          ]
+        },
+        {
+          "question": "Что помогает определить источник вибрации?",
+          "answer": "Важно знать, появляется она при разгоне, под нагрузкой, на определённой скорости или при движении накатом.",
+          "sourceParagraphs": [
+            599,
+            600
+          ]
+        }
+      ],
+      "editorialNotes": []
+    },
+    {
+      "brand": "HOWO",
+      "file": "src/data/internal-pages/brand-howo.json",
+      "route": "remont/howo",
+      "sourceParagraphRange": [
+        602,
+        663
+      ],
+      "sourceCounts": {
+        "serviceGroups": 6,
+        "popularWorks": 16,
+        "features": 3,
+        "faq": 3
+      },
+      "publishedCounts": {
+        "serviceGroups": 6,
+        "popularWorks": 16,
+        "features": 3,
+        "faq": 3,
+        "symptoms": 3
+      },
+      "models": [
+        "A7",
+        "T5G",
+        "T7H",
+        "TX"
+      ],
+      "sourceSystemList": [
+        "двигатель",
+        "топливная система",
+        "КПП и сцепление",
+        "карданная передача",
+        "ведущие мосты",
+        "рессорная и пневматическая подвеска",
+        "тормоза",
+        "ABS/EBS",
+        "автоэлектрика",
+        "SCR/AdBlue"
+      ],
+      "mapping": [
+        {
+          "sourceParagraphRange": [
+            603,
+            604
+          ],
+          "destination": [
+            "hero.h1",
+            "hero.lead",
+            "serviceGrid",
+            "popularWorks",
+            "modelRange"
+          ],
+          "action": "Lead shortened; unique vehicle types and systems retained in their detailed sections."
+        },
+        {
+          "sourceParagraphRange": [
+            605,
+            616
+          ],
+          "destination": [
+            "editorialContent.lead",
+            "serviceGrid",
+            "popularWorks"
+          ],
+          "action": "Technical introduction retained; separate duplicate system list distributed across services and work index."
+        },
+        {
+          "sourceParagraphRange": [
+            617,
+            629
+          ],
+          "destination": [
+            "serviceGrid.items",
+            "editorialContent.blocks"
+          ],
+          "action": "Every source service group retained. Additional diagnostics condensed in card details; duplicate KAMAZ driveline explanation merged into the corresponding feature."
+        },
+        {
+          "sourceParagraphRange": [
+            630,
+            646
+          ],
+          "destination": [
+            "popularWorks.items"
+          ],
+          "action": "All operations retained in source order; neutral section title replaces unverified popularity label."
+        },
+        {
+          "sourceParagraphRange": [
+            647,
+            648
+          ],
+          "destination": [
+            "modelRange.items",
+            "modelRange.note"
+          ],
+          "action": "All named models retained; no unprovided model names added."
+        },
+        {
+          "sourceParagraphRange": [
+            649,
+            663
+          ],
+          "destination": [
+            "editorialContent.blocks",
+            "faq.items[0]",
+            "symptoms.items"
+          ],
+          "action": "Features and technical FAQ merged by topic. Unique mechanisms, diagnostic checks and intake inputs retained; practical commercial FAQ uses current project sources."
+        }
+      ],
+      "technicalFaqPreserved": [
+        {
+          "question": "Почему при ремонте моста важна его маркировка?",
+          "answer": "Внешне похожие мосты могут отличаться редуктором, передаточным отношением и внутренними деталями.",
+          "sourceParagraphs": [
+            657,
+            658
+          ]
+        },
+        {
+          "question": "Что проверяют при потере тяги под нагрузкой?",
+          "answer": "Сначала определяют, теряет ли мощность сам двигатель или проблема возникает уже в трансмиссии.",
+          "sourceParagraphs": [
+            659,
+            660
+          ]
+        },
+        {
+          "question": "Почему ошибка SCR может возвращаться после замены датчика?",
+          "answer": "Причина может быть в проводке, питании, системе дозирования или другом параметре системы нейтрализации.",
+          "sourceParagraphs": [
+            661,
+            662
+          ]
+        }
+      ],
+      "editorialNotes": []
+    },
+    {
+      "brand": "Hyundai",
+      "file": "src/data/internal-pages/brand-hyundai.json",
+      "route": "remont/hyundai",
+      "sourceParagraphRange": [
+        664,
+        724
+      ],
+      "sourceCounts": {
+        "serviceGroups": 6,
+        "popularWorks": 15,
+        "features": 3,
+        "faq": 3
+      },
+      "publishedCounts": {
+        "serviceGroups": 6,
+        "popularWorks": 15,
+        "features": 3,
+        "faq": 3,
+        "symptoms": 3
+      },
+      "models": [
+        "Hyundai HD",
+        "Hyundai Mighty"
+      ],
+      "sourceSystemList": [
+        "дизельный двигатель",
+        "Common Rail",
+        "турбонаддув",
+        "КПП и сцепление",
+        "карданный вал",
+        "ведущий мост",
+        "ходовая часть",
+        "рулевое управление",
+        "тормозная система",
+        "автоэлектрика"
+      ],
+      "mapping": [
+        {
+          "sourceParagraphRange": [
+            665,
+            666
+          ],
+          "destination": [
+            "hero.h1",
+            "hero.lead",
+            "serviceGrid",
+            "popularWorks",
+            "modelRange"
+          ],
+          "action": "Lead shortened; unique vehicle types and systems retained in their detailed sections."
+        },
+        {
+          "sourceParagraphRange": [
+            667,
+            678
+          ],
+          "destination": [
+            "editorialContent.lead",
+            "serviceGrid",
+            "popularWorks"
+          ],
+          "action": "Technical introduction retained; separate duplicate system list distributed across services and work index."
+        },
+        {
+          "sourceParagraphRange": [
+            679,
+            691
+          ],
+          "destination": [
+            "serviceGrid.items",
+            "editorialContent.blocks"
+          ],
+          "action": "Every source service group retained. Additional diagnostics condensed in card details; duplicate KAMAZ driveline explanation merged into the corresponding feature."
+        },
+        {
+          "sourceParagraphRange": [
+            692,
+            707
+          ],
+          "destination": [
+            "popularWorks.items"
+          ],
+          "action": "All operations retained in source order; neutral section title replaces unverified popularity label."
+        },
+        {
+          "sourceParagraphRange": [
+            708,
+            709
+          ],
+          "destination": [
+            "modelRange.items",
+            "modelRange.note"
+          ],
+          "action": "All named models retained; no unprovided model names added."
+        },
+        {
+          "sourceParagraphRange": [
+            710,
+            724
+          ],
+          "destination": [
+            "editorialContent.blocks",
+            "faq.items[0]",
+            "symptoms.items"
+          ],
+          "action": "Features and technical FAQ merged by topic. Unique mechanisms, diagnostic checks and intake inputs retained; practical commercial FAQ uses current project sources."
+        }
+      ],
+      "technicalFaqPreserved": [
+        {
+          "question": "Почему автомобиль может плохо запускаться при исправных форсунках?",
+          "answer": "Причина может быть в недостаточном давлении топлива, датчиках или электропитании системы управления.",
+          "sourceParagraphs": [
+            718,
+            719
+          ]
+        },
+        {
+          "question": "Почему вибрация после замены крестовины может остаться?",
+          "answer": "Если есть износ шлицев, подвесной опоры или проблема балансировки вала, замена одной крестовины не устранит симптом.",
+          "sourceParagraphs": [
+            720,
+            721
+          ]
+        },
+        {
+          "question": "Какие данные нужны для заказа деталей?",
+          "answer": "VIN, модель, год выпуска и маркировка двигателя или трансмиссии.",
+          "sourceParagraphs": [
+            722,
+            723
+          ]
+        }
+      ],
+      "editorialNotes": []
+    },
+    {
+      "brand": "Isuzu",
+      "file": "src/data/internal-pages/brand-isuzu.json",
+      "route": "remont/isuzu",
+      "sourceParagraphRange": [
+        725,
+        785
+      ],
+      "sourceCounts": {
+        "serviceGroups": 6,
+        "popularWorks": 15,
+        "features": 3,
+        "faq": 3
+      },
+      "publishedCounts": {
+        "serviceGroups": 6,
+        "popularWorks": 15,
+        "features": 3,
+        "faq": 3,
+        "symptoms": 3
+      },
+      "models": [
+        "N-серия",
+        "F-серия"
+      ],
+      "sourceSystemList": [
+        "двигатель",
+        "Common Rail",
+        "турбонаддув",
+        "КПП",
+        "сцепление",
+        "карданная передача",
+        "ведущий мост",
+        "ходовая",
+        "тормоза",
+        "автоэлектрика"
+      ],
+      "mapping": [
+        {
+          "sourceParagraphRange": [
+            726,
+            727
+          ],
+          "destination": [
+            "hero.h1",
+            "hero.lead",
+            "serviceGrid",
+            "popularWorks",
+            "modelRange"
+          ],
+          "action": "Lead shortened; unique vehicle types and systems retained in their detailed sections."
+        },
+        {
+          "sourceParagraphRange": [
+            728,
+            739
+          ],
+          "destination": [
+            "editorialContent.lead",
+            "serviceGrid",
+            "popularWorks"
+          ],
+          "action": "Technical introduction retained; separate duplicate system list distributed across services and work index."
+        },
+        {
+          "sourceParagraphRange": [
+            740,
+            752
+          ],
+          "destination": [
+            "serviceGrid.items",
+            "editorialContent.blocks"
+          ],
+          "action": "Every source service group retained. Additional diagnostics condensed in card details; duplicate KAMAZ driveline explanation merged into the corresponding feature."
+        },
+        {
+          "sourceParagraphRange": [
+            753,
+            768
+          ],
+          "destination": [
+            "popularWorks.items"
+          ],
+          "action": "All operations retained in source order; neutral section title replaces unverified popularity label."
+        },
+        {
+          "sourceParagraphRange": [
+            769,
+            770
+          ],
+          "destination": [
+            "modelRange.items",
+            "modelRange.note"
+          ],
+          "action": "All named models retained; no unprovided model names added."
+        },
+        {
+          "sourceParagraphRange": [
+            771,
+            785
+          ],
+          "destination": [
+            "editorialContent.blocks",
+            "faq.items[0]",
+            "symptoms.items"
+          ],
+          "action": "Features and technical FAQ merged by topic. Unique mechanisms, diagnostic checks and intake inputs retained; practical commercial FAQ uses current project sources."
+        }
+      ],
+      "technicalFaqPreserved": [
+        {
+          "question": "Почему при плохом запуске проверяется давление топлива?",
+          "answer": "Common Rail должен создать необходимое давление ещё во время прокрутки стартером. Если давление не достигает нужного уровня, двигатель может не запуститься даже при исправной механической части.",
+          "sourceParagraphs": [
+            779,
+            780
+          ]
+        },
+        {
+          "question": "Почему модель Isuzu не всегда точно определяет двигатель?",
+          "answer": "В зависимости от года и исполнения одной серии могут использоваться разные силовые агрегаты.",
+          "sourceParagraphs": [
+            781,
+            782
+          ]
+        },
+        {
+          "question": "Почему при ремонте тормозов важно знать полное исполнение шасси?",
+          "answer": "У разных классов Isuzu применяется разная архитектура тормозной системы.",
+          "sourceParagraphs": [
+            783,
+            784
+          ]
+        }
+      ],
+      "editorialNotes": []
+    },
+    {
+      "brand": "Iveco",
+      "file": "src/data/internal-pages/brand-iveco.json",
+      "route": "remont/iveco",
+      "sourceParagraphRange": [
+        786,
+        847
+      ],
+      "sourceCounts": {
+        "serviceGroups": 6,
+        "popularWorks": 16,
+        "features": 3,
+        "faq": 3
+      },
+      "publishedCounts": {
+        "serviceGroups": 6,
+        "popularWorks": 16,
+        "features": 3,
+        "faq": 3,
+        "symptoms": 2
+      },
+      "models": [
+        "Daily",
+        "Eurocargo",
+        "Stralis",
+        "Trakker",
+        "S-Way",
+        "T-Way"
+      ],
+      "sourceSystemList": [
+        "двигатель",
+        "Common Rail",
+        "турбонаддув",
+        "КПП и сцепление",
+        "ведущие мосты",
+        "ходовая часть",
+        "пневматика",
+        "EBS",
+        "автоэлектрика",
+        "SCR/AdBlue"
+      ],
+      "mapping": [
+        {
+          "sourceParagraphRange": [
+            787,
+            788
+          ],
+          "destination": [
+            "hero.h1",
+            "hero.lead",
+            "serviceGrid",
+            "popularWorks",
+            "modelRange"
+          ],
+          "action": "Lead shortened; unique vehicle types and systems retained in their detailed sections."
+        },
+        {
+          "sourceParagraphRange": [
+            789,
+            800
+          ],
+          "destination": [
+            "editorialContent.lead",
+            "serviceGrid",
+            "popularWorks"
+          ],
+          "action": "Technical introduction retained; separate duplicate system list distributed across services and work index."
+        },
+        {
+          "sourceParagraphRange": [
+            801,
+            813
+          ],
+          "destination": [
+            "serviceGrid.items",
+            "editorialContent.blocks"
+          ],
+          "action": "Every source service group retained. Additional diagnostics condensed in card details; duplicate KAMAZ driveline explanation merged into the corresponding feature."
+        },
+        {
+          "sourceParagraphRange": [
+            814,
+            830
+          ],
+          "destination": [
+            "popularWorks.items"
+          ],
+          "action": "All operations retained in source order; neutral section title replaces unverified popularity label."
+        },
+        {
+          "sourceParagraphRange": [
+            831,
+            832
+          ],
+          "destination": [
+            "modelRange.items",
+            "modelRange.note"
+          ],
+          "action": "All named models retained; no unprovided model names added."
+        },
+        {
+          "sourceParagraphRange": [
+            833,
+            847
+          ],
+          "destination": [
+            "editorialContent.blocks",
+            "faq.items[0]",
+            "symptoms.items"
+          ],
+          "action": "Features and technical FAQ merged by topic. Unique mechanisms, diagnostic checks and intake inputs retained; practical commercial FAQ uses current project sources."
+        }
+      ],
+      "technicalFaqPreserved": [
+        {
+          "question": "Почему ошибки EGR и SCR могут сопровождаться снижением тяги?",
+          "answer": "Электронный блок двигателя может ограничивать крутящий момент при выходе параметров системы выпуска за допустимые значения.",
+          "sourceParagraphs": [
+            841,
+            842
+          ]
+        },
+        {
+          "question": "Почему при неисправности роботизированной КПП проверяют сцепление?",
+          "answer": "Состояние сцепления непосредственно влияет на момент включения передачи и работу исполнительных механизмов.",
+          "sourceParagraphs": [
+            843,
+            844
+          ]
+        },
+        {
+          "question": "Почему VIN особенно важен для Iveco?",
+          "answer": "В пределах одной модели встречается большое количество вариантов двигателя, шасси и трансмиссии.",
+          "sourceParagraphs": [
+            845,
+            846
+          ]
+        }
+      ],
+      "editorialNotes": []
+    },
+    {
+      "brand": "JAC",
+      "file": "src/data/internal-pages/brand-jac.json",
+      "route": "remont/jac",
+      "sourceParagraphRange": [
+        848,
+        909
+      ],
+      "sourceCounts": {
+        "serviceGroups": 6,
+        "popularWorks": 15,
+        "features": 3,
+        "faq": 3
+      },
+      "publishedCounts": {
+        "serviceGroups": 6,
+        "popularWorks": 15,
+        "features": 3,
+        "faq": 3,
+        "symptoms": 3
+      },
+      "models": [
+        "JAC N-серия"
+      ],
+      "sourceSystemList": [
+        "двигатель",
+        "Common Rail",
+        "турбонаддув",
+        "КПП и сцепление",
+        "карданный вал",
+        "ведущий мост",
+        "ходовая",
+        "тормоза",
+        "ABS",
+        "автоэлектрика",
+        "SCR/AdBlue"
+      ],
+      "mapping": [
+        {
+          "sourceParagraphRange": [
+            849,
+            850
+          ],
+          "destination": [
+            "hero.h1",
+            "hero.lead",
+            "serviceGrid",
+            "popularWorks",
+            "modelRange"
+          ],
+          "action": "Lead shortened; unique vehicle types and systems retained in their detailed sections."
+        },
+        {
+          "sourceParagraphRange": [
+            851,
+            863
+          ],
+          "destination": [
+            "editorialContent.lead",
+            "serviceGrid",
+            "popularWorks"
+          ],
+          "action": "Technical introduction retained; separate duplicate system list distributed across services and work index."
+        },
+        {
+          "sourceParagraphRange": [
+            864,
+            876
+          ],
+          "destination": [
+            "serviceGrid.items",
+            "editorialContent.blocks"
+          ],
+          "action": "Every source service group retained. Additional diagnostics condensed in card details; duplicate KAMAZ driveline explanation merged into the corresponding feature."
+        },
+        {
+          "sourceParagraphRange": [
+            877,
+            892
+          ],
+          "destination": [
+            "popularWorks.items"
+          ],
+          "action": "All operations retained in source order; neutral section title replaces unverified popularity label."
+        },
+        {
+          "sourceParagraphRange": [
+            893,
+            894
+          ],
+          "destination": [
+            "modelRange.items",
+            "modelRange.note"
+          ],
+          "action": "All named models retained; no unprovided model names added."
+        },
+        {
+          "sourceParagraphRange": [
+            895,
+            909
+          ],
+          "destination": [
+            "editorialContent.blocks",
+            "faq.items[0]",
+            "symptoms.items"
+          ],
+          "action": "Features and technical FAQ merged by topic. Unique mechanisms, diagnostic checks and intake inputs retained; practical commercial FAQ uses current project sources."
+        }
+      ],
+      "technicalFaqPreserved": [
+        {
+          "question": "Почему при заказе деталей двигателя нужен его номер?",
+          "answer": "Внешне одинаковые автомобили могут комплектоваться разными версиями двигателя.",
+          "sourceParagraphs": [
+            903,
+            904
+          ]
+        },
+        {
+          "question": "Почему вибрация может зависеть от загрузки автомобиля?",
+          "answer": "Под нагрузкой изменяются углы и усилия в карданной передаче и ведущем мосту, поэтому изношенный узел может проявлять себя сильнее.",
+          "sourceParagraphs": [
+            905,
+            906
+          ]
+        },
+        {
+          "question": "Почему ошибка датчика иногда пропадает после перезапуска?",
+          "answer": "При нестабильном контакте или питании блок может фиксировать кратковременный сбой, который исчезает после выключения зажигания, но причина остаётся.",
+          "sourceParagraphs": [
+            907,
+            908
+          ]
+        }
+      ],
+      "editorialNotes": []
+    },
+    {
+      "brand": "MAN",
+      "file": "src/data/internal-pages/brand-man.json",
+      "route": "remont/man",
+      "sourceParagraphRange": [
+        910,
+        970
+      ],
+      "sourceCounts": {
+        "serviceGroups": 6,
+        "popularWorks": 15,
+        "features": 3,
+        "faq": 3
+      },
+      "publishedCounts": {
+        "serviceGroups": 6,
+        "popularWorks": 15,
+        "features": 3,
+        "faq": 3,
+        "symptoms": 3
+      },
+      "models": [
+        "TGL",
+        "TGM",
+        "TGS",
+        "TGX"
+      ],
+      "sourceSystemList": [
+        "двигатель",
+        "топливная система",
+        "турбонаддув",
+        "КПП TipMatic",
+        "сцепление",
+        "ведущие мосты",
+        "пневмоподвеска",
+        "EBS",
+        "CAN",
+        "SCR/AdBlue"
+      ],
+      "mapping": [
+        {
+          "sourceParagraphRange": [
+            911,
+            912
+          ],
+          "destination": [
+            "hero.h1",
+            "hero.lead",
+            "serviceGrid",
+            "popularWorks",
+            "modelRange"
+          ],
+          "action": "Lead shortened; unique vehicle types and systems retained in their detailed sections."
+        },
+        {
+          "sourceParagraphRange": [
+            913,
+            924
+          ],
+          "destination": [
+            "editorialContent.lead",
+            "serviceGrid",
+            "popularWorks"
+          ],
+          "action": "Technical introduction retained; separate duplicate system list distributed across services and work index."
+        },
+        {
+          "sourceParagraphRange": [
+            925,
+            937
+          ],
+          "destination": [
+            "serviceGrid.items",
+            "editorialContent.blocks"
+          ],
+          "action": "Every source service group retained. Additional diagnostics condensed in card details; duplicate KAMAZ driveline explanation merged into the corresponding feature."
+        },
+        {
+          "sourceParagraphRange": [
+            938,
+            953
+          ],
+          "destination": [
+            "popularWorks.items"
+          ],
+          "action": "All operations retained in source order; neutral section title replaces unverified popularity label."
+        },
+        {
+          "sourceParagraphRange": [
+            954,
+            955
+          ],
+          "destination": [
+            "modelRange.items",
+            "modelRange.note"
+          ],
+          "action": "All named models retained; no unprovided model names added."
+        },
+        {
+          "sourceParagraphRange": [
+            956,
+            970
+          ],
+          "destination": [
+            "editorialContent.blocks",
+            "faq.items[0]",
+            "symptoms.items"
+          ],
+          "action": "Features and technical FAQ merged by topic. Unique mechanisms, diagnostic checks and intake inputs retained; practical commercial FAQ uses current project sources."
+        }
+      ],
+      "technicalFaqPreserved": [
+        {
+          "question": "Почему TipMatic может переключаться плохо при исправной механической коробке?",
+          "answer": "На переключение влияют состояние сцепления, работа исполнительных механизмов и корректные данные датчиков.",
+          "sourceParagraphs": [
+            964,
+            965
+          ]
+        },
+        {
+          "question": "Почему несколько ошибок MAN могут появиться одновременно?",
+          "answer": "Блоки связаны по CAN и используют общие цепи питания. Одна электрическая неисправность способна затронуть сразу несколько систем.",
+          "sourceParagraphs": [
+            966,
+            967
+          ]
+        },
+        {
+          "question": "Почему пневмоподвеска может опускаться без явной утечки в баллоне?",
+          "answer": "Причина может находиться в клапане, соединении, магистрали или системе управления уровнем.",
+          "sourceParagraphs": [
+            968,
+            969
+          ]
+        }
+      ],
+      "editorialNotes": []
+    },
+    {
+      "brand": "Mercedes-Benz",
+      "file": "src/data/internal-pages/brand-mercedes-benz.json",
+      "route": "remont/mercedes-benz",
+      "sourceParagraphRange": [
+        971,
+        1029
+      ],
+      "sourceCounts": {
+        "serviceGroups": 6,
+        "popularWorks": 13,
+        "features": 3,
+        "faq": 3
+      },
+      "publishedCounts": {
+        "serviceGroups": 6,
+        "popularWorks": 13,
+        "features": 3,
+        "faq": 3,
+        "symptoms": 3
+      },
+      "models": [
+        "Actros",
+        "Arocs",
+        "Atego",
+        "Axor"
+      ],
+      "sourceSystemList": [
+        "двигатель",
+        "топливная система",
+        "КПП",
+        "сцепление",
+        "карданная передача",
+        "ведущие мосты",
+        "пневматика",
+        "EBS",
+        "автоэлектрика",
+        "SCR/AdBlue"
+      ],
+      "mapping": [
+        {
+          "sourceParagraphRange": [
+            972,
+            973
+          ],
+          "destination": [
+            "hero.h1",
+            "hero.lead",
+            "serviceGrid",
+            "popularWorks",
+            "modelRange"
+          ],
+          "action": "Lead shortened; unique vehicle types and systems retained in their detailed sections."
+        },
+        {
+          "sourceParagraphRange": [
+            974,
+            985
+          ],
+          "destination": [
+            "editorialContent.lead",
+            "serviceGrid",
+            "popularWorks"
+          ],
+          "action": "Technical introduction retained; separate duplicate system list distributed across services and work index."
+        },
+        {
+          "sourceParagraphRange": [
+            986,
+            998
+          ],
+          "destination": [
+            "serviceGrid.items",
+            "editorialContent.blocks"
+          ],
+          "action": "Every source service group retained. Additional diagnostics condensed in card details; duplicate KAMAZ driveline explanation merged into the corresponding feature."
+        },
+        {
+          "sourceParagraphRange": [
+            999,
+            1012
+          ],
+          "destination": [
+            "popularWorks.items"
+          ],
+          "action": "All operations retained in source order; neutral section title replaces unverified popularity label."
+        },
+        {
+          "sourceParagraphRange": [
+            1013,
+            1014
+          ],
+          "destination": [
+            "modelRange.items",
+            "modelRange.note"
+          ],
+          "action": "All named models retained; no unprovided model names added."
+        },
+        {
+          "sourceParagraphRange": [
+            1015,
+            1029
+          ],
+          "destination": [
+            "editorialContent.blocks",
+            "faq.items[0]",
+            "symptoms.items"
+          ],
+          "action": "Features and technical FAQ merged by topic. Unique mechanisms, diagnostic checks and intake inputs retained; practical commercial FAQ uses current project sources."
+        }
+      ],
+      "technicalFaqPreserved": [
+        {
+          "question": "Почему коробка может работать рывками без внутренних повреждений?",
+          "answer": "Причина может находиться в сцеплении, исполнительном приводе или некорректных параметрах управления.",
+          "sourceParagraphs": [
+            1023,
+            1024
+          ]
+        },
+        {
+          "question": "Почему одна утечка воздуха влияет на несколько систем?",
+          "answer": "Пневматика грузовика обслуживает несколько контуров, поэтому падение давления может отражаться на тормозах, подвеске и других потребителях.",
+          "sourceParagraphs": [
+            1025,
+            1026
+          ]
+        },
+        {
+          "question": "Почему после замены компонента AdBlue ошибку нужно перепроверять диагностикой?",
+          "answer": "Необходимо убедиться, что фактические параметры системы вернулись в рабочий диапазон и нет связанных неисправностей.",
+          "sourceParagraphs": [
+            1027,
+            1028
+          ]
+        }
+      ],
+      "editorialNotes": []
+    },
+    {
+      "brand": "Mitsubishi Fuso",
+      "file": "src/data/internal-pages/brand-mitsubishi-fuso.json",
+      "route": "remont/mitsubishi-fuso",
+      "sourceParagraphRange": [
+        1030,
+        1090
+      ],
+      "sourceCounts": {
+        "serviceGroups": 6,
+        "popularWorks": 15,
+        "features": 3,
+        "faq": 3
+      },
+      "publishedCounts": {
+        "serviceGroups": 6,
+        "popularWorks": 15,
+        "features": 3,
+        "faq": 3,
+        "symptoms": 3
+      },
+      "models": [
+        "Canter"
+      ],
+      "sourceSystemList": [
+        "дизельный двигатель",
+        "Common Rail",
+        "турбонаддув",
+        "КПП",
+        "сцепление",
+        "карданная передача",
+        "ведущий мост",
+        "ходовая",
+        "тормоза",
+        "автоэлектрика"
+      ],
+      "mapping": [
+        {
+          "sourceParagraphRange": [
+            1031,
+            1032
+          ],
+          "destination": [
+            "hero.h1",
+            "hero.lead",
+            "serviceGrid",
+            "popularWorks",
+            "modelRange"
+          ],
+          "action": "Lead shortened; unique vehicle types and systems retained in their detailed sections."
+        },
+        {
+          "sourceParagraphRange": [
+            1033,
+            1044
+          ],
+          "destination": [
+            "editorialContent.lead",
+            "serviceGrid",
+            "popularWorks"
+          ],
+          "action": "Technical introduction retained; separate duplicate system list distributed across services and work index."
+        },
+        {
+          "sourceParagraphRange": [
+            1045,
+            1057
+          ],
+          "destination": [
+            "serviceGrid.items",
+            "editorialContent.blocks"
+          ],
+          "action": "Every source service group retained. Additional diagnostics condensed in card details; duplicate KAMAZ driveline explanation merged into the corresponding feature."
+        },
+        {
+          "sourceParagraphRange": [
+            1058,
+            1073
+          ],
+          "destination": [
+            "popularWorks.items"
+          ],
+          "action": "All operations retained in source order; neutral section title replaces unverified popularity label."
+        },
+        {
+          "sourceParagraphRange": [
+            1074,
+            1075
+          ],
+          "destination": [
+            "modelRange.items",
+            "modelRange.note"
+          ],
+          "action": "All named models retained; no unprovided model names added."
+        },
+        {
+          "sourceParagraphRange": [
+            1076,
+            1090
+          ],
+          "destination": [
+            "editorialContent.blocks",
+            "faq.items[0]",
+            "symptoms.items"
+          ],
+          "action": "Features and technical FAQ merged by topic. Unique mechanisms, diagnostic checks and intake inputs retained; practical commercial FAQ uses current project sources."
+        }
+      ],
+      "technicalFaqPreserved": [
+        {
+          "question": "Почему неисправность форсунки нельзя определять только по коррекциям?",
+          "answer": "Коррекции являются частью диагностической картины. Дополнительно проверяются давление топлива, обратный слив и другие параметры системы.",
+          "sourceParagraphs": [
+            1084,
+            1085
+          ]
+        },
+        {
+          "question": "Почему вибрация может усиливаться с грузом?",
+          "answer": "Под нагрузкой возрастает усилие в трансмиссии и меняется работа карданных соединений.",
+          "sourceParagraphs": [
+            1086,
+            1087
+          ]
+        },
+        {
+          "question": "Почему для Canter важно учитывать поколение автомобиля?",
+          "answer": "У разных поколений отличаются двигатели, электроника и отдельные элементы шасси.",
+          "sourceParagraphs": [
+            1088,
+            1089
+          ]
+        }
+      ],
+      "editorialNotes": [
+        "Removed unsupported market-share generalisation from the introduction; service scope retained."
+      ]
+    },
+    {
+      "brand": "Renault Trucks",
+      "file": "src/data/internal-pages/brand-renault-trucks.json",
+      "route": "remont/renault-trucks",
+      "sourceParagraphRange": [
+        1091,
+        1149
+      ],
+      "sourceCounts": {
+        "serviceGroups": 6,
+        "popularWorks": 13,
+        "features": 3,
+        "faq": 3
+      },
+      "publishedCounts": {
+        "serviceGroups": 6,
+        "popularWorks": 13,
+        "features": 3,
+        "faq": 3,
+        "symptoms": 3
+      },
+      "models": [
+        "T",
+        "C",
+        "K",
+        "D"
+      ],
+      "sourceSystemList": [
+        "двигатель",
+        "Common Rail",
+        "турбонаддув",
+        "автоматизированная КПП",
+        "сцепление",
+        "ведущий мост",
+        "пневмоподвеска",
+        "EBS",
+        "CAN",
+        "SCR/AdBlue"
+      ],
+      "mapping": [
+        {
+          "sourceParagraphRange": [
+            1092,
+            1093
+          ],
+          "destination": [
+            "hero.h1",
+            "hero.lead",
+            "serviceGrid",
+            "popularWorks",
+            "modelRange"
+          ],
+          "action": "Lead shortened; unique vehicle types and systems retained in their detailed sections."
+        },
+        {
+          "sourceParagraphRange": [
+            1094,
+            1105
+          ],
+          "destination": [
+            "editorialContent.lead",
+            "serviceGrid",
+            "popularWorks"
+          ],
+          "action": "Technical introduction retained; separate duplicate system list distributed across services and work index."
+        },
+        {
+          "sourceParagraphRange": [
+            1106,
+            1118
+          ],
+          "destination": [
+            "serviceGrid.items",
+            "editorialContent.blocks"
+          ],
+          "action": "Every source service group retained. Additional diagnostics condensed in card details; duplicate KAMAZ driveline explanation merged into the corresponding feature."
+        },
+        {
+          "sourceParagraphRange": [
+            1119,
+            1132
+          ],
+          "destination": [
+            "popularWorks.items"
+          ],
+          "action": "All operations retained in source order; neutral section title replaces unverified popularity label."
+        },
+        {
+          "sourceParagraphRange": [
+            1133,
+            1134
+          ],
+          "destination": [
+            "modelRange.items",
+            "modelRange.note"
+          ],
+          "action": "All named models retained; no unprovided model names added."
+        },
+        {
+          "sourceParagraphRange": [
+            1135,
+            1149
+          ],
+          "destination": [
+            "editorialContent.blocks",
+            "faq.items[0]",
+            "symptoms.items"
+          ],
+          "action": "Features and technical FAQ merged by topic. Unique mechanisms, diagnostic checks and intake inputs retained; practical commercial FAQ uses current project sources."
+        }
+      ],
+      "technicalFaqPreserved": [
+        {
+          "question": "Почему при проблеме переключения важно смотреть параметры сцепления?",
+          "answer": "Положение и состояние сцепления влияют на работу автоматизированной коробки.",
+          "sourceParagraphs": [
+            1143,
+            1144
+          ]
+        },
+        {
+          "question": "Почему одна электрическая неисправность может дать несколько ошибок?",
+          "answer": "Блоки обмениваются данными по общей сети и часто используют общие цепи питания.",
+          "sourceParagraphs": [
+            1145,
+            1146
+          ]
+        },
+        {
+          "question": "Почему ошибку SCR нельзя оценивать только по одному датчику?",
+          "answer": "Система состоит из нескольких взаимосвязанных компонентов, и отклонение одного параметра может быть следствием другой неисправности.",
+          "sourceParagraphs": [
+            1147,
+            1148
+          ]
+        }
+      ],
+      "editorialNotes": []
+    },
+    {
+      "brand": "SANY",
+      "file": "src/data/internal-pages/brand-sany.json",
+      "route": "remont/sany",
+      "sourceParagraphRange": [
+        1150,
+        1205
+      ],
+      "sourceCounts": {
+        "serviceGroups": 5,
+        "popularWorks": 13,
+        "features": 3,
+        "faq": 3
+      },
+      "publishedCounts": {
+        "serviceGroups": 5,
+        "popularWorks": 13,
+        "features": 3,
+        "faq": 3,
+        "symptoms": 3
+      },
+      "models": [],
+      "sourceSystemList": [
+        "дизельный двигатель",
+        "топливная система",
+        "КПП и трансмиссия",
+        "ведущие мосты",
+        "ходовая часть",
+        "гидравлика",
+        "тормоза",
+        "электрооборудование",
+        "рабочие механизмы"
+      ],
+      "mapping": [
+        {
+          "sourceParagraphRange": [
+            1151,
+            1152
+          ],
+          "destination": [
+            "hero.h1",
+            "hero.lead",
+            "serviceGrid",
+            "popularWorks",
+            "modelRange"
+          ],
+          "action": "Lead shortened; unique vehicle types and systems retained in their detailed sections."
+        },
+        {
+          "sourceParagraphRange": [
+            1153,
+            1163
+          ],
+          "destination": [
+            "editorialContent.lead",
+            "serviceGrid",
+            "popularWorks"
+          ],
+          "action": "Technical introduction retained; separate duplicate system list distributed across services and work index."
+        },
+        {
+          "sourceParagraphRange": [
+            1164,
+            1174
+          ],
+          "destination": [
+            "serviceGrid.items",
+            "editorialContent.blocks"
+          ],
+          "action": "Every source service group retained. Additional diagnostics condensed in card details; duplicate KAMAZ driveline explanation merged into the corresponding feature."
+        },
+        {
+          "sourceParagraphRange": [
+            1175,
+            1188
+          ],
+          "destination": [
+            "popularWorks.items"
+          ],
+          "action": "All operations retained in source order; neutral section title replaces unverified popularity label."
+        },
+        {
+          "sourceParagraphRange": [
+            1189,
+            1190
+          ],
+          "destination": [
+            "modelRange.items",
+            "modelRange.note"
+          ],
+          "action": "All named models retained; no unprovided model names added."
+        },
+        {
+          "sourceParagraphRange": [
+            1191,
+            1205
+          ],
+          "destination": [
+            "editorialContent.blocks",
+            "faq.items[0]",
+            "symptoms.items"
+          ],
+          "action": "Features and technical FAQ merged by topic. Unique mechanisms, diagnostic checks and intake inputs retained; practical commercial FAQ uses current project sources."
+        }
+      ],
+      "technicalFaqPreserved": [
+        {
+          "question": "Почему при слабой гидравлике не стоит сразу менять насос?",
+          "answer": "Падение производительности может возникать из-за распределителя, цилиндра, клапана или внутренней утечки в другом участке системы.",
+          "sourceParagraphs": [
+            1199,
+            1200
+          ]
+        },
+        {
+          "question": "Что нужно знать перед заказом агрегатной детали?",
+          "answer": "Модель техники, VIN или серийный номер и маркировку конкретного двигателя, КПП или гидравлического узла.",
+          "sourceParagraphs": [
+            1201,
+            1202
+          ]
+        },
+        {
+          "question": "Почему гидравлическая и электронная диагностика часто выполняются одновременно?",
+          "answer": "Электронный блок может управлять производительностью насосов и клапанов, поэтому электрическая неисправность способна проявляться как проблема гидравлики.",
+          "sourceParagraphs": [
+            1203,
+            1204
+          ]
+        }
+      ],
+      "editorialNotes": [
+        "SANY explicitly separated into truck chassis and special machinery; no models invented."
+      ]
+    },
+    {
+      "brand": "Scania",
+      "file": "src/data/internal-pages/brand-scania.json",
+      "route": "remont/scania",
+      "sourceParagraphRange": [
+        1206,
+        1265
+      ],
+      "sourceCounts": {
+        "serviceGroups": 6,
+        "popularWorks": 14,
+        "features": 3,
+        "faq": 3
+      },
+      "publishedCounts": {
+        "serviceGroups": 6,
+        "popularWorks": 14,
+        "features": 3,
+        "faq": 3,
+        "symptoms": 4
+      },
+      "models": [
+        "P",
+        "G",
+        "R",
+        "S"
+      ],
+      "sourceSystemList": [
+        "двигатель",
+        "топливная система",
+        "турбонаддув",
+        "Scania Opticruise",
+        "сцепление",
+        "ведущий мост",
+        "пневмоподвеска",
+        "EBS",
+        "CAN",
+        "SCR/AdBlue"
+      ],
+      "mapping": [
+        {
+          "sourceParagraphRange": [
+            1207,
+            1208
+          ],
+          "destination": [
+            "hero.h1",
+            "hero.lead",
+            "serviceGrid",
+            "popularWorks",
+            "modelRange"
+          ],
+          "action": "Lead shortened; unique vehicle types and systems retained in their detailed sections."
+        },
+        {
+          "sourceParagraphRange": [
+            1209,
+            1220
+          ],
+          "destination": [
+            "editorialContent.lead",
+            "serviceGrid",
+            "popularWorks"
+          ],
+          "action": "Technical introduction retained; separate duplicate system list distributed across services and work index."
+        },
+        {
+          "sourceParagraphRange": [
+            1221,
+            1233
+          ],
+          "destination": [
+            "serviceGrid.items",
+            "editorialContent.blocks"
+          ],
+          "action": "Every source service group retained. Additional diagnostics condensed in card details; duplicate KAMAZ driveline explanation merged into the corresponding feature."
+        },
+        {
+          "sourceParagraphRange": [
+            1234,
+            1248
+          ],
+          "destination": [
+            "popularWorks.items"
+          ],
+          "action": "All operations retained in source order; neutral section title replaces unverified popularity label."
+        },
+        {
+          "sourceParagraphRange": [
+            1249,
+            1250
+          ],
+          "destination": [
+            "modelRange.items",
+            "modelRange.note"
+          ],
+          "action": "All named models retained; no unprovided model names added."
+        },
+        {
+          "sourceParagraphRange": [
+            1251,
+            1265
+          ],
+          "destination": [
+            "editorialContent.blocks",
+            "faq.items[0]",
+            "symptoms.items"
+          ],
+          "action": "Features and technical FAQ merged by topic. Unique mechanisms, diagnostic checks and intake inputs retained; practical commercial FAQ uses current project sources."
+        }
+      ],
+      "technicalFaqPreserved": [
+        {
+          "question": "Почему Opticruise может начать переключаться жёстко без поломки шестерён?",
+          "answer": "Работа коробки зависит от сцепления, актуаторов и корректного положения исполнительных механизмов.",
+          "sourceParagraphs": [
+            1259,
+            1260
+          ]
+        },
+        {
+          "question": "Почему при ошибке двигателя полезно смотреть данные других блоков?",
+          "answer": "Ограничение мощности может быть связано с SCR или другой системой, которая передаёт информацию моторному блоку.",
+          "sourceParagraphs": [
+            1261,
+            1262
+          ]
+        },
+        {
+          "question": "Почему после ремонта пневмоподвески требуется проверить датчики уровня?",
+          "answer": "Неправильный сигнал датчика может заставлять систему поддерживать неверную высоту даже при герметичной пневматике.",
+          "sourceParagraphs": [
+            1263,
+            1264
+          ]
+        }
+      ],
+      "editorialNotes": []
+    },
+    {
+      "brand": "Shacman",
+      "file": "src/data/internal-pages/brand-shacman.json",
+      "route": "remont/shacman",
+      "sourceParagraphRange": [
+        1266,
+        1327
+      ],
+      "sourceCounts": {
+        "serviceGroups": 6,
+        "popularWorks": 15,
+        "features": 3,
+        "faq": 3
+      },
+      "publishedCounts": {
+        "serviceGroups": 6,
+        "popularWorks": 15,
+        "features": 3,
+        "faq": 3,
+        "symptoms": 3
+      },
+      "models": [
+        "F2000",
+        "F3000",
+        "X3000",
+        "X5000",
+        "X6000"
+      ],
+      "sourceSystemList": [
+        "двигатель",
+        "Common Rail",
+        "турбонаддув",
+        "КПП",
+        "сцепление",
+        "карданная передача",
+        "ведущие мосты",
+        "ходовая",
+        "пневматика",
+        "ABS/EBS",
+        "SCR/AdBlue"
+      ],
+      "mapping": [
+        {
+          "sourceParagraphRange": [
+            1267,
+            1268
+          ],
+          "destination": [
+            "hero.h1",
+            "hero.lead",
+            "serviceGrid",
+            "popularWorks",
+            "modelRange"
+          ],
+          "action": "Lead shortened; unique vehicle types and systems retained in their detailed sections."
+        },
+        {
+          "sourceParagraphRange": [
+            1269,
+            1281
+          ],
+          "destination": [
+            "editorialContent.lead",
+            "serviceGrid",
+            "popularWorks"
+          ],
+          "action": "Technical introduction retained; separate duplicate system list distributed across services and work index."
+        },
+        {
+          "sourceParagraphRange": [
+            1282,
+            1294
+          ],
+          "destination": [
+            "serviceGrid.items",
+            "editorialContent.blocks"
+          ],
+          "action": "Every source service group retained. Additional diagnostics condensed in card details; duplicate KAMAZ driveline explanation merged into the corresponding feature."
+        },
+        {
+          "sourceParagraphRange": [
+            1295,
+            1310
+          ],
+          "destination": [
+            "popularWorks.items"
+          ],
+          "action": "All operations retained in source order; neutral section title replaces unverified popularity label."
+        },
+        {
+          "sourceParagraphRange": [
+            1311,
+            1312
+          ],
+          "destination": [
+            "modelRange.items",
+            "modelRange.note"
+          ],
+          "action": "All named models retained; no unprovided model names added."
+        },
+        {
+          "sourceParagraphRange": [
+            1313,
+            1327
+          ],
+          "destination": [
+            "editorialContent.blocks",
+            "faq.items[0]",
+            "symptoms.items"
+          ],
+          "action": "Features and technical FAQ merged by topic. Unique mechanisms, diagnostic checks and intake inputs retained; practical commercial FAQ uses current project sources."
+        }
+      ],
+      "technicalFaqPreserved": [
+        {
+          "question": "Почему при заказе деталей КПП недостаточно сказать «Shacman F3000»?",
+          "answer": "На одной модели могут применяться разные исполнения коробки передач. Нужна маркировка самой КПП.",
+          "sourceParagraphs": [
+            1321,
+            1322
+          ]
+        },
+        {
+          "question": "Почему гул моста иногда меняется при сбросе газа?",
+          "answer": "Нагрузка на зубчатое зацепление меняется, поэтому характер шума способен зависеть от направления передаваемого момента.",
+          "sourceParagraphs": [
+            1323,
+            1324
+          ]
+        },
+        {
+          "question": "Почему ошибка AdBlue может привести к ограничению мощности?",
+          "answer": "Система управления двигателем контролирует эффективность SCR и при определённых неисправностях способна вводить ограничение крутящего момента.",
+          "sourceParagraphs": [
+            1325,
+            1326
+          ]
+        }
+      ],
+      "editorialNotes": []
+    },
+    {
+      "brand": "Sitrak",
+      "file": "src/data/internal-pages/brand-sitrak.json",
+      "route": "remont/sitrak",
+      "sourceParagraphRange": [
+        1328,
+        1386
+      ],
+      "sourceCounts": {
+        "serviceGroups": 6,
+        "popularWorks": 13,
+        "features": 3,
+        "faq": 3
+      },
+      "publishedCounts": {
+        "serviceGroups": 6,
+        "popularWorks": 13,
+        "features": 3,
+        "faq": 3,
+        "symptoms": 3
+      },
+      "models": [],
+      "sourceSystemList": [
+        "двигатель",
+        "Common Rail",
+        "турбонаддув",
+        "автоматизированная КПП",
+        "сцепление",
+        "карданная передача",
+        "ведущие мосты",
+        "пневмоподвеска",
+        "EBS",
+        "SCR/AdBlue"
+      ],
+      "mapping": [
+        {
+          "sourceParagraphRange": [
+            1329,
+            1330
+          ],
+          "destination": [
+            "hero.h1",
+            "hero.lead",
+            "serviceGrid",
+            "popularWorks",
+            "modelRange"
+          ],
+          "action": "Lead shortened; unique vehicle types and systems retained in their detailed sections."
+        },
+        {
+          "sourceParagraphRange": [
+            1331,
+            1342
+          ],
+          "destination": [
+            "editorialContent.lead",
+            "serviceGrid",
+            "popularWorks"
+          ],
+          "action": "Technical introduction retained; separate duplicate system list distributed across services and work index."
+        },
+        {
+          "sourceParagraphRange": [
+            1343,
+            1355
+          ],
+          "destination": [
+            "serviceGrid.items",
+            "editorialContent.blocks"
+          ],
+          "action": "Every source service group retained. Additional diagnostics condensed in card details; duplicate KAMAZ driveline explanation merged into the corresponding feature."
+        },
+        {
+          "sourceParagraphRange": [
+            1356,
+            1369
+          ],
+          "destination": [
+            "popularWorks.items"
+          ],
+          "action": "All operations retained in source order; neutral section title replaces unverified popularity label."
+        },
+        {
+          "sourceParagraphRange": [
+            1370,
+            1371
+          ],
+          "destination": [
+            "modelRange.items",
+            "modelRange.note"
+          ],
+          "action": "All named models retained; no unprovided model names added."
+        },
+        {
+          "sourceParagraphRange": [
+            1372,
+            1386
+          ],
+          "destination": [
+            "editorialContent.blocks",
+            "faq.items[0]",
+            "symptoms.items"
+          ],
+          "action": "Features and technical FAQ merged by topic. Unique mechanisms, diagnostic checks and intake inputs retained; practical commercial FAQ uses current project sources."
+        }
+      ],
+      "technicalFaqPreserved": [
+        {
+          "question": "Почему неисправность КПП иногда оказывается проблемой сцепления?",
+          "answer": "Электронная коробка рассчитывает момент переключения исходя из положения и состояния сцепления. Неправильная работа сцепления меняет весь процесс переключения.",
+          "sourceParagraphs": [
+            1380,
+            1381
+          ]
+        },
+        {
+          "question": "Почему нужно сохранять коды ошибок до их удаления?",
+          "answer": "История неисправностей и условия их появления помогают определить связь между системами.",
+          "sourceParagraphs": [
+            1382,
+            1383
+          ]
+        },
+        {
+          "question": "Почему одна проблема по питанию способна вызвать несколько предупреждений?",
+          "answer": "Электронные блоки чувствительны к напряжению и используют общие цепи питания.",
+          "sourceParagraphs": [
+            1384,
+            1385
+          ]
+        }
+      ],
+      "editorialNotes": [
+        "No model names supplied; tractor and truck chassis types retained."
+      ]
+    },
+    {
+      "brand": "Volvo",
+      "file": "src/data/internal-pages/brand-volvo.json",
+      "route": "remont/volvo",
+      "sourceParagraphRange": [
+        1387,
+        1448
+      ],
+      "sourceCounts": {
+        "serviceGroups": 6,
+        "popularWorks": 14,
+        "features": 3,
+        "faq": 3
+      },
+      "publishedCounts": {
+        "serviceGroups": 6,
+        "popularWorks": 14,
+        "features": 3,
+        "faq": 3,
+        "symptoms": 4
+      },
+      "models": [
+        "FH",
+        "FM",
+        "FMX",
+        "FE",
+        "FL"
+      ],
+      "sourceSystemList": [
+        "двигатель",
+        "Common Rail",
+        "турбонаддув",
+        "Volvo I-Shift",
+        "сцепление",
+        "карданная передача",
+        "ведущие мосты",
+        "пневмоподвеска",
+        "EBS",
+        "SCR/AdBlue"
+      ],
+      "mapping": [
+        {
+          "sourceParagraphRange": [
+            1388,
+            1389
+          ],
+          "destination": [
+            "hero.h1",
+            "hero.lead",
+            "serviceGrid",
+            "popularWorks",
+            "modelRange"
+          ],
+          "action": "Lead shortened; unique vehicle types and systems retained in their detailed sections."
+        },
+        {
+          "sourceParagraphRange": [
+            1390,
+            1401
+          ],
+          "destination": [
+            "editorialContent.lead",
+            "serviceGrid",
+            "popularWorks"
+          ],
+          "action": "Technical introduction retained; separate duplicate system list distributed across services and work index."
+        },
+        {
+          "sourceParagraphRange": [
+            1402,
+            1414
+          ],
+          "destination": [
+            "serviceGrid.items",
+            "editorialContent.blocks"
+          ],
+          "action": "Every source service group retained. Additional diagnostics condensed in card details; duplicate KAMAZ driveline explanation merged into the corresponding feature."
+        },
+        {
+          "sourceParagraphRange": [
+            1415,
+            1429
+          ],
+          "destination": [
+            "popularWorks.items"
+          ],
+          "action": "All operations retained in source order; neutral section title replaces unverified popularity label."
+        },
+        {
+          "sourceParagraphRange": [
+            1430,
+            1431
+          ],
+          "destination": [
+            "modelRange.items",
+            "modelRange.note"
+          ],
+          "action": "All named models retained; no unprovided model names added."
+        },
+        {
+          "sourceParagraphRange": [
+            1432,
+            1448
+          ],
+          "destination": [
+            "editorialContent.blocks",
+            "faq.items[0]",
+            "symptoms.items"
+          ],
+          "action": "Features and technical FAQ merged by topic. Unique mechanisms, diagnostic checks and intake inputs retained; practical commercial FAQ uses current project sources."
+        }
+      ],
+      "technicalFaqPreserved": [
+        {
+          "question": "Почему I-Shift может начать переключаться хуже по мере износа сцепления?",
+          "answer": "Коробка рассчитывает включение передачи с учётом положения сцепления. Изменение его характеристик влияет на скорость и плавность переключения.",
+          "sourceParagraphs": [
+            1440,
+            1441
+          ]
+        },
+        {
+          "question": "Почему после замены детали SCR ограничение мощности может не исчезнуть сразу?",
+          "answer": "Необходимо проверить, что система действительно вышла на нормальные рабочие параметры и остальные связанные ошибки устранены.",
+          "sourceParagraphs": [
+            1442,
+            1443
+          ]
+        },
+        {
+          "question": "Почему ошибка одного датчика способна повлиять на несколько систем?",
+          "answer": "Электронные блоки Volvo обмениваются данными. Один параметр может одновременно использоваться двигателем, трансмиссией или тормозной системой.",
+          "sourceParagraphs": [
+            1444,
+            1445
+          ]
+        }
+      ],
+      "editorialNotes": []
+    }
+  ]
+}

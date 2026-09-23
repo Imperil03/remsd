@@ -1,7 +1,8 @@
 {
   "schemaVersion": 3,
   "referenceByFamily": {
-    "hub": "remont-gruzovyh-avtomobiley"
+    "hub": "remont-gruzovyh-avtomobiley",
+    "brand": "remont/kamaz"
   },
   "pages": [
     "remont-gruzovyh-avtomobiley.json",
@@ -19,6 +20,29 @@
     "remont-truboukladchikov.json",
     "remont-greyderov.json",
     "remont-dorozhnyh-katkov.json",
-    "remont-traktorov.json"
+    "remont-traktorov.json",
+    "brand-kamaz.json",
+    "brand-maz.json",
+    "brand-ural.json",
+    "brand-daf.json",
+    "brand-dongfeng.json",
+    "brand-faw.json",
+    "brand-foton.json",
+    "brand-gaz.json",
+    "brand-hino.json",
+    "brand-howo.json",
+    "brand-hyundai.json",
+    "brand-isuzu.json",
+    "brand-iveco.json",
+    "brand-jac.json",
+    "brand-man.json",
+    "brand-mercedes-benz.json",
+    "brand-mitsubishi-fuso.json",
+    "brand-renault-trucks.json",
+    "brand-sany.json",
+    "brand-scania.json",
+    "brand-shacman.json",
+    "brand-sitrak.json",
+    "brand-volvo.json"
   ]
 }

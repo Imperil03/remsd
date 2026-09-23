@@ -426,6 +426,126 @@
       "type": "service",
       "name": "Ремонт тракторов",
       "description": "Ремонт тракторов в Сургуте: двигатель, сцепление, КПП, мосты, ВОМ, гидравлика и навеска. Диагностика по конструкции машины и ориентировочные цены."
+    },
+    {
+      "id": "brand-daf",
+      "type": "brand",
+      "name": "DAF",
+      "description": "Грузовые автомобили и техника DAF."
+    },
+    {
+      "id": "brand-dongfeng",
+      "type": "brand",
+      "name": "Dongfeng",
+      "description": "Грузовые автомобили и техника Dongfeng."
+    },
+    {
+      "id": "brand-faw",
+      "type": "brand",
+      "name": "FAW",
+      "description": "Грузовые автомобили и техника FAW."
+    },
+    {
+      "id": "brand-foton",
+      "type": "brand",
+      "name": "Foton",
+      "description": "Грузовые автомобили и техника Foton."
+    },
+    {
+      "id": "brand-gaz",
+      "type": "brand",
+      "name": "ГАЗ",
+      "description": "Грузовые автомобили и техника ГАЗ."
+    },
+    {
+      "id": "brand-hino",
+      "type": "brand",
+      "name": "Hino",
+      "description": "Грузовые автомобили и техника Hino."
+    },
+    {
+      "id": "brand-howo",
+      "type": "brand",
+      "name": "HOWO",
+      "description": "Грузовые автомобили и техника HOWO."
+    },
+    {
+      "id": "brand-hyundai",
+      "type": "brand",
+      "name": "Hyundai",
+      "description": "Грузовые автомобили и техника Hyundai."
+    },
+    {
+      "id": "brand-isuzu",
+      "type": "brand",
+      "name": "Isuzu",
+      "description": "Грузовые автомобили и техника Isuzu."
+    },
+    {
+      "id": "brand-iveco",
+      "type": "brand",
+      "name": "Iveco",
+      "description": "Грузовые автомобили и техника Iveco."
+    },
+    {
+      "id": "brand-jac",
+      "type": "brand",
+      "name": "JAC",
+      "description": "Грузовые автомобили и техника JAC."
+    },
+    {
+      "id": "brand-man",
+      "type": "brand",
+      "name": "MAN",
+      "description": "Грузовые автомобили и техника MAN."
+    },
+    {
+      "id": "brand-mercedes-benz",
+      "type": "brand",
+      "name": "Mercedes-Benz",
+      "description": "Грузовые автомобили и техника Mercedes-Benz."
+    },
+    {
+      "id": "brand-mitsubishi-fuso",
+      "type": "brand",
+      "name": "Mitsubishi Fuso",
+      "description": "Грузовые автомобили и техника Mitsubishi Fuso."
+    },
+    {
+      "id": "brand-renault-trucks",
+      "type": "brand",
+      "name": "Renault Trucks",
+      "description": "Грузовые автомобили и техника Renault Trucks."
+    },
+    {
+      "id": "brand-sany",
+      "type": "brand",
+      "name": "SANY",
+      "description": "Грузовая и специальная техника SANY."
+    },
+    {
+      "id": "brand-scania",
+      "type": "brand",
+      "name": "Scania",
+      "description": "Грузовые автомобили и техника Scania."
+    },
+    {
+      "id": "brand-shacman",
+      "type": "brand",
+      "name": "Shacman",
+      "description": "Грузовые автомобили и техника Shacman."
+    },
+    {
+      "id": "brand-sitrak",
+      "type": "brand",
+      "name": "Sitrak",
+      "description": "Грузовые автомобили и техника Sitrak."
+    },
+    {
+      "id": "brand-volvo",
+      "type": "brand",
+      "name": "Volvo",
+      "description": "Грузовые автомобили и техника Volvo."
     }
   ]
 }

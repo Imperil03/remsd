@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const { transform: transformCss } = require("lightningcss");
 const { loadPageTemplates } = require("./lib/page-templates");
+const { renderOfficialBrands, renderBrandMatrix, renderBrandNavigation } = require("./lib/brand-catalog");
 const {
   loadInternalPageCatalog,
   renderBreadcrumbs: renderCatalogBreadcrumbs,
@@ -18,7 +19,7 @@ const dataDir = path.join(srcDir, "data");
 const templatesDir = path.join(srcDir, "templates");
 const assetsDir = path.join(root, "assets");
 const distDir = path.join(root, "dist");
-const assetVersion = process.env.ASSET_VERSION || "20260923-active-nav-v14";
+const assetVersion = process.env.ASSET_VERSION || "20260923-brand-pages-v15";
 
 function fail(message) {
   throw new Error(`[build] ${message}`);
@@ -412,6 +413,7 @@ function buildStaticPages(staticFiles, partials, config, mode, baseUrl, writtenR
 function buildInternalPages(pages, partials, config, mode, baseUrl, writtenRoutes) {
   const template = fs.readFileSync(path.join(templatesDir, "internal-page.html"), "utf8");
   const internalCriticalFile = path.join(assetsDir, "css", "internal-critical.css");
+  const routeByEntity = new Map(pages.map((page) => [page.entityRef, page.path]));
   for (const page of pages) {
     const target = outputFileForRoute(page.path);
     const rootPath = getRootPath(path.relative(distDir, target));
@@ -434,7 +436,7 @@ function buildInternalPages(pages, partials, config, mode, baseUrl, writtenRoute
       heroCtaLabel: escapeHtml(page.hero.ctaLabel),
       heroFacts: renderCatalogHeroFacts(page.hero),
       breadcrumbs: renderCatalogBreadcrumbs(page, rootPath),
-      sections: page.sections.map((section) => renderCatalogSection(section, rootPath, config.site)).join("\n"),
+      sections: page.sections.map((section) => renderCatalogSection(section, rootPath, config.site, { routeByEntity, currentEntityRef: page.entityRef })).join("\n"),
       closingTitle: escapeHtml(page.closingCta.title),
       closingText: escapeHtml(page.closingCta.text),
       closingButtonLabel: escapeHtml(page.closingCta.buttonLabel),
@@ -489,14 +491,11 @@ function main() {
 
   const partials = readPartials(buildHomeStructuredData(config, baseUrl));
   const brands = loadPageTemplates(dataDir)["repair-v1"].brands;
-  partials["home-official-brands"] = brands.official.map((brand) => `      <li class="v3-brand-card v3-brand-card--official" data-brand="${path.basename(brand.image, ".webp")}">
-        <div class="v3-brand-card__body">
-          <span class="v3-brand-card__logo"><img src="{{rootPath}}${escapeHtml(brand.image)}" alt="" width="220" height="120" loading="lazy" decoding="async"></span>
-          <strong class="v3-brand-card__name">Ремонт ${escapeHtml(brand.name)}</strong>
-          <span class="v3-brand-card__status">Официальный сервис</span>
-        </div>
-      </li>`).join("\n");
-  partials["home-brand-matrix"] = brands.items.map((brand) => `      <li>${escapeHtml(brand)}</li>`).join("\n");
+  const brandContext = { rootPath: "{{rootPath}}", routeByEntity: new Map(internalPages.map((page) => [page.entityRef, page.path])) };
+  partials["home-official-brands"] = renderOfficialBrands(brands, brandContext);
+  partials["home-brand-matrix"] = renderBrandMatrix(brands, brandContext);
+  partials["nav-official-brands"] = renderBrandNavigation(brands, brandContext, true);
+  partials["nav-other-brands"] = renderBrandNavigation(brands, brandContext);
   partials["home-brand-count"] = String(brands.items.length);
   const writtenRoutes = new Set();
   buildStaticPages(staticFiles, partials, config, mode, baseUrl, writtenRoutes);

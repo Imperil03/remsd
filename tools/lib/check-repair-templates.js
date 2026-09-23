@@ -108,6 +108,10 @@ module.exports = function checkRepairTemplates({ root, dataDir, catalog, siteCon
   const equipment = home.match(/<ul class="v3-equipment-grid"[^>]*>([\s\S]*?)<\/ul>/)?.[1] || "";
   for (const contract of specialtyContracts) assert(equipment.includes(`href="./${contract.path}/"`), `${contract.path}: карточка главной не активирована`);
   for (const brand of template.brands.official) assert(home.includes(`Ремонт ${brand.name}`) && home.includes(brand.image));
-  for (const brand of template.brands.items) assert(home.includes(`<li>${brand}</li>`));
+  for (const brand of template.brands.items) {
+    const entityRef = template.brands.entityRefs?.[brand];
+    const destination = catalog.pages.find((page) => page.entityRef === entityRef);
+    assert(home.includes(destination ? `href="./${destination.path}/" aria-label="Ремонт ${brand}">${brand}</a>` : `<li>${brand}</li>`));
+  }
   for (const page of catalog.pages) assert(home.includes(`href="./${page.path}/"`) || home.includes(`href="${page.path}/"`), `${page.path}: нет ссылки с главной`);
 };

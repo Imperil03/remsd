@@ -14,6 +14,7 @@
 6. `docs/repair-pages-wave-one.md` — общий ремонтный шаблон, перенос Word, цены и происхождение иллюстраций.
 7. `docs/special-equipment-pages.md` — десять дочерних hub спецтехники, фотокарточки узлов, адресная редактура и цены.
 8. Для реализации: `src/data/internal-pages/index.json`, отдельные PageDefinition, `tools/lib/internal-pages.js`, `src/templates/internal-page.html`, `assets/css/internal-pages.css`.
+9. `docs/brand-pages.md` и `docs/brand-source-map.json` — 23 страницы марок, источники, отличия `brand-v1` и проверка сохранности материала Word.
 
 ## Текущий статус
 
@@ -27,9 +28,12 @@
 - `/remont-spectehniki/` — ремонт спецтехники, `hub`.
 - `/kuzovnoy-remont-gruzovoy-tehniki/` — кузовной ремонт грузовой техники, `service`.
 - десять дочерних hub спецтехники: бульдозеры, экскаваторы, фронтальные погрузчики, автокраны, манипуляторы, самосвалы, трубоукладчики, грейдеры, дорожные катки и тракторы (маршруты в manifest и `docs/special-equipment-pages.md`);
+- 23 страницы марок `/remont/{марка}/` на `brand-v1`; всего 39 внутренних страниц в сборке;
 - `404.html`.
 
 Старые удалённые страницы не восстанавливались. Пятнадцать новых маршрутов созданы из двух предоставленных Word на утверждённой композиции эталона. Word не участвует в сборке.
+
+Брендовые страницы созданы заново из «Бренды.docx», включая КАМАЗ, МАЗ и УРАЛ. Шаблон сохраняет 11 смысловых блоков, добавляет `modelRange`, `costEstimate` и необязательные `serviceGrid.items[].details`. Ссылки каталога и меню определяются по `entityRef` опубликованных PageDefinition через единый `tools/lib/brand-catalog.js`. Текущая марка в каталоге обозначается статически. Эталон `referenceByFamily.brand` — `remont/kamaz`.
 
 ## Эталонная внутренняя страница
 
@@ -74,7 +78,7 @@
 
 Публичные бандлы: `base.css`, `home.css`, `internal.css`. Контракт проверяет `tools/check-design-system.js`.
 
-`src/data/internal-pages/index.json` — manifest схемы v3 с `referenceByFamily`; каждая страница хранится отдельным JSON. `PageDefinition` включает `entityRef`, `metadata.serviceType`, настраиваемые CTA, контакт FAQ и `closingCta`. Семейства — `hub`, `service`, `brand`. Все 16 внутренних страниц используют `template: "repair-v1"` с фиксированными 11 секциями. Общие hero-факты, показатели, марки, этапы и контакт FAQ задаются только в `page-templates.json`. Страницы без шаблона сохраняют свободную композицию. Сущности и обе стороны отношений валидируются до сборки.
+`src/data/internal-pages/index.json` — manifest схемы v3 с `referenceByFamily`; каждая страница хранится отдельным JSON. `PageDefinition` включает `entityRef`, `metadata.serviceType`, настраиваемые CTA, контакт FAQ и `closingCta`. Семейства — `hub`, `service`, `brand`. 16 страниц ремонта используют `template: "repair-v1"`, а 23 страницы марок — `brand-v1`; оба шаблона содержат по 11 смысловых секций. Общие hero-факты, показатели, марки, этапы и контакт FAQ задаются только в `page-templates.json`. Страницы без шаблона сохраняют свободную композицию. Сущности и обе стороны отношений валидируются до сборки.
 
 ## Как добавлять следующую страницу
 

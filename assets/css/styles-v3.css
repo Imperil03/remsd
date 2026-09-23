@@ -2213,6 +2213,34 @@ a.v3-category-card:active,
   cursor: default;
 }
 
+.v3-brand-matrix li:has(> a) {
+  padding: 0;
+}
+
+.v3-brand-matrix li > a {
+  display: flex;
+  width: 100%;
+  min-height: 44px;
+  height: 100%;
+  align-items: center;
+  padding: 10px 12px;
+  color: inherit;
+  border-radius: inherit;
+  text-decoration: none;
+  transition: background-color 160ms var(--ease), color 160ms var(--ease);
+}
+
+.v3-brand-matrix li > a:hover {
+  color: var(--text-inverse);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.v3-brand-matrix li > a:focus-visible,
+.v3-brand-card a:focus-visible {
+  outline: 2px solid var(--action-primary);
+  outline-offset: 3px;
+}
+
 .v3-repair-card--static {
   cursor: default;
 }

@@ -8,6 +8,15 @@ function fail(message) {
 function loadPageTemplates(dataDir) {
   const catalog = JSON.parse(fs.readFileSync(path.join(dataDir, "page-templates.json"), "utf8"));
   if (catalog.schemaVersion !== 1 || !catalog.templates?.["repair-v1"]) fail("page-templates.json: требуется schemaVersion 1 и repair-v1");
+  for (const [name, template] of Object.entries(catalog.templates)) {
+    if (!template.sharedFrom) continue;
+    const shared = catalog.templates[template.sharedFrom];
+    if (!shared || shared.sharedFrom || template.sharedFrom === name) fail(`${name}: недопустимый источник общих данных`);
+    for (const key of ["brands", "workStages", "faqContact"]) {
+      if (Object.hasOwn(template, key)) fail(`${name}.${key}: общие данные наследуются из ${template.sharedFrom}`);
+      template[key] = structuredClone(shared[key]);
+    }
+  }
   return catalog.templates;
 }
 

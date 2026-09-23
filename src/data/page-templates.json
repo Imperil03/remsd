@@ -79,7 +79,7 @@
           "Foton",
           "ГАЗ",
           "Hino",
-          "Howo",
+          "HOWO",
           "Hyundai",
           "Isuzu",
           "Iveco",
@@ -93,7 +93,32 @@
           "Shacman",
           "Sitrak",
           "Volvo"
-        ]
+        ],
+        "entityRefs": {
+          "КАМАЗ": "brand-kamaz",
+          "МАЗ": "brand-maz",
+          "УРАЛ": "brand-ural",
+          "DAF": "brand-daf",
+          "Dongfeng": "brand-dongfeng",
+          "FAW": "brand-faw",
+          "Foton": "brand-foton",
+          "ГАЗ": "brand-gaz",
+          "Hino": "brand-hino",
+          "HOWO": "brand-howo",
+          "Hyundai": "brand-hyundai",
+          "Isuzu": "brand-isuzu",
+          "Iveco": "brand-iveco",
+          "JAC": "brand-jac",
+          "MAN": "brand-man",
+          "Mercedes-Benz": "brand-mercedes-benz",
+          "Mitsubishi Fuso": "brand-mitsubishi-fuso",
+          "Renault Trucks": "brand-renault-trucks",
+          "SANY": "brand-sany",
+          "Scania": "brand-scania",
+          "Shacman": "brand-shacman",
+          "Sitrak": "brand-sitrak",
+          "Volvo": "brand-volvo"
+        }
       },
       "workStages": [
         {
@@ -127,6 +152,62 @@
         "text": "Расскажите о неисправности — мастер уточнит, с чего начать.",
         "linkLabel": "Позвонить мастеру"
       }
+    },
+    "brand-v1": {
+      "sharedFrom": "repair-v1",
+      "sectionOrder": [
+        "introProof",
+        "serviceGrid",
+        "popularWorks",
+        "modelRange",
+        "brandShowcase",
+        "editorialContent",
+        "symptoms",
+        "workStages",
+        "costEstimate",
+        "relatedIndex",
+        "faq"
+      ],
+      "heroFacts": [
+        {
+          "icon": "diagnostics",
+          "label": "Диагностика",
+          "value": "По комплектации"
+        },
+        {
+          "icon": "request",
+          "label": "Работы",
+          "value": "По согласованию"
+        },
+        {
+          "icon": "shield",
+          "label": "Гарантия",
+          "value": "Условия в документах"
+        },
+        {
+          "icon": "clock",
+          "label": "График",
+          "value": "Без выходных"
+        }
+      ],
+      "proofStats": [
+        {
+          "value": "Договор",
+          "label": "и заказ-наряд"
+        },
+        {
+          "value": "Смета",
+          "label": "после диагностики"
+        },
+        {
+          "value": "Согласование",
+          "label": "дополнительных работ"
+        },
+        {
+          "value": "Документы",
+          "label": "при выдаче техники"
+        }
+      ]
     }
   }
 }

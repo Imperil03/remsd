@@ -28,6 +28,12 @@ try {
 }
 
 try {
+  require("./lib/check-brand-pages")({ root, dataDir, catalog: internalCatalog, siteConfig });
+} catch (error) {
+  fail(`brand-v1: ${error.message}`);
+}
+
+try {
   const fixtureFile = path.join(root, "tools", "fixtures", "internal-service-page.json");
   const fixture = JSON.parse(fs.readFileSync(fixtureFile, "utf8"));
   const { entityMap } = loadContentModel(dataDir);
