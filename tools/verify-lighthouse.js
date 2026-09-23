@@ -16,7 +16,11 @@ const blockedUrlPatterns = ["*://gc.kis.v2.scr.kaspersky-labs.com/*"];
 const dataDir = path.join(root, "src", "data");
 const siteConfig = JSON.parse(fs.readFileSync(path.join(dataDir, "site-config.json"), "utf8"));
 const internalCatalog = loadInternalPageCatalog({ root, dataDir, assetsDir: path.join(root, "assets"), siteConfig });
-const routes = ["/", ...internalCatalog.pages.map((page) => `/${page.path}/`)];
+const allRoutes = ["/", ...internalCatalog.pages.map((page) => `/${page.path}/`)];
+const requestedRoutes = (process.env.LIGHTHOUSE_ROUTES || "").split(",").map((route) => route.trim()).filter(Boolean)
+  .map((route) => `/${route.replace(/^\/+|\/+$/g, "")}/`.replace("//", "/"));
+for (const route of requestedRoutes) if (!allRoutes.includes(route)) throw new Error(`LIGHTHOUSE_ROUTES: неизвестный маршрут ${route}`);
+const routes = requestedRoutes.length ? allRoutes.filter((route) => requestedRoutes.includes(route)) : allRoutes;
 
 const mime = {
   ".css": "text/css; charset=utf-8",
