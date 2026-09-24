@@ -3,6 +3,7 @@ const http = require("http");
 const path = require("path");
 const { chromium } = require("playwright");
 const { loadInternalPageCatalog } = require("./lib/internal-pages");
+const verifyMenuHover = require("./lib/verify-menu-hover");
 
 const root = path.resolve(__dirname, "..");
 const distDir = path.join(root, "dist");
@@ -242,6 +243,26 @@ async function verifySharedChrome(browser, viewport) {
     throw new Error(`Общий chrome ${viewport.width}: активный раздел не отмечен янтарной линией (${JSON.stringify(internal.activeLine)})`);
   }
   await context.close();
+}
+
+async function verifyMenuHoverMatrix(browser) {
+  const representativePath = requestedPaths[0] || internalCatalog.manifest.referenceByFamily.brand;
+  const routes = [...new Set(["/", internalRoute, ...(representativePath ? [`/${representativePath}/`] : [])])];
+  for (const width of [1440, 1298, 1992]) {
+    const context = await browser.newContext({ viewport: { width, height: width === 1992 ? 1200 : 900 } });
+    try {
+      for (const route of routes) {
+        const page = await context.newPage();
+        await verifyPage(page, route, `Hover ${route} ${width}`);
+        await page.waitForLoadState("networkidle");
+        await verifyMenuHover(page, { label: `Hover ${route} ${width}px` });
+        await page.close();
+      }
+    } finally {
+      await context.close();
+    }
+  }
+  console.log(`Desktop hover checked: ${routes.length} страниц, 1440/1298/1992 px, ремонт и аренда.`);
 }
 
 async function verifyHomeLayout(page, viewport) {
@@ -790,6 +811,9 @@ async function run() {
   const server = await startServer();
   const browser = await chromium.launch({ headless: true });
   try {
+    // Keep pointer-only coverage in focused runs too: keyboard focus in the
+    // existing navigation check can conceal a dropdown's dead hover gap.
+    await verifyMenuHoverMatrix(browser);
     for (const width of [1440, 390]) {
       const context = await browser.newContext({ viewport: { width, height: 900 } });
       for (const route of ["/index.html", "/remsd/", "/remsd/index.html", "/#v3-company-proof-title", "/#v3-contact-title", "/remsd/#v3-contact-title"]) {

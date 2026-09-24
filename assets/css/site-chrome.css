@@ -240,6 +240,17 @@ body.is-nav-open {
   transition: opacity 180ms var(--ease), transform 180ms var(--ease);
 }
 
+@media (min-width: 1121px) {
+  .main-nav__panel::before {
+    position: absolute;
+    right: 0;
+    bottom: 100%;
+    left: 0;
+    height: var(--menu-pointer-bridge, 0px);
+    content: "";
+  }
+}
+
 .main-nav__group--rent .main-nav__panel {
   width: min(92vw, 760px);
 }

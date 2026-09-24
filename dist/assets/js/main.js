@@ -15,6 +15,8 @@ const navQuery = navToggle?.classList.contains("v3-nav-toggle")
   ? maxWidthQuery(DESIGN_BREAKPOINTS.homeNav)
   : maxWidthQuery(DESIGN_BREAKPOINTS.internalNav);
 const navMediaQuery = window.matchMedia(navQuery);
+const menuCloseTimers = new Map();
+const MENU_CLOSE_DELAY = 200;
 let navIsOpen = false;
 let updateMobileCallbar = () => {};
 
@@ -45,15 +47,31 @@ document.querySelectorAll(".skip-link[href^='#']").forEach((link) => {
   });
 });
 
+const cancelMenuClose = (item) => {
+  window.clearTimeout(menuCloseTimers.get(item));
+  menuCloseTimers.delete(item);
+};
+
 const setMenuPanelState = (item, isOpen, { restoreFocus = false } = {}) => {
   const trigger = item.querySelector("[data-menu-toggle]");
   const panel = item.querySelector("[data-menu-panel]");
   if (!(trigger instanceof HTMLButtonElement) || !(panel instanceof HTMLElement)) return;
 
+  cancelMenuClose(item);
+
   item.classList.toggle("is-panel-open", isOpen);
   trigger.setAttribute("aria-expanded", String(isOpen));
   panel.hidden = !isOpen;
   panel.toggleAttribute("inert", !isOpen);
+
+  if (isOpen && !navMediaQuery.matches) {
+    // The fixed panel may be offset by its header's containing block. Measure
+    // the actual gap so its transparent hover area reaches the trigger.
+    const gap = Math.max(0, panel.getBoundingClientRect().top - trigger.getBoundingClientRect().bottom);
+    panel.style.setProperty("--menu-pointer-bridge", `${Math.ceil(gap) + 1}px`);
+  } else {
+    panel.style.removeProperty("--menu-pointer-bridge");
+  }
 
   if (!isOpen && restoreFocus) {
     trigger.focus();
@@ -140,9 +158,17 @@ menuItems.forEach((item) => {
     setMenuPanelState(item, true);
   });
 
+  item.addEventListener("pointerenter", () => cancelMenuClose(item));
+
   item.addEventListener("mouseleave", () => {
     if (navMediaQuery.matches || item.contains(document.activeElement)) return;
-    setMenuPanelState(item, false);
+    cancelMenuClose(item);
+    menuCloseTimers.set(item, window.setTimeout(() => {
+      menuCloseTimers.delete(item);
+      if (!navMediaQuery.matches && !item.matches(":hover") && !item.contains(document.activeElement)) {
+        setMenuPanelState(item, false);
+      }
+    }, MENU_CLOSE_DELAY));
   });
 
   item.addEventListener("focusout", () => {
