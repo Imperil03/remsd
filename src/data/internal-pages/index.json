@@ -2,7 +2,8 @@
   "schemaVersion": 3,
   "referenceByFamily": {
     "hub": "remont-gruzovyh-avtomobiley",
-    "brand": "remont/kamaz"
+    "brand": "remont/kamaz",
+    "company": "o-kompanii"
   },
   "pages": [
     "remont-gruzovyh-avtomobiley.json",
@@ -43,6 +44,7 @@
     "brand-scania.json",
     "brand-shacman.json",
     "brand-sitrak.json",
-    "brand-volvo.json"
+    "brand-volvo.json",
+    "o-kompanii.json"
   ]
 }

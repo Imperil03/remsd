@@ -616,6 +616,8 @@ body.is-nav-open {
   grid-column: 1 / -1;
 }
 
+.is-company-viewer-open .mobile-callbar { visibility: hidden; pointer-events: none; }
+
 .mobile-callbar {
   position: fixed;
   right: 0;
@@ -1272,6 +1274,11 @@ body.is-nav-open {
   color: rgba(255, 255, 255, 0.56);
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   font-size: 14px;
+}
+
+@media (min-width: 1121px) and (max-width: 1280px) {
+  .v3-header { grid-template-columns: auto minmax(0, 1fr) auto; }
+  .v3-header__meta { display: none; }
 }
 
 @media (max-width: 1120px) {

@@ -5,6 +5,7 @@ const { transform: transformCss } = require("lightningcss");
 const { removeCoveredFontFaces } = require("./lib/font-faces");
 const { loadPageTemplates } = require("./lib/page-templates");
 const { renderOfficialBrands, renderBrandMatrix, renderBrandNavigation } = require("./lib/brand-catalog");
+const { renderCompanyMediaData } = require("./lib/company-sections");
 const {
   loadInternalPageCatalog,
   renderBreadcrumbs: renderCatalogBreadcrumbs,
@@ -25,7 +26,7 @@ const iconVersion = createHash("sha256")
   .update(fs.readFileSync(path.join(assetsDir, "img", "favicon.png")))
   .update(fs.readFileSync(path.join(assetsDir, "img", "apple-touch-icon.png")))
   .digest("hex").slice(0, 12);
-const assetVersion = process.env.ASSET_VERSION || "20260924-menu-hover-v17";
+const assetVersion = process.env.ASSET_VERSION || "20260924-company-v18";
 
 function fail(message) {
   throw new Error(`[build] ${message}`);
@@ -98,10 +99,11 @@ function createCssBundles(cssDir) {
     "base.css": ["design-system.css", "styles.css", "site-chrome.css"],
     "home.css": ["design-system.css", "styles.css", "site-chrome.css", "styles-v3.css"],
     "internal.css": ["design-system.css", "styles.css", "site-chrome.css", "internal-pages.css"],
+    "company.css": ["design-system.css", "styles.css", "site-chrome.css", "company-page.css"],
   };
   for (const [target, sources] of Object.entries(bundles)) {
     let css = sources.map((source) => fs.readFileSync(path.join(cssDir, source), "utf8")).join("\n");
-    if (target === "home.css" || target === "internal.css") {
+    if (target !== "base.css") {
       const criticalFile = path.join(cssDir, target.replace(".css", "-critical.css"));
       if (fs.existsSync(criticalFile)) {
         css = removeCoveredFontFaces(css, fs.readFileSync(criticalFile, "utf8"));
@@ -280,6 +282,21 @@ function buildInternalStructuredData(page, config, baseUrl) {
     name: crumb.label,
     item: crumb.href === undefined ? url : toAbsoluteUrl(baseUrl, normalizeRoute(crumb.href, `${page.path}.breadcrumbs`, { allowEmpty: true })),
   }));
+  if (page.family === "company") {
+    return jsonLdScript({
+      "@context": "https://schema.org",
+      "@graph": [
+        { "@type": "AboutPage", "@id": `${url}#page`, url, name: page.metadata.title,
+          description: page.metadata.description, inLanguage: config.site.language,
+          about: { "@id": `${baseUrl}#organization` }, breadcrumb: { "@id": `${url}#breadcrumb` } },
+        { "@type": "BreadcrumbList", "@id": `${url}#breadcrumb`, itemListElement: breadcrumbs },
+        { "@type": "Organization", "@id": `${baseUrl}#organization`, name: config.site.name,
+          url: baseUrl, logo: assetUrl(baseUrl, config.site.logo),
+          telephone: config.site.phoneHref.replace("tel:", ""), email: config.site.email },
+        localBusinessNode(config, baseUrl),
+      ],
+    });
+  }
   return jsonLdScript({
     "@context": "https://schema.org",
     "@graph": [
@@ -423,10 +440,11 @@ function buildStaticPages(staticFiles, partials, config, mode, baseUrl, writtenR
 }
 
 function buildInternalPages(pages, partials, config, mode, baseUrl, writtenRoutes) {
-  const template = fs.readFileSync(path.join(templatesDir, "internal-page.html"), "utf8");
-  const internalCriticalFile = path.join(assetsDir, "css", "internal-critical.css");
   const routeByEntity = new Map(pages.map((page) => [page.entityRef, page.path]));
   for (const page of pages) {
+    const isCompany = page.family === "company";
+    const template = fs.readFileSync(path.join(templatesDir, isCompany ? "company-page.html" : "internal-page.html"), "utf8");
+    const internalCriticalFile = path.join(assetsDir, "css", isCompany ? "company-critical.css" : "internal-critical.css");
     const target = outputFileForRoute(page.path);
     const rootPath = getRootPath(path.relative(distDir, target));
     const internalCriticalCss = fs.existsSync(internalCriticalFile)
@@ -446,7 +464,15 @@ function buildInternalPages(pages, partials, config, mode, baseUrl, writtenRoute
       h1: renderCatalogHeroTitle(page.hero),
       lead: escapeHtml(page.hero.lead),
       heroCtaLabel: escapeHtml(page.hero.ctaLabel),
-      heroFacts: renderCatalogHeroFacts(page.hero),
+      heroFacts: page.hero.facts ? renderCatalogHeroFacts(page.hero) : "",
+      heroImageAlt: escapeHtml(page.hero.imageAlt || ""),
+      heroImageCaption: escapeHtml(page.hero.imageCaption || ""),
+      heroProofText: escapeHtml(page.hero.proofText || ""),
+      companyMediaData: isCompany ? renderCompanyMediaData(page, rootPath) : "",
+      mapLabel: escapeHtml(page.closingCta.mapLabel || ""),
+      mapUrl: escapeHtml(config.site.mapUrl),
+      mapEmbedUrl: escapeHtml(`https://yandex.ru/map-widget/v1/?text=${encodeURIComponent(`${config.site.address.locality}, ${config.site.address.street}`)}&z=16`),
+      email: escapeHtml(config.site.email),
       breadcrumbs: renderCatalogBreadcrumbs(page, rootPath),
       sections: page.sections.map((section) => renderCatalogSection(section, rootPath, config.site, { routeByEntity, currentEntityRef: page.entityRef })).join("\n"),
       closingTitle: escapeHtml(page.closingCta.title),
@@ -499,6 +525,7 @@ function main() {
   const physicalCssLayers = createCssBundles(outputCssDir);
   for (const layer of physicalCssLayers) fs.rmSync(path.join(outputCssDir, layer), { force: true });
   fs.rmSync(path.join(outputCssDir, "internal-critical.css"), { force: true });
+  fs.rmSync(path.join(outputCssDir, "company-critical.css"), { force: true });
   minifyCssFiles(outputCssDir);
 
   const partials = readPartials(buildHomeStructuredData(config, baseUrl));

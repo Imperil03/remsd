@@ -546,6 +546,12 @@
       "type": "brand",
       "name": "Volvo",
       "description": "Грузовые автомобили и техника Volvo."
+    },
+    {
+      "id": "organization-remsd",
+      "type": "organization",
+      "name": "РемСД",
+      "description": "Сервисный центр по ремонту грузовых автомобилей и спецтехники в Сургуте."
     }
   ]
 }

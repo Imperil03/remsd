@@ -191,6 +191,17 @@ FAQ использует редакционную split-композицию: с
 
 На эталонном hub ровно четыре основные CTA-кнопки в `main`: hero, две тёмные inline-панели рядом с признаками и ценами и контактный пролог перед footer. Все четыре ведут на утверждённый `tel:`; формы не используются. В вводной колонке FAQ разрешена одна компактная текстовая ссылка на тот же телефон, но она не конкурирует с основными кнопками. На `>1020 px` inline-панели стоят справа от основного содержимого, на `≤1020 px` — под ним. Mobile callbar дублирует то же телефонное действие.
 
+### Company Page
+
+**The Company Surface Rule.** `/o-kompanii/` extends Industrial Editorial through eight editorial blocks, retaining the shared fonts, tokens, container, radii and chrome. Its primary phone buttons sit in the hero and closing contacts, with the shared mobile callbar as an additional action. Facts remain a flat rail, documents retain their proportions, and native dialog viewing preserves keyboard navigation and return focus. This composition belongs to `company`; `repair-v1` and `brand-v1` retain their own layouts and CTA counts.
+
+- **Composition:** dark split hero with copy left and the real engine-work photo right; flat `10+ / 500+ / 23 / 7` facts; three undated history stages; a pale workshop section with three photos and four capabilities; a real team photo beside four specialty rows; dark approach copy beside four principles; three official brands above five document groups; dark contacts beside the Yandex map. Captions stay outside photos.
+- **Responsive layout:** team, approach and contacts stack at `≤1020 px`; hero, history and workshop photos stack at `≤720 px`. Facts become `2 × 2` at `≤720 px` without section padding. Document grids use five columns above `1120 px`, three at `721–1120 px`, two at `521–720 px`, and horizontal thumbnail-and-copy rows at `≤520 px`. Official brands form a single list of horizontal rows at `≤720 px`.
+- **Documents and viewing:** previews use contained images without stretching or cropping, with readable `16 px` titles. The last document group contains all six certificate pages. The dark native dialog provides a caption, counter, direct file link, finite previous/next controls, arrow keys, Escape, contained focus and return focus. Single-image groups hide the step controls; load errors retain the file link. The mobile callbar hides while the viewer is open.
+- **Shared navigation and contacts:** About follows Rental. Header address/email hide at `1121–1280 px` while the phone remains visible; the burger threshold stays at `1120 px`. The map loads near the contacts; the address and route link remain outside the iframe.
+
+Photos and documents reuse unchanged project assets, with origin URLs in `tools/prepare-media.js`. Page data lives in `src/data/internal-pages/o-kompanii.json`; composition and viewer details are scoped to the company template, stylesheet and script. See `docs/company-page.md`.
+
 ## Do's and Don'ts
 
 ### Do:

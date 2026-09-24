@@ -2,9 +2,10 @@ const fs = require("fs");
 const path = require("path");
 const { loadPageTemplates, resolvePageTemplate } = require("./page-templates");
 const { renderOfficialBrands, renderBrandMatrix } = require("./brand-catalog");
+const { createCompanySections } = require("./company-sections");
 
-const PAGE_FAMILIES = new Set(["hub", "service", "brand"]);
-const ENTITY_TYPE_BY_FAMILY = { hub: "service", service: "service", brand: "brand" };
+const PAGE_FAMILIES = new Set(["hub", "service", "brand", "company"]);
+const ENTITY_TYPE_BY_FAMILY = { hub: "service", service: "service", brand: "brand", company: "organization" };
 
 function fail(message) {
   throw new Error(`[internal-pages] ${message}`);
@@ -113,6 +114,7 @@ function renderInlineCta({ id, modifier, cta }, site) {
 }
 
 const SECTION_REGISTRY = {
+  ...createCompanySections({ requireObject, requireArray, requireText, validateAsset, escapeHtml, normalizeRoute }),
   introProof: {
     validate(section, label, context) {
       requireArray(section.bullets, `${label}.bullets`, { nonEmpty: true }).forEach((item, index) => requireText(item, `${label}.bullets[${index}]`));
@@ -471,7 +473,7 @@ function loadContentModel(dataDir) {
 function validatePageDefinition(page, label, context) {
   requireObject(page, label);
   page.path = normalizeRoute(page.path, `${label}.path`);
-  if (!PAGE_FAMILIES.has(page.family)) fail(`${label}.family: ожидается hub, service или brand`);
+  if (!PAGE_FAMILIES.has(page.family)) fail(`${label}.family: ожидается hub, service, brand или company`);
   const entityRef = requireText(page.entityRef, `${label}.entityRef`);
   const entity = context.entityMap.get(entityRef);
   if (!entity) fail(`${label}.entityRef: неизвестная сущность ${entityRef}`);
@@ -479,7 +481,8 @@ function validatePageDefinition(page, label, context) {
     fail(`${label}.entityRef: семейство ${page.family} ожидает сущность типа ${ENTITY_TYPE_BY_FAMILY[page.family]}, найдено ${entity.type}`);
   }
   const metadata = requireObject(page.metadata, `${label}.metadata`);
-  ["title", "description", "serviceType"].forEach((key) => requireText(metadata[key], `${label}.metadata.${key}`));
+  (page.family === "company" ? ["title", "description"] : ["title", "description", "serviceType"])
+    .forEach((key) => requireText(metadata[key], `${label}.metadata.${key}`));
   validateAsset(metadata.socialImage, `${label}.metadata.socialImage`, context);
   requireArray(page.breadcrumbs, `${label}.breadcrumbs`, { nonEmpty: true }).forEach((crumb, index) => {
     requireObject(crumb, `${label}.breadcrumbs[${index}]`);
@@ -491,7 +494,12 @@ function validatePageDefinition(page, label, context) {
   if (hero.accent !== undefined) requireText(hero.accent, `${label}.hero.accent`);
   validateAsset(hero.image, `${label}.hero.image`, context);
   validateAsset(hero.mobileImage, `${label}.hero.mobileImage`, context);
-  requireArray(hero.facts, `${label}.hero.facts`, { nonEmpty: true }).forEach((fact, index) => {
+  if (page.family === "company") {
+    requireText(hero.imageAlt, `${label}.hero.imageAlt`);
+    requireText(hero.imageCaption, `${label}.hero.imageCaption`);
+    requireText(hero.proofText, `${label}.hero.proofText`);
+  }
+  if (page.family !== "company" || hero.facts !== undefined) requireArray(hero.facts, `${label}.hero.facts`, { nonEmpty: true }).forEach((fact, index) => {
     requireObject(fact, `${label}.hero.facts[${index}]`);
     requireText(fact.icon, `${label}.hero.facts[${index}].icon`);
     requireText(fact.label, `${label}.hero.facts[${index}].label`);
@@ -518,6 +526,7 @@ function validatePageDefinition(page, label, context) {
     }
   });
   validateCta(page.closingCta, `${label}.closingCta`);
+  if (page.family === "company") requireText(page.closingCta.mapLabel, `${label}.closingCta.mapLabel`);
   validateNoHtml(page, label);
   const sprite = fs.readFileSync(path.join(context.root, "src/partials/internal-icon-sprite.html"), "utf8");
   const icons = new Set([...sprite.matchAll(/<symbol id="internal-icon-([^"]+)"/g)].map((match) => match[1]));

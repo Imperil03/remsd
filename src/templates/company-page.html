@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{title}}</title>
+    <meta name="description" content="{{description}}">
+    <link rel="preload" as="font" href="{{rootPath}}assets/fonts/montserrat-variable-cyrillic.woff2" type="font/woff2" crossorigin>
+    <link rel="preload" as="font" href="{{rootPath}}assets/fonts/source-sans-3-variable-cyrillic.woff2" type="font/woff2" crossorigin>
+    <link rel="preload" as="font" href="{{rootPath}}assets/fonts/montserrat-variable-latin.woff2" type="font/woff2" crossorigin>
+    <link rel="preload" as="font" href="{{rootPath}}assets/fonts/source-sans-3-variable-latin.woff2" type="font/woff2" crossorigin>
+    <link rel="preload" as="image" href="{{rootPath}}{{heroMobileImage}}" media="(max-width: 720px)" fetchpriority="high">
+    <link rel="preload" as="image" href="{{rootPath}}{{heroImage}}" media="(min-width: 721px)" fetchpriority="high">
+    {{internalStyles}}
+    <link rel="preload" as="style" href="{{rootPath}}assets/css/company.css?v={{assetVersion}}">
+    <link rel="stylesheet" href="{{rootPath}}assets/css/company.css?v={{assetVersion}}" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="{{rootPath}}assets/css/company.css?v={{assetVersion}}"></noscript>
+  </head>
+  <body class="company-page">
+    <main id="main-content" tabindex="-1">
+      <section class="company-hero" aria-labelledby="internal-page-title">
+        <a class="skip-link" href="#internal-page-title">К основному содержанию</a>
+        <div class="site-header-rail">{{v3-header}}</div>
+        <div class="container company-hero__inner">
+          <div class="company-hero__copy">
+            {{breadcrumbs}}
+            <h1 id="internal-page-title">{{h1}}</h1>
+            <p class="company-hero__lead">{{lead}}</p>
+            <a class="v3-button v3-button--primary" href="{{phoneHref}}">{{heroCtaLabel}}</a>
+            <a class="company-hero__proof" href="#documents">{{heroProofText}}</a>
+          </div>
+          <figure class="company-photo company-hero__photo">
+            <a href="{{rootPath}}{{heroImage}}" data-company-media="hero" data-media-index="0" aria-label="Увеличить фотографию ремонтной базы">
+              <picture><source media="(max-width: 720px)" srcset="{{rootPath}}{{heroMobileImage}}"><img src="{{rootPath}}{{heroImage}}" alt="{{heroImageAlt}}" width="1024" height="682" fetchpriority="high" decoding="async"></picture>
+              <span class="company-photo__zoom" aria-hidden="true">Увеличить</span>
+            </a>
+            <figcaption>{{heroImageCaption}}</figcaption>
+          </figure>
+        </div>
+      </section>
+      {{sections}}
+      <section class="internal-close company-contact" id="company-contact" aria-labelledby="internal-close-title">
+        <div class="container company-contact__layout">
+          <div class="company-contact__copy">
+            <h2 id="internal-close-title">{{closingTitle}}</h2>
+            <p>{{closingText}}</p>
+            <dl class="company-contact__details">
+              <div><dt>Адрес</dt><dd>{{address}}</dd></div>
+              <div><dt>График</dt><dd>{{openingHoursLabel}}</dd></div>
+              <div><dt>Телефон мастера</dt><dd><a href="{{phoneHref}}">{{phone}}</a></dd></div>
+              <div><dt>Почта</dt><dd><a href="mailto:{{email}}">{{email}}</a></dd></div>
+            </dl>
+            <div class="company-contact__actions"><a class="v3-button v3-button--primary" href="{{phoneHref}}">{{closingButtonLabel}}</a><a class="company-text-link" href="{{mapUrl}}" target="_blank" rel="noopener">{{mapLabel}}</a></div>
+          </div>
+          <div class="company-contact__map">
+            <iframe data-company-map-src="{{mapEmbedUrl}}" title="РемСД на Яндекс.Картах" width="640" height="460" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+            <div class="company-contact__map-label" aria-hidden="true"><strong>РемСД</strong><span>{{address}}</span></div>
+          </div>
+        </div>
+      </section>
+    </main>
+    {{v3-footer}}
+    {{mobile-callbar}}
+    <dialog class="company-viewer" aria-labelledby="company-viewer-caption" data-company-viewer>
+      <div class="company-viewer__shell">
+        <button class="company-viewer__close" type="button" aria-label="Закрыть просмотр" data-company-close autofocus>Закрыть <span aria-hidden="true">×</span></button>
+        <img class="company-viewer__image" alt="" data-company-image>
+        <div class="company-viewer__bar">
+          <button type="button" class="company-viewer__step" aria-label="Предыдущее изображение" data-company-prev><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 5-7 7 7 7"/></svg></button>
+          <div><p id="company-viewer-caption" aria-live="polite"></p><span data-company-counter></span><a data-company-file href="{{rootPath}}{{heroImage}}" target="_blank" rel="noopener">Открыть файл</a></div>
+          <button type="button" class="company-viewer__step" aria-label="Следующее изображение" data-company-next><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m10 5 7 7-7 7"/></svg></button>
+        </div>
+        <p class="company-viewer__error" data-company-error role="status" hidden>Изображение не загрузилось. Откройте файл по прямой ссылке.</p>
+      </div>
+    </dialog>
+    {{companyMediaData}}
+    <script src="{{rootPath}}assets/js/main.js?v={{assetVersion}}" defer></script>
+    <script src="{{rootPath}}assets/js/company.js?v={{assetVersion}}" defer></script>
+  </body>
+</html>

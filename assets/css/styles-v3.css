@@ -995,6 +995,16 @@ a.v3-equipment-item:focus-visible {
   flex: 0 0 auto;
 }
 
+.v3-company-proof__about-link {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  margin-bottom: 12px;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 5px;
+}
+
 .v3-company-proof {
   position: relative;
   overflow: hidden;

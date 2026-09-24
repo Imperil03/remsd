@@ -975,6 +975,20 @@
       "predicate": "servicedBy",
       "predicateLabel": "ремонтируется в рамках",
       "object": "service-repair"
+    },
+    {
+      "id": "rel-remsd-location",
+      "subject": "organization-remsd",
+      "predicate": "locatedIn",
+      "predicateLabel": "находится в",
+      "object": "location-surgut"
+    },
+    {
+      "id": "rel-remsd-service",
+      "subject": "organization-remsd",
+      "predicate": "provides",
+      "predicateLabel": "выполняет",
+      "object": "service-repair"
     }
   ]
 }

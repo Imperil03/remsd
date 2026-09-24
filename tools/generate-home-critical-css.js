@@ -40,6 +40,15 @@ const targets = [
   },
 ];
 
+if (internalCatalog.manifest.referenceByFamily.company) {
+  targets.push({
+    name: "company", file: `${internalCatalog.manifest.referenceByFamily.company}/index.html`,
+    css: "company.css", fontSources: ["styles.css"], heroClass: "company-hero", bodyClass: "company-page",
+    output: "company-critical.css", extraClass: "company-facts",
+    prepend: ".company-page main>:not(.company-hero):not(.company-facts){content-visibility:hidden;contain-intrinsic-block-size:900px}",
+  });
+}
+
 // Read canonical sources rather than previously generated critical CSS or bundles,
 // which may already omit definitions supplied by the inline critical stylesheet.
 for (const target of targets) {
@@ -54,7 +63,8 @@ function criticalShell(target) {
   const hero = html.match(new RegExp(`<section class="[^"]*${escapedClass}[^"]*"[\\s\\S]*?<\\/section>`))?.[0];
   if (!hero) throw new Error(`Не удалось выделить первый экран ${target.name}`);
   const fontFaces = target.fontFaces.replaceAll("../fonts/", "./assets/fonts/");
-  return `<!doctype html><html lang="ru"><head><meta charset="utf-8"><base href="/"><style>${fontFaces}</style><link rel="stylesheet" href="./assets/css/${target.css}"></head><body class="${target.bodyClass}"><main>${hero}</main></body></html>`;
+  const extra = target.extraClass ? html.match(new RegExp(`<section class="[^"]*${target.extraClass}[^"]*"[\\s\\S]*?<\\/section>`))?.[0] || "" : "";
+  return `<!doctype html><html lang="ru"><head><meta charset="utf-8"><base href="/"><style>${fontFaces}</style><link rel="stylesheet" href="./assets/css/${target.css}"></head><body class="${target.bodyClass}"><main>${hero}${extra}</main></body></html>`;
 }
 
 function resolveRequest(url) {
@@ -138,6 +148,7 @@ async function generateTarget(browser, target) {
   const entries = [];
   for (const viewport of [
     { width: 390, height: 844, deviceScaleFactor: 1 },
+    { width: 1280, height: 900, deviceScaleFactor: 1 },
     { width: 1440, height: 900, deviceScaleFactor: 1 },
   ]) {
     const entry = await collectCoverage(browser, target, viewport);

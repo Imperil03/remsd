@@ -11,6 +11,8 @@
 - `/remont-avtobusov/` — ремонт автобусов, `hub`.
 - `/remont-spectehniki/` — ремонт спецтехники, `hub`.
 - `/kuzovnoy-remont-gruzovoy-tehniki/` — кузовной ремонт грузовой техники, `service`.
+- Десять дочерних страниц ремонта спецтехники и 23 страницы `/remont/{марка}/`.
+- `/o-kompanii/` — база, команда, подход к ремонту и документы РемСД, `company`.
 - `/404.html` — служебная страница ошибки.
 
 Будущие услуги, марки и разделы показываются только как неинтерактивные элементы, пока для них не создан и не опубликован отдельный `PageDefinition`.
@@ -31,26 +33,29 @@
 
 - `src/data/site-config.json` — режимы сборки, NAP, график, CTA и подтверждённые владельцем факты.
 - `src/data/internal-pages/index.json` — manifest схемы v3 с опубликованными файлами страниц и `referenceByFamily`.
-- `src/data/internal-pages/*.json` — отдельные типизированные `PageDefinition` семейств `hub`, `service`, `brand`.
+- `src/data/internal-pages/*.json` — отдельные типизированные `PageDefinition` семейств `hub`, `service`, `brand`, `company`.
 - `src/data/page-templates.json` — общие данные `repair-v1`; `tools/lib/page-templates.js` разворачивает их до полной валидации.
 - `tools/lib/internal-pages.js` — реестр секций: validator и renderer каждого типа находятся рядом.
 - `src/templates/internal-page.html` — общий каркас внутренних страниц.
+- `src/templates/company-page.html` и `tools/lib/company-sections.js` — отдельная композиция и секции компании.
 - `src/partials/v3-header.html`, `main-nav.html`, `v3-footer.html` — общая шапка, навигация и футер.
 - `assets/css/design-system.css` — единственный источник глобальных токенов.
 - `assets/css/styles.css` — только variable fonts, reset, `body` и `.container`.
 - `assets/css/site-chrome.css` — навигация, skip-link, mobile callbar, единая `.v3-button`, шапка, футер и 404.
 - `assets/css/styles-v3.css` — композиция утверждённой главной.
 - `assets/css/internal-pages.css` — композиционный слой внутренних страниц.
+- `assets/css/company-page.css` — изолированный композиционный слой страницы компании.
 
 Сборка выпускает только публичные бандлы:
 
 - `base.css = tokens + shared`;
 - `home.css = base + homepage`;
-- `internal.css = base + internal pages`.
+- `internal.css = base + internal pages`;
+- `company.css = base + company page`.
 
 Поддерживаемые секции: `introProof`, `serviceGrid`, `popularWorks`, `vehicleTypes`, `brandShowcase`, `editorialContent`, `symptoms`, `workStages`, `priceExamples`, `relatedIndex`, `faq`. В `repair-v1` зафиксированы 11 секций, у страниц без `template` набор и порядок остаются свободными.
 
-Лимиты несжатых minified-бандлов: `base.css ≤45 KB`, `home.css ≤85 KB`, `internal.css ≤70 KB`.
+Лимиты несжатых minified-бандлов: `base.css ≤45 KB`, `home.css ≤85 KB`, `internal.css ≤70 KB`, `company.css ≤60 KB`.
 
 Подробный контракт, источник Word, редакционные исправления, цены и изображения: `docs/repair-pages-wave-one.md`.
 
@@ -97,6 +102,7 @@ npm run verify
 
 - Главная: https://imperil03.github.io/remsd/
 - Ремонт грузовых автомобилей: https://imperil03.github.io/remsd/remont-gruzovyh-avtomobiley/
+- О компании: https://imperil03.github.io/remsd/o-kompanii/
 
 Перенос на `remsd.ru`, серверные редиректы, Search Console и аналитика в текущую итерацию не входят.
 
@@ -105,3 +111,7 @@ npm run verify
 Иконки вкладки и Apple Touch пересобираются командой `npm run prepare:icons` из `assets/img/logo-remsd.png` с прозрачными полями. Адреса иконок получают хеш содержимого при сборке, чтобы браузер подхватывал обновления.
 
 23 страницы `/remont/{марка}/` собраны из «Бренды.docx» на `brand-v1`: все 11 блоков, модели и технические особенности, расчёт стоимости без неподтверждённых сумм. Главная, меню и внутренние каталоги используют один список опубликованных марок. Контракт и источники: `docs/brand-pages.md`, `docs/brand-source-map.json`. Все марки проверяются в браузере на 1440/390 px, пять характерных страниц — на 11 ширинах.
+
+## О компании
+
+`/o-kompanii/` использует семейство `company`, восемь самостоятельных блоков и разметку `AboutPage`. Тексты и медиа заменяются в `src/data/internal-pages/o-kompanii.json`; контакты приходят из общей конфигурации. Фото и многостраничные документы открываются с клавиатуры в одном просмотрщике, карта загружается при приближении к контактам. Контракт, источники и адресные команды проверки — `docs/company-page.md`.
