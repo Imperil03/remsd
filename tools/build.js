@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const { createHash } = require("crypto");
 const { transform: transformCss } = require("lightningcss");
 const { removeCoveredFontFaces } = require("./lib/font-faces");
 const { loadPageTemplates } = require("./lib/page-templates");
@@ -20,6 +21,10 @@ const dataDir = path.join(srcDir, "data");
 const templatesDir = path.join(srcDir, "templates");
 const assetsDir = path.join(root, "assets");
 const distDir = path.join(root, "dist");
+const iconVersion = createHash("sha256")
+  .update(fs.readFileSync(path.join(assetsDir, "img", "favicon.png")))
+  .update(fs.readFileSync(path.join(assetsDir, "img", "apple-touch-icon.png")))
+  .digest("hex").slice(0, 12);
 const assetVersion = process.env.ASSET_VERSION || "20260924-menu-hover-v17";
 
 function fail(message) {
@@ -311,8 +316,8 @@ function metadataBlock({ title, description, socialImage }, route, rootPath, con
   const imageUrl = assetUrl(baseUrl, socialImage || config.site.defaultSocialImage);
   const robots = mode === "preview" ? "noindex,nofollow,noarchive" : "index,follow,max-image-preview:large";
   const canonical = mode === "production" ? `\n    <link rel="canonical" href="${escapeHtml(pageUrl)}">` : "";
-  return `    <link rel="icon" type="image/png" href="${rootPath}assets/img/favicon.png">
-    <link rel="apple-touch-icon" href="${rootPath}assets/img/apple-touch-icon.png">
+  return `    <link rel="icon" type="image/png" href="${rootPath}assets/img/favicon.png?v=${iconVersion}">
+    <link rel="apple-touch-icon" href="${rootPath}assets/img/apple-touch-icon.png?v=${iconVersion}">
     <meta name="robots" content="${robots}">${canonical}
     <meta property="og:locale" content="ru_RU">
     <meta property="og:type" content="website">

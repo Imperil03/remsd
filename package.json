@@ -6,7 +6,8 @@
     "test:browser": "node tools/verify-browser.js",
     "test:lighthouse": "node tools/verify-lighthouse.js",
     "verify": "npm run build && npm run check",
-    "prepare:media": "node tools/prepare-media.js"
+    "prepare:media": "node tools/prepare-media.js",
+    "prepare:icons": "node tools/prepare-icons.js"
   },
   "devDependencies": {
     "lighthouse": "^12.6.1",
