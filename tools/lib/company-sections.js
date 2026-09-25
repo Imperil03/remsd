@@ -56,9 +56,9 @@ function createCompanySections({ requireObject, requireArray, requireText, valid
       },
     },
     companyApproach: {
-      validate(s, label) { textList(s.paragraphs, `${label}.paragraphs`); pairs(s.items, `${label}.items`); },
+      validate(s, label) { pairs(s.items, `${label}.items`); },
       render(s) {
-        return section(s, "company-approach", `<div class="company-approach__layout"><div>${head(s)}<div class="company-approach__copy">${s.paragraphs.map((p) => `<p>${esc(p)}</p>`).join("")}</div></div><ol class="company-approach__principles">${s.items.map((i, index) => `<li><span aria-hidden="true">${String(index + 1).padStart(2, "0")}</span><div><h3>${esc(i.title)}</h3><p>${esc(i.text)}</p></div></li>`).join("")}</ol></div>`);
+        return section(s, "company-approach", `<div class="company-approach__layout">${head(s)}<ul class="company-approach__principles">${s.items.map((i) => `<li><h3>${esc(i.title)}</h3><p>${esc(i.text)}</p></li>`).join("")}</ul></div>`);
       },
     },
     companyDocuments: {

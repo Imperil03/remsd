@@ -57,14 +57,13 @@
 .company-team__roles dt { margin-bottom: 8px; font-family: var(--font-heading); font-size: 18px; line-height: 1.35; font-weight: 750; }
 .company-team__roles dd { margin: 0; max-width: 65ch; color: var(--text-secondary); line-height: 1.55; }
 .company-team .company-photo img { aspect-ratio: 4 / 5; object-fit: cover; object-position: left center; }
-.company-approach { color: var(--text-inverse); background: var(--surface-dark-raised); }
+.company-approach { padding-block: var(--section-space-compact); color: var(--text-inverse); background: var(--surface-dark-raised); }
 .company-approach__layout { display: grid; grid-template-columns: 0.95fr 1.05fr; gap: clamp(40px, 6vw, 88px); }
-.company-approach__copy { display: grid; gap: 18px; max-width: 60ch; color: #c6d2e0; font-size: 18px; line-height: 1.6; }
+.company-approach .company-section__head { margin-bottom: 0; }
 .company-approach__principles { margin: 0; padding: 0; list-style: none; }
-.company-approach__principles li { display: grid; grid-template-columns: 36px minmax(0, 1fr); gap: 18px; padding-block: 24px; border-top: 1px solid var(--border-inverse); }
+.company-approach__principles li { padding-block: 24px; border-top: 1px solid var(--border-inverse); }
 .company-approach__principles li:first-child { padding-top: 0; border-top: 0; }
 .company-approach__principles li:last-child { padding-bottom: 0; }
-.company-approach__principles li > span { padding-top: 3px; color: var(--action-primary); font-size: 14px; font-weight: 750; }
 .company-approach__principles p { margin-top: 10px; color: #c6d2e0; line-height: 1.6; }
 .company-documents__brands { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; margin: 0 0 40px; padding: 0; list-style: none; }
 .company-documents__brands a { display: flex; min-height: 112px; gap: 24px; align-items: center; padding: 12px 24px; border: 1px solid var(--border-default); border-radius: var(--radius-md); transition: border-color var(--duration-fast); }
@@ -115,7 +114,7 @@
   .company-facts dl > div:nth-child(3) { border-left: 0; border-top: 1px solid var(--border-default); }
   .company-facts dl > div:nth-child(4) { border-top: 1px solid var(--border-default); }
   .company-facts dt { font-size: 14px; }
-  .company-facts dd { font-size: 32px; }
+  .company-facts dd { font-size: clamp(28px, 8.8vw, 32px); }
   .company-story__stages { grid-template-columns: minmax(0, 1fr); gap: 28px; }
   .company-story__stages li { padding-top: 18px; }
   .company-story__number { margin-bottom: 12px; }
@@ -124,8 +123,7 @@
   .company-base__photos { grid-template-columns: minmax(0, 1fr); gap: 28px; }
   .company-team__roles dt { font-size: 17px; }
   .company-team__roles dd { font-size: 16px; }
-  .company-approach__copy, .company-approach__principles p { font-size: 17px; }
-  .company-approach__principles li { grid-template-columns: 28px minmax(0, 1fr); gap: 12px; }
+  .company-approach__principles p { font-size: 17px; }
   .company-documents__brands { grid-template-columns: minmax(0, 1fr); gap: 12px; margin-bottom: 30px; }
   .company-documents__brands a { min-height: 88px; padding: 8px 20px; gap: 24px; }
   .company-documents__brands img { width: 80px; height: 60px; }
