@@ -4,7 +4,7 @@
 
 ## Слои CSS
 
-Каталог документов описан в `docs/documents.md`: единые данные, две карточки на главной, три группы в компании и прежний доступный просмотрщик. Эти блоки остаются в своих существующих бандлах; новых глобальных токенов и маршрутов нет.
+Каталог документов описан в `docs/documents.md`: единые данные, две карточки на главной и в компании, три группы на отдельной `/sertifikaty/` и общий доступный просмотрщик. `document-ui.css` разделяет карточки и диалог между компанией и сертификатами без новых глобальных токенов.
 
 Исходные слои подключаются сборщиком в фиксированном порядке:
 
@@ -19,8 +19,9 @@
 - `base.css = design-system.css + styles.css + site-chrome.css`;
 - `home.css = design-system.css + styles.css + site-chrome.css + styles-v3.css`;
 - `internal.css = design-system.css + styles.css + site-chrome.css + internal-pages.css`.
-- `company.css = design-system.css + styles.css + site-chrome.css + company-page.css`.
+- `company.css = design-system.css + styles.css + site-chrome.css + company-page.css + document-ui.css`.
 - `contact.css = design-system.css + styles.css + site-chrome.css + contact-page.css`.
+- `certificates.css = design-system.css + styles.css + site-chrome.css + document-ui.css + certificates-page.css`.
 
 Страница контактов имеет отдельную композицию из телефонного справочника, проезда и реквизитов, без заключительной рекламной CTA. На 720 px и ниже блоки идут в один столбец. Контракт данных, PDF, копирования и карты — `docs/contact-page.md`. Шрифты `contact.css` также исключаются из отложенного бандла при наличии эквивалентных inline-объявлений.
 
@@ -43,7 +44,7 @@ HTML подключает только публичные бандлы. Поря
 - `sections` с модульной композицией и настраиваемыми CTA/контактом FAQ;
 - `closingCta` для заключительного контактного пролога.
 
-Поддерживаемые семейства: `hub`, `service`, `brand`. Поддерживаемые секции: `introProof`, `serviceGrid`, `popularWorks`, `vehicleTypes`, `brandShowcase`, `editorialContent`, `symptoms`, `workStages`, `priceExamples`, `relatedIndex`, `faq`, `modelRange`, `costEstimate`. Заменённый `brandStrip` удалён.
+Ремонтные семейства: `hub`, `service`, `brand`. Их секции: `introProof`, `serviceGrid`, `popularWorks`, `vehicleTypes`, `brandShowcase`, `editorialContent`, `symptoms`, `workStages`, `priceExamples`, `relatedIndex`, `faq`, `modelRange`, `costEstimate`. Заменённый `brandStrip` удалён. Семейства `company`, `contact` и `documents` используют отдельные шаблоны и собственные секции; им не требуется `serviceType` или ремонтный набор блоков. `documents` содержит компактный hero и `documentCatalog`, без заключительного CTA.
 
 Без `template` порядок задаёт страница. Авторский `template: "repair-v1"` фиксирует порядок 11 типов из `page-templates.json`; resolver подставляет общие данные перед существующей валидацией и удаляет поле `template` из полного PageDefinition. Неизвестный шаблон и попытка переопределить общие данные вызывают ошибку. Validator и renderer типа находятся рядом в реестре `tools/lib/internal-pages.js`. Новый тип секции добавляется только для новой повторяемой контентной задачи и получает CSS и тест. Эталонный hub проходит полный контракт, пять новых страниц ремонта — общие проверки и адаптив на 11 ширинах, скриншоты и интерактивные сценарии на 1440/390 px.
 
@@ -84,7 +85,7 @@ HTML подключает только публичные бандлы. Поря
 
 `company` использует самостоятельную композицию из восьми блоков: split-hero, плоскую полосу цифр, историю, фото базы, команду, принципы работы, документы и карту с контактами. Шапка, футер, шрифты и действия остаются общими. Страница подключает `company.css` и собственный inline critical CSS с hero и цифрами. Подробности — `docs/company-page.md`.
 
-На ширине 1121–1280 px общий header имеет три колонки и скрывает адрес/email; от 1281 px метаданные возвращаются. Порог burger не меняется. Просмотр фотографий принадлежит только `company-page.css`/`company.js` и реализован нативным dialog.
+На ширине 1121–1280 px общий header имеет три колонки и скрывает адрес/email; от 1281 px метаданные возвращаются. Порог burger не меняется. Просмотр фотографий компании и документов каталога реализован общими `media-viewer.html`, `document-ui.css` и `company.js` через нативный dialog. Пункт «Сертификаты» ведёт на отдельный маршрут и получает обычное активное состояние.
 
 ## Брендовые страницы brand-v1
 

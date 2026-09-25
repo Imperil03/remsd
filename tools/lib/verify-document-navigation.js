@@ -13,14 +13,14 @@ module.exports = async function verifyDocumentNavigation(browser, baseUrl, resul
       assert.equal(await page.locator(".v3-cert-card").count(), 2);
       const certificates = page.locator('[data-site-nav] a').filter({ hasText: "Сертификаты" });
       assert.equal(await certificates.count(), 1);
-      assert((await certificates.getAttribute("href")).endsWith("o-kompanii/#documents"));
+      assert((await certificates.getAttribute("href")).endsWith("sertifikaty/"));
       assert.equal(await certificates.getAttribute("aria-current"), null);
       await page.evaluate(() => { document.documentElement.style.scrollBehavior = "auto"; window.scrollTo(0, 0); });
       if (width <= 1120) await page.locator("[data-nav-toggle]").click();
       await certificates.click();
-      await page.waitForURL("**/o-kompanii/#documents");
-      await page.waitForFunction(() => document.querySelector('link[rel="stylesheet"][href*="/company.css"]')?.media === "all");
-      assert.equal(await page.locator("#documents-title").textContent(), "Документы и сертификаты");
+      await page.waitForURL("**/sertifikaty/");
+      await page.waitForFunction(() => document.querySelector('link[rel="stylesheet"][href*="/certificates.css"]')?.media === "all");
+      assert.equal(await page.locator("#internal-page-title").textContent(), "Сертификаты РемСД");
       if (width <= 1120) assert.equal(await page.locator("[data-nav-toggle]").getAttribute("aria-expanded"), "false");
       await page.goto(baseUrl, { waitUntil: "domcontentloaded" });
       await page.locator(".v3-cert-strip").scrollIntoViewIfNeeded();
@@ -32,15 +32,15 @@ module.exports = async function verifyDocumentNavigation(browser, baseUrl, resul
       for (const id of ["maz", "conformity"]) {
         if (id !== "maz") await page.goto(baseUrl, { waitUntil: "domcontentloaded" });
         await page.locator(`.v3-cert-card[href$="#document-${id}"]`).click();
-        await page.waitForURL(`**/o-kompanii/#document-${id}`);
-        await page.waitForFunction(() => document.querySelector('link[rel="stylesheet"][href*="/company.css"]')?.media === "all");
+        await page.waitForURL(`**/sertifikaty/#document-${id}`);
+        await page.waitForFunction(() => document.querySelector('link[rel="stylesheet"][href*="/certificates.css"]')?.media === "all");
         await page.evaluate(() => document.fonts.ready);
         const card = page.locator(`#document-${id}`);
         await page.waitForFunction((id) => {
           const b = document.getElementById(`document-${id}`).getBoundingClientRect();
           return b.top >= -1 && b.top < innerHeight - 44;
         }, id);
-        assert.equal(await page.locator('[data-site-nav] a[aria-current="page"]').textContent(), "О компании");
+        assert.equal(await page.locator('[data-site-nav] a[aria-current="page"]').textContent(), "Сертификаты");
         await card.press("Enter");
         const viewer = page.locator("[data-company-viewer]");
         await viewer.waitFor({ state: "visible" });
@@ -49,9 +49,15 @@ module.exports = async function verifyDocumentNavigation(browser, baseUrl, resul
         assert(await card.evaluate((e) => document.activeElement === e));
       }
       await page.goto(baseUrl, { waitUntil: "domcontentloaded" });
-      await page.locator('.v3-footer a[href$="o-kompanii/#documents"]').click();
-      await page.waitForURL("**/o-kompanii/#documents");
-      assert.equal(await page.locator("#documents-title").textContent(), "Документы и сертификаты");
+      await page.locator('.v3-footer a[href$="sertifikaty/"]').click();
+      await page.waitForURL("**/sertifikaty/");
+      assert.equal(await page.locator("#internal-page-title").textContent(), "Сертификаты РемСД");
+      await page.goto(baseUrl + 'o-kompanii/', { waitUntil: 'domcontentloaded' });
+      assert.equal(await page.locator('.company-document').count(), 2);
+      await page.locator('.company-document[href$="#document-maz"]').click();
+      await page.waitForURL('**/sertifikaty/#document-maz');
+      await page.goto(baseUrl + 'o-kompanii/#document-conformity', { waitUntil: 'domcontentloaded' });
+      await page.waitForURL('**/sertifikaty/#document-conformity');
       const overflow = await page.evaluate(() => document.documentElement.scrollWidth - innerWidth);
       assert(overflow <= 1, `Documents ${width}px: overflow ${overflow}`);
     } finally { await context.close(); }

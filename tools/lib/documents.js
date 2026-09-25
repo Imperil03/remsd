@@ -75,8 +75,45 @@ function documentDate(doc) {
 
 function renderHomeDocumentPreviews(catalog, rootPath, esc) {
   return resolveDocuments(catalog.homePreviewIds, catalog).map((doc) =>
-    `<a class="v3-cert-card" href="${rootPath}o-kompanii/#document-${esc(doc.id)}"><span class="v3-cert-card__preview"><img src="${rootPath}${esc(doc.image)}" alt="${esc(doc.imageAlt)}" width="${doc.imageWidth}" height="${doc.imageHeight}" loading="lazy" decoding="async"></span><span class="v3-cert-card__copy"><strong>${esc(doc.caption)}</strong><span class="v3-cert-card__description">${esc(doc.text)}</span><span class="v3-cert-card__date">${esc(documentDate(doc))}</span><span class="v3-cert-card__action">Подробнее о документе</span></span></a>`
+    `<a class="v3-cert-card" href="${rootPath}sertifikaty/#document-${esc(doc.id)}"><span class="v3-cert-card__preview"><img src="${rootPath}${esc(doc.image)}" alt="${esc(doc.imageAlt)}" width="${doc.imageWidth}" height="${doc.imageHeight}" loading="lazy" decoding="async"></span><span class="v3-cert-card__copy"><strong>${esc(doc.caption)}</strong><span class="v3-cert-card__description">${esc(doc.text)}</span><span class="v3-cert-card__date">${esc(documentDate(doc))}</span><span class="v3-cert-card__action">Подробнее о документе</span></span></a>`
   ).join("\n");
 }
 
-module.exports = { loadDocumentCatalog, validateDocumentCatalog, resolveDocuments, documentDate, renderHomeDocumentPreviews };
+function renderDocumentCard(item, { rootPath, esc, sectionId = "documents", preview = false }) {
+  const href = preview ? `${rootPath}sertifikaty/#document-${item.id}` : rootPath + item.pages[0].image;
+  const viewer = preview ? "" : ` data-company-media="${esc(sectionId)}-${esc(item.id)}" data-media-index="0" aria-label="Открыть: ${esc(item.caption)}"`;
+  const action = preview ? "Подробнее о документе" : item.pages.length > 1 ? `Смотреть ${item.pages.length} листов` : "Открыть документ";
+  return `<a class="company-document" id="document-${esc(item.id)}" href="${esc(href)}"${viewer}><div class="company-document__preview"><img src="${rootPath}${esc(item.image)}" alt="${esc(item.imageAlt)}" width="${item.imageWidth}" height="${item.imageHeight}" loading="lazy" decoding="async"></div><div class="company-document__copy"><h3>${esc(item.caption)}</h3><p>${esc(item.text)}</p><p class="company-document__date">${esc(documentDate(item))}</p><span class="company-document__action">${action}</span></div></a>`;
+}
+
+function renderDocumentGroups(section, { rootPath, esc }) {
+  const catalog = loadDocumentCatalog();
+  const selected = resolveDocuments(section.documentIds, catalog);
+  return catalog.groups.map((group) => {
+    const docs = selected.filter((item) => item.group === group.id);
+    if (!docs.length) return "";
+    const cards = docs.map((item) => renderDocumentCard(item, { rootPath, esc, sectionId: section.id })).join("");
+    return `<div class="company-documents__group" aria-labelledby="${esc(section.id)}-${esc(group.id)}-title"><h2 id="${esc(section.id)}-${esc(group.id)}-title">${esc(group.title)}</h2><div class="company-documents__grid${docs.length === 1 ? " company-documents__grid--single" : ""}">${cards}</div></div>`;
+  }).join("");
+}
+
+function createDocumentSections({ escapeHtml: esc }) {
+  return {
+    documentCatalog: {
+      validate(section, label, context) { resolveDocuments(section.documentIds, loadDocumentCatalog(context.root)); },
+      render(section, { rootPath }) {
+        return `<section class="certificates-catalog" id="${esc(section.id)}" aria-label="${esc(section.title)}"><div class="container company-documents__groups">${renderDocumentGroups(section, { rootPath, esc })}</div></section>`;
+      },
+    },
+  };
+}
+
+function renderDocumentMediaData(page, rootPath) {
+  const groups = {};
+  for (const section of page.sections.filter((item) => item.type === "documentCatalog")) {
+    for (const item of resolveDocuments(section.documentIds)) groups[`${section.id}-${item.id}`] = item.pages.map((p) => ({ src: rootPath + p.image, alt: p.imageAlt, caption: p.caption, width: p.imageWidth, height: p.imageHeight }));
+  }
+  return `<script type="application/json" id="company-media-data">${JSON.stringify(groups).replaceAll("<", "\\u003c")}</script>`;
+}
+
+module.exports = { loadDocumentCatalog, validateDocumentCatalog, resolveDocuments, documentDate, renderHomeDocumentPreviews, renderDocumentCard, createDocumentSections, renderDocumentMediaData };

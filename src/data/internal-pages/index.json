@@ -4,7 +4,8 @@
     "hub": "remont-gruzovyh-avtomobiley",
     "brand": "remont/kamaz",
     "company": "o-kompanii",
-    "contact": "kontakty"
+    "contact": "kontakty",
+    "documents": "sertifikaty"
   },
   "pages": [
     "remont-gruzovyh-avtomobiley.json",
@@ -47,6 +48,7 @@
     "brand-sitrak.json",
     "brand-volvo.json",
     "o-kompanii.json",
-    "kontakty.json"
+    "kontakty.json",
+    "sertifikaty.json"
   ]
 }

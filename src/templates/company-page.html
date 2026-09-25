@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="{{rootPath}}assets/css/company.css?v={{assetVersion}}-base-layout" media="print" onload="this.media='all'">
     <noscript><link rel="stylesheet" href="{{rootPath}}assets/css/company.css?v={{assetVersion}}-base-layout"></noscript>
   </head>
-  <body class="company-page">
+  <body class="company-page" data-documents-page="{{rootPath}}sertifikaty/" data-document-ids="{{companyDocumentIds}}">
     <main id="main-content" tabindex="-1">
       <section class="company-hero" aria-labelledby="internal-page-title">
         <a class="skip-link" href="#internal-page-title">К основному содержанию</a>
@@ -61,18 +61,7 @@
     </main>
     {{v3-footer}}
     {{mobile-callbar}}
-    <dialog class="company-viewer" aria-labelledby="company-viewer-caption" data-company-viewer>
-      <div class="company-viewer__shell">
-        <button class="company-viewer__close" type="button" aria-label="Закрыть просмотр" data-company-close autofocus>Закрыть <span aria-hidden="true">×</span></button>
-        <img class="company-viewer__image" alt="" data-company-image>
-        <div class="company-viewer__bar">
-          <button type="button" class="company-viewer__step" aria-label="Предыдущее изображение" data-company-prev><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 5-7 7 7 7"/></svg></button>
-          <div><p id="company-viewer-caption" aria-live="polite"></p><span data-company-counter></span><a data-company-file href="{{rootPath}}{{heroImage}}" target="_blank" rel="noopener">Открыть файл</a></div>
-          <button type="button" class="company-viewer__step" aria-label="Следующее изображение" data-company-next><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m10 5 7 7-7 7"/></svg></button>
-        </div>
-        <p class="company-viewer__error" data-company-error role="status" hidden>Изображение не загрузилось. Откройте файл по прямой ссылке.</p>
-      </div>
-    </dialog>
+    {{media-viewer}}
     {{companyMediaData}}
     <script src="{{rootPath}}assets/js/main.js?v={{assetVersion}}" defer></script>
     <script src="{{rootPath}}assets/js/company.js?v={{assetVersion}}" defer></script>

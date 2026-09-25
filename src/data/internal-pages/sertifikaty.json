@@ -1,0 +1,15 @@
+{
+  "path": "sertifikaty",
+  "family": "documents",
+  "entityRef": "proof-certificates",
+  "metadata": {
+    "title": "Сертификаты и документы РемСД — сервисный центр в Сургуте",
+    "description": "Документы РемСД: сервисные полномочия МАЗ и Адверс, обучение специалистов УРАЛ и Weichai, сертификат соответствия услуг с приложениями.",
+    "socialImage": "assets/img/certificates/large/maz-certificate.webp"
+  },
+  "breadcrumbs": [{ "label": "Главная", "href": "" }, { "label": "Сертификаты" }],
+  "hero": { "h1": "Сертификаты РемСД", "accent": "РемСД" },
+  "sections": [
+    { "id": "documents", "type": "documentCatalog", "title": "Документы и сертификаты", "documentIds": ["maz", "advers", "ural", "weichai", "conformity"] }
+  ]
+}

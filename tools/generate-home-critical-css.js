@@ -58,6 +58,15 @@ if (internalCatalog.manifest.referenceByFamily.contact) {
   });
 }
 
+if (internalCatalog.manifest.referenceByFamily.documents) {
+  targets.push({
+    name: "certificates", file: `${internalCatalog.manifest.referenceByFamily.documents}/index.html`,
+    css: "certificates.css", fontSources: ["styles.css"], heroClass: "certificates-hero", bodyClass: "certificates-page",
+    output: "certificates-critical.css",
+    prepend: ".certificates-page main>:not(.certificates-hero){content-visibility:hidden;contain-intrinsic-block-size:900px}",
+  });
+}
+
 // Read canonical sources rather than previously generated critical CSS or bundles,
 // which may already omit definitions supplied by the inline critical stylesheet.
 for (const target of targets) {

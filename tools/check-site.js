@@ -40,6 +40,12 @@ try {
 }
 
 try {
+  require("./lib/check-certificates-page")({ root, catalog: internalCatalog });
+} catch (error) {
+  fail(`certificates: ${error.message}`);
+}
+
+try {
   require("./lib/check-contact-page")({ root, catalog: internalCatalog, siteConfig });
 } catch (error) {
   fail(`contact: ${error.message}`);
@@ -122,11 +128,11 @@ if (!fs.existsSync(distDir)) {
     fail(`сборка должна содержать ровно ${expectedHtml.join(", ")}; найдено: ${actualHtml.join(", ")}`);
   }
   const publicCss = fs.readdirSync(path.join(distDir, "assets", "css")).filter((file) => file.endsWith(".css")).sort();
-  const expectedCss = ["base.css", "company.css", "contact.css", "home-critical.css", "home.css", "internal.css"];
+  const expectedCss = ["base.css", "certificates.css", "company.css", "contact.css", "home-critical.css", "home.css", "internal.css"];
   if (JSON.stringify(publicCss) !== JSON.stringify(expectedCss)) {
     fail(`публичный CSS должен содержать только ${expectedCss.join(", ")}; найдено: ${publicCss.join(", ")}`);
   }
-  const cssLimits = { "base.css": 45 * 1024, "company.css": 60 * 1024, "contact.css": 55 * 1024, "home.css": 85 * 1024, "internal.css": 70 * 1024 };
+  const cssLimits = { "base.css": 45 * 1024, "certificates.css": 55 * 1024, "company.css": 60 * 1024, "contact.css": 55 * 1024, "home.css": 85 * 1024, "internal.css": 70 * 1024 };
   for (const [file, limit] of Object.entries(cssLimits)) {
     const size = fs.statSync(path.join(distDir, "assets", "css", file)).size;
     if (size > limit) fail(`${file}: ${size} байт превышает лимит ${limit} байт`);
@@ -174,14 +180,14 @@ if (!fs.existsSync(distDir)) {
   for (const page of internalCatalog.pages) {
     const relative = `${page.path}/index.html`;
     const html = fs.readFileSync(path.join(distDir, relative), "utf8");
-    for (const type of ["BreadcrumbList", page.family === "contact" ? "ContactPage" : page.family === "company" ? "AboutPage" : "Service", "LocalBusiness", "AutoRepair"]) {
+    for (const type of ["BreadcrumbList", page.family === "documents" ? "CollectionPage" : page.family === "contact" ? "ContactPage" : page.family === "company" ? "AboutPage" : "Service", "LocalBusiness", "AutoRepair"]) {
       if (!typesByPage.get(relative)?.has(type)) fail(`${relative}: JSON-LD не содержит ${type}`);
     }
     for (const forbidden of ["FAQPage", "Offer", "AggregateRating", "Review"]) {
       if (typesByPage.get(relative)?.has(forbidden)) fail(`${relative}: JSON-LD не должен содержать ${forbidden}`);
     }
     if (count(html, /<nav\b[^>]+aria-label=["']Хлебные крошки["']/gi) !== 1) fail(`${relative}: нет хлебных крошек`);
-    if (page.family !== "contact" && !/<section\b[^>]*class=["'][^"']*internal-close\b/i.test(html)) fail(`${relative}: нет заключительного CTA`);
+    if (!["contact", "documents"].includes(page.family) && !/<section\b[^>]*class=["'][^"']*internal-close\b/i.test(html)) fail(`${relative}: нет заключительного CTA`);
     if (/<form\b/i.test(html)) fail(`${relative}: формы запрещены`);
     if (/sidebar/i.test(html)) fail(`${relative}: sidebar запрещён`);
   }

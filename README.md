@@ -14,6 +14,7 @@
 - Десять дочерних страниц ремонта спецтехники и 23 страницы `/remont/{марка}/`.
 - `/o-kompanii/` — база, команда, подход к ремонту и документы РемСД, `company`.
 - `/kontakty/` — телефоны отделов, WhatsApp, карта и реквизиты с PDF, `contact`.
+- `/sertifikaty/` — пять комплектов документов в трёх группах, `documents`.
 - `/404.html` — служебная страница ошибки.
 
 Будущие услуги, марки и разделы показываются только как неинтерактивные элементы, пока для них не создан и не опубликован отдельный `PageDefinition`.
@@ -33,13 +34,14 @@
 ## Кодовый контракт
 
 - `src/data/site-config.json` — режимы сборки, NAP, график, CTA и подтверждённые владельцем факты.
-- `src/data/documents.json` — единые сканы, назначения и сроки пяти комплектов документов; главная и компания используют стабильные ID этого каталога.
+- `src/data/documents.json` — единые сканы, назначения и сроки пяти комплектов документов; отдельная страница, главная и компания используют стабильные ID этого каталога.
 - `src/data/internal-pages/index.json` — manifest схемы v3 с опубликованными файлами страниц и `referenceByFamily`.
-- `src/data/internal-pages/*.json` — отдельные типизированные `PageDefinition` семейств `hub`, `service`, `brand`, `company`, `contact`.
+- `src/data/internal-pages/*.json` — отдельные типизированные `PageDefinition` семейств `hub`, `service`, `brand`, `company`, `contact`, `documents`.
 - `src/data/page-templates.json` — общие данные `repair-v1`; `tools/lib/page-templates.js` разворачивает их до полной валидации.
 - `tools/lib/internal-pages.js` — реестр секций: validator и renderer каждого типа находятся рядом.
 - `src/templates/internal-page.html` — общий каркас внутренних страниц.
 - `src/templates/company-page.html` и `tools/lib/company-sections.js` — отдельная композиция и секции компании.
+- `src/templates/certificates-page.html` и `tools/lib/documents.js` — каталог сертификатов и общие превью документов.
 - `src/partials/v3-header.html`, `main-nav.html`, `v3-footer.html` — общая шапка, навигация и футер.
 - `assets/css/design-system.css` — единственный источник глобальных токенов.
 - `assets/css/styles.css` — только variable fonts, reset, `body` и `.container`.
@@ -53,12 +55,13 @@
 - `base.css = tokens + shared`;
 - `home.css = base + homepage`;
 - `internal.css = base + internal pages`;
-- `company.css = base + company page`;
-- `contact.css = base + contact page`.
+- `company.css = base + company page + document UI`;
+- `contact.css = base + contact page`;
+- `certificates.css = base + document UI + certificates page`.
 
 Поддерживаемые секции: `introProof`, `serviceGrid`, `popularWorks`, `vehicleTypes`, `brandShowcase`, `editorialContent`, `symptoms`, `workStages`, `priceExamples`, `relatedIndex`, `faq`. В `repair-v1` зафиксированы 11 секций, у страниц без `template` набор и порядок остаются свободными.
 
-Лимиты несжатых minified-бандлов: `base.css ≤45 KB`, `home.css ≤85 KB`, `internal.css ≤70 KB`, `company.css ≤60 KB`, `contact.css ≤55 KB`.
+Лимиты несжатых minified-бандлов: `base.css ≤45 KB`, `home.css ≤85 KB`, `internal.css ≤70 KB`, `company.css ≤60 KB`, `contact.css ≤55 KB`, `certificates.css ≤55 KB`.
 
 Подробный контракт, источник Word, редакционные исправления, цены и изображения: `docs/repair-pages-wave-one.md`.
 
@@ -107,6 +110,7 @@ npm run verify
 - Ремонт грузовых автомобилей: https://imperil03.github.io/remsd/remont-gruzovyh-avtomobiley/
 - О компании: https://imperil03.github.io/remsd/o-kompanii/
 - Контакты: https://imperil03.github.io/remsd/kontakty/
+- Сертификаты: https://imperil03.github.io/remsd/sertifikaty/
 
 Перенос на `remsd.ru`, серверные редиректы, Search Console и аналитика в текущую итерацию не входят.
 
@@ -118,8 +122,12 @@ npm run verify
 
 ## О компании
 
-`/o-kompanii/` использует семейство `company`, восемь самостоятельных блоков и разметку `AboutPage`. Тексты и медиа заменяются в `src/data/internal-pages/o-kompanii.json`; контакты приходят из общей конфигурации. Фото и многостраничные документы открываются с клавиатуры в одном просмотрщике, карта загружается при приближении к контактам. Контракт, источники и адресные команды проверки — `docs/company-page.md`.
+`/o-kompanii/` использует семейство `company`, восемь самостоятельных блоков и разметку `AboutPage`. Тексты и медиа заменяются в `src/data/internal-pages/o-kompanii.json`; контакты приходят из общей конфигурации. Фото открываются с клавиатуры в просмотрщике, два превью документов ведут на `/sertifikaty/`, карта загружается при приближении к контактам. Контракт, источники и адресные команды проверки — `docs/company-page.md`.
 
 ## Контакты
 
 `/kontakty/` — семейство `contact`, отдельные шаблон, стили и critical CSS. Данные отделов и реквизиты — `src/data/contact-details.json`. PDF создаётся через `npm run prepare:contacts`; сборка сверяет контрольную сумму источника и файла. Страница позволяет скачать карточку и скопировать реквизиты обоих банков. Контракт и источники — `docs/contact-page.md`.
+
+## Сертификаты
+
+`/sertifikaty/` — семейство `documents`, разметка `CollectionPage`, собственные шаблон, бандл и critical CSS. Общие карточки и доступный просмотрщик находятся в `document-ui.css`, `media-viewer.html` и `company.js`. Главная и компания показывают только два превью. Старые ссылки компании на отдельные документы перенаправляются на новый маршрут. Страница проверяется на 12 ширинах, включая просмотр шести листов соответствия. Полный контракт — `docs/documents.md`.

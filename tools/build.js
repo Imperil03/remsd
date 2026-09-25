@@ -6,7 +6,7 @@ const { removeCoveredFontFaces } = require("./lib/font-faces");
 const { loadPageTemplates } = require("./lib/page-templates");
 const { renderOfficialBrands, renderBrandMatrix, renderBrandNavigation } = require("./lib/brand-catalog");
 const { renderCompanyMediaData } = require("./lib/company-sections");
-const { loadDocumentCatalog, renderHomeDocumentPreviews } = require("./lib/documents");
+const { loadDocumentCatalog, renderHomeDocumentPreviews, renderDocumentMediaData } = require("./lib/documents");
 const { renderContactChannels } = require("./lib/contact-sections");
 const { details: contactDetails, validateContactDetails } = require("./lib/contact-details");
 const {
@@ -29,7 +29,7 @@ const iconVersion = createHash("sha256")
   .update(fs.readFileSync(path.join(assetsDir, "img", "favicon.png")))
   .update(fs.readFileSync(path.join(assetsDir, "img", "apple-touch-icon.png")))
   .digest("hex").slice(0, 12);
-const assetVersion = process.env.ASSET_VERSION || "20260925-certificates-nav-v21";
+const assetVersion = process.env.ASSET_VERSION || "20260925-certificates-page-v22";
 
 function fail(message) {
   throw new Error(`[build] ${message}`);
@@ -102,8 +102,9 @@ function createCssBundles(cssDir) {
     "base.css": ["design-system.css", "styles.css", "site-chrome.css"],
     "home.css": ["design-system.css", "styles.css", "site-chrome.css", "styles-v3.css"],
     "internal.css": ["design-system.css", "styles.css", "site-chrome.css", "internal-pages.css"],
-    "company.css": ["design-system.css", "styles.css", "site-chrome.css", "company-page.css"],
+    "company.css": ["design-system.css", "styles.css", "site-chrome.css", "company-page.css", "document-ui.css"],
     "contact.css": ["design-system.css", "styles.css", "site-chrome.css", "contact-page.css"],
+    "certificates.css": ["design-system.css", "styles.css", "site-chrome.css", "document-ui.css", "certificates-page.css"],
   };
   for (const [target, sources] of Object.entries(bundles)) {
     let css = sources.map((source) => fs.readFileSync(path.join(cssDir, source), "utf8")).join("\n");
@@ -286,11 +287,11 @@ function buildInternalStructuredData(page, config, baseUrl) {
     name: crumb.label,
     item: crumb.href === undefined ? url : toAbsoluteUrl(baseUrl, normalizeRoute(crumb.href, `${page.path}.breadcrumbs`, { allowEmpty: true })),
   }));
-  if (["company", "contact"].includes(page.family)) {
+  if (["company", "contact", "documents"].includes(page.family)) {
     return jsonLdScript({
       "@context": "https://schema.org",
       "@graph": [
-        { "@type": page.family === "contact" ? "ContactPage" : "AboutPage", "@id": `${url}#page`, url, name: page.metadata.title,
+        { "@type": page.family === "documents" ? "CollectionPage" : page.family === "contact" ? "ContactPage" : "AboutPage", "@id": `${url}#page`, url, name: page.metadata.title,
           description: page.metadata.description, inLanguage: config.site.language,
           about: { "@id": `${baseUrl}#organization` }, breadcrumb: { "@id": `${url}#breadcrumb` } },
         { "@type": "BreadcrumbList", "@id": `${url}#breadcrumb`, itemListElement: breadcrumbs },
@@ -452,7 +453,8 @@ function buildInternalPages(pages, partials, config, mode, baseUrl, writtenRoute
   for (const page of pages) {
     const isCompany = page.family === "company";
     const isContact = page.family === "contact";
-    const surface = isContact ? "contact" : isCompany ? "company" : "internal";
+    const isDocuments = page.family === "documents";
+    const surface = isDocuments ? "certificates" : isContact ? "contact" : isCompany ? "company" : "internal";
     const template = fs.readFileSync(path.join(templatesDir, `${surface}-page.html`), "utf8");
     const internalCriticalFile = path.join(assetsDir, "css", `${surface}-critical.css`);
     const target = outputFileForRoute(page.path);
@@ -478,7 +480,9 @@ function buildInternalPages(pages, partials, config, mode, baseUrl, writtenRoute
       heroImageAlt: escapeHtml(page.hero.imageAlt || ""),
       heroImageCaption: escapeHtml(page.hero.imageCaption || ""),
       heroProofText: escapeHtml(page.hero.proofText || ""),
-      companyMediaData: isCompany ? renderCompanyMediaData(page, rootPath) : "",
+      companyMediaData: isDocuments ? renderDocumentMediaData(page, rootPath) : isCompany ? renderCompanyMediaData(page, rootPath) : "",
+      companyDocumentIds: isCompany ? escapeHtml(page.sections.find((s) => s.type === "companyDocuments").documentIds.join(" ")) : "",
+      viewerDefaultImage: escapeHtml(rootPath + (isDocuments ? loadDocumentCatalog(root).documents[0].pages[0].image : page.hero.image || config.site.logo)),
       contactChannels: isContact ? renderContactChannels(config.site, escapeHtml) : "",
       mapLabel: escapeHtml(page.closingCta?.mapLabel || ""),
       mapUrl: escapeHtml(config.site.mapUrl),
@@ -539,6 +543,7 @@ function main() {
   fs.rmSync(path.join(outputCssDir, "internal-critical.css"), { force: true });
   fs.rmSync(path.join(outputCssDir, "company-critical.css"), { force: true });
   fs.rmSync(path.join(outputCssDir, "contact-critical.css"), { force: true });
+  fs.rmSync(path.join(outputCssDir, "certificates-critical.css"), { force: true });
   minifyCssFiles(outputCssDir);
 
   const partials = readPartials(buildHomeStructuredData(config, baseUrl));

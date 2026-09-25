@@ -1,4 +1,4 @@
-const { loadDocumentCatalog, resolveDocuments, documentDate } = require("./documents");
+const { loadDocumentCatalog, resolveDocuments, renderDocumentCard } = require("./documents");
 
 function createCompanySections({ requireObject, requireArray, requireText, validateAsset, escapeHtml: esc, normalizeRoute }) {
   const textList = (items, label) => requireArray(items, label, { nonEmpty: true }).forEach((item, i) => requireText(item, `${label}[${i}]`));
@@ -69,18 +69,14 @@ function createCompanySections({ requireObject, requireArray, requireText, valid
           validateAsset(brand.image, `${label}.brands[${i}].image`, context);
         });
         resolveDocuments(s.documentIds, loadDocumentCatalog(context.root));
+        if (s.presentation !== "preview") throw new Error(`${label}.presentation: ожидается preview`);
       },
       render(s, { rootPath }) {
         const brands = s.brands.map((b) => `<li><a href="${rootPath}${esc(b.href)}/"><img src="${rootPath}${esc(b.image)}" alt="" width="220" height="120" loading="lazy" decoding="async"><span>${esc(b.name)}<small>Официальный сервис</small></span></a></li>`).join("");
         const catalog = loadDocumentCatalog();
-        const selected = resolveDocuments(s.documentIds, catalog);
-        const groups = catalog.groups.map((group) => {
-          const docs = selected.filter((item) => item.group === group.id);
-          if (!docs.length) return "";
-          const cards = docs.map((item) => `<a class="company-document" id="document-${esc(item.id)}" href="${rootPath}${esc(item.pages[0].image)}" data-company-media="${esc(s.id)}-${esc(item.id)}" data-media-index="0" aria-label="Открыть: ${esc(item.caption)}"><div class="company-document__preview"><img src="${rootPath}${esc(item.image)}" alt="${esc(item.imageAlt)}" width="${item.imageWidth}" height="${item.imageHeight}" loading="lazy" decoding="async"></div><div class="company-document__copy"><h4>${esc(item.caption)}</h4><p>${esc(item.text)}</p><p class="company-document__date">${esc(documentDate(item))}</p><span class="company-document__action">${item.pages.length > 1 ? `Смотреть ${item.pages.length} листов` : "Открыть документ"}</span></div></a>`).join("");
-          return `<div class="company-documents__group" aria-labelledby="${esc(s.id)}-${esc(group.id)}-title"><h3 id="${esc(s.id)}-${esc(group.id)}-title">${esc(group.title)}</h3><div class="company-documents__grid${docs.length === 1 ? " company-documents__grid--single" : ""}">${cards}</div></div>`;
-        }).join("");
-        return section(s, "company-documents", `${head(s)}<ul class="company-documents__brands" aria-label="Официальный сервис">${brands}</ul><div class="company-documents__groups">${groups}</div>`);
+        const selected = resolveDocuments(catalog.homePreviewIds.filter((id) => s.documentIds.includes(id)), catalog);
+        const previews = selected.map((item) => renderDocumentCard(item, { rootPath, esc, preview: true })).join("");
+        return section(s, "company-documents", `${head(s)}<ul class="company-documents__brands" aria-label="Официальный сервис">${brands}</ul><div class="company-documents__grid">${previews}</div><a class="company-documents__all" href="${rootPath}sertifikaty/">Все документы и сертификаты</a>`);
       },
     },
   };
@@ -92,7 +88,6 @@ function renderCompanyMediaData(page, rootPath) {
   for (const section of page.sections) {
     if (section.type === "companyBase") groups[section.id] = section.photos.map(entry);
     if (section.type === "companyTeam") groups[section.id] = [entry(section.photo)];
-    if (section.type === "companyDocuments") resolveDocuments(section.documentIds).forEach((item) => { groups[`${section.id}-${item.id}`] = item.pages.map(entry); });
   }
   return `<script type="application/json" id="company-media-data">${JSON.stringify(groups).replaceAll("<", "\\u003c")}</script>`;
 }

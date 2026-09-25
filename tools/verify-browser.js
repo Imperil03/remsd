@@ -928,8 +928,9 @@ async function run() {
         const isBrand = definition.family === "brand";
         const isCompany = definition.family === "company";
         const isContact = definition.family === "contact";
+        const isDocuments = definition.family === "documents";
         const brandReference = ["kamaz", "ural", "sany", "sitrak", "mitsubishi-fuso"].some((slug) => definition.path === `remont/${slug}`);
-        const viewports = isCompany || isContact
+        const viewports = isCompany || isContact || isDocuments
           ? [...chromeViewports, { name: "company-header-1121", width: 1121, height: 900 }]
           : isRepairTemplate || brandReference ? chromeViewports : chromeViewports.filter((viewport) => [1440, 390].includes(viewport.width));
         for (const viewport of viewports) {
@@ -942,6 +943,7 @@ async function run() {
             else if (isBrand) await require("./lib/verify-brand-page")(page, viewport, definition, materializePage);
             else if (isCompany) await require("./lib/verify-company-page")(page, viewport, definition, materializePage);
             else if (isContact) await require("./lib/verify-contact-page")(page, viewport, definition, materializePage);
+            else if (isDocuments) await require("./lib/verify-certificates-page")(page, viewport, definition, materializePage);
             else await materializePage(page);
           } catch (error) {
             throw new Error(`${route} ${viewport.width}px: ${error.message}`);
@@ -949,7 +951,7 @@ async function run() {
           if ([1440, 390].includes(viewport.width)) {
             const fileSlug = definition.path.replaceAll("/", "-");
             await page.screenshot({ path: path.join(resultDir, `${fileSlug}-${viewport.width}.png`), fullPage: true });
-            const cropIds = isContact ? definition.sections.map((section) => section.id) : isCompany ? [...definition.sections.map((section) => section.id), "company-contact"] : isRepairTemplate ? ["repair-services", "popular-repair-services", "vehicle-types", "repair-signs", "related-services", "faq"] : isBrand && brandReference ? definition.sections.filter((section) => ["introProof", "serviceGrid", "modelRange", "editorialContent", "costEstimate"].includes(section.type)).map((section) => section.id) : [];
+            const cropIds = isContact || isDocuments ? definition.sections.map((section) => section.id) : isCompany ? [...definition.sections.map((section) => section.id), "company-contact"] : isRepairTemplate ? ["repair-services", "popular-repair-services", "vehicle-types", "repair-signs", "related-services", "faq"] : isBrand && brandReference ? definition.sections.filter((section) => ["introProof", "serviceGrid", "modelRange", "editorialContent", "costEstimate"].includes(section.type)).map((section) => section.id) : [];
             for (const id of cropIds) {
               // Callbar behavior is tested above; keep fixed UI out of content crops.
               await page.locator(`#${id}`).screenshot({ path: path.join(resultDir, `${fileSlug}-${viewport.width}-${id}.png`), style: "[data-mobile-callbar] { visibility: hidden !important; }" });

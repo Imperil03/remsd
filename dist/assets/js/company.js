@@ -1,4 +1,10 @@
 (() => {
+  const oldDocument = location.hash.match(/^#document-([a-z0-9-]+)$/)?.[1];
+  const documentIds = (document.body.dataset.documentIds || "").split(" ");
+  if (oldDocument && document.body.dataset.documentsPage && documentIds.includes(oldDocument)) {
+    location.replace(new URL(`${document.body.dataset.documentsPage}#document-${oldDocument}`, location.href));
+    return;
+  }
   const map = document.querySelector("[data-company-map-src]");
   if (map instanceof HTMLIFrameElement && "IntersectionObserver" in window) {
     const observer = new IntersectionObserver((entries) => {

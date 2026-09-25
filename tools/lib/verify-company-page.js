@@ -7,9 +7,8 @@ module.exports = async function verifyCompanyPage(page, viewport, definition, ma
   assert.equal(await page.locator("main > section").count(), 8);
   assert.equal(await page.locator("main a.v3-button").count(), 2);
   assert.equal(await page.locator('[data-site-nav] a[aria-current="page"]').textContent(), "О компании");
-  assert.equal(await page.locator(".company-document").count(), 5);
-  assert.equal(await page.locator(".company-documents__group").count(), 3);
-  assert.deepEqual(await page.locator(".company-documents__group > h3").allTextContents(), ["Сервисные полномочия", "Обучение специалистов", "Соответствие услуг"]);
+  assert.equal(await page.locator(".company-document").count(), 2);
+  assert.equal(await page.locator(".company-documents__group").count(), 0);
   assert.equal(await page.locator(".company-story__stages > li").count(), 3);
   assert.equal(await page.locator(".company-team__roles > div").count(), 4);
   const result = await page.evaluate(() => {
@@ -41,30 +40,7 @@ module.exports = async function verifyCompanyPage(page, viewport, definition, ma
     assert(b.width >= 44 && b.height >= 44);
   }
   if ([1440, 390].includes(viewport.width)) {
-    const opener = page.locator('[data-company-media="documents-conformity"]');
-    await opener.focus();
-    await opener.press("Enter");
     const dialog = page.locator("[data-company-viewer]");
-    await dialog.waitFor({ state: "visible" });
-    assert.equal(await page.locator("[data-company-counter]").textContent(), "1 / 6");
-    assert(await page.locator("[data-company-prev]").isDisabled());
-    await page.keyboard.press("ArrowRight");
-    assert.equal(await page.locator("[data-company-counter]").textContent(), "2 / 6");
-    assert((await page.locator("[data-company-image]").getAttribute("src")).endsWith("conformity-02.webp"));
-    await page.waitForFunction(() => document.querySelector("[data-company-image]").naturalWidth > 0);
-    for (let i = 0; i < 7; i++) {
-      await page.keyboard.press("Tab");
-      assert(await dialog.evaluate((e) => e.contains(document.activeElement)), "Фокус покинул открытый просмотр");
-    }
-    await page.keyboard.press("Escape");
-    assert(!await dialog.isVisible());
-    assert(await opener.evaluate((e) => document.activeElement === e), "Фокус не вернулся к документу");
-    await page.locator('#document-maz').click();
-    await dialog.waitFor({ state: "visible" });
-    assert.equal(await page.locator("[data-company-counter]").textContent(), "");
-    assert(!await page.locator("[data-company-next]").isVisible());
-    await page.keyboard.press("Escape");
-    assert(await page.locator('#document-maz').evaluate((e) => document.activeElement === e));
     const photo = page.locator('[data-company-media="company-base"]').first();
     await photo.click();
     await dialog.waitFor({ state: "visible" });

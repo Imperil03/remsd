@@ -4,9 +4,10 @@ const { loadPageTemplates, resolvePageTemplate } = require("./page-templates");
 const { renderOfficialBrands, renderBrandMatrix } = require("./brand-catalog");
 const { createCompanySections } = require("./company-sections");
 const { createContactSections } = require("./contact-sections");
+const { createDocumentSections } = require("./documents");
 
-const PAGE_FAMILIES = new Set(["hub", "service", "brand", "company", "contact"]);
-const ENTITY_TYPE_BY_FAMILY = { hub: "service", service: "service", brand: "brand", company: "organization", contact: "location" };
+const PAGE_FAMILIES = new Set(["hub", "service", "brand", "company", "contact", "documents"]);
+const ENTITY_TYPE_BY_FAMILY = { hub: "service", service: "service", brand: "brand", company: "organization", contact: "location", documents: "proof" };
 
 function fail(message) {
   throw new Error(`[internal-pages] ${message}`);
@@ -117,6 +118,7 @@ function renderInlineCta({ id, modifier, cta }, site) {
 const SECTION_REGISTRY = {
   ...createCompanySections({ requireObject, requireArray, requireText, validateAsset, escapeHtml, normalizeRoute }),
   ...createContactSections({ requireText, validateAsset, escapeHtml }),
+  ...createDocumentSections({ escapeHtml }),
   introProof: {
     validate(section, label, context) {
       requireArray(section.bullets, `${label}.bullets`, { nonEmpty: true }).forEach((item, index) => requireText(item, `${label}.bullets[${index}]`));
@@ -483,7 +485,7 @@ function validatePageDefinition(page, label, context) {
     fail(`${label}.entityRef: семейство ${page.family} ожидает сущность типа ${ENTITY_TYPE_BY_FAMILY[page.family]}, найдено ${entity.type}`);
   }
   const metadata = requireObject(page.metadata, `${label}.metadata`);
-  (["company", "contact"].includes(page.family) ? ["title", "description"] : ["title", "description", "serviceType"])
+  (["company", "contact", "documents"].includes(page.family) ? ["title", "description"] : ["title", "description", "serviceType"])
     .forEach((key) => requireText(metadata[key], `${label}.metadata.${key}`));
   validateAsset(metadata.socialImage, `${label}.metadata.socialImage`, context);
   requireArray(page.breadcrumbs, `${label}.breadcrumbs`, { nonEmpty: true }).forEach((crumb, index) => {
@@ -492,9 +494,9 @@ function validatePageDefinition(page, label, context) {
     if (crumb.href !== undefined) normalizeRoute(crumb.href, `${label}.breadcrumbs[${index}].href`, { allowEmpty: true });
   });
   const hero = requireObject(page.hero, `${label}.hero`);
-  (page.family === "contact" ? ["h1"] : ["h1", "lead", "ctaLabel"]).forEach((key) => requireText(hero[key], `${label}.hero.${key}`));
+  (["contact", "documents"].includes(page.family) ? ["h1"] : ["h1", "lead", "ctaLabel"]).forEach((key) => requireText(hero[key], `${label}.hero.${key}`));
   if (hero.accent !== undefined) requireText(hero.accent, `${label}.hero.accent`);
-  if (page.family !== "contact") {
+  if (!["contact", "documents"].includes(page.family)) {
     validateAsset(hero.image, `${label}.hero.image`, context);
     validateAsset(hero.mobileImage, `${label}.hero.mobileImage`, context);
   }
@@ -503,7 +505,7 @@ function validatePageDefinition(page, label, context) {
     requireText(hero.imageCaption, `${label}.hero.imageCaption`);
     requireText(hero.proofText, `${label}.hero.proofText`);
   }
-  if (!["company", "contact"].includes(page.family) || hero.facts !== undefined) requireArray(hero.facts, `${label}.hero.facts`, { nonEmpty: true }).forEach((fact, index) => {
+  if (!["company", "contact", "documents"].includes(page.family) || hero.facts !== undefined) requireArray(hero.facts, `${label}.hero.facts`, { nonEmpty: true }).forEach((fact, index) => {
     requireObject(fact, `${label}.hero.facts[${index}]`);
     requireText(fact.icon, `${label}.hero.facts[${index}].icon`);
     requireText(fact.label, `${label}.hero.facts[${index}].label`);
@@ -529,7 +531,7 @@ function validatePageDefinition(page, label, context) {
       fail(`${label}.sections[${index}].link.targetSectionId: секция ${section.link.targetSectionId} не найдена`);
     }
   });
-  if (page.family !== "contact") validateCta(page.closingCta, `${label}.closingCta`);
+  if (!["contact", "documents"].includes(page.family)) validateCta(page.closingCta, `${label}.closingCta`);
   if (page.family === "company") requireText(page.closingCta.mapLabel, `${label}.closingCta.mapLabel`);
   validateNoHtml(page, label);
   const sprite = fs.readFileSync(path.join(context.root, "src/partials/internal-icon-sprite.html"), "utf8");
