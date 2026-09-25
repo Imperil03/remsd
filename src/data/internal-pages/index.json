@@ -3,7 +3,8 @@
   "referenceByFamily": {
     "hub": "remont-gruzovyh-avtomobiley",
     "brand": "remont/kamaz",
-    "company": "o-kompanii"
+    "company": "o-kompanii",
+    "contact": "kontakty"
   },
   "pages": [
     "remont-gruzovyh-avtomobiley.json",
@@ -45,6 +46,7 @@
     "brand-shacman.json",
     "brand-sitrak.json",
     "brand-volvo.json",
-    "o-kompanii.json"
+    "o-kompanii.json",
+    "kontakty.json"
   ]
 }

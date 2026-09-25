@@ -2,6 +2,13 @@
   "schemaVersion": 1,
   "relations": [
     {
+      "id": "rel-remsd-base",
+      "subject": "organization-remsd",
+      "predicate": "hasLocation",
+      "predicateLabel": "работает на базе",
+      "object": "location-remsd-base"
+    },
+    {
       "id": "rel-repair-located-surgut",
       "subject": "service-repair",
       "predicate": "locatedIn",

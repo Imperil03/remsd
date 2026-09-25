@@ -18,6 +18,9 @@
 - `home.css = design-system.css + styles.css + site-chrome.css + styles-v3.css`;
 - `internal.css = design-system.css + styles.css + site-chrome.css + internal-pages.css`.
 - `company.css = design-system.css + styles.css + site-chrome.css + company-page.css`.
+- `contact.css = design-system.css + styles.css + site-chrome.css + contact-page.css`.
+
+Страница контактов имеет отдельную композицию из телефонного справочника, проезда и реквизитов, без заключительной рекламной CTA. На 720 px и ниже блоки идут в один столбец. Контракт данных, PDF, копирования и карты — `docs/contact-page.md`. Шрифты `contact.css` также исключаются из отложенного бандла при наличии эквивалентных inline-объявлений.
 
 HTML подключает только публичные бандлы. Порядок и состав проверяет `tools/check-design-system.js`.
 

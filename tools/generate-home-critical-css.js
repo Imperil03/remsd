@@ -49,6 +49,15 @@ if (internalCatalog.manifest.referenceByFamily.company) {
   });
 }
 
+if (internalCatalog.manifest.referenceByFamily.contact) {
+  targets.push({
+    name: "contact", file: `${internalCatalog.manifest.referenceByFamily.contact}/index.html`,
+    css: "contact.css", fontSources: ["styles.css"], heroClass: "contacts-hero", bodyClass: "contacts-page",
+    output: "contact-critical.css",
+    prepend: ".contacts-page main>:not(.contacts-hero){content-visibility:hidden;contain-intrinsic-block-size:900px}",
+  });
+}
+
 // Read canonical sources rather than previously generated critical CSS or bundles,
 // which may already omit definitions supplied by the inline critical stylesheet.
 for (const target of targets) {

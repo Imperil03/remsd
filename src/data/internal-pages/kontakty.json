@@ -1,0 +1,23 @@
+{
+  "path": "kontakty",
+  "family": "contact",
+  "entityRef": "location-remsd-base",
+  "metadata": {
+    "title": "Контакты РемСД в Сургуте — телефоны, адрес и реквизиты",
+    "description": "Контакты РемСД: телефоны мастера, приёмной и отдела гарантии, WhatsApp, почта, карта проезда и реквизиты. Сургут, ул. Домостроителей, 13. Ежедневно 08:00–22:00.",
+    "socialImage": "assets/img/gallery/large/base-entrance.webp"
+  },
+  "breadcrumbs": [{ "label": "Главная", "href": "" }, { "label": "Контакты" }],
+  "hero": { "h1": "Контакты РемСД", "accent": "РемСД" },
+  "sections": [
+    {
+      "id": "kak-dobratsya", "type": "contactLocation", "title": "Как добраться",
+      "image": "assets/img/gallery/large/base-entrance.webp",
+      "imageAlt": "Въезд на базу РемСД с вывеской «Ремонт спецтехники»",
+      "caption": "Въезд на ремонтную базу",
+      "imageWidth": 1024, "imageHeight": 682,
+      "routeLabel": "Построить маршрут"
+    },
+    { "id": "rekvizity", "type": "contactRequisites", "title": "Реквизиты", "downloadLabel": "Скачать реквизиты", "copyLabel": "Скопировать реквизиты" }
+  ]
+}

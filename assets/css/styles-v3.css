@@ -1453,6 +1453,8 @@ a.v3-equipment-item:focus-visible {
   align-items: center;
 }
 
+.v3-contact__actions > .v3-contact__map-link { display: inline-flex; align-items: center; min-height: 52px; margin: 0; }
+
 .v3-contact__map {
   position: relative;
   min-height: 460px;

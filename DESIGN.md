@@ -202,6 +202,17 @@ FAQ использует редакционную split-композицию: с
 
 Photos and documents reuse unchanged project assets, with origin URLs in `tools/prepare-media.js`. Page data lives in `src/data/internal-pages/o-kompanii.json`; composition and viewer details are scoped to the company template, stylesheet and script. See `docs/company-page.md`.
 
+### Contacts Page
+
+**The Contacts Surface Rule.** `/kontakty/` applies Industrial Editorial to three practical tasks: contact the right person, reach the base and obtain company details. The `contact` family retains shared fonts, tokens, container, radii, navigation and mobile callbar. Direct channels, a coordinate map and readable tables carry the page; its compact composition adds no promotional sections or new global tokens.
+
+- **Composition:** the dark opening pairs the prominent master phone, email, WhatsApp and hours with three department rows. The pale directions section places the address, route action and real entrance photo left of the map. The white company-details section places download/copy actions left of the organization table and two bank tables. Phone and account numbers use tabular figures; fine rules separate rows.
+- **Responsive layout:** reserve `152 px` above hero content on desktop, `132 px` at `721–1120 px` and `118 px` at `≤720 px` for the shared header. Bank tables stack at `≤1120 px`. At `≤720 px`, the page follows contacts → address → map → photo → company details. At `≤360 px`, department phones and organization-table values sit below their labels. The entrance photo retains its intrinsic proportions and a separate caption.
+- **Map and navigation:** the lazy Yandex embed shows a coordinate pin without an organization balloon; the confirmed address and route link remain outside the iframe. Menu and footer contact links open `/kontakty/`; the homepage retains its contact block and a quiet link to the full page.
+- **Company details:** the tables, clipboard text and one-page PDF use the same organization and two bank accounts. Copy appears only when the Clipboard API is available and reports success or a fallback to table selection/download. The PDF is a clean typeset card without the supplied scan's stamp or signature; source/PDF fingerprints prevent a stale download. Actions retain visible focus and targets of at least `44 px`.
+
+General contacts come from `site-config.json`; department, messenger, map and organization data come from `src/data/contact-details.json`. The surface stays scoped to the contact template, stylesheet and script. See `docs/contact-page.md` for source and PDF-generation details.
+
 ## Do's and Don'ts
 
 ### Do:

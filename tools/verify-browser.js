@@ -36,6 +36,7 @@ const mime = {
   ".svg": "image/svg+xml",
   ".webp": "image/webp",
   ".woff2": "font/woff2",
+  ".pdf": "application/pdf",
 };
 
 function resolveRequest(url) {
@@ -254,7 +255,12 @@ async function verifyMenuHoverMatrix(browser) {
       for (const route of routes) {
         const page = await context.newPage();
         await verifyPage(page, route, `Hover ${route} ${width}`);
-        await page.waitForLoadState("networkidle");
+        if (internalCatalog.pages.some((item) => item.family === "contact" && route === `/${item.path}/`)) {
+          // The visible map can keep third-party requests running. Hover needs
+          // the site's styles and fonts, not an idle external map connection.
+          await page.waitForFunction(() => document.querySelector('link[rel="stylesheet"][href*="/contact.css"]')?.media === "all");
+          await page.evaluate(() => document.fonts.ready);
+        } else await page.waitForLoadState("networkidle");
         await verifyMenuHover(page, { label: `Hover ${route} ${width}px` });
         await page.close();
       }
@@ -920,8 +926,9 @@ async function run() {
         const isRepairTemplate = repairTemplatePaths.has(definition.path);
         const isBrand = definition.family === "brand";
         const isCompany = definition.family === "company";
+        const isContact = definition.family === "contact";
         const brandReference = ["kamaz", "ural", "sany", "sitrak", "mitsubishi-fuso"].some((slug) => definition.path === `remont/${slug}`);
-        const viewports = isCompany
+        const viewports = isCompany || isContact
           ? [...chromeViewports, { name: "company-header-1121", width: 1121, height: 900 }]
           : isRepairTemplate || brandReference ? chromeViewports : chromeViewports.filter((viewport) => [1440, 390].includes(viewport.width));
         for (const viewport of viewports) {
@@ -933,6 +940,7 @@ async function run() {
             if (isRepairTemplate) await require("./lib/verify-repair-page")(page, viewport, definition, materializePage);
             else if (isBrand) await require("./lib/verify-brand-page")(page, viewport, definition, materializePage);
             else if (isCompany) await require("./lib/verify-company-page")(page, viewport, definition, materializePage);
+            else if (isContact) await require("./lib/verify-contact-page")(page, viewport, definition, materializePage);
             else await materializePage(page);
           } catch (error) {
             throw new Error(`${route} ${viewport.width}px: ${error.message}`);
@@ -940,7 +948,7 @@ async function run() {
           if ([1440, 390].includes(viewport.width)) {
             const fileSlug = definition.path.replaceAll("/", "-");
             await page.screenshot({ path: path.join(resultDir, `${fileSlug}-${viewport.width}.png`), fullPage: true });
-            const cropIds = isCompany ? [...definition.sections.map((section) => section.id), "company-contact"] : isRepairTemplate ? ["repair-services", "popular-repair-services", "vehicle-types", "repair-signs", "related-services", "faq"] : isBrand && brandReference ? definition.sections.filter((section) => ["introProof", "serviceGrid", "modelRange", "editorialContent", "costEstimate"].includes(section.type)).map((section) => section.id) : [];
+            const cropIds = isContact ? definition.sections.map((section) => section.id) : isCompany ? [...definition.sections.map((section) => section.id), "company-contact"] : isRepairTemplate ? ["repair-services", "popular-repair-services", "vehicle-types", "repair-signs", "related-services", "faq"] : isBrand && brandReference ? definition.sections.filter((section) => ["introProof", "serviceGrid", "modelRange", "editorialContent", "costEstimate"].includes(section.type)).map((section) => section.id) : [];
             for (const id of cropIds) {
               // Callbar behavior is tested above; keep fixed UI out of content crops.
               await page.locator(`#${id}`).screenshot({ path: path.join(resultDir, `${fileSlug}-${viewport.width}-${id}.png`), style: "[data-mobile-callbar] { visibility: hidden !important; }" });

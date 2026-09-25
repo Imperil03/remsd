@@ -13,6 +13,7 @@
 - `/kuzovnoy-remont-gruzovoy-tehniki/` — кузовной ремонт грузовой техники, `service`.
 - Десять дочерних страниц ремонта спецтехники и 23 страницы `/remont/{марка}/`.
 - `/o-kompanii/` — база, команда, подход к ремонту и документы РемСД, `company`.
+- `/kontakty/` — телефоны отделов, WhatsApp, карта и реквизиты с PDF, `contact`.
 - `/404.html` — служебная страница ошибки.
 
 Будущие услуги, марки и разделы показываются только как неинтерактивные элементы, пока для них не создан и не опубликован отдельный `PageDefinition`.
@@ -33,7 +34,7 @@
 
 - `src/data/site-config.json` — режимы сборки, NAP, график, CTA и подтверждённые владельцем факты.
 - `src/data/internal-pages/index.json` — manifest схемы v3 с опубликованными файлами страниц и `referenceByFamily`.
-- `src/data/internal-pages/*.json` — отдельные типизированные `PageDefinition` семейств `hub`, `service`, `brand`, `company`.
+- `src/data/internal-pages/*.json` — отдельные типизированные `PageDefinition` семейств `hub`, `service`, `brand`, `company`, `contact`.
 - `src/data/page-templates.json` — общие данные `repair-v1`; `tools/lib/page-templates.js` разворачивает их до полной валидации.
 - `tools/lib/internal-pages.js` — реестр секций: validator и renderer каждого типа находятся рядом.
 - `src/templates/internal-page.html` — общий каркас внутренних страниц.
@@ -51,11 +52,12 @@
 - `base.css = tokens + shared`;
 - `home.css = base + homepage`;
 - `internal.css = base + internal pages`;
-- `company.css = base + company page`.
+- `company.css = base + company page`;
+- `contact.css = base + contact page`.
 
 Поддерживаемые секции: `introProof`, `serviceGrid`, `popularWorks`, `vehicleTypes`, `brandShowcase`, `editorialContent`, `symptoms`, `workStages`, `priceExamples`, `relatedIndex`, `faq`. В `repair-v1` зафиксированы 11 секций, у страниц без `template` набор и порядок остаются свободными.
 
-Лимиты несжатых minified-бандлов: `base.css ≤45 KB`, `home.css ≤85 KB`, `internal.css ≤70 KB`, `company.css ≤60 KB`.
+Лимиты несжатых minified-бандлов: `base.css ≤45 KB`, `home.css ≤85 KB`, `internal.css ≤70 KB`, `company.css ≤60 KB`, `contact.css ≤55 KB`.
 
 Подробный контракт, источник Word, редакционные исправления, цены и изображения: `docs/repair-pages-wave-one.md`.
 
@@ -103,6 +105,7 @@ npm run verify
 - Главная: https://imperil03.github.io/remsd/
 - Ремонт грузовых автомобилей: https://imperil03.github.io/remsd/remont-gruzovyh-avtomobiley/
 - О компании: https://imperil03.github.io/remsd/o-kompanii/
+- Контакты: https://imperil03.github.io/remsd/kontakty/
 
 Перенос на `remsd.ru`, серверные редиректы, Search Console и аналитика в текущую итерацию не входят.
 
@@ -115,3 +118,7 @@ npm run verify
 ## О компании
 
 `/o-kompanii/` использует семейство `company`, восемь самостоятельных блоков и разметку `AboutPage`. Тексты и медиа заменяются в `src/data/internal-pages/o-kompanii.json`; контакты приходят из общей конфигурации. Фото и многостраничные документы открываются с клавиатуры в одном просмотрщике, карта загружается при приближении к контактам. Контракт, источники и адресные команды проверки — `docs/company-page.md`.
+
+## Контакты
+
+`/kontakty/` — семейство `contact`, отдельные шаблон, стили и critical CSS. Данные отделов и реквизиты — `src/data/contact-details.json`. PDF создаётся через `npm run prepare:contacts`; сборка сверяет контрольную сумму источника и файла. Страница позволяет скачать карточку и скопировать реквизиты обоих банков. Контракт и источники — `docs/contact-page.md`.

@@ -39,7 +39,7 @@
 - Сначала читать `.agent/SEO_STRUCTURE.md`, `docs/project-handoff.md` и `docs/project-history.md`.
 - Перед визуальными изменениями читать `docs/design-guideline.md`, затем `docs/design-system.md` и `DESIGN.md`.
 - Не добавлять отдельные страницы вида `/remont-gbc-kamaz/`, `/remont-kpp-maz/`, `/remont-elektriki-ural/` без отдельного решения.
-- Новые страницы сначала отнести к семейству `hub`, `service`, `brand` или `company`, затем добавить сущности, отношения, отдельный `PageDefinition` в `src/data/internal-pages/` и его имя в manifest `index.json`. Контракт страницы компании — `docs/company-page.md`.
+- Новые страницы сначала отнести к семейству `hub`, `service`, `brand`, `company` или `contact`, затем добавить сущности, отношения, отдельный `PageDefinition` в `src/data/internal-pages/` и его имя в manifest `index.json`. Контракты компании и контактов — `docs/company-page.md` и `docs/contact-page.md`.
 - После изменений проверять:
 
 ```bash

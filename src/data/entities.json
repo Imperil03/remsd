@@ -2,6 +2,12 @@
   "schemaVersion": 1,
   "entities": [
     {
+      "id": "location-remsd-base",
+      "type": "location",
+      "name": "Ремонтная база РемСД",
+      "description": "Контакты базы на улице Домостроителей, 13 в Сургуте."
+    },
+    {
       "id": "location-surgut",
       "type": "location",
       "name": "Сургут",

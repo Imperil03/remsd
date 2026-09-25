@@ -6,6 +6,8 @@ const { removeCoveredFontFaces } = require("./lib/font-faces");
 const { loadPageTemplates } = require("./lib/page-templates");
 const { renderOfficialBrands, renderBrandMatrix, renderBrandNavigation } = require("./lib/brand-catalog");
 const { renderCompanyMediaData } = require("./lib/company-sections");
+const { renderContactChannels } = require("./lib/contact-sections");
+const { details: contactDetails, validateContactDetails } = require("./lib/contact-details");
 const {
   loadInternalPageCatalog,
   renderBreadcrumbs: renderCatalogBreadcrumbs,
@@ -26,7 +28,7 @@ const iconVersion = createHash("sha256")
   .update(fs.readFileSync(path.join(assetsDir, "img", "favicon.png")))
   .update(fs.readFileSync(path.join(assetsDir, "img", "apple-touch-icon.png")))
   .digest("hex").slice(0, 12);
-const assetVersion = process.env.ASSET_VERSION || "20260924-company-v18";
+const assetVersion = process.env.ASSET_VERSION || "20260925-contacts-v19";
 
 function fail(message) {
   throw new Error(`[build] ${message}`);
@@ -100,6 +102,7 @@ function createCssBundles(cssDir) {
     "home.css": ["design-system.css", "styles.css", "site-chrome.css", "styles-v3.css"],
     "internal.css": ["design-system.css", "styles.css", "site-chrome.css", "internal-pages.css"],
     "company.css": ["design-system.css", "styles.css", "site-chrome.css", "company-page.css"],
+    "contact.css": ["design-system.css", "styles.css", "site-chrome.css", "contact-page.css"],
   };
   for (const [target, sources] of Object.entries(bundles)) {
     let css = sources.map((source) => fs.readFileSync(path.join(cssDir, source), "utf8")).join("\n");
@@ -282,17 +285,21 @@ function buildInternalStructuredData(page, config, baseUrl) {
     name: crumb.label,
     item: crumb.href === undefined ? url : toAbsoluteUrl(baseUrl, normalizeRoute(crumb.href, `${page.path}.breadcrumbs`, { allowEmpty: true })),
   }));
-  if (page.family === "company") {
+  if (["company", "contact"].includes(page.family)) {
     return jsonLdScript({
       "@context": "https://schema.org",
       "@graph": [
-        { "@type": "AboutPage", "@id": `${url}#page`, url, name: page.metadata.title,
+        { "@type": page.family === "contact" ? "ContactPage" : "AboutPage", "@id": `${url}#page`, url, name: page.metadata.title,
           description: page.metadata.description, inLanguage: config.site.language,
           about: { "@id": `${baseUrl}#organization` }, breadcrumb: { "@id": `${url}#breadcrumb` } },
         { "@type": "BreadcrumbList", "@id": `${url}#breadcrumb`, itemListElement: breadcrumbs },
         { "@type": "Organization", "@id": `${baseUrl}#organization`, name: config.site.name,
           url: baseUrl, logo: assetUrl(baseUrl, config.site.logo),
-          telephone: config.site.phoneHref.replace("tel:", ""), email: config.site.email },
+          telephone: config.site.phoneHref.replace("tel:", ""), email: config.site.email,
+          ...(page.family === "contact" ? { legalName: contactDetails.organization.fullName,
+            taxID: contactDetails.organization.inn,
+            contactPoint: [{ "@type": "ContactPoint", telephone: config.site.phoneHref.replace("tel:", ""), contactType: "Запись на ремонт", availableLanguage: "ru" },
+              ...contactDetails.departments.map((item) => ({ "@type": "ContactPoint", telephone: item.href.replace("tel:", ""), contactType: item.label, availableLanguage: "ru" }))] } : {}) },
         localBusinessNode(config, baseUrl),
       ],
     });
@@ -443,8 +450,10 @@ function buildInternalPages(pages, partials, config, mode, baseUrl, writtenRoute
   const routeByEntity = new Map(pages.map((page) => [page.entityRef, page.path]));
   for (const page of pages) {
     const isCompany = page.family === "company";
-    const template = fs.readFileSync(path.join(templatesDir, isCompany ? "company-page.html" : "internal-page.html"), "utf8");
-    const internalCriticalFile = path.join(assetsDir, "css", isCompany ? "company-critical.css" : "internal-critical.css");
+    const isContact = page.family === "contact";
+    const surface = isContact ? "contact" : isCompany ? "company" : "internal";
+    const template = fs.readFileSync(path.join(templatesDir, `${surface}-page.html`), "utf8");
+    const internalCriticalFile = path.join(assetsDir, "css", `${surface}-critical.css`);
     const target = outputFileForRoute(page.path);
     const rootPath = getRootPath(path.relative(distDir, target));
     const internalCriticalCss = fs.existsSync(internalCriticalFile)
@@ -459,25 +468,26 @@ function buildInternalPages(pages, partials, config, mode, baseUrl, writtenRoute
       family: escapeHtml(page.family),
       title: escapeHtml(page.metadata.title),
       description: escapeHtml(page.metadata.description),
-      heroImage: escapeHtml(page.hero.image),
-      heroMobileImage: escapeHtml(page.hero.mobileImage),
+      heroImage: escapeHtml(page.hero.image || ""),
+      heroMobileImage: escapeHtml(page.hero.mobileImage || ""),
       h1: renderCatalogHeroTitle(page.hero),
-      lead: escapeHtml(page.hero.lead),
-      heroCtaLabel: escapeHtml(page.hero.ctaLabel),
+      lead: escapeHtml(page.hero.lead || ""),
+      heroCtaLabel: escapeHtml(page.hero.ctaLabel || ""),
       heroFacts: page.hero.facts ? renderCatalogHeroFacts(page.hero) : "",
       heroImageAlt: escapeHtml(page.hero.imageAlt || ""),
       heroImageCaption: escapeHtml(page.hero.imageCaption || ""),
       heroProofText: escapeHtml(page.hero.proofText || ""),
       companyMediaData: isCompany ? renderCompanyMediaData(page, rootPath) : "",
-      mapLabel: escapeHtml(page.closingCta.mapLabel || ""),
+      contactChannels: isContact ? renderContactChannels(config.site, escapeHtml) : "",
+      mapLabel: escapeHtml(page.closingCta?.mapLabel || ""),
       mapUrl: escapeHtml(config.site.mapUrl),
       mapEmbedUrl: escapeHtml(`https://yandex.ru/map-widget/v1/?text=${encodeURIComponent(`${config.site.address.locality}, ${config.site.address.street}`)}&z=16`),
       email: escapeHtml(config.site.email),
       breadcrumbs: renderCatalogBreadcrumbs(page, rootPath),
       sections: page.sections.map((section) => renderCatalogSection(section, rootPath, config.site, { routeByEntity, currentEntityRef: page.entityRef })).join("\n"),
-      closingTitle: escapeHtml(page.closingCta.title),
-      closingText: escapeHtml(page.closingCta.text),
-      closingButtonLabel: escapeHtml(page.closingCta.buttonLabel),
+      closingTitle: escapeHtml(page.closingCta?.title || ""),
+      closingText: escapeHtml(page.closingCta?.text || ""),
+      closingButtonLabel: escapeHtml(page.closingCta?.buttonLabel || ""),
       phoneHref: escapeHtml(config.site.phoneHref),
       phone: escapeHtml(config.site.phone),
       address: escapeHtml(`${config.site.address.locality}, ${config.site.address.street}`),
@@ -505,6 +515,7 @@ function writeSeoFiles(mode, baseUrl, finalRoutes) {
 function main() {
   const config = readJson(path.join(dataDir, "site-config.json"));
   validateConfig(config);
+  validateContactDetails(root, config.site);
   const internalCatalog = loadInternalPageCatalog({ root, dataDir, assetsDir, siteConfig: config });
   const internalPages = internalCatalog.pages;
   const mode = process.env.SITE_MODE || process.env.BUILD_MODE || config.defaultMode;
@@ -526,6 +537,7 @@ function main() {
   for (const layer of physicalCssLayers) fs.rmSync(path.join(outputCssDir, layer), { force: true });
   fs.rmSync(path.join(outputCssDir, "internal-critical.css"), { force: true });
   fs.rmSync(path.join(outputCssDir, "company-critical.css"), { force: true });
+  fs.rmSync(path.join(outputCssDir, "contact-critical.css"), { force: true });
   minifyCssFiles(outputCssDir);
 
   const partials = readPartials(buildHomeStructuredData(config, baseUrl));
