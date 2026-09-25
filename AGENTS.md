@@ -4,6 +4,8 @@
 
 РемСД — статический сайт сервисного центра по ремонту грузовых автомобилей и спецтехники в Сургуте.
 
+Репозиторий: https://github.com/Imperil03/remsd, основная ветка — `main`. Инструкция для нового компьютера и итог последнего выпуска — `docs/project-handoff.md`. Контекст хранится в репозитории; локальная история чата для продолжения не требуется.
+
 Рабочий продакшен-превью:
 - GitHub Pages: https://imperil03.github.io/remsd/
 
@@ -38,6 +40,7 @@
 
 - Сначала читать `.agent/SEO_STRUCTURE.md`, `docs/project-handoff.md` и `docs/project-history.md`.
 - Перед визуальными изменениями читать `docs/design-guideline.md`, затем `docs/design-system.md` и `DESIGN.md`.
+- Перед продолжением получить актуальную `main` и проверить `git status`; не переносить старую рабочую копию поверх новых коммитов. При параллельной работе использовать отдельный worktree и сохранять чужие изменения.
 - Не добавлять отдельные страницы вида `/remont-gbc-kamaz/`, `/remont-kpp-maz/`, `/remont-elektriki-ural/` без отдельного решения.
 - Новые страницы сначала отнести к семейству `hub`, `service`, `brand`, `company`, `contact` или `documents`, затем добавить сущности, отношения, отдельный `PageDefinition` в `src/data/internal-pages/` и его имя в manifest `index.json`. Контракты компании, контактов и документов — `docs/company-page.md`, `docs/contact-page.md` и `docs/documents.md`.
 - После изменений проверять:
@@ -51,6 +54,8 @@ git diff --check
 ## Деплой
 
 `dist/` отслеживается в git и используется GitHub Pages workflow. После сборки нужно коммитить и исходники, и обновленный `dist/`.
+
+После изменения hero, показателей компании или шрифтов пересобрать critical CSS: `npm run build`, `npm run generate:critical`, `npm run verify`. Перед коммитом вернуть `dist/` в preview без sitemap. Публикация подтверждается успешным GitHub Actions deployment и проверкой страницы по публичному URL; успешный push сам по себе не означает публикацию.
 
 ## Project Skills
 
