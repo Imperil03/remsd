@@ -43,8 +43,9 @@
 .company-story__stages h3 { margin-bottom: 14px; }
 .company-story__stages p { color: var(--text-secondary); font-size: 17px; line-height: 1.6; }
 .company-base { background: var(--surface-page); }
-.company-base__heading { display: grid; grid-template-columns: 1.25fr 0.75fr; gap: 64px; align-items: start; }
-.company-base__capabilities { display: grid; gap: 14px; margin: 0; padding: 8px 0 0 20px; font-weight: 650; font-size: 17px; }
+.company-base__heading { display: grid; grid-template-columns: minmax(0, 1fr); gap: 24px; margin-bottom: 40px; }
+.company-base__heading .company-section__head { margin-bottom: 0; }
+.company-base__capabilities { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 40px; max-width: 880px; margin: 0; padding: 0 0 0 20px; font-weight: 650; font-size: 17px; }
 .company-base__capabilities li::marker { color: var(--action-secondary); }
 .company-base__photos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
 .company-base__photos img { aspect-ratio: 4 / 3; object-fit: cover; }
@@ -140,7 +141,6 @@
 @media (max-width: 1020px) {
   .company-team__layout, .company-approach__layout, .company-contact__layout { grid-template-columns: minmax(0, 1fr); gap: 40px; }
   .company-team .company-photo img { aspect-ratio: 4 / 3; }
-  .company-base__heading { gap: 32px; }
   .company-base__photos { gap: 16px; }
   .company-contact__map, .company-contact__map iframe { min-height: 380px; }
 }
@@ -165,8 +165,8 @@
   .company-story__stages { grid-template-columns: minmax(0, 1fr); gap: 28px; }
   .company-story__stages li { padding-top: 18px; }
   .company-story__number { margin-bottom: 12px; }
-  .company-base__heading { grid-template-columns: minmax(0, 1fr); gap: 0; }
-  .company-base__capabilities { margin-bottom: 30px; padding-top: 0; }
+  .company-base__heading { gap: 20px; margin-bottom: 32px; }
+  .company-base__capabilities { grid-template-columns: minmax(0, 1fr); }
   .company-base__photos { grid-template-columns: minmax(0, 1fr); gap: 28px; }
   .company-team__roles dt { font-size: 17px; }
   .company-team__roles dd { font-size: 16px; }
