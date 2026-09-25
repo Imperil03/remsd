@@ -36,7 +36,7 @@ module.exports = function checkCompanyPage({ root, catalog, siteConfig }) {
   for (const id of documents.homePreviewIds) assert(home.includes(`o-kompanii/#document-${id}`));
   for (const id of ["v3-company-proof-title", "v3-cert-strip-title"]) assert(home.includes(`id="${id}"`));
   const nav = fs.readFileSync(path.join(root, "src/partials/main-nav.html"), "utf8");
-  assert(!nav.includes("Сертификаты"));
+  assert(nav.includes('href="{{rootPath}}o-kompanii/#documents">Сертификаты</a>'));
   assert(home.includes('o-kompanii/#documents">Документы и сертификаты'));
   for (const items of Object.values(groups)) for (const item of items) {
     const target = path.resolve(root, "dist/o-kompanii", item.src);
