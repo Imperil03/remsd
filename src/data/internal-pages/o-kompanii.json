@@ -173,8 +173,7 @@
     {
       "id": "documents",
       "type": "companyDocuments",
-      "title": "Официальный сервис и документы",
-      "intro": "КАМАЗ, МАЗ и УРАЛ обслуживаем как официальный сервис. Свидетельства, документы об обучении и сертификат соответствия раскрывают наши сервисные компетенции.",
+      "title": "Документы и сертификаты",
       "brands": [
         {
           "name": "КАМАЗ",
@@ -192,127 +191,12 @@
           "image": "assets/img/brands/ural.webp"
         }
       ],
-      "items": [
-        {
-          "image": "assets/img/certificates/thumb/maz-certificate.webp",
-          "imageAlt": "Свидетельство МАЗ",
-          "caption": "Свидетельство МАЗ",
-          "text": "Техническое обслуживание и гарантийный ремонт техники МАЗ.",
-          "imageWidth": 420,
-          "imageHeight": 600,
-          "pages": [
-            {
-              "image": "assets/img/certificates/large/maz-certificate.webp",
-              "imageAlt": "Свидетельство МАЗ",
-              "caption": "Свидетельство МАЗ",
-              "imageWidth": 752,
-              "imageHeight": 1080
-            }
-          ]
-        },
-        {
-          "image": "assets/img/certificates/thumb/ural-certificate.webp",
-          "imageAlt": "Сертификат УРАЛ",
-          "caption": "Сертификат УРАЛ",
-          "text": "Сервисные работы по технике УРАЛ.",
-          "imageWidth": 420,
-          "imageHeight": 600,
-          "pages": [
-            {
-              "image": "assets/img/certificates/large/ural-certificate.webp",
-              "imageAlt": "Сертификат УРАЛ",
-              "caption": "Сертификат УРАЛ",
-              "imageWidth": 905,
-              "imageHeight": 1280
-            }
-          ]
-        },
-        {
-          "image": "assets/img/certificates/thumb/weichai-training.webp",
-          "imageAlt": "Обучение Weichai",
-          "caption": "Обучение Weichai",
-          "text": "Подготовка по работе с двигателями Weichai.",
-          "imageWidth": 420,
-          "imageHeight": 600,
-          "pages": [
-            {
-              "image": "assets/img/certificates/large/weichai-training.webp",
-              "imageAlt": "Обучение Weichai",
-              "caption": "Обучение Weichai",
-              "imageWidth": 1102,
-              "imageHeight": 1600
-            }
-          ]
-        },
-        {
-          "image": "assets/img/certificates/thumb/advers-certificate.webp",
-          "imageAlt": "Свидетельство Адверс",
-          "caption": "Свидетельство Адверс",
-          "text": "Работы с отопителями и подогревателями Адверс.",
-          "imageWidth": 420,
-          "imageHeight": 600,
-          "pages": [
-            {
-              "image": "assets/img/certificates/large/advers-certificate.webp",
-              "imageAlt": "Свидетельство Адверс",
-              "caption": "Свидетельство Адверс",
-              "imageWidth": 1500,
-              "imageHeight": 1060
-            }
-          ]
-        },
-        {
-          "image": "assets/img/certificates/thumb/conformity-01.webp",
-          "imageAlt": "Сертификат соответствия",
-          "caption": "Сертификат соответствия",
-          "text": "Документы по видам выполняемых работ.",
-          "imageWidth": 420,
-          "imageHeight": 600,
-          "pages": [
-            {
-              "image": "assets/img/certificates/large/conformity-01.webp",
-              "imageAlt": "Сертификат соответствия, лист 1",
-              "caption": "Сертификат соответствия — лист 1",
-              "imageWidth": 791,
-              "imageHeight": 1117
-            },
-            {
-              "image": "assets/img/certificates/large/conformity-02.webp",
-              "imageAlt": "Сертификат соответствия, лист 2",
-              "caption": "Сертификат соответствия — лист 2",
-              "imageWidth": 792,
-              "imageHeight": 1122
-            },
-            {
-              "image": "assets/img/certificates/large/conformity-03.webp",
-              "imageAlt": "Сертификат соответствия, лист 3",
-              "caption": "Сертификат соответствия — лист 3",
-              "imageWidth": 790,
-              "imageHeight": 1118
-            },
-            {
-              "image": "assets/img/certificates/large/conformity-04.webp",
-              "imageAlt": "Сертификат соответствия, лист 4",
-              "caption": "Сертификат соответствия — лист 4",
-              "imageWidth": 790,
-              "imageHeight": 1120
-            },
-            {
-              "image": "assets/img/certificates/large/conformity-05.webp",
-              "imageAlt": "Сертификат соответствия, лист 5",
-              "caption": "Сертификат соответствия — лист 5",
-              "imageWidth": 792,
-              "imageHeight": 1122
-            },
-            {
-              "image": "assets/img/certificates/large/conformity-06.webp",
-              "imageAlt": "Сертификат соответствия, лист 6",
-              "caption": "Сертификат соответствия — лист 6",
-              "imageWidth": 792,
-              "imageHeight": 1118
-            }
-          ]
-        }
+      "documentIds": [
+        "maz",
+        "advers",
+        "ural",
+        "weichai",
+        "conformity"
       ]
     }
   ],

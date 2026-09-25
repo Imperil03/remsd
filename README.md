@@ -33,6 +33,7 @@
 ## Кодовый контракт
 
 - `src/data/site-config.json` — режимы сборки, NAP, график, CTA и подтверждённые владельцем факты.
+- `src/data/documents.json` — единые сканы, назначения и сроки пяти комплектов документов; главная и компания используют стабильные ID этого каталога.
 - `src/data/internal-pages/index.json` — manifest схемы v3 с опубликованными файлами страниц и `referenceByFamily`.
 - `src/data/internal-pages/*.json` — отдельные типизированные `PageDefinition` семейств `hub`, `service`, `brand`, `company`, `contact`.
 - `src/data/page-templates.json` — общие данные `repair-v1`; `tools/lib/page-templates.js` разворачивает их до полной валидации.

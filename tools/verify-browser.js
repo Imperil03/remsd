@@ -820,6 +820,7 @@ async function run() {
     // Keep pointer-only coverage in focused runs too: keyboard focus in the
     // existing navigation check can conceal a dropdown's dead hover gap.
     await verifyMenuHoverMatrix(browser);
+    await require("./lib/verify-document-navigation")(browser, `http://${host}:${port}/`, resultDir);
     for (const width of [1440, 390]) {
       const context = await browser.newContext({ viewport: { width, height: 900 } });
       for (const route of ["/index.html", "/remsd/", "/remsd/index.html", "/#v3-company-proof-title", "/#v3-contact-title", "/remsd/#v3-contact-title"]) {

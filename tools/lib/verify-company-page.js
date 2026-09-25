@@ -8,12 +8,14 @@ module.exports = async function verifyCompanyPage(page, viewport, definition, ma
   assert.equal(await page.locator("main a.v3-button").count(), 2);
   assert.equal(await page.locator('[data-site-nav] a[aria-current="page"]').textContent(), "О компании");
   assert.equal(await page.locator(".company-document").count(), 5);
+  assert.equal(await page.locator(".company-documents__group").count(), 3);
+  assert.deepEqual(await page.locator(".company-documents__group > h3").allTextContents(), ["Сервисные полномочия", "Обучение специалистов", "Соответствие услуг"]);
   assert.equal(await page.locator(".company-story__stages > li").count(), 3);
   assert.equal(await page.locator(".company-team__roles > div").count(), 4);
   const result = await page.evaluate(() => {
     const bounds = (e) => e.getBoundingClientRect();
     const visible = (e) => bounds(e).width && bounds(e).height;
-    const clipped = [...document.querySelectorAll("main h1, main h2, main h3, main p, main dt, main dd, main figcaption")]
+    const clipped = [...document.querySelectorAll("main h1, main h2, main h3, main h4, main p, main dt, main dd, main figcaption")]
       .filter((e) => visible(e) && !e.classList.contains("company-visually-hidden") && e.scrollWidth > e.clientWidth + 1).map((e) => e.textContent.trim());
     const meta = document.querySelector(".v3-header__meta");
     const hero = document.querySelector(".company-hero__inner");
@@ -23,7 +25,8 @@ module.exports = async function verifyCompanyPage(page, viewport, definition, ma
     return { overflow: document.documentElement.scrollWidth - innerWidth, clipped,
       metaVisible: getComputedStyle(meta).display !== "none", phoneVisible: visible(phone),
       navOverflow: company && visible(company) ? bounds(company).right > bounds(document.querySelector(".v3-header")).right : false,
-      heroColumns: getComputedStyle(hero).gridTemplateColumns.split(" ").length, factsRows: new Set(facts).size };
+      heroColumns: getComputedStyle(hero).gridTemplateColumns.split(" ").length, factsRows: new Set(facts).size,
+      documentColumns: getComputedStyle(document.querySelector(".company-documents__grid")).gridTemplateColumns.split(" ").length };
   });
   assert(result.overflow <= 1, `Company overflow ${result.overflow}px`);
   assert.deepEqual(result.clipped, [], `Company clipped: ${result.clipped.join("; ")}`);
@@ -31,13 +34,14 @@ module.exports = async function verifyCompanyPage(page, viewport, definition, ma
   assert(!result.navOverflow, "Пункт компании выходит за шапку");
   assert.equal(result.heroColumns, viewport.width <= 720 ? 1 : 2);
   assert.equal(result.factsRows, viewport.width <= 720 ? 2 : 1);
+  assert.equal(result.documentColumns, viewport.width <= 720 ? 1 : 2);
   for (const cta of await page.locator("main a.v3-button").all()) {
     assert.equal(await cta.getAttribute("href"), "tel:+79224488822");
     const b = await cta.boundingBox();
     assert(b.width >= 44 && b.height >= 44);
   }
   if ([1440, 390].includes(viewport.width)) {
-    const opener = page.locator('[data-company-media="documents-4"]');
+    const opener = page.locator('[data-company-media="documents-conformity"]');
     await opener.focus();
     await opener.press("Enter");
     const dialog = page.locator("[data-company-viewer]");
@@ -46,6 +50,7 @@ module.exports = async function verifyCompanyPage(page, viewport, definition, ma
     assert(await page.locator("[data-company-prev]").isDisabled());
     await page.keyboard.press("ArrowRight");
     assert.equal(await page.locator("[data-company-counter]").textContent(), "2 / 6");
+    assert((await page.locator("[data-company-image]").getAttribute("src")).endsWith("conformity-02.webp"));
     await page.waitForFunction(() => document.querySelector("[data-company-image]").naturalWidth > 0);
     for (let i = 0; i < 7; i++) {
       await page.keyboard.press("Tab");
@@ -54,6 +59,12 @@ module.exports = async function verifyCompanyPage(page, viewport, definition, ma
     await page.keyboard.press("Escape");
     assert(!await dialog.isVisible());
     assert(await opener.evaluate((e) => document.activeElement === e), "Фокус не вернулся к документу");
+    await page.locator('#document-maz').click();
+    await dialog.waitFor({ state: "visible" });
+    assert.equal(await page.locator("[data-company-counter]").textContent(), "");
+    assert(!await page.locator("[data-company-next]").isVisible());
+    await page.keyboard.press("Escape");
+    assert(await page.locator('#document-maz').evaluate((e) => document.activeElement === e));
     const photo = page.locator('[data-company-media="company-base"]').first();
     await photo.click();
     await dialog.waitFor({ state: "visible" });

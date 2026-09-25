@@ -6,6 +6,7 @@ const { removeCoveredFontFaces } = require("./lib/font-faces");
 const { loadPageTemplates } = require("./lib/page-templates");
 const { renderOfficialBrands, renderBrandMatrix, renderBrandNavigation } = require("./lib/brand-catalog");
 const { renderCompanyMediaData } = require("./lib/company-sections");
+const { loadDocumentCatalog, renderHomeDocumentPreviews } = require("./lib/documents");
 const { renderContactChannels } = require("./lib/contact-sections");
 const { details: contactDetails, validateContactDetails } = require("./lib/contact-details");
 const {
@@ -28,7 +29,7 @@ const iconVersion = createHash("sha256")
   .update(fs.readFileSync(path.join(assetsDir, "img", "favicon.png")))
   .update(fs.readFileSync(path.join(assetsDir, "img", "apple-touch-icon.png")))
   .digest("hex").slice(0, 12);
-const assetVersion = process.env.ASSET_VERSION || "20260925-contacts-v19";
+const assetVersion = process.env.ASSET_VERSION || "20260925-documents-v20";
 
 function fail(message) {
   throw new Error(`[build] ${message}`);
@@ -548,6 +549,7 @@ function main() {
   partials["nav-official-brands"] = renderBrandNavigation(brands, brandContext, true);
   partials["nav-other-brands"] = renderBrandNavigation(brands, brandContext);
   partials["home-brand-count"] = String(brands.items.length);
+  partials["home-document-previews"] = renderHomeDocumentPreviews(loadDocumentCatalog(root), "{{rootPath}}", escapeHtml);
   const writtenRoutes = new Set();
   buildStaticPages(staticFiles, partials, config, mode, baseUrl, writtenRoutes);
   buildInternalPages(internalPages, partials, config, mode, baseUrl, writtenRoutes);

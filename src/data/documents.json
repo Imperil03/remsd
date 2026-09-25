@@ -1,0 +1,160 @@
+{
+  "schemaVersion": 1,
+  "groups": [
+    {
+      "id": "service",
+      "title": "Сервисные полномочия"
+    },
+    {
+      "id": "training",
+      "title": "Обучение специалистов"
+    },
+    {
+      "id": "conformity",
+      "title": "Соответствие услуг"
+    }
+  ],
+  "homePreviewIds": [
+    "maz",
+    "conformity"
+  ],
+  "documents": [
+    {
+      "id": "maz",
+      "image": "assets/img/certificates/thumb/maz-certificate.webp",
+      "imageAlt": "Свидетельство МАЗ",
+      "caption": "Свидетельство МАЗ",
+      "text": "ТО и гарантийный ремонт грузовой и пассажирской техники МАЗ.",
+      "imageWidth": 420,
+      "imageHeight": 600,
+      "pages": [
+        {
+          "image": "assets/img/certificates/large/maz-certificate.webp",
+          "imageAlt": "Свидетельство МАЗ",
+          "caption": "Свидетельство МАЗ",
+          "imageWidth": 752,
+          "imageHeight": 1080
+        }
+      ],
+      "group": "service",
+      "validThrough": "2026-12-31"
+    },
+    {
+      "id": "ural",
+      "image": "assets/img/certificates/thumb/ural-certificate.webp",
+      "imageAlt": "Обучение и допуск УРАЛ",
+      "caption": "Обучение и допуск УРАЛ",
+      "text": "Подготовка специалиста и допуск к гарантийному и сервисному обслуживанию автомобилей УРАЛ.",
+      "imageWidth": 420,
+      "imageHeight": 600,
+      "pages": [
+        {
+          "image": "assets/img/certificates/large/ural-certificate.webp",
+          "imageAlt": "Обучение и допуск УРАЛ",
+          "caption": "Обучение и допуск УРАЛ",
+          "imageWidth": 905,
+          "imageHeight": 1280
+        }
+      ],
+      "group": "training",
+      "validThrough": "2026-09-30"
+    },
+    {
+      "id": "weichai",
+      "image": "assets/img/certificates/thumb/weichai-training.webp",
+      "imageAlt": "Обучение Weichai",
+      "caption": "Обучение Weichai",
+      "text": "Диагностика электрооборудования и капитальный ремонт двигателей Weichai WP7, WP12.",
+      "imageWidth": 420,
+      "imageHeight": 600,
+      "pages": [
+        {
+          "image": "assets/img/certificates/large/weichai-training.webp",
+          "imageAlt": "Обучение Weichai",
+          "caption": "Обучение Weichai",
+          "imageWidth": 1102,
+          "imageHeight": 1600
+        }
+      ],
+      "group": "training",
+      "issuedAt": "2024-11-22"
+    },
+    {
+      "id": "advers",
+      "image": "assets/img/certificates/thumb/advers-certificate.webp",
+      "imageAlt": "Свидетельство Адверс",
+      "caption": "Свидетельство Адверс",
+      "text": "Установка, гарантийное и постгарантийное обслуживание подогревателей и отопителей Адверс.",
+      "imageWidth": 420,
+      "imageHeight": 600,
+      "pages": [
+        {
+          "image": "assets/img/certificates/large/advers-certificate.webp",
+          "imageAlt": "Свидетельство Адверс",
+          "caption": "Свидетельство Адверс",
+          "imageWidth": 1500,
+          "imageHeight": 1060
+        }
+      ],
+      "group": "service",
+      "issuedAt": "2024-10-11",
+      "validityYears": 2
+    },
+    {
+      "id": "conformity",
+      "image": "assets/img/certificates/thumb/conformity-01.webp",
+      "imageAlt": "Сертификат соответствия услуг",
+      "caption": "Сертификат соответствия услуг",
+      "text": "Добровольная сертификация услуг по техническому обслуживанию и ремонту грузовой техники.",
+      "imageWidth": 420,
+      "imageHeight": 600,
+      "pages": [
+        {
+          "image": "assets/img/certificates/large/conformity-01.webp",
+          "imageAlt": "Сертификат соответствия, лист 1",
+          "caption": "Сертификат соответствия — лист 1",
+          "imageWidth": 791,
+          "imageHeight": 1117
+        },
+        {
+          "image": "assets/img/certificates/large/conformity-02.webp",
+          "imageAlt": "Сертификат соответствия, лист 2",
+          "caption": "Сертификат соответствия — лист 2",
+          "imageWidth": 792,
+          "imageHeight": 1122
+        },
+        {
+          "image": "assets/img/certificates/large/conformity-03.webp",
+          "imageAlt": "Сертификат соответствия, лист 3",
+          "caption": "Сертификат соответствия — лист 3",
+          "imageWidth": 790,
+          "imageHeight": 1118
+        },
+        {
+          "image": "assets/img/certificates/large/conformity-04.webp",
+          "imageAlt": "Сертификат соответствия, лист 4",
+          "caption": "Сертификат соответствия — лист 4",
+          "imageWidth": 790,
+          "imageHeight": 1120
+        },
+        {
+          "image": "assets/img/certificates/large/conformity-05.webp",
+          "imageAlt": "Сертификат соответствия, лист 5",
+          "caption": "Сертификат соответствия — лист 5",
+          "imageWidth": 792,
+          "imageHeight": 1122
+        },
+        {
+          "image": "assets/img/certificates/large/conformity-06.webp",
+          "imageAlt": "Сертификат соответствия, лист 6",
+          "caption": "Сертификат соответствия — лист 6",
+          "imageWidth": 792,
+          "imageHeight": 1118
+        }
+      ],
+      "group": "conformity",
+      "issuedAt": "2025-03-21",
+      "validThrough": "2028-03-21"
+    }
+  ]
+}
