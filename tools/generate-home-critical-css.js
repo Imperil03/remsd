@@ -40,6 +40,12 @@ const targets = [
   },
 ];
 
+if (internalCatalog.pages.some((page) => page.path === "arenda")) targets.push({
+  name: "rental", file: "arenda/index.html", css: "internal.css", fontSources: ["styles.css"],
+  heroClass: "internal-hero", bodyClass: "internal-page internal-page--hub internal-page--rental",
+  output: "rental-critical.css", prepend: ".internal-page main>:not(.internal-hero){content-visibility:hidden;contain-intrinsic-block-size:900px}",
+});
+
 if (internalCatalog.manifest.referenceByFamily.company) {
   targets.push({
     name: "company", file: `${internalCatalog.manifest.referenceByFamily.company}/index.html`,

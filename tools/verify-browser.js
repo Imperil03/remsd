@@ -932,14 +932,15 @@ async function run() {
         const brandReference = ["kamaz", "ural", "sany", "sitrak", "mitsubishi-fuso"].some((slug) => definition.path === `remont/${slug}`);
         const viewports = isCompany || isContact || isDocuments
           ? [...chromeViewports, { name: "company-header-1121", width: 1121, height: 900 }]
-          : isRepairTemplate || brandReference ? chromeViewports : chromeViewports.filter((viewport) => [1440, 390].includes(viewport.width));
+          : isRepairTemplate || brandReference || definition.rental ? chromeViewports : chromeViewports.filter((viewport) => [1440, 390].includes(viewport.width));
         for (const viewport of viewports) {
           const context = await browser.newContext({ viewport });
           const page = await context.newPage();
           await verifyPage(page, route, `${route} smoke ${viewport.width}`);
           await verifyNavigation(page, viewport.width <= 1120);
           try {
-            if (isRepairTemplate) await require("./lib/verify-repair-page")(page, viewport, definition, materializePage);
+            if (definition.rental) await require("./lib/verify-rental-page")(page, viewport, definition, materializePage);
+            else if (isRepairTemplate) await require("./lib/verify-repair-page")(page, viewport, definition, materializePage);
             else if (isBrand) await require("./lib/verify-brand-page")(page, viewport, definition, materializePage);
             else if (isCompany) await require("./lib/verify-company-page")(page, viewport, definition, materializePage);
             else if (isContact) await require("./lib/verify-contact-page")(page, viewport, definition, materializePage);

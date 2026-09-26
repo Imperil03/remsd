@@ -996,6 +996,447 @@
       "predicate": "provides",
       "predicateLabel": "выполняет",
       "object": "service-repair"
+    },
+    {
+      "id": "rel-remsd-rental",
+      "subject": "organization-remsd",
+      "predicate": "provides",
+      "predicateLabel": "предоставляет",
+      "object": "service-rental"
+    },
+    {
+      "id": "rel-rental-avtokrany",
+      "subject": "service-rental",
+      "predicate": "includes",
+      "predicateLabel": "включает",
+      "object": "service-rental-avtokrany"
+    },
+    {
+      "id": "rel-rental-avtokrany-surgut",
+      "subject": "service-rental-avtokrany",
+      "predicate": "locatedIn",
+      "predicateLabel": "предоставляется в",
+      "object": "location-surgut"
+    },
+    {
+      "id": "rel-rental-avtokrany-khmao",
+      "subject": "service-rental-avtokrany",
+      "predicate": "locatedIn",
+      "predicateLabel": "предоставляется в",
+      "object": "location-khmao"
+    },
+    {
+      "id": "rel-rental-avtokrany-task",
+      "subject": "service-rental-avtokrany",
+      "predicate": "servesTask",
+      "predicateLabel": "решает задачу",
+      "object": "rental-task-avtokrany"
+    },
+    {
+      "id": "rel-rental-avtokrany-vehicle",
+      "subject": "service-rental-avtokrany",
+      "predicate": "appliesTo",
+      "predicateLabel": "предоставляет технику",
+      "object": "vehicle-rental-avtokrany"
+    },
+    {
+      "id": "rel-rental-avtokrany-function",
+      "subject": "vehicle-rental-avtokrany",
+      "predicate": "usedFor",
+      "predicateLabel": "используется для",
+      "object": "rental-task-avtokrany"
+    },
+    {
+      "id": "rel-rental-ekskavatory",
+      "subject": "service-rental",
+      "predicate": "includes",
+      "predicateLabel": "включает",
+      "object": "service-rental-ekskavatory"
+    },
+    {
+      "id": "rel-rental-ekskavatory-surgut",
+      "subject": "service-rental-ekskavatory",
+      "predicate": "locatedIn",
+      "predicateLabel": "предоставляется в",
+      "object": "location-surgut"
+    },
+    {
+      "id": "rel-rental-ekskavatory-khmao",
+      "subject": "service-rental-ekskavatory",
+      "predicate": "locatedIn",
+      "predicateLabel": "предоставляется в",
+      "object": "location-khmao"
+    },
+    {
+      "id": "rel-rental-ekskavatory-task",
+      "subject": "service-rental-ekskavatory",
+      "predicate": "servesTask",
+      "predicateLabel": "решает задачу",
+      "object": "rental-task-ekskavatory"
+    },
+    {
+      "id": "rel-rental-ekskavatory-vehicle",
+      "subject": "service-rental-ekskavatory",
+      "predicate": "appliesTo",
+      "predicateLabel": "предоставляет технику",
+      "object": "vehicle-rental-ekskavatory"
+    },
+    {
+      "id": "rel-rental-ekskavatory-function",
+      "subject": "vehicle-rental-ekskavatory",
+      "predicate": "usedFor",
+      "predicateLabel": "используется для",
+      "object": "rental-task-ekskavatory"
+    },
+    {
+      "id": "rel-rental-frontalnye-pogruzchiki",
+      "subject": "service-rental",
+      "predicate": "includes",
+      "predicateLabel": "включает",
+      "object": "service-rental-frontalnye-pogruzchiki"
+    },
+    {
+      "id": "rel-rental-frontalnye-pogruzchiki-surgut",
+      "subject": "service-rental-frontalnye-pogruzchiki",
+      "predicate": "locatedIn",
+      "predicateLabel": "предоставляется в",
+      "object": "location-surgut"
+    },
+    {
+      "id": "rel-rental-frontalnye-pogruzchiki-khmao",
+      "subject": "service-rental-frontalnye-pogruzchiki",
+      "predicate": "locatedIn",
+      "predicateLabel": "предоставляется в",
+      "object": "location-khmao"
+    },
+    {
+      "id": "rel-rental-frontalnye-pogruzchiki-task",
+      "subject": "service-rental-frontalnye-pogruzchiki",
+      "predicate": "servesTask",
+      "predicateLabel": "решает задачу",
+      "object": "rental-task-frontalnye-pogruzchiki"
+    },
+    {
+      "id": "rel-rental-frontalnye-pogruzchiki-vehicle",
+      "subject": "service-rental-frontalnye-pogruzchiki",
+      "predicate": "appliesTo",
+      "predicateLabel": "предоставляет технику",
+      "object": "vehicle-rental-frontalnye-pogruzchiki"
+    },
+    {
+      "id": "rel-rental-frontalnye-pogruzchiki-function",
+      "subject": "vehicle-rental-frontalnye-pogruzchiki",
+      "predicate": "usedFor",
+      "predicateLabel": "используется для",
+      "object": "rental-task-frontalnye-pogruzchiki"
+    },
+    {
+      "id": "rel-rental-buldozery",
+      "subject": "service-rental",
+      "predicate": "includes",
+      "predicateLabel": "включает",
+      "object": "service-rental-buldozery"
+    },
+    {
+      "id": "rel-rental-buldozery-surgut",
+      "subject": "service-rental-buldozery",
+      "predicate": "locatedIn",
+      "predicateLabel": "предоставляется в",
+      "object": "location-surgut"
+    },
+    {
+      "id": "rel-rental-buldozery-khmao",
+      "subject": "service-rental-buldozery",
+      "predicate": "locatedIn",
+      "predicateLabel": "предоставляется в",
+      "object": "location-khmao"
+    },
+    {
+      "id": "rel-rental-buldozery-task",
+      "subject": "service-rental-buldozery",
+      "predicate": "servesTask",
+      "predicateLabel": "решает задачу",
+      "object": "rental-task-buldozery"
+    },
+    {
+      "id": "rel-rental-buldozery-vehicle",
+      "subject": "service-rental-buldozery",
+      "predicate": "appliesTo",
+      "predicateLabel": "предоставляет технику",
+      "object": "vehicle-rental-buldozery"
+    },
+    {
+      "id": "rel-rental-buldozery-function",
+      "subject": "vehicle-rental-buldozery",
+      "predicate": "usedFor",
+      "predicateLabel": "используется для",
+      "object": "rental-task-buldozery"
+    },
+    {
+      "id": "rel-rental-truboukladchiki",
+      "subject": "service-rental",
+      "predicate": "includes",
+      "predicateLabel": "включает",
+      "object": "service-rental-truboukladchiki"
+    },
+    {
+      "id": "rel-rental-truboukladchiki-surgut",
+      "subject": "service-rental-truboukladchiki",
+      "predicate": "locatedIn",
+      "predicateLabel": "предоставляется в",
+      "object": "location-surgut"
+    },
+    {
+      "id": "rel-rental-truboukladchiki-khmao",
+      "subject": "service-rental-truboukladchiki",
+      "predicate": "locatedIn",
+      "predicateLabel": "предоставляется в",
+      "object": "location-khmao"
+    },
+    {
+      "id": "rel-rental-truboukladchiki-task",
+      "subject": "service-rental-truboukladchiki",
+      "predicate": "servesTask",
+      "predicateLabel": "решает задачу",
+      "object": "rental-task-truboukladchiki"
+    },
+    {
+      "id": "rel-rental-truboukladchiki-vehicle",
+      "subject": "service-rental-truboukladchiki",
+      "predicate": "appliesTo",
+      "predicateLabel": "предоставляет технику",
+      "object": "vehicle-rental-truboukladchiki"
+    },
+    {
+      "id": "rel-rental-truboukladchiki-function",
+      "subject": "vehicle-rental-truboukladchiki",
+      "predicate": "usedFor",
+      "predicateLabel": "используется для",
+      "object": "rental-task-truboukladchiki"
+    },
+    {
+      "id": "rel-rental-avtogreydery",
+      "subject": "service-rental",
+      "predicate": "includes",
+      "predicateLabel": "включает",
+      "object": "service-rental-avtogreydery"
+    },
+    {
+      "id": "rel-rental-avtogreydery-surgut",
+      "subject": "service-rental-avtogreydery",
+      "predicate": "locatedIn",
+      "predicateLabel": "предоставляется в",
+      "object": "location-surgut"
+    },
+    {
+      "id": "rel-rental-avtogreydery-khmao",
+      "subject": "service-rental-avtogreydery",
+      "predicate": "locatedIn",
+      "predicateLabel": "предоставляется в",
+      "object": "location-khmao"
+    },
+    {
+      "id": "rel-rental-avtogreydery-task",
+      "subject": "service-rental-avtogreydery",
+      "predicate": "servesTask",
+      "predicateLabel": "решает задачу",
+      "object": "rental-task-avtogreydery"
+    },
+    {
+      "id": "rel-rental-avtogreydery-vehicle",
+      "subject": "service-rental-avtogreydery",
+      "predicate": "appliesTo",
+      "predicateLabel": "предоставляет технику",
+      "object": "vehicle-rental-avtogreydery"
+    },
+    {
+      "id": "rel-rental-avtogreydery-function",
+      "subject": "vehicle-rental-avtogreydery",
+      "predicate": "usedFor",
+      "predicateLabel": "используется для",
+      "object": "rental-task-avtogreydery"
+    },
+    {
+      "id": "rel-rental-samosvaly",
+      "subject": "service-rental",
+      "predicate": "includes",
+      "predicateLabel": "включает",
+      "object": "service-rental-samosvaly"
+    },
+    {
+      "id": "rel-rental-samosvaly-surgut",
+      "subject": "service-rental-samosvaly",
+      "predicate": "locatedIn",
+      "predicateLabel": "предоставляется в",
+      "object": "location-surgut"
+    },
+    {
+      "id": "rel-rental-samosvaly-khmao",
+      "subject": "service-rental-samosvaly",
+      "predicate": "locatedIn",
+      "predicateLabel": "предоставляется в",
+      "object": "location-khmao"
+    },
+    {
+      "id": "rel-rental-samosvaly-task",
+      "subject": "service-rental-samosvaly",
+      "predicate": "servesTask",
+      "predicateLabel": "решает задачу",
+      "object": "rental-task-samosvaly"
+    },
+    {
+      "id": "rel-rental-samosvaly-vehicle",
+      "subject": "service-rental-samosvaly",
+      "predicate": "appliesTo",
+      "predicateLabel": "предоставляет технику",
+      "object": "vehicle-rental-samosvaly"
+    },
+    {
+      "id": "rel-rental-samosvaly-function",
+      "subject": "vehicle-rental-samosvaly",
+      "predicate": "usedFor",
+      "predicateLabel": "используется для",
+      "object": "rental-task-samosvaly"
+    },
+    {
+      "id": "rel-rental-mini-traktory",
+      "subject": "service-rental",
+      "predicate": "includes",
+      "predicateLabel": "включает",
+      "object": "service-rental-mini-traktory"
+    },
+    {
+      "id": "rel-rental-mini-traktory-surgut",
+      "subject": "service-rental-mini-traktory",
+      "predicate": "locatedIn",
+      "predicateLabel": "предоставляется в",
+      "object": "location-surgut"
+    },
+    {
+      "id": "rel-rental-mini-traktory-khmao",
+      "subject": "service-rental-mini-traktory",
+      "predicate": "locatedIn",
+      "predicateLabel": "предоставляется в",
+      "object": "location-khmao"
+    },
+    {
+      "id": "rel-rental-mini-traktory-task",
+      "subject": "service-rental-mini-traktory",
+      "predicate": "servesTask",
+      "predicateLabel": "решает задачу",
+      "object": "rental-task-mini-traktory"
+    },
+    {
+      "id": "rel-rental-mini-traktory-vehicle",
+      "subject": "service-rental-mini-traktory",
+      "predicate": "appliesTo",
+      "predicateLabel": "предоставляет технику",
+      "object": "vehicle-rental-mini-traktory"
+    },
+    {
+      "id": "rel-rental-mini-traktory-function",
+      "subject": "vehicle-rental-mini-traktory",
+      "predicate": "usedFor",
+      "predicateLabel": "используется для",
+      "object": "rental-task-mini-traktory"
+    },
+    {
+      "id": "rel-rental-manipulyatory",
+      "subject": "service-rental",
+      "predicate": "includes",
+      "predicateLabel": "включает",
+      "object": "service-rental-manipulyatory"
+    },
+    {
+      "id": "rel-rental-manipulyatory-surgut",
+      "subject": "service-rental-manipulyatory",
+      "predicate": "locatedIn",
+      "predicateLabel": "предоставляется в",
+      "object": "location-surgut"
+    },
+    {
+      "id": "rel-rental-manipulyatory-khmao",
+      "subject": "service-rental-manipulyatory",
+      "predicate": "locatedIn",
+      "predicateLabel": "предоставляется в",
+      "object": "location-khmao"
+    },
+    {
+      "id": "rel-rental-manipulyatory-task",
+      "subject": "service-rental-manipulyatory",
+      "predicate": "servesTask",
+      "predicateLabel": "решает задачу",
+      "object": "rental-task-manipulyatory"
+    },
+    {
+      "id": "rel-rental-manipulyatory-vehicle",
+      "subject": "service-rental-manipulyatory",
+      "predicate": "appliesTo",
+      "predicateLabel": "предоставляет технику",
+      "object": "vehicle-rental-manipulyatory"
+    },
+    {
+      "id": "rel-rental-manipulyatory-function",
+      "subject": "vehicle-rental-manipulyatory",
+      "predicate": "usedFor",
+      "predicateLabel": "используется для",
+      "object": "rental-task-manipulyatory"
+    },
+    {
+      "id": "rel-rental-perevozka-negabarita",
+      "subject": "service-rental",
+      "predicate": "includes",
+      "predicateLabel": "включает",
+      "object": "service-rental-perevozka-negabarita"
+    },
+    {
+      "id": "rel-rental-perevozka-negabarita-surgut",
+      "subject": "service-rental-perevozka-negabarita",
+      "predicate": "locatedIn",
+      "predicateLabel": "предоставляется в",
+      "object": "location-surgut"
+    },
+    {
+      "id": "rel-rental-perevozka-negabarita-khmao",
+      "subject": "service-rental-perevozka-negabarita",
+      "predicate": "locatedIn",
+      "predicateLabel": "предоставляется в",
+      "object": "location-khmao"
+    },
+    {
+      "id": "rel-rental-perevozka-negabarita-task",
+      "subject": "service-rental-perevozka-negabarita",
+      "predicate": "servesTask",
+      "predicateLabel": "решает задачу",
+      "object": "rental-task-perevozka-negabarita"
+    },
+    {
+      "id": "rel-rental-pererabotka-betona",
+      "subject": "service-rental",
+      "predicate": "includes",
+      "predicateLabel": "включает",
+      "object": "service-rental-pererabotka-betona"
+    },
+    {
+      "id": "rel-rental-pererabotka-betona-surgut",
+      "subject": "service-rental-pererabotka-betona",
+      "predicate": "locatedIn",
+      "predicateLabel": "предоставляется в",
+      "object": "location-surgut"
+    },
+    {
+      "id": "rel-rental-pererabotka-betona-khmao",
+      "subject": "service-rental-pererabotka-betona",
+      "predicate": "locatedIn",
+      "predicateLabel": "предоставляется в",
+      "object": "location-khmao"
+    },
+    {
+      "id": "rel-rental-pererabotka-betona-task",
+      "subject": "service-rental-pererabotka-betona",
+      "predicate": "servesTask",
+      "predicateLabel": "решает задачу",
+      "object": "rental-task-pererabotka-betona"
     }
   ]
 }

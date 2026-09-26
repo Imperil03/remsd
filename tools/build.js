@@ -29,7 +29,7 @@ const iconVersion = createHash("sha256")
   .update(fs.readFileSync(path.join(assetsDir, "img", "favicon.png")))
   .update(fs.readFileSync(path.join(assetsDir, "img", "apple-touch-icon.png")))
   .digest("hex").slice(0, 12);
-const assetVersion = process.env.ASSET_VERSION || "20260925-certificates-page-v22";
+const assetVersion = process.env.ASSET_VERSION || "20260926-rental-v1";
 
 function fail(message) {
   throw new Error(`[build] ${message}`);
@@ -441,6 +441,9 @@ function buildStaticPages(staticFiles, partials, config, mode, baseUrl, writtenR
     const rendered = render(fs.readFileSync(source, "utf8"), partials, {
       rootPath,
       assetVersion,
+      callbarLabel: "Быстрый звонок мастеру",
+      callbarText: "Нужен ремонт?",
+      callbarButton: "Позвонить мастеру",
       homeStyles: homeCss ? `<style data-critical-styles>${homeCss}</style>` : "",
     });
     const metadata = extractMetadata(rendered, route || "/", config);
@@ -451,12 +454,15 @@ function buildStaticPages(staticFiles, partials, config, mode, baseUrl, writtenR
 function buildInternalPages(pages, partials, config, mode, baseUrl, writtenRoutes) {
   const routeByEntity = new Map(pages.map((page) => [page.entityRef, page.path]));
   for (const page of pages) {
+    const messenger = page.rental ? readJson(path.join(dataDir, "contact-details.json")).messengers.find((item) => item.href.startsWith("https://wa.me/")) : null;
+    const rentalMessenger = messenger ? `<a class="rental-messenger" href="${escapeHtml(messenger.href)}">${escapeHtml(messenger.label)}</a>` : "";
+    const closingPhone = `<a class="v3-button v3-button--primary" href="${escapeHtml(config.site.phoneHref)}">${escapeHtml(page.closingCta?.buttonLabel || "")}</a>`;
     const isCompany = page.family === "company";
     const isContact = page.family === "contact";
     const isDocuments = page.family === "documents";
     const surface = isDocuments ? "certificates" : isContact ? "contact" : isCompany ? "company" : "internal";
     const template = fs.readFileSync(path.join(templatesDir, `${surface}-page.html`), "utf8");
-    const internalCriticalFile = path.join(assetsDir, "css", `${surface}-critical.css`);
+    const internalCriticalFile = path.join(assetsDir, "css", `${page.rental ? "rental" : surface}-critical.css`);
     const target = outputFileForRoute(page.path);
     const rootPath = getRootPath(path.relative(distDir, target));
     const internalCriticalCss = fs.existsSync(internalCriticalFile)
@@ -464,11 +470,19 @@ function buildInternalPages(pages, partials, config, mode, baseUrl, writtenRoute
         .replaceAll("../fonts/", `${rootPath}assets/fonts/`)
         .replaceAll("../img/", `${rootPath}assets/img/`)
       : "";
-    const rendered = render(template, partials, {
+    let rendered = render(template, partials, {
       rootPath,
       assetVersion,
       internalStyles: internalCriticalCss ? `<style data-critical-styles>${internalCriticalCss}</style>` : "",
       family: escapeHtml(page.family),
+      surfaceClass: page.rental ? " internal-page--rental" : "",
+      surfaceContract: page.rental ? "<!-- THESIS: choose equipment by task, specifications and an explicit rate. OWN-WORLD: RemSD Industrial Editorial, navy, white and amber, incumbent type and 1312px guide. STORY: purpose, machine, rate, conditions, contact. FIRST VIEWPORT: incumbent photo hero, concise service answer and a phone action; catalog follows. FORM: approved catalogue-first structure; code-led extension. FINISH: independent content and visual review, source records and responsive verification. -->" : "",
+      rentalMessenger,
+      closingActions: page.rental ? `<div class="rental-close-actions">${closingPhone}${rentalMessenger}</div>` : closingPhone,
+      rentalNavigation: page.rental ? `<nav class="rental-jump" aria-label="Разделы страницы"><div class="container">${page.sections.filter((section) => ["rentalCatalog", "equipmentCatalog", "rentalRates"].includes(section.type)).map((section) => `<a href="#${escapeHtml(section.id)}">${section.type === "rentalRates" ? "Цены" : section.kind === "service" ? "Услуги" : "Техника"}</a>`).join("")}<a href="#${page.sections.some((section) => section.id === "applications") ? "applications" : "conditions"}">${page.sections.some((section) => section.id === "applications") ? "Применение" : "Условия"}</a>${page.path !== "arenda" ? `<a href="${rootPath}arenda/">Весь каталог</a>` : ""}</div></nav>` : "",
+      callbarLabel: escapeHtml(page.mobileCallbar?.label || "Быстрый звонок мастеру"),
+      callbarText: escapeHtml(page.mobileCallbar?.text || "Нужен ремонт?"),
+      callbarButton: escapeHtml(page.mobileCallbar?.buttonLabel || "Позвонить мастеру"),
       title: escapeHtml(page.metadata.title),
       description: escapeHtml(page.metadata.description),
       heroImage: escapeHtml(page.hero.image || ""),
@@ -498,6 +512,12 @@ function buildInternalPages(pages, partials, config, mode, baseUrl, writtenRoute
       address: escapeHtml(`${config.site.address.locality}, ${config.site.address.street}`),
       openingHoursLabel: escapeHtml(config.site.openingHours.label),
     });
+    if (page.rental) {
+      // Rental uses only a few shared pictograms. Avoid transferring the entire
+      // repair sprite in the first HTML response on constrained connections.
+      const usedIcons = new Set([...rendered.matchAll(/<use\b[^>]*href="#(internal-icon-[^"]+)"/g)].map((match) => match[1]));
+      rendered = rendered.replace(/<symbol\b[^>]*id="(internal-icon-[^"]+)"[\s\S]*?<\/symbol>/g, (symbol, id) => usedIcons.has(id) ? symbol : "");
+    }
     writeHtml(
       page.path,
       enrichHead(rendered, page.metadata, page.path, rootPath, config, mode, baseUrl, buildInternalStructuredData(page, config, baseUrl)),
@@ -541,6 +561,7 @@ function main() {
   const physicalCssLayers = createCssBundles(outputCssDir);
   for (const layer of physicalCssLayers) fs.rmSync(path.join(outputCssDir, layer), { force: true });
   fs.rmSync(path.join(outputCssDir, "internal-critical.css"), { force: true });
+  fs.rmSync(path.join(outputCssDir, "rental-critical.css"), { force: true });
   fs.rmSync(path.join(outputCssDir, "company-critical.css"), { force: true });
   fs.rmSync(path.join(outputCssDir, "contact-critical.css"), { force: true });
   fs.rmSync(path.join(outputCssDir, "certificates-critical.css"), { force: true });
@@ -554,6 +575,13 @@ function main() {
   partials["nav-official-brands"] = renderBrandNavigation(brands, brandContext, true);
   partials["nav-other-brands"] = renderBrandNavigation(brands, brandContext);
   partials["home-brand-count"] = String(brands.items.length);
+  const rentalCatalog = require("./lib/rental-sections").loadRentalCatalog(root);
+  for (const kind of ["equipment", "service"]) {
+    partials[`nav-rental-${kind === "equipment" ? "equipment" : "services"}`] = rentalCatalog.categories.filter((item) => item.kind === kind).map((item) => {
+      if (brandContext.routeByEntity.get(item.entityRef) !== item.path) fail(`Категория аренды не опубликована: ${item.id}`);
+      return `<a href="{{rootPath}}${escapeHtml(item.path)}/">${escapeHtml(item.name)}</a>`;
+    }).join("\n");
+  }
   partials["home-document-previews"] = renderHomeDocumentPreviews(loadDocumentCatalog(root), "{{rootPath}}", escapeHtml);
   const writtenRoutes = new Set();
   buildStaticPages(staticFiles, partials, config, mode, baseUrl, writtenRoutes);

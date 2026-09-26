@@ -49,6 +49,18 @@
     "brand-volvo.json",
     "o-kompanii.json",
     "kontakty.json",
-    "sertifikaty.json"
+    "sertifikaty.json",
+    "arenda.json",
+    "arenda-avtokrany.json",
+    "arenda-ekskavatory.json",
+    "arenda-frontalnye-pogruzchiki.json",
+    "arenda-buldozery.json",
+    "arenda-truboukladchiki.json",
+    "arenda-avtogreydery.json",
+    "arenda-samosvaly.json",
+    "arenda-mini-traktory.json",
+    "arenda-manipulyatory.json",
+    "arenda-perevozka-negabarita.json",
+    "arenda-pererabotka-betona.json"
   ]
 }

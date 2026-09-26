@@ -1,0 +1,176 @@
+{
+  "schemaVersion": 1,
+  "sourcePage": "https://remsd.ru/arenda",
+  "capturedAt": "2026-09-26",
+  "images": [
+    {
+      "id": "crane-80",
+      "source": "https://static.tildacdn.com/tild3933-3934-4531-b435-306366373834/_WhatsApp_2024-12-10.jpg",
+      "sourceCard": 1,
+      "output": "assets/img/rental/crane-80.webp",
+      "width": 541,
+      "height": 720,
+      "sourceSha256": "00f48b306151ef8b04b164d1903277190cbef0cb6a6e5d06bf125196e5e175ce"
+    },
+    {
+      "id": "crane-40",
+      "source": "https://static.tildacdn.com/tild3130-3531-4137-b535-353830333063/WhatsApp_Image_2026-.jpeg",
+      "sourceCard": 2,
+      "output": "assets/img/rental/crane-40.webp",
+      "width": 540,
+      "height": 720,
+      "sourceSha256": "17579f74f1447e65e3937751d8ca719e39c8c12c8b6a4fd6aa42dae4a0615a7b"
+    },
+    {
+      "id": "crane-25-28",
+      "source": "https://static.tildacdn.com/tild6264-3163-4464-b363-386131346336/_WhatsApp_2024-12-10.jpg",
+      "sourceCard": 3,
+      "output": "assets/img/rental/crane-25-28.webp",
+      "width": 960,
+      "height": 720,
+      "sourceSha256": "143260542435339d7248ae069419b4107a20d4ff5b5c9fe8740fc47f69d51b5f"
+    },
+    {
+      "id": "crane-25-21",
+      "source": "https://static.tildacdn.com/tild6534-3762-4665-b163-666439613966/_WhatsApp_2024-12-10.jpg",
+      "sourceCard": 4,
+      "output": "assets/img/rental/crane-25-21.webp",
+      "width": 700,
+      "height": 525,
+      "sourceSha256": "4b7175f85abed5c8d56ccdc7562fb75a5778bc5305cf162fe24b41b397ef9023"
+    },
+    {
+      "id": "crane-50",
+      "source": "https://static.tildacdn.com/tild3735-6430-4835-a562-623761313161/kran_1.jpg",
+      "sourceCard": 5,
+      "output": "assets/img/rental/crane-50.webp",
+      "width": 540,
+      "height": 720,
+      "sourceSha256": "775b532ee62439889fe1fa51639be67be356426b8ee6c12c332f7b5a0e71d8f0",
+      "thumbnail": "assets/img/rental/crane-50-thumb.webp",
+      "thumbnailWidth": 640,
+      "thumbnailHeight": 400
+    },
+    {
+      "id": "loader-3",
+      "source": "https://static.tildacdn.com/tild6536-3164-4363-b137-613437326636/_WhatsApp_2024-12-10.jpg",
+      "sourceCard": 6,
+      "output": "assets/img/rental/loader-3.webp",
+      "width": 700,
+      "height": 525,
+      "sourceSha256": "fa4d72cae6731f113be9e6ecf588ee873b26daa07423ba32be8b2306b86289f7"
+    },
+    {
+      "id": "bulldozer",
+      "source": "https://static.tildacdn.com/tild6663-3035-4661-b331-333666326564/buldozer_1.png",
+      "sourceCard": 7,
+      "output": "assets/img/rental/bulldozer.webp",
+      "width": 600,
+      "height": 450,
+      "sourceSha256": "eb3f8e0b091167fbea74d3c54a8237b0bc392c4af82def180ed76d6264ab02ab",
+      "thumbnail": "assets/img/rental/bulldozer-thumb.webp",
+      "thumbnailWidth": 640,
+      "thumbnailHeight": 400
+    },
+    {
+      "id": "pipelayer",
+      "source": "https://static.tildacdn.com/tild6135-3963-4165-a230-376339306265/_WhatsApp_2024-12-10.jpg",
+      "sourceCard": 8,
+      "output": "assets/img/rental/pipelayer.webp",
+      "width": 700,
+      "height": 525,
+      "sourceSha256": "f34772e44cb4afc5d5c1e59e54cca630b8e00f468caf67159a758da1a5f812e9",
+      "thumbnail": "assets/img/rental/pipelayer-thumb.webp",
+      "thumbnailWidth": 640,
+      "thumbnailHeight": 400
+    },
+    {
+      "id": "crawler-excavator",
+      "source": "https://static.tildacdn.com/tild3737-3633-4462-a531-656664626331/WhatsApp_Image_2026-.jpeg",
+      "sourceCard": 9,
+      "output": "assets/img/rental/crawler-excavator.webp",
+      "width": 700,
+      "height": 525,
+      "sourceSha256": "7b71cfe66c5eefb35a7a95daa3cfbc519c48d3b0b69c137a13d247dde723ad45",
+      "thumbnail": "assets/img/rental/crawler-excavator-thumb.webp",
+      "thumbnailWidth": 640,
+      "thumbnailHeight": 400
+    },
+    {
+      "id": "doosan-180",
+      "source": "https://static.tildacdn.com/tild6564-3237-4136-b034-393166323133/WhatsApp_Image_2026-.jpeg",
+      "sourceCard": 10,
+      "output": "assets/img/rental/doosan-180.webp",
+      "width": 700,
+      "height": 393,
+      "sourceSha256": "c60c90491ef8027dfe541b9356c00076fc6c439f7b3d91a95e7af48b8241f477"
+    },
+    {
+      "id": "grader",
+      "source": "https://static.tildacdn.com/tild6539-6432-4537-b439-626635613463/photo.jpeg",
+      "sourceCard": 11,
+      "output": "assets/img/rental/grader.webp",
+      "width": 700,
+      "height": 525,
+      "sourceSha256": "ad457c06a6a67e880c48197dc925bc8406fc2984b6f76b6c0dda5cf65cd8e0d8",
+      "thumbnail": "assets/img/rental/grader-thumb.webp",
+      "thumbnailWidth": 640,
+      "thumbnailHeight": 400
+    },
+    {
+      "id": "concrete",
+      "source": "https://static.tildacdn.com/tild3433-6633-4539-a164-316431333763/WhatsApp_Image_2026-.jpeg",
+      "sourceCard": 12,
+      "output": "assets/img/rental/concrete.webp",
+      "width": 700,
+      "height": 700,
+      "sourceSha256": "98efddde1ec5ae44f1b69a1d49b097eba5d012b9c7ec0293b295187b02aa2f87",
+      "thumbnail": "assets/img/rental/concrete-thumb.webp",
+      "thumbnailWidth": 640,
+      "thumbnailHeight": 400
+    },
+    {
+      "id": "dump-truck",
+      "source": "https://static.tildacdn.com/tild3731-3638-4632-b461-613465363932/WhatsApp_Image_2026-.jpeg",
+      "sourceCard": 13,
+      "output": "assets/img/rental/dump-truck.webp",
+      "width": 700,
+      "height": 525,
+      "sourceSha256": "722daa63512f0bce097aa55ee095494add5cc81c4000c3dbceae005e64edc05d",
+      "thumbnail": "assets/img/rental/dump-truck-thumb.webp",
+      "thumbnailWidth": 640,
+      "thumbnailHeight": 400
+    },
+    {
+      "id": "mini-tractor",
+      "source": "https://static.tildacdn.com/tild3332-3063-4265-b236-633762653939/WhatsApp_Image_2026-.jpeg",
+      "sourceCard": 14,
+      "output": "assets/img/rental/mini-tractor.webp",
+      "width": 405,
+      "height": 720,
+      "sourceSha256": "4c4dc8b5a9ead1f1bb5648fbc498dde9de46d00fa8ca6c541447965e75ea7c6c",
+      "thumbnail": "assets/img/rental/mini-tractor-thumb.webp",
+      "thumbnailWidth": 640,
+      "thumbnailHeight": 400
+    },
+    {
+      "id": "loader-5",
+      "source": "https://static.tildacdn.com/tild6437-6263-4336-b935-363064306234/WhatsApp_Image_2026-.jpeg",
+      "sourceCard": 15,
+      "output": "assets/img/rental/loader-5.webp",
+      "width": 640,
+      "height": 587,
+      "sourceSha256": "23059696423c158970bd2a8f32670be8214e1a3bd50a35d09640ff54ca175a9b",
+      "thumbnail": "assets/img/rental/loader-5-thumb.webp",
+      "thumbnailWidth": 640,
+      "thumbnailHeight": 400
+    }
+  ],
+  "hero": {
+    "sourceImageId": "crane-50",
+    "outputs": [
+      "assets/img/rental/hero.webp",
+      "assets/img/rental/hero-mobile.webp"
+    ]
+  }
+}
