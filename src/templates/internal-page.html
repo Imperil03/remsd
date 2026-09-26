@@ -16,7 +16,8 @@
     <link rel="stylesheet" href="{{rootPath}}assets/css/internal.css?v={{assetVersion}}" media="print" onload="this.media='all'">
     <noscript><link rel="stylesheet" href="{{rootPath}}assets/css/internal.css?v={{assetVersion}}"></noscript>
   </head>
-  <body class="internal-page internal-page--{{family}}">
+  <body class="internal-page internal-page--{{family}}{{surfaceClass}}">
+    {{surfaceContract}}
     {{internal-icon-sprite}}
     <main id="main-content" tabindex="-1">
       <section class="internal-hero" aria-labelledby="internal-page-title">
@@ -35,13 +36,14 @@
             <h1 id="internal-page-title">{{h1}}</h1>
             <p class="internal-hero__lead">{{lead}}</p>
             <a class="v3-button v3-button--primary" href="{{phoneHref}}">{{heroCtaLabel}}</a>
+            {{rentalMessenger}}
           </div>
           <dl class="internal-hero__facts" aria-label="Ключевые факты">
 {{heroFacts}}
           </dl>
         </div>
       </section>
-
+{{rentalNavigation}}
 {{sections}}
 
       <section class="internal-close" aria-labelledby="internal-close-title">
@@ -55,7 +57,7 @@
             <div><dt>Адрес</dt><dd>{{address}}</dd></div>
             <div><dt>График</dt><dd>{{openingHoursLabel}}</dd></div>
           </dl>
-          <a class="v3-button v3-button--primary" href="{{phoneHref}}">{{closingButtonLabel}}</a>
+          {{closingActions}}
         </div>
       </section>
     </main>

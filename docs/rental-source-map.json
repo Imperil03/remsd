@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "source": "https://remsd.ru/arenda",
+  "ownerConfirmedAt": "2026-09-26",
+  "decisions": [
+    "Весь ассортимент актуален, включая манипулятор и перевозку негабарита.",
+    "Цены актуальны.",
+    "Doosan 180: 5500 ₽/ч с ковшом, 6500 ₽/ч с гидромолотом или гидроплитой — полная ставка за комплектацию.",
+    "Погрузчик 3 т: объём ковша 1,8 м³.",
+    "Минимальный заказ, подача, персонал, топливо и НДС согласуются по заказу.",
+    "Страницы по видам техники; модели и тоннажи не получают собственных URL."
+  ],
+  "boundaries": [
+    "18/22/90 т сохранены как наименования источника без переопределения смысла параметров.",
+    "90 т из квиза не публикуются как универсальный предел перевозки.",
+    "Навесное оборудование гусеничного экскаватора не получает автоматически ставку 4500 ₽/ч.",
+    "Не переносятся скидки, обещания ответа за 60 секунд, наличие сейчас и ремонтные гарантии."
+  ],
+  "technicalReferences": [
+    "https://www.cat.com/en_US/articles/for-owners/motor-grader-operating-tips-part-2.html",
+    "https://www.cat.com/en_US/articles/ci-articles/wheel-loader-bucket-breakdown.html",
+    "https://www-assets.liebherr.com/media/bu-media/lhbu-emt/brochures/pipe-layers/rl-46-rl-56-rl-66-stage-iiia-stage-iv-stage-v-en.pdf"
+  ],
+  "pages": [
+    "arenda",
+    "arenda/avtokrany",
+    "arenda/ekskavatory",
+    "arenda/frontalnye-pogruzchiki",
+    "arenda/buldozery",
+    "arenda/truboukladchiki",
+    "arenda/avtogreydery",
+    "arenda/samosvaly",
+    "arenda/mini-traktory",
+    "arenda/manipulyatory",
+    "arenda/perevozka-negabarita",
+    "arenda/pererabotka-betona"
+  ]
+}

@@ -8,7 +8,9 @@
     "verify": "npm run build && npm run check",
     "prepare:media": "node tools/prepare-media.js",
     "prepare:icons": "node tools/prepare-icons.js",
-    "prepare:contacts": "node tools/prepare-contact-card.js"
+    "prepare:contacts": "node tools/prepare-contact-card.js",
+    "prepare:rental": "node tools/prepare-rental-media.js",
+    "preview": "node tools/serve-preview.js"
   },
   "devDependencies": {
     "lighthouse": "^12.6.1",

@@ -1,0 +1,486 @@
+{
+  "schemaVersion": 1,
+  "source": "https://remsd.ru/arenda",
+  "confirmedAt": "2026-09-26",
+  "terms": "Почасовой тариф относится к указанной технике и комплектации. Минимальное время заказа, стоимость подачи, включение работы персонала и топлива, а также НДС согласуем до начала работ.",
+  "categories": [
+    {
+      "id": "avtokrany",
+      "entityRef": "service-rental-avtokrany",
+      "kind": "equipment",
+      "name": "Автокраны",
+      "path": "arenda/avtokrany",
+      "text": "25, 40, 50 и 80 т. Погрузка и подъём грузов.",
+      "image": "assets/img/rental/crane-50.webp",
+      "alt": "Автокран 50 т",
+      "imageWidth": 540,
+      "imageHeight": 720,
+      "equipmentIds": [
+        "crane-25-21",
+        "crane-25-28",
+        "crane-40",
+        "crane-50",
+        "crane-80"
+      ],
+      "thumbnail": "assets/img/rental/crane-50-thumb.webp",
+      "thumbnailWidth": 640,
+      "thumbnailHeight": 400
+    },
+    {
+      "id": "ekskavatory",
+      "entityRef": "service-rental-ekskavatory",
+      "kind": "equipment",
+      "name": "Экскаваторы",
+      "path": "arenda/ekskavatory",
+      "text": "Гусеничный и колёсный. Ковш, гидромолот, плита.",
+      "image": "assets/img/rental/crawler-excavator.webp",
+      "alt": "Гусеничный экскаватор 22 т",
+      "imageWidth": 700,
+      "imageHeight": 525,
+      "equipmentIds": [
+        "crawler-excavator",
+        "doosan-180"
+      ],
+      "thumbnail": "assets/img/rental/crawler-excavator-thumb.webp",
+      "thumbnailWidth": 640,
+      "thumbnailHeight": 400
+    },
+    {
+      "id": "frontalnye-pogruzchiki",
+      "entityRef": "service-rental-frontalnye-pogruzchiki",
+      "kind": "equipment",
+      "name": "Фронтальные погрузчики",
+      "path": "arenda/frontalnye-pogruzchiki",
+      "text": "3 т с ковшом 1,8 м³; 5 т с ковшом 3 м³.",
+      "image": "assets/img/rental/loader-5.webp",
+      "alt": "Фронтальный погрузчик 5 т",
+      "imageWidth": 640,
+      "imageHeight": 587,
+      "equipmentIds": [
+        "loader-3",
+        "loader-5"
+      ],
+      "thumbnail": "assets/img/rental/loader-5-thumb.webp",
+      "thumbnailWidth": 640,
+      "thumbnailHeight": 400
+    },
+    {
+      "id": "buldozery",
+      "entityRef": "service-rental-buldozery",
+      "kind": "equipment",
+      "name": "Бульдозеры",
+      "path": "arenda/buldozery",
+      "text": "Перемещение грунта и черновая планировка.",
+      "image": "assets/img/rental/bulldozer.webp",
+      "alt": "Бульдозер 18 т",
+      "imageWidth": 600,
+      "imageHeight": 450,
+      "equipmentIds": [
+        "bulldozer"
+      ],
+      "thumbnail": "assets/img/rental/bulldozer-thumb.webp",
+      "thumbnailWidth": 640,
+      "thumbnailHeight": 400
+    },
+    {
+      "id": "truboukladchiki",
+      "entityRef": "service-rental-truboukladchiki",
+      "kind": "equipment",
+      "name": "Трубоукладчики",
+      "path": "arenda/truboukladchiki",
+      "text": "Подъём, удержание и укладка трубных секций.",
+      "image": "assets/img/rental/pipelayer.webp",
+      "alt": "Трубоукладчик 90 т",
+      "imageWidth": 700,
+      "imageHeight": 525,
+      "equipmentIds": [
+        "pipelayer"
+      ],
+      "thumbnail": "assets/img/rental/pipelayer-thumb.webp",
+      "thumbnailWidth": 640,
+      "thumbnailHeight": 400
+    },
+    {
+      "id": "avtogreydery",
+      "entityRef": "service-rental-avtogreydery",
+      "kind": "equipment",
+      "name": "Автогрейдеры",
+      "path": "arenda/avtogreydery",
+      "text": "Выравнивание дорог и планировка площадок.",
+      "image": "assets/img/rental/grader.webp",
+      "alt": "Автогрейдер 6×6, 18 т",
+      "imageWidth": 700,
+      "imageHeight": 525,
+      "equipmentIds": [
+        "grader"
+      ],
+      "thumbnail": "assets/img/rental/grader-thumb.webp",
+      "thumbnailWidth": 640,
+      "thumbnailHeight": 400
+    },
+    {
+      "id": "samosvaly",
+      "entityRef": "service-rental-samosvaly",
+      "kind": "equipment",
+      "name": "Самосвалы",
+      "path": "arenda/samosvaly",
+      "text": "Перевозка песка, щебня и грунта.",
+      "image": "assets/img/rental/dump-truck.webp",
+      "alt": "Самосвал",
+      "imageWidth": 700,
+      "imageHeight": 525,
+      "equipmentIds": [
+        "dump-truck"
+      ],
+      "thumbnail": "assets/img/rental/dump-truck-thumb.webp",
+      "thumbnailWidth": 640,
+      "thumbnailHeight": 400
+    },
+    {
+      "id": "mini-traktory",
+      "entityRef": "service-rental-mini-traktory",
+      "kind": "equipment",
+      "name": "Мини-тракторы",
+      "path": "arenda/mini-traktory",
+      "text": "Уборка снега и подметание территории.",
+      "image": "assets/img/rental/mini-tractor.webp",
+      "alt": "Мини-трактор",
+      "imageWidth": 405,
+      "imageHeight": 720,
+      "equipmentIds": [
+        "mini-tractor"
+      ],
+      "thumbnail": "assets/img/rental/mini-tractor-thumb.webp",
+      "thumbnailWidth": 640,
+      "thumbnailHeight": 400
+    },
+    {
+      "id": "manipulyatory",
+      "entityRef": "service-rental-manipulyatory",
+      "kind": "equipment",
+      "name": "Манипуляторы",
+      "path": "arenda/manipulyatory",
+      "text": "Перевозка груза с погрузкой и разгрузкой.",
+      "icon": "delivery",
+      "equipmentIds": []
+    },
+    {
+      "id": "perevozka-negabarita",
+      "entityRef": "service-rental-perevozka-negabarita",
+      "kind": "service",
+      "name": "Перевозка негабаритных грузов",
+      "path": "arenda/perevozka-negabarita",
+      "text": "Подбор перевозки по габаритам, массе и маршруту.",
+      "icon": "delivery",
+      "equipmentIds": []
+    },
+    {
+      "id": "pererabotka-betona",
+      "entityRef": "service-rental-pererabotka-betona",
+      "kind": "service",
+      "name": "Переработка бетонного боя",
+      "path": "arenda/pererabotka-betona",
+      "text": "Переработка фрагментов бетона в крошку.",
+      "image": "assets/img/rental/concrete.webp",
+      "alt": "Переработка бетонного боя",
+      "imageWidth": 700,
+      "imageHeight": 700,
+      "equipmentIds": [],
+      "thumbnail": "assets/img/rental/concrete-thumb.webp",
+      "thumbnailWidth": 640,
+      "thumbnailHeight": 400
+    }
+  ],
+  "equipment": [
+    {
+      "id": "crane-25-21",
+      "name": "Автокран 25 т со стрелой 21 м",
+      "text": "Вариант автокрана 25 т для подъёма и перемещения грузов.",
+      "image": "assets/img/rental/crane-25-21.webp",
+      "alt": "Автокран 25 т со стрелой 21 м",
+      "imageWidth": 700,
+      "imageHeight": 525,
+      "specs": [
+        {
+          "label": "Грузоподъёмность",
+          "value": "25 т"
+        },
+        {
+          "label": "Длина стрелы",
+          "value": "21 м"
+        }
+      ],
+      "rates": []
+    },
+    {
+      "id": "crane-25-28",
+      "name": "Автокран 25 т со стрелой 28 м",
+      "text": "Вариант автокрана 25 т с более длинной стрелой. Допустимую нагрузку проверяют для рабочего вылета.",
+      "image": "assets/img/rental/crane-25-28.webp",
+      "alt": "Автокран 25 т со стрелой 28 м",
+      "imageWidth": 960,
+      "imageHeight": 720,
+      "specs": [
+        {
+          "label": "Грузоподъёмность",
+          "value": "25 т"
+        },
+        {
+          "label": "Длина стрелы",
+          "value": "28 м"
+        }
+      ],
+      "rates": []
+    },
+    {
+      "id": "crane-40",
+      "name": "Автокран 40 т",
+      "text": "Автокран для погрузки и монтажных работ. Высоту подъёма и вылет согласуем по задаче.",
+      "image": "assets/img/rental/crane-40.webp",
+      "alt": "Автокран 40 т",
+      "imageWidth": 540,
+      "imageHeight": 720,
+      "specs": [
+        {
+          "label": "Грузоподъёмность",
+          "value": "40 т"
+        }
+      ],
+      "rates": [
+        {
+          "label": "Аренда",
+          "amount": 4500
+        }
+      ]
+    },
+    {
+      "id": "crane-50",
+      "name": "Автокран 50 т",
+      "text": "Автокран на полноприводном шасси. Возможность работы определяется условиями площадки и параметрами подъёма.",
+      "image": "assets/img/rental/crane-50.webp",
+      "alt": "Автокран 50 т",
+      "imageWidth": 540,
+      "imageHeight": 720,
+      "specs": [
+        {
+          "label": "Грузоподъёмность",
+          "value": "50 т"
+        },
+        {
+          "label": "Длина стрелы",
+          "value": "31 м"
+        },
+        {
+          "label": "Шасси",
+          "value": "8×8"
+        }
+      ],
+      "rates": []
+    },
+    {
+      "id": "crane-80",
+      "name": "Автокран 80 т",
+      "text": "Автокран с основной стрелой и гуськом. Рабочую конфигурацию подбирают по высоте, вылету и массе груза.",
+      "image": "assets/img/rental/crane-80.webp",
+      "alt": "Автокран 80 т",
+      "imageWidth": 541,
+      "imageHeight": 720,
+      "specs": [
+        {
+          "label": "Грузоподъёмность",
+          "value": "80 т"
+        },
+        {
+          "label": "Длина стрелы",
+          "value": "48 м"
+        },
+        {
+          "label": "Гусёк",
+          "value": "10 м"
+        }
+      ],
+      "rates": []
+    },
+    {
+      "id": "crawler-excavator",
+      "name": "Гусеничный экскаватор 22 т",
+      "text": "Гусеничный экскаватор для разработки и погрузки грунта.",
+      "image": "assets/img/rental/crawler-excavator.webp",
+      "alt": "Гусеничный экскаватор 22 т",
+      "imageWidth": 700,
+      "imageHeight": 525,
+      "specs": [
+        {
+          "label": "Навесное оборудование",
+          "value": "Ковш, гидромолот, виброплита"
+        }
+      ],
+      "rates": [
+        {
+          "label": "Аренда",
+          "amount": 4500
+        }
+      ],
+      "note": "Стоимость работы с выбранным навесным оборудованием уточняется при заказе."
+    },
+    {
+      "id": "doosan-180",
+      "name": "Колёсный экскаватор Doosan 180",
+      "text": "Колёсный экскаватор с ковшом, гидромолотом или гидроплитой. Тариф относится к выбранной комплектации.",
+      "image": "assets/img/rental/doosan-180.webp",
+      "alt": "Колёсный экскаватор Doosan 180",
+      "imageWidth": 700,
+      "imageHeight": 393,
+      "specs": [
+        {
+          "label": "Ходовая часть",
+          "value": "Колёсная"
+        },
+        {
+          "label": "Объём ковша",
+          "value": "0,8 м³"
+        }
+      ],
+      "rates": [
+        {
+          "label": "С ковшом",
+          "amount": 5500
+        },
+        {
+          "label": "С гидромолотом",
+          "amount": 6500
+        },
+        {
+          "label": "С гидроплитой",
+          "amount": 6500
+        }
+      ]
+    },
+    {
+      "id": "loader-3",
+      "name": "Фронтальный погрузчик 3 т",
+      "text": "Погрузчик для перемещения сыпучих материалов и загрузки транспорта.",
+      "image": "assets/img/rental/loader-3.webp",
+      "alt": "Фронтальный погрузчик 3 т",
+      "imageWidth": 700,
+      "imageHeight": 525,
+      "specs": [
+        {
+          "label": "Грузоподъёмность",
+          "value": "3 т"
+        },
+        {
+          "label": "Объём ковша",
+          "value": "1,8 м³"
+        }
+      ],
+      "rates": []
+    },
+    {
+      "id": "loader-5",
+      "name": "Фронтальный погрузчик 5 т",
+      "text": "Фронтальный погрузчик для работы с песком, щебнем и грунтом.",
+      "image": "assets/img/rental/loader-5.webp",
+      "alt": "Фронтальный погрузчик 5 т",
+      "imageWidth": 640,
+      "imageHeight": 587,
+      "specs": [
+        {
+          "label": "Грузоподъёмность",
+          "value": "5 т"
+        },
+        {
+          "label": "Объём ковша",
+          "value": "3 м³"
+        }
+      ],
+      "rates": [
+        {
+          "label": "Аренда",
+          "amount": 3500
+        }
+      ]
+    },
+    {
+      "id": "bulldozer",
+      "name": "Бульдозер 18 т",
+      "text": "Бульдозер срезает, перемещает и разравнивает грунт при земляных работах.",
+      "image": "assets/img/rental/bulldozer.webp",
+      "alt": "Бульдозер 18 т",
+      "imageWidth": 600,
+      "imageHeight": 450,
+      "specs": [],
+      "rates": []
+    },
+    {
+      "id": "pipelayer",
+      "name": "Трубоукладчик 90 т",
+      "text": "Трубоукладчик для подъёма и удержания трубных секций при сборке и укладке трубопровода.",
+      "image": "assets/img/rental/pipelayer.webp",
+      "alt": "Трубоукладчик 90 т",
+      "imageWidth": 700,
+      "imageHeight": 525,
+      "specs": [],
+      "rates": []
+    },
+    {
+      "id": "grader",
+      "name": "Автогрейдер 6×6, 18 т",
+      "text": "Автогрейдер для планировки площадок и выравнивания грунтовых и щебёночных дорог.",
+      "image": "assets/img/rental/grader.webp",
+      "alt": "Автогрейдер 6×6, 18 т",
+      "imageWidth": 700,
+      "imageHeight": 525,
+      "specs": [
+        {
+          "label": "Колёсная формула",
+          "value": "6×6"
+        }
+      ],
+      "rates": [
+        {
+          "label": "Аренда",
+          "amount": 3500
+        }
+      ]
+    },
+    {
+      "id": "dump-truck",
+      "name": "Самосвал",
+      "text": "Самосвал для перевозки песка, щебня, грунта и других согласованных сыпучих материалов.",
+      "image": "assets/img/rental/dump-truck.webp",
+      "alt": "Самосвал",
+      "imageWidth": 700,
+      "imageHeight": 525,
+      "specs": [],
+      "rates": [
+        {
+          "label": "Аренда",
+          "amount": 3000
+        }
+      ]
+    },
+    {
+      "id": "mini-tractor",
+      "name": "Мини-трактор",
+      "text": "Мини-трактор для уборки снега и подметания территории.",
+      "image": "assets/img/rental/mini-tractor.webp",
+      "alt": "Мини-трактор",
+      "imageWidth": 405,
+      "imageHeight": 720,
+      "specs": [
+        {
+          "label": "Оборудование",
+          "value": "Снегоуборочный шнек, лопата, метла"
+        }
+      ],
+      "rates": [
+        {
+          "label": "Аренда",
+          "amount": 3000
+        }
+      ],
+      "note": "Оборудование и состав стоимости согласуем при заказе."
+    }
+  ]
+}

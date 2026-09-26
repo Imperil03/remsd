@@ -29,6 +29,7 @@ try {
 
 try {
   require("./lib/check-brand-pages")({ root, dataDir, catalog: internalCatalog, siteConfig });
+  require("./lib/check-rental-pages")({ root, catalog: internalCatalog });
 } catch (error) {
   fail(`brand-v1: ${error.message}`);
 }

@@ -5,6 +5,7 @@ const { renderOfficialBrands, renderBrandMatrix } = require("./brand-catalog");
 const { createCompanySections } = require("./company-sections");
 const { createContactSections } = require("./contact-sections");
 const { createDocumentSections } = require("./documents");
+const { createRentalSections } = require("./rental-sections");
 
 const PAGE_FAMILIES = new Set(["hub", "service", "brand", "company", "contact", "documents"]);
 const ENTITY_TYPE_BY_FAMILY = { hub: "service", service: "service", brand: "brand", company: "organization", contact: "location", documents: "proof" };
@@ -116,6 +117,7 @@ function renderInlineCta({ id, modifier, cta }, site) {
 }
 
 const SECTION_REGISTRY = {
+  ...createRentalSections({ requireArray, requireText, validateAsset, escapeHtml, renderSectionHead }),
   ...createCompanySections({ requireObject, requireArray, requireText, validateAsset, escapeHtml, normalizeRoute }),
   ...createContactSections({ requireText, validateAsset, escapeHtml }),
   ...createDocumentSections({ escapeHtml }),
@@ -494,6 +496,12 @@ function validatePageDefinition(page, label, context) {
     if (crumb.href !== undefined) normalizeRoute(crumb.href, `${label}.breadcrumbs[${index}].href`, { allowEmpty: true });
   });
   const hero = requireObject(page.hero, `${label}.hero`);
+  if (page.mobileCallbar !== undefined) {
+    requireObject(page.mobileCallbar, `${label}.mobileCallbar`);
+    ["label", "text", "buttonLabel"].forEach((key) => requireText(page.mobileCallbar[key], `${label}.mobileCallbar.${key}`));
+  }
+  if (page.rental !== undefined && typeof page.rental !== "boolean") fail(`${label}.rental: ожидается boolean`);
+  if (page.rental && !/^arenda(?:\/|$)/.test(page.path)) fail(`${label}.rental: страница должна находиться в разделе arenda`);
   (["contact", "documents"].includes(page.family) ? ["h1"] : ["h1", "lead", "ctaLabel"]).forEach((key) => requireText(hero[key], `${label}.hero.${key}`));
   if (hero.accent !== undefined) requireText(hero.accent, `${label}.hero.accent`);
   if (!["contact", "documents"].includes(page.family)) {
