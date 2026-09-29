@@ -123,8 +123,15 @@ const SECTION_REGISTRY = {
   ...createDocumentSections({ escapeHtml }),
   introProof: {
     validate(section, label, context) {
-      requireArray(section.bullets, `${label}.bullets`, { nonEmpty: true }).forEach((item, index) => requireText(item, `${label}.bullets[${index}]`));
-      requireText(section.statement, `${label}.statement`);
+      if (section.paragraphs !== undefined) {
+        requireArray(section.paragraphs, `${label}.paragraphs`, { nonEmpty: true }).forEach((item, index) => requireText(item, `${label}.paragraphs[${index}]`));
+        for (const key of ["intro", "bullets", "statement"]) {
+          if (Object.hasOwn(section, key)) fail(`${label}: paragraphs нельзя совмещать с ${key}`);
+        }
+      } else {
+        requireArray(section.bullets, `${label}.bullets`, { nonEmpty: true }).forEach((item, index) => requireText(item, `${label}.bullets[${index}]`));
+        requireText(section.statement, `${label}.statement`);
+      }
       validateAsset(section.image, `${label}.image`, context);
       requireText(section.imageAlt, `${label}.imageAlt`);
       requireArray(section.stats, `${label}.stats`, { nonEmpty: true }).forEach((item, index) => {
@@ -134,15 +141,17 @@ const SECTION_REGISTRY = {
       });
     },
     render(section, { rootPath }) {
-      const bullets = section.bullets.map((item) => `<li>${escapeHtml(item)}</li>`).join("");
+      const copy = section.paragraphs
+        ? section.paragraphs.map((paragraph) => `<p class="internal-intro__lead">${escapeHtml(paragraph)}</p>`).join("\n      ")
+        : `<p class="internal-intro__lead">${escapeHtml(section.intro)}</p>
+      <ul class="internal-intro__list">${section.bullets.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+      <p class="internal-intro__statement">${escapeHtml(section.statement)}</p>`;
       const stats = section.stats.map((item) => `<div><dt>${escapeHtml(item.label)}</dt><dd>${escapeHtml(item.value)}</dd></div>`).join("");
       return `<section class="internal-section internal-section--introProof" id="${escapeHtml(section.id)}" aria-labelledby="${escapeHtml(section.id)}-title">
   <div class="container internal-intro">
     <div class="internal-intro__copy">
       <h2 id="${escapeHtml(section.id)}-title">${escapeHtml(section.title)}</h2>
-      <p class="internal-intro__lead">${escapeHtml(section.intro)}</p>
-      <ul class="internal-intro__list">${bullets}</ul>
-      <p class="internal-intro__statement">${escapeHtml(section.statement)}</p>
+      ${copy}
     </div>
     <figure class="internal-intro__media"><img src="${rootPath}${escapeHtml(section.image)}" alt="${escapeHtml(section.imageAlt)}"${imageDimensions(section) || ' width="937" height="1080"'} loading="lazy" decoding="async"></figure>
     <dl class="internal-intro__stats">${stats}</dl>

@@ -2,7 +2,7 @@ const assert = require("node:assert/strict");
 const fs = require("fs");
 const path = require("path");
 const { loadPageTemplates, resolvePageTemplate } = require("./page-templates");
-const { validatePageDefinition } = require("./internal-pages");
+const { validatePageDefinition, renderSection } = require("./internal-pages");
 
 module.exports = function checkRepairTemplates({ root, dataDir, catalog, siteConfig }) {
   const templates = loadPageTemplates(dataDir);
@@ -29,6 +29,44 @@ module.exports = function checkRepairTemplates({ root, dataDir, catalog, siteCon
   const fixture = JSON.parse(fs.readFileSync(path.join(root, "tools/fixtures/internal-service-page.json"), "utf8"));
   assert.deepEqual(resolvePageTemplate(fixture, templates), fixture, "Страница без template должна сохраниться");
   validatePageDefinition(resolvePageTemplate(fixture, templates), "fixture", context);
+  assert.throws(() => resolvePageTemplate({ ...fixture, omitSections: ["symptoms"] }, templates), /omitSections/);
+  const withoutSymptoms = structuredClone(reference);
+  withoutSymptoms.omitSections = ["symptoms"];
+  withoutSymptoms.sections = withoutSymptoms.sections.filter((section) => section.type !== "symptoms");
+  const reduced = resolvePageTemplate(withoutSymptoms, templates);
+  validatePageDefinition(reduced, "without symptoms", context);
+  assert.equal(reduced.sections.length, 10);
+  assert.equal(reduced.omitSections, undefined, "Authoring-настройка не должна попадать в PageDefinition");
+  assert.deepEqual(withoutSymptoms.omitSections, ["symptoms"], "Resolver изменил источник");
+  for (const invalid of [null, "symptoms", ["faq"], ["symptoms", "symptoms"]]) {
+    assert.throws(() => resolvePageTemplate({ ...withoutSymptoms, omitSections: invalid }, templates), /omitSections/);
+  }
+  const undeclared = structuredClone(withoutSymptoms);
+  delete undeclared.omitSections;
+  assert.throws(() => resolvePageTemplate(undeclared, templates), /порядок секций/);
+  assert.throws(() => resolvePageTemplate({ ...reference, omitSections: ["symptoms"] }, templates), /порядок секций/);
+  const brandSource = sources.find((page) => page.template === "brand-v1");
+  assert.throws(() => resolvePageTemplate({ ...brandSource, omitSections: ["symptoms"] }, templates), /omitSections/);
+
+  const paragraphPage = resolvePageTemplate(reference, templates);
+  const paragraphIntro = paragraphPage.sections.find((section) => section.type === "introProof");
+  for (const key of ["intro", "bullets", "statement"]) delete paragraphIntro[key];
+  paragraphIntro.paragraphs = ["Первый абзац & второй фрагмент.", "Второй абзац."];
+  validatePageDefinition(paragraphPage, "paragraph intro", context);
+  const paragraphHtml = renderSection(paragraphIntro, "../", siteConfig.site);
+  assert.equal((paragraphHtml.match(/class="internal-intro__lead"/g) || []).length, 2);
+  assert(paragraphHtml.includes("&amp;"), "Абзацы должны экранироваться");
+  assert(!/internal-intro__(?:list|statement)/.test(paragraphHtml), "Старые элементы intro остались в разметке");
+  for (const invalid of [[], [""], ["<b>HTML</b>"], "not an array"]) {
+    const copy = structuredClone(paragraphPage);
+    copy.sections.find((section) => section.type === "introProof").paragraphs = invalid;
+    assert.throws(() => validatePageDefinition(copy, "invalid paragraphs", context), /paragraphs/);
+  }
+  for (const key of ["intro", "bullets", "statement"]) {
+    const copy = structuredClone(paragraphPage);
+    copy.sections.find((section) => section.type === "introProof")[key] = key === "bullets" ? ["old"] : "old";
+    assert.throws(() => validatePageDefinition(copy, "mixed intro", context), /paragraphs нельзя совмещать/);
+  }
   const invalidIcon = resolvePageTemplate(reference, templates);
   invalidIcon.hero.facts[0].icon = "does-not-exist";
   assert.throws(() => validatePageDefinition(invalidIcon, "icon probe", context), /неизвестная пиктограмма/);
@@ -41,8 +79,21 @@ module.exports = function checkRepairTemplates({ root, dataDir, catalog, siteCon
   for (const contract of specialtyContracts) assert(sources.some((source) => source.path === contract.path), `Не создана страница ${contract.path}`);
   for (const source of sources.filter((page) => page.template === "repair-v1")) {
     const page = catalog.pages.find((item) => item.path === source.path);
+    const isTractor = page.path === "remont-sedelnyh-tyagachey";
     const section = (type) => page.sections.find((item) => item.type === type);
     assert.equal(page.template, undefined, "Полный PageDefinition не содержит template");
+    assert.equal(page.omitSections, undefined);
+    if (isTractor) {
+      assert.deepEqual(source.omitSections, ["symptoms"]);
+      assert.equal(page.sections.length, 10);
+      assert.equal(section("introProof").paragraphs.length, 2);
+      assert.equal(section("faq").intro, undefined);
+      assert.deepEqual(section("vehicleTypes").items.map((item) => item.title), ["Тягачи 4×2", "Тягачи 6×2", "Тягачи 6×4"]);
+      assert.deepEqual(section("priceExamples").items.map((item) => Number(item.price.replace(/\D/g, ""))), [1500, 25000, 16000, 12000, 4000, 2500, 2000, 6000]);
+    } else {
+      assert.equal(source.omitSections, undefined, `${page.path}: исключение добавлено за пределами страницы тягачей`);
+      assert.equal(page.sections.length, 11);
+    }
     assert.deepEqual(page.hero.facts, template.heroFacts);
     assert.deepEqual(section("introProof").stats, template.proofStats);
     assert.deepEqual(section("workStages").items, template.workStages);
@@ -52,12 +103,13 @@ module.exports = function checkRepairTemplates({ root, dataDir, catalog, siteCon
     const specialty = specialtyByPath.get(page.path);
     const popularCount = specialty?.popularWorks ?? (page.path === reference.path || newPriceCounts[page.path] ? 16 : undefined);
     if (popularCount !== undefined) assert.equal(section("popularWorks").items.length, popularCount, `${page.path}: количество популярных работ`);
-    assert.equal(section("vehicleTypes").items.length, 6);
+    assert.equal(section("vehicleTypes").items.length, isTractor ? 3 : 6);
     if (newPriceCounts[page.path]) {
-      assert.equal(section("symptoms").items.length, 8);
-      assert.equal(section("faq").items.length, 10);
+      if (isTractor) assert.equal(section("symptoms"), undefined);
+      else assert.equal(section("symptoms").items.length, 8);
+      assert.equal(section("faq").items.length, isTractor ? 4 : 10);
       assert.equal(section("priceExamples").items.length, newPriceCounts[page.path]);
-      assert.match(section("priceExamples").note, /без запчастей и материалов/);
+      assert.match(section("priceExamples").note, isTractor ? /без запчастей и\s+расходных материалов/u : /без запчастей и материалов/);
       for (const row of section("priceExamples").items) assert.match(row.price, /^от [\d\s]+ ₽$/u);
     }
     if (specialty) {
@@ -94,7 +146,11 @@ module.exports = function checkRepairTemplates({ root, dataDir, catalog, siteCon
     const html = fs.readFileSync(path.join(root, "dist", page.path, "index.html"), "utf8");
     assert(!/5000\+|средний срок ремонта/i.test(html), `${page.path}: устаревшие факты`);
     const buttons = [...html.matchAll(/<a[^>]*class="[^"]*v3-button[^>]*href="([^"]+)"/g)];
-    assert.equal(buttons.length, 4, `${page.path}: четыре CTA`);
+    assert.equal(buttons.length, isTractor ? 3 : 4, `${page.path}: число CTA`);
+    if (isTractor) {
+      assert(!html.includes('id="repair-signs"'), "Удалённая секция осталась на странице");
+      assert.equal((html.match(/<th>Цена от<\/th>/g) || []).length, 2, "Общие заголовки таблиц изменены");
+    }
     assert(buttons.every((match) => match[1] === siteConfig.site.phoneHref));
     for (const item of section("faq").items) {
       assert(html.includes(item.question) && html.includes(item.answer), `${page.path}: FAQ не совпадает с данными`);

@@ -8,7 +8,7 @@ module.exports = async function verifyRepairPage(page, viewport, definition, mat
   assert.equal(await page.locator("form").count(), 0);
   assert(await page.locator('[data-site-nav] a[aria-current="page"]').count() > 0, "Текущий маршрут не отмечен в меню");
   const ctas = page.locator("main a.v3-button");
-  assert.equal(await ctas.count(), 4);
+  assert.equal(await ctas.count(), 3 + Number(sections.has("symptoms")));
   for (const cta of await ctas.all()) {
     assert.equal(await cta.getAttribute("href"), "tel:+79224488822");
     const box = await cta.boundingBox();
@@ -70,7 +70,7 @@ module.exports = async function verifyRepairPage(page, viewport, definition, mat
   for (const box of metrics.boundaries) assert(Math.abs(box.left - metrics.hero.left) <= 1 && Math.abs(box.right - metrics.hero.right) <= 1, `Направляющая ${box.selector}`);
   const repeated = (columns, length) => Array.from({ length: Math.ceil(length / columns) }, (_, i) => Math.min(columns, length - i * columns));
   assert.deepEqual(metrics.services, repeated(viewport.width <= 520 ? 1 : viewport.width <= 1020 ? 2 : viewport.width <= 1120 ? 3 : 6, 6));
-  assert.deepEqual(metrics.vehicles, repeated(viewport.width <= 520 ? 1 : viewport.width <= 1020 ? 2 : 3, 6));
+  assert.deepEqual(metrics.vehicles, repeated(viewport.width <= 520 ? 1 : viewport.width <= 1020 ? 2 : 3, sections.get("vehicleTypes").items.length));
   assert.deepEqual(metrics.popular, repeated(viewport.width <= 520 ? 1 : viewport.width <= 1020 ? 2 : 4, sections.get("popularWorks").items.length), "Неполный ряд популярных работ нарушает сетку");
   assert.deepEqual(metrics.stages, repeated(viewport.width >= 1280 ? 5 : 1, 5));
   assert(metrics.serviceText.every((size) => size >= 14), "Шрифт карточек уменьшен");

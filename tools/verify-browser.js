@@ -953,7 +953,7 @@ async function run() {
             const fileSlug = definition.path.replaceAll("/", "-");
             await page.screenshot({ path: path.join(resultDir, `${fileSlug}-${viewport.width}.png`), fullPage: true });
             const cropIds = isContact || isDocuments ? definition.sections.map((section) => section.id) : isCompany ? [...definition.sections.map((section) => section.id), "company-contact"] : isRepairTemplate ? ["repair-services", "popular-repair-services", "vehicle-types", "repair-signs", "related-services", "faq"] : isBrand && brandReference ? definition.sections.filter((section) => ["introProof", "serviceGrid", "modelRange", "editorialContent", "costEstimate"].includes(section.type)).map((section) => section.id) : [];
-            for (const id of cropIds) {
+            for (const id of cropIds.filter((id) => !isRepairTemplate || definition.sections.some((section) => section.id === id))) {
               // Callbar behavior is tested above; keep fixed UI out of content crops.
               await page.locator(`#${id}`).screenshot({ path: path.join(resultDir, `${fileSlug}-${viewport.width}-${id}.png`), style: "[data-mobile-callbar] { visibility: hidden !important; }" });
             }

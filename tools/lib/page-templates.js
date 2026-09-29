@@ -23,12 +23,21 @@ function loadPageTemplates(dataDir) {
 // Authoring-only expansion: consumers continue to receive a complete PageDefinition.
 function resolvePageTemplate(source, templates, label = "page") {
   const page = structuredClone(source);
-  if (page.template === undefined) return page;
+  if (page.template === undefined) {
+    if (Object.hasOwn(page, "omitSections")) fail(`${label}.omitSections: нужен шаблон repair-v1`);
+    return page;
+  }
   const template = templates[page.template];
   if (!Object.hasOwn(templates, page.template) || !template) fail(`${label}: неизвестный шаблон «${page.template}»`);
   if (!page.hero || !Array.isArray(page.sections)) fail(`${label}: шаблону нужны hero и sections`);
+  const omitted = page.omitSections === undefined ? [] : page.omitSections;
+  if (Object.hasOwn(page, "omitSections") && page.template !== "repair-v1") fail(`${label}.omitSections: доступно только для repair-v1`);
+  if (!Array.isArray(omitted) || omitted.some((type) => type !== "symptoms") || new Set(omitted).size !== omitted.length) {
+    fail(`${label}.omitSections: допускается только symptoms без повторений`);
+  }
+  const sectionOrder = template.sectionOrder.filter((type) => !omitted.includes(type));
   const types = page.sections.map((section) => section.type);
-  if (JSON.stringify(types) !== JSON.stringify(template.sectionOrder)) fail(`${label}: порядок секций должен соответствовать ${page.template}`);
+  if (JSON.stringify(types) !== JSON.stringify(sectionOrder)) fail(`${label}: порядок секций должен соответствовать ${page.template} с учётом omitSections`);
   function inject(target, key, value, field) {
     if (Object.hasOwn(target, key)) fail(`${label}.${field}: общие данные задаются только в page-templates.json`);
     target[key] = structuredClone(value);
@@ -43,6 +52,7 @@ function resolvePageTemplate(source, templates, label = "page") {
     if (section.type === "faq") inject(section, "contact", template.faqContact, "faq.contact");
   }
   delete page.template;
+  delete page.omitSections;
   return page;
 }
 
