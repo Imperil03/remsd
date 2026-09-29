@@ -129,7 +129,10 @@ const SECTION_REGISTRY = {
           if (Object.hasOwn(section, key)) fail(`${label}: paragraphs нельзя совмещать с ${key}`);
         }
       } else {
-        requireArray(section.bullets, `${label}.bullets`, { nonEmpty: true }).forEach((item, index) => requireText(item, `${label}.bullets[${index}]`));
+        requireText(section.intro, `${label}.intro`);
+        if (section.bullets !== undefined) {
+          requireArray(section.bullets, `${label}.bullets`, { nonEmpty: true }).forEach((item, index) => requireText(item, `${label}.bullets[${index}]`));
+        }
         requireText(section.statement, `${label}.statement`);
       }
       validateAsset(section.image, `${label}.image`, context);
@@ -144,7 +147,7 @@ const SECTION_REGISTRY = {
       const copy = section.paragraphs
         ? section.paragraphs.map((paragraph) => `<p class="internal-intro__lead">${escapeHtml(paragraph)}</p>`).join("\n      ")
         : `<p class="internal-intro__lead">${escapeHtml(section.intro)}</p>
-      <ul class="internal-intro__list">${section.bullets.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+      ${section.bullets ? `<ul class="internal-intro__list">${section.bullets.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>` : ""}
       <p class="internal-intro__statement">${escapeHtml(section.statement)}</p>`;
       const stats = section.stats.map((item) => `<div><dt>${escapeHtml(item.label)}</dt><dd>${escapeHtml(item.value)}</dd></div>`).join("");
       return `<section class="internal-section internal-section--introProof" id="${escapeHtml(section.id)}" aria-labelledby="${escapeHtml(section.id)}-title">
@@ -312,6 +315,7 @@ const SECTION_REGISTRY = {
   symptoms: {
     validate(section, label) {
       validateCta(section.cta, `${label}.cta`);
+      if (section.columns !== undefined && ![2, 3].includes(section.columns)) fail(`${label}.columns: допускается 2 или 3`);
       requireArray(section.items, `${label}.items`, { nonEmpty: true }).forEach((item, index) => {
         requireObject(item, `${label}.items[${index}]`);
         requireText(item.icon, `${label}.items[${index}].icon`);
@@ -322,7 +326,7 @@ const SECTION_REGISTRY = {
       const items = section.items.map((item) => `<li><svg class="internal-symptom__icon" aria-hidden="true"><use href="#internal-icon-${escapeHtml(item.icon)}"></use></svg><span>${escapeHtml(item.text)}</span></li>`).join("");
       const cta = renderInlineCta({ id: `${section.id}-cta-title`, modifier: "symptoms", cta: section.cta }, site);
       return `<section class="internal-section internal-section--symptoms" id="${escapeHtml(section.id)}" aria-labelledby="${escapeHtml(section.id)}-title">
-  <div class="container">${renderSectionHead(section)}<div class="internal-symptoms-layout"><ul class="internal-symptoms">${items}</ul>${cta}</div></div>
+  <div class="container">${renderSectionHead(section)}<div class="internal-symptoms-layout"><ul class="internal-symptoms${section.columns === 2 ? " internal-symptoms--two-columns" : ""}">${items}</ul>${cta}</div></div>
 </section>`;
     },
   },

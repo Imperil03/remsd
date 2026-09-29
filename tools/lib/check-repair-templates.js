@@ -67,11 +67,43 @@ module.exports = function checkRepairTemplates({ root, dataDir, catalog, siteCon
     copy.sections.find((section) => section.type === "introProof")[key] = key === "bullets" ? ["old"] : "old";
     assert.throws(() => validatePageDefinition(copy, "mixed intro", context), /paragraphs нельзя совмещать/);
   }
+  const highlightedPage = resolvePageTemplate(reference, templates);
+  const highlightedIntro = highlightedPage.sections.find((section) => section.type === "introProof");
+  delete highlightedIntro.bullets;
+  validatePageDefinition(highlightedPage, "intro without list", context);
+  const highlightedHtml = renderSection(highlightedIntro, "../", siteConfig.site);
+  assert(highlightedHtml.includes('class="internal-intro__statement"'), "Выделенная фраза потеряна");
+  assert(!highlightedHtml.includes('class="internal-intro__list"'), "Пустой список не должен выводиться");
+  for (const invalid of [[], null, "not an array"]) {
+    const copy = structuredClone(highlightedPage);
+    copy.sections.find((section) => section.type === "introProof").bullets = invalid;
+    assert.throws(() => validatePageDefinition(copy, "invalid bullets", context), /bullets/);
+  }
+  const missingIntro = structuredClone(highlightedPage);
+  delete missingIntro.sections.find((section) => section.type === "introProof").intro;
+  assert.throws(() => validatePageDefinition(missingIntro, "missing intro", context), /intro/);
+  const twoColumnsPage = resolvePageTemplate(reference, templates);
+  const twoColumnsSymptoms = twoColumnsPage.sections.find((section) => section.type === "symptoms");
+  twoColumnsSymptoms.columns = 2;
+  validatePageDefinition(twoColumnsPage, "two symptom columns", context);
+  assert(renderSection(twoColumnsSymptoms, "../", siteConfig.site).includes("internal-symptoms--two-columns"));
+  for (const invalid of [1, 4, "2", null]) {
+    const copy = structuredClone(twoColumnsPage);
+    copy.sections.find((section) => section.type === "symptoms").columns = invalid;
+    assert.throws(() => validatePageDefinition(copy, "invalid columns", context), /columns/);
+  }
   const invalidIcon = resolvePageTemplate(reference, templates);
   invalidIcon.hero.facts[0].icon = "does-not-exist";
   assert.throws(() => validatePageDefinition(invalidIcon, "icon probe", context), /неизвестная пиктограмма/);
 
   const newPriceCounts = { "remont-sedelnyh-tyagachey": 8, "remont-polupricepov-i-tralov": 4, "remont-avtobusov": 7, "remont-spectehniki": 8, "kuzovnoy-remont-gruzovoy-tehniki": 8 };
+  const copyContracts = {
+    "remont-sedelnyh-tyagachey": { omitSymptoms: true, paragraphs: 2, vehicles: 3, faq: 4, editorial: 3, related: 8, prices: [1500, 25000, 16000, 12000, 4000, 2500, 2000, 6000] },
+    "remont-avtobusov": { omitSymptoms: true, paragraphs: 2, vehicles: 6, faq: 3, editorial: 4, related: 8, prices: [1500, 25000, 16000, 4000, 2500, 2000, 6000] },
+    "remont-polupricepov-i-tralov": { omitSymptoms: true, paragraphs: 1, vehicles: 6, faq: 3, editorial: 4, related: 8, prices: [1500, 4000, 2500, 2000] },
+    "remont-spectehniki": { symptoms: 4, columns: 2, paragraphs: 1, vehicles: 6, faq: 3, editorial: 4, related: 10, prices: [3500, 5000, 8000, 2500, 15000, 85000, 45000, 3000] },
+    "kuzovnoy-remont-gruzovoy-tehniki": { omitSymptoms: true, withoutList: true, vehicles: 6, faq: 4, editorial: 3, related: 4, prices: [2000, 5500, 3500, 5000, 3000, 5000, 15000, 70000] },
+  };
   const specialtyContracts = JSON.parse(fs.readFileSync(path.join(root, "tools/fixtures/special-equipment-contract.json"), "utf8"));
   const specialtyByPath = new Map(specialtyContracts.map((item) => [item.path, item]));
   const descriptions = catalog.pages.map((page) => page.metadata.description);
@@ -80,20 +112,36 @@ module.exports = function checkRepairTemplates({ root, dataDir, catalog, siteCon
   for (const source of sources.filter((page) => page.template === "repair-v1")) {
     const page = catalog.pages.find((item) => item.path === source.path);
     const isTractor = page.path === "remont-sedelnyh-tyagachey";
+    const copyContract = copyContracts[page.path];
     const section = (type) => page.sections.find((item) => item.type === type);
     assert.equal(page.template, undefined, "Полный PageDefinition не содержит template");
     assert.equal(page.omitSections, undefined);
-    if (isTractor) {
+    if (copyContract?.omitSymptoms) {
       assert.deepEqual(source.omitSections, ["symptoms"]);
       assert.equal(page.sections.length, 10);
-      assert.equal(section("introProof").paragraphs.length, 2);
-      assert.equal(section("faq").intro, undefined);
-      assert.deepEqual(section("vehicleTypes").items.map((item) => item.title), ["Тягачи 4×2", "Тягачи 6×2", "Тягачи 6×4"]);
-      assert.deepEqual(section("priceExamples").items.map((item) => Number(item.price.replace(/\D/g, ""))), [1500, 25000, 16000, 12000, 4000, 2500, 2000, 6000]);
     } else {
-      assert.equal(source.omitSections, undefined, `${page.path}: исключение добавлено за пределами страницы тягачей`);
+      assert.equal(source.omitSections, undefined, `${page.path}: незапланированное исключение секции`);
       assert.equal(page.sections.length, 11);
     }
+    if (copyContract) {
+      const intro = section("introProof");
+      assert.equal(section("faq").intro, undefined);
+      assert.equal(section("editorialContent").blocks.length, copyContract.editorial);
+      assert.equal(section("relatedIndex").items.length, copyContract.related);
+      assert.deepEqual(section("priceExamples").items.map((item) => Number(item.price.replace(/\D/g, ""))), copyContract.prices);
+      if (copyContract.paragraphs !== undefined) {
+        assert.equal(intro.paragraphs.length, copyContract.paragraphs);
+        for (const key of ["intro", "bullets", "statement"]) assert.equal(intro[key], undefined);
+      }
+      if (copyContract.withoutList) {
+        assert.equal(intro.bullets, undefined);
+        assert.equal(intro.paragraphs, undefined);
+        assert(intro.intro && intro.statement);
+        assert.deepEqual(section("relatedIndex").items.map((item) => item.href), ["remont-gruzovyh-avtomobiley", "remont-sedelnyh-tyagachey", "remont-polupricepov-i-tralov", "remont-spectehniki"]);
+      }
+    }
+    if (isTractor) assert.deepEqual(section("vehicleTypes").items.map((item) => item.title), ["Тягачи 4×2", "Тягачи 6×2", "Тягачи 6×4"]);
+    assert.equal(section("symptoms")?.columns, copyContract?.columns);
     assert.deepEqual(page.hero.facts, template.heroFacts);
     assert.deepEqual(section("introProof").stats, template.proofStats);
     assert.deepEqual(section("workStages").items, template.workStages);
@@ -103,13 +151,13 @@ module.exports = function checkRepairTemplates({ root, dataDir, catalog, siteCon
     const specialty = specialtyByPath.get(page.path);
     const popularCount = specialty?.popularWorks ?? (page.path === reference.path || newPriceCounts[page.path] ? 16 : undefined);
     if (popularCount !== undefined) assert.equal(section("popularWorks").items.length, popularCount, `${page.path}: количество популярных работ`);
-    assert.equal(section("vehicleTypes").items.length, isTractor ? 3 : 6);
+    assert.equal(section("vehicleTypes").items.length, copyContract?.vehicles ?? 6);
     if (newPriceCounts[page.path]) {
-      if (isTractor) assert.equal(section("symptoms"), undefined);
-      else assert.equal(section("symptoms").items.length, 8);
-      assert.equal(section("faq").items.length, isTractor ? 4 : 10);
+      if (copyContract?.omitSymptoms) assert.equal(section("symptoms"), undefined);
+      else assert.equal(section("symptoms").items.length, copyContract?.symptoms ?? 8);
+      assert.equal(section("faq").items.length, copyContract?.faq ?? 10);
       assert.equal(section("priceExamples").items.length, newPriceCounts[page.path]);
-      assert.match(section("priceExamples").note, isTractor ? /без запчастей и\s+расходных материалов/u : /без запчастей и материалов/);
+      assert.match(section("priceExamples").note, /без запчастей и\s+(?:расходных\s+)?материалов/u);
       for (const row of section("priceExamples").items) assert.match(row.price, /^от [\d\s]+ ₽$/u);
     }
     if (specialty) {
@@ -146,9 +194,11 @@ module.exports = function checkRepairTemplates({ root, dataDir, catalog, siteCon
     const html = fs.readFileSync(path.join(root, "dist", page.path, "index.html"), "utf8");
     assert(!/5000\+|средний срок ремонта/i.test(html), `${page.path}: устаревшие факты`);
     const buttons = [...html.matchAll(/<a[^>]*class="[^"]*v3-button[^>]*href="([^"]+)"/g)];
-    assert.equal(buttons.length, isTractor ? 3 : 4, `${page.path}: число CTA`);
-    if (isTractor) {
+    assert.equal(buttons.length, copyContract?.omitSymptoms ? 3 : 4, `${page.path}: число CTA`);
+    if (copyContract?.omitSymptoms) {
       assert(!html.includes('id="repair-signs"'), "Удалённая секция осталась на странице");
+    }
+    if (copyContract) {
       assert.equal((html.match(/<th>Цена от<\/th>/g) || []).length, 2, "Общие заголовки таблиц изменены");
     }
     assert(buttons.every((match) => match[1] === siteConfig.site.phoneHref));
