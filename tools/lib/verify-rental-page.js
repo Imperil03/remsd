@@ -11,7 +11,9 @@ module.exports = async function verifyRentalPage(page, viewport, definition, mat
   assert.equal(await page.locator("main .rental-messenger").count(), 2);
   assert.equal(await page.locator("form").count(), 0);
   assert.equal(await page.locator('.main-nav__group--rent a[aria-current="page"]').count(), 1);
-  assert.equal(await page.locator('[data-mobile-callbar] .mobile-callbar__text').innerText(), definition.mobileCallbar.text);
+  // The callbar can become hidden after materialization scrolls back to the top.
+  // Check its stored caption independently of that transient visibility state.
+  assert.equal(await page.locator('[data-mobile-callbar] .mobile-callbar__text').textContent(), definition.mobileCallbar.text);
   for (const cta of await page.locator('main a.v3-button').all()) assert.equal(await cta.getAttribute('href'), 'tel:+79224488822');
   if (definition.path === "arenda") {
     assert.equal(await page.locator(".rental-categories--equipment .rental-category").count(), 9);
