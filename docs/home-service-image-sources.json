@@ -1,0 +1,257 @@
+{
+  "schemaVersion": 1,
+  "created": "2026-09-30",
+  "tool": "imagegen",
+  "mode": "built-in",
+  "purpose": "Предметные иллюстрации узлов грузовой техники для девяти карточек главной страницы. Не фотографии ремонтной базы или выполненных работ.",
+  "styleReference": {
+    "name": "engine",
+    "generationFile": "exec-f0f3fd27-3164-4c23-bc51-12dece392b91.png"
+  },
+  "output": {
+    "format": "WebP",
+    "width": 840,
+    "height": 520,
+    "quality": 74,
+    "alphaQuality": 95,
+    "paddingBox": {
+      "width": 760,
+      "height": 460
+    },
+    "normalization": "Fit the complete alpha bounding box inside the padding box without distortion, then center on an 840x520 transparent canvas."
+  },
+  "images": [
+    {
+      "name": "electric-systems",
+      "output": "assets/img/v3-services-realistic/electric-systems.webp",
+      "alt": "Иллюстрация электронного блока управления с проводкой и разъёмами",
+      "prompt": "Create ONE new photorealistic technical product illustration for a commercial TRUCK repair website. The attached engine image is a STYLE REFERENCE ONLY for natural materials, realistic detail, three-quarter camera angle and soft upper-left studio lighting. Do not include an engine or copy the reference subject. The new object must stand alone, centered, entirely visible, landscape 21:13 composition with 8 percent safety margin, true transparent alpha background and a very subtle neutral contact shadow. Natural satin aluminum/steel, graphite metal and black rubber, restrained muted navy detail only where appropriate. Clean maintained equipment with subtle material texture. No floor, backdrop, pedestal, branding, readable text, watermark, decorative glow, diagrams or exploded parts. Visually legible at a small website-card size. Illustration of equipment, not a claimed photograph of RemSD work. SUBJECT: a sealed heavy-commercial-vehicle electronic control unit, a realistic compact rectangular finned aluminum ECU housing with TWO large automotive multipin connector plugs attached to a SHORT thick braided wiring harness. The harness follows one compact gentle curve beside the housing, terminating in two distinct robust black automotive connectors. Three-quarter view showing the lid, cooling ribs, mounting tabs and connection side. Keep the assembly compact and clearly recognizable as truck AUTO ELECTRICS, not a laptop, desktop computer motherboard, power bank or generic abstract circuit. No loose bare wires or dangling disconnected pieces.",
+      "generationFile": "exec-aed0d3b1-52a6-468c-a4db-2720efa4e143.png",
+      "sourceSha256": "baa699b3de83a7e930e6ea2f670a47b58edbf1678e474800f19baf880053c26a",
+      "sourceSize": {
+        "width": 1594,
+        "height": 986
+      },
+      "sourceBounds": {
+        "left": 101,
+        "top": 83,
+        "width": 1460,
+        "height": 820
+      },
+      "renderedObjectSize": {
+        "width": 760,
+        "height": 427
+      },
+      "bytes": 65848,
+      "sha256": "7763ea199f5f275f3bf7ec382569ef55b84792ab131ecf72d16588f656183523",
+      "styleReference": "engine"
+    },
+    {
+      "name": "air-system",
+      "output": "assets/img/v3-services-realistic/air-system.webp",
+      "alt": "Иллюстрация компрессора и осушителя пневмосистемы грузовика",
+      "prompt": "Create ONE new photorealistic technical product illustration for a commercial TRUCK repair website. The attached engine image is a STYLE REFERENCE ONLY for natural materials, realistic detail, three-quarter camera angle and soft upper-left studio lighting. Do not include an engine or copy the reference subject. The new object must stand alone, centered, entirely visible, landscape 21:13 composition with 8 percent safety margin, true transparent alpha background and a very subtle neutral contact shadow. Natural satin aluminum/steel, graphite metal and black rubber, restrained muted navy detail only where appropriate. Clean maintained equipment with subtle material texture. No floor, backdrop, pedestal, branding, readable text, watermark, decorative glow, diagrams or exploded parts. Visually legible at a small website-card size. Illustration of equipment, not a claimed photograph of RemSD work. SUBJECT: a compact heavy-commercial-truck PNEUMATIC BRAKE AIR SYSTEM assembly, consisting of an engine-driven twin-cylinder truck air compressor in the foreground and a single vertical air-dryer cartridge on a compact valve manifold beside and slightly behind it. Show a real cast compressor crankcase, finned cylinder head, circular drive flange, a dark cylindrical dryer cartridge and a few short believable metal air lines with brass fittings. Clearly a truck-mounted component set, NOT a workshop compressor on a tank or trolley, NOT an electric motor and NOT an engine. The two components are arranged closely as one coherent catalog group, in three-quarter front-left view, recognizable at thumbnail size. Entire outline fits frame.",
+      "generationFile": "exec-09190d0e-0e77-484e-b674-1e5087d7a931.png",
+      "sourceSha256": "a48e3bdbb3b9947d6b64ec32ad913f1085ece25cae1feb7e8fc068045f2f5d89",
+      "sourceSize": {
+        "width": 1594,
+        "height": 986
+      },
+      "sourceBounds": {
+        "left": 131,
+        "top": 30,
+        "width": 1368,
+        "height": 938
+      },
+      "renderedObjectSize": {
+        "width": 671,
+        "height": 460
+      },
+      "bytes": 66238,
+      "sha256": "6da93abf15fb285b55ef67f332337f5cdda5c7cf0d8072d9b92dbb939df2cd0b",
+      "styleReference": "engine"
+    },
+    {
+      "name": "cab-body",
+      "output": "assets/img/v3-services-realistic/cab-body.webp",
+      "alt": "Иллюстрация кабины грузового автомобиля",
+      "prompt": "Create ONE new photorealistic technical product illustration for a commercial TRUCK repair website. The attached engine image is a STYLE REFERENCE ONLY for natural materials, realistic detail, three-quarter camera angle and soft upper-left studio lighting. Do not include an engine or copy the reference subject. The new object must stand alone, centered, entirely visible, landscape 21:13 composition with 8 percent safety margin, true transparent alpha background and a very subtle neutral contact shadow. Natural satin aluminum/steel, graphite metal and black rubber, restrained muted navy detail only where appropriate. Clean maintained equipment with subtle material texture. No floor, backdrop, pedestal, branding, readable text, watermark, decorative glow, diagrams or exploded parts. Visually legible at a small website-card size. Illustration of equipment, not a claimed photograph of RemSD work. SUBJECT: the complete detached CAB of a modern heavy European-style cab-over commercial TRUCK, front-left three-quarter view slightly from above. Only the cab body assembly, NOT a whole truck: large broad windscreen, two substantial truck side mirrors, angular truck doors, visible access steps, robust dark lower grille, bumper and believable headlamps. Short raised sleeper roof, unmistakable large truck proportions, no car/van proportions. Satin off-white or cool light-gray painted metal, graphite grille and mirror housings, restrained muted navy lower trim. Both the cab roof and the bottom of bumper are fully visible with generous clear margins. No chassis rails, wheels, trailer, engine, people, support stand or background. Mirror arms are intact and technically plausible, no badges or letters.",
+      "generationFile": "exec-85233fdd-e9a9-4bee-b47f-269427e6372a.png",
+      "sourceSha256": "91173efc75de8b12c8dd71719dd2df01bb9acb92aa4fdd68f8aeb2a7e94e640a",
+      "sourceSize": {
+        "width": 1594,
+        "height": 986
+      },
+      "sourceBounds": {
+        "left": 292,
+        "top": 12,
+        "width": 945,
+        "height": 971
+      },
+      "renderedObjectSize": {
+        "width": 448,
+        "height": 460
+      },
+      "bytes": 38552,
+      "sha256": "773e43a1bc02fdcd7828e102101f35fd3a1a65695a9837a869fa2a291df2fdbd",
+      "styleReference": "engine"
+    },
+    {
+      "name": "engine",
+      "output": "assets/img/v3-services-realistic/engine.webp",
+      "alt": "Иллюстрация грузового дизельного двигателя",
+      "prompt": "Create ONE premium photorealistic technical product illustration for a commercial truck repair service website. Subject: one complete detached modern heavy-duty INLINE-SIX turbo diesel TRUCK ENGINE, recognizable as a large truck engine, with a long cast block, cylinder head and valve cover, plausible turbocharger and intake plumbing, accessory belt and alternator at the front, realistic fasteners and ribbed hoses. No truck chassis, no stand, no pallet, no extra loose parts. Three-quarter front-left view from slightly above, horizontal composition. Natural dark graphite cast iron, satin aluminum and steel, black rubber, restrained muted navy details, only a tiny amber service cap if physically appropriate. Clean, maintained mechanical assembly with subtle material texture, not dirty or rusty and not toy-like or glossy plastic. Soft studio daylight from upper left, gentle realistic shading, very light neutral contact shadow only beneath the engine. Genuine transparent alpha background with no solid backdrop, no floor plane, no horizon and no painted checkerboard. The whole engine fits comfortably within the frame with about 8 percent safety margin, fills the central area and reads clearly as a small website illustration. Landscape composition approximately 21:13. No text, branding, lettering, watermark, diagram callouts, decorative glow or exploded view. This is an illustration of equipment, not a photograph of work performed by RemSD. This image will be the lighting and material reference for a coherent nine-image set.",
+      "generationFile": "exec-f0f3fd27-3164-4c23-bc51-12dece392b91.png",
+      "sourceSha256": "41be7943ddf441426631be2c1687450b32935c49c6e07f00b0399dcec86cd66b",
+      "sourceSize": {
+        "width": 1595,
+        "height": 986
+      },
+      "sourceBounds": {
+        "left": 177,
+        "top": 20,
+        "width": 1343,
+        "height": 937
+      },
+      "renderedObjectSize": {
+        "width": 659,
+        "height": 460
+      },
+      "bytes": 71140,
+      "sha256": "ebd2081b6626323955a4e5e0d6f45143b134e5d0759f6b7eb2cd063dbdef40b2"
+    },
+    {
+      "name": "transmission",
+      "output": "assets/img/v3-services-realistic/transmission.webp",
+      "alt": "Иллюстрация грузовой КПП с картером сцепления",
+      "prompt": "Create ONE new photorealistic technical product illustration for a commercial TRUCK repair website. The attached engine image is a STYLE REFERENCE ONLY for natural materials, realistic detail, three-quarter camera angle and soft upper-left studio lighting. Do not include an engine or copy the reference subject. The new object must stand alone, centered, entirely visible, landscape 21:13 composition with 8 percent safety margin, true transparent alpha background and a very subtle neutral contact shadow. Natural satin aluminum/steel, graphite metal and black rubber, restrained muted navy detail only where appropriate. Clean maintained equipment with subtle material texture. No floor, backdrop, pedestal, branding, readable text, watermark, decorative glow, diagrams or exploded parts. Visually legible at a small website-card size. Illustration of equipment, not a claimed photograph of RemSD work. SUBJECT: one complete detached heavy-duty commercial TRUCK TRANSMISSION gearbox assembly. A large round clutch BELL HOUSING on the front-left, a substantial long ribbed cast-aluminum gearbox case continuing toward the rear-right, a compact dark gray top selector/control housing, and a visible circular output flange at the rear. Plausible heavy truck transmission proportions, casting ribs, mounting bosses and orderly fasteners. The large bell housing faces partly toward the viewer; camera is slightly above at a three-quarter front-left angle, with the long housing running diagonally behind it. Dark graphite bell housing and satin metallic silver case, a restrained muted navy selector cover. Complete closed assembled unit, no engine, no wheels, no displayed loose gears, no exploded cutaway and no support stand. All parts including both ends fit the image.",
+      "generationFile": "exec-376dc5f6-3ee6-44b4-8988-17c5c852eda2.png",
+      "sourceSha256": "2ac132228abfd0db7617211f0da69c0b1dec5f59697b30785498b4048601da56",
+      "sourceSize": {
+        "width": 1594,
+        "height": 986
+      },
+      "sourceBounds": {
+        "left": 33,
+        "top": 35,
+        "width": 1538,
+        "height": 912
+      },
+      "renderedObjectSize": {
+        "width": 760,
+        "height": 451
+      },
+      "bytes": 63868,
+      "sha256": "a0a191f7839c518d1289dceb21b8ac139973aa09f1d41246af6bf2665e14cb41",
+      "styleReference": "engine"
+    },
+    {
+      "name": "brakes",
+      "output": "assets/img/v3-services-realistic/brakes.webp",
+      "alt": "Иллюстрация тормозного диска с суппортом грузового автомобиля",
+      "prompt": "Create ONE new photorealistic technical product illustration for a commercial TRUCK repair website. The attached engine image is a STYLE REFERENCE ONLY for natural materials, realistic detail, three-quarter camera angle and soft upper-left studio lighting. Do not include an engine or copy the reference subject. The new object must stand alone, centered, entirely visible, landscape 21:13 composition with 8 percent safety margin, true transparent alpha background and a very subtle neutral contact shadow. Natural satin aluminum/steel, graphite metal and black rubber, restrained muted navy detail only where appropriate. Clean maintained equipment with subtle material texture. No floor, backdrop, pedestal, branding, readable text, watermark, decorative glow, diagrams or exploded parts. Visually legible at a small website-card size. Illustration of equipment, not a claimed photograph of RemSD work. SUBJECT: one complete heavy commercial TRUCK AIR DISC BRAKE assembly, a large thick ventilated steel brake rotor on a substantial wheel hub with a regular circle of TEN wheel studs, a chunky gray commercial truck caliper straddling the OUTER EDGE of the rotor on its right side, and a compact round black pneumatic brake chamber connected behind the caliper. Three-quarter front-left view showing the disc friction face and ventilation thickness. The caliper must wrap the rotor edge plausibly rather than float above it. Natural machined steel friction surfaces and graphite cast metal. Unmistakably a robust truck brake, not a tiny red sports-car caliper. No wheel or tire, no suspension strut, no engine, no loose pads, no blue racing paint.",
+      "generationFile": "exec-8a43f5e0-d5b8-40b9-aaba-4120eb72b21c.png",
+      "sourceSha256": "768340dce98eeb9451ae6525071c9fadc06a1e1859992d556413f85a4f0af2f5",
+      "sourceSize": {
+        "width": 1594,
+        "height": 987
+      },
+      "sourceBounds": {
+        "left": 82,
+        "top": 34,
+        "width": 1460,
+        "height": 937
+      },
+      "renderedObjectSize": {
+        "width": 717,
+        "height": 460
+      },
+      "bytes": 54764,
+      "sha256": "1774062e2a0056ec44902c496976e2e72c28c71a68e3cfec5598f4ee8a144714",
+      "styleReference": "engine"
+    },
+    {
+      "name": "suspension",
+      "output": "assets/img/v3-services-realistic/suspension.webp",
+      "alt": "Иллюстрация рессорной подвески с креплениями и фрагментом моста",
+      "prompt": "Create ONE new photorealistic technical product illustration for a commercial TRUCK repair website. The attached engine image is a STYLE REFERENCE ONLY for natural materials, realistic detail, three-quarter camera angle and soft upper-left studio lighting. Do not include an engine or copy the reference subject. The new object must stand alone, centered, entirely visible, landscape 21:13 composition with 8 percent safety margin, true transparent alpha background and a very subtle neutral contact shadow. Natural satin aluminum/steel, graphite metal and black rubber, restrained muted navy detail only where appropriate. Clean maintained equipment with subtle material texture. No floor, backdrop, pedestal, branding, readable text, watermark, decorative glow, diagrams or exploded parts. Visually legible at a small website-card size. Illustration of equipment, not a claimed photograph of RemSD work. SUBJECT: ONE SINGLE truck MULTI-LEAF SPRING suspension unit, NOT a pair of springs. Technically straightforward catalog view: a single long layered steel leaf-spring pack runs diagonally left-front to right-back, with an eye and rubber bushing at EACH of its TWO ends. A compact frame hanger at one end and a plausible short shackle at the other end sit above those eyes. At the CENTER, two U-bolts and one clamp plate secure this ONE leaf-spring pack onto a SHORT AXLE-BEAM STUB that runs PERPENDICULAR to the spring, across its width, visibly extending a little toward and away from the viewer. The axle must not run along the length of the spring. Show correct continuous curved spring leaves, central clamp, end bushings and bolts. One spring only, one short axle stub, two end brackets. NO second spring, NO mirrored V-shaped pair, NO full frame rails, NO wheels, tires, brake parts, engine or differential. Simple believable mechanical geometry rather than a complicated invented chassis. Natural graphite spring steel and dark navy brackets, satin steel U-bolts. Three-quarter view slightly from above with all parts fully in frame.",
+      "generationFile": "exec-8bca902e-6f5d-4eb9-b324-d1495c7a54eb.png",
+      "sourceSha256": "6588da3d7b1557db0e4d7ebcd51cde3f77eafc7f80090612751f3b3d0b8e9166",
+      "sourceSize": {
+        "width": 1594,
+        "height": 986
+      },
+      "sourceBounds": {
+        "left": 41,
+        "top": 44,
+        "width": 1537,
+        "height": 873
+      },
+      "renderedObjectSize": {
+        "width": 760,
+        "height": 432
+      },
+      "bytes": 38772,
+      "sha256": "789e4ea6b38f5141ced9a69d2322bdeb2be1e4418e9b33446f7051384649507e",
+      "styleReference": "engine"
+    },
+    {
+      "name": "trailers",
+      "output": "assets/img/v3-services-realistic/trailers.webp",
+      "alt": "Иллюстрация низкорамного полуприцепа с трёхосной тележкой",
+      "prompt": "Create ONE new photorealistic technical product illustration for a commercial TRUCK repair website. The attached engine image is a STYLE REFERENCE ONLY for natural materials, realistic detail, three-quarter camera angle and soft upper-left studio lighting. Do not include an engine or copy the reference subject. The new object must stand alone, centered, entirely visible, landscape 21:13 composition with 8 percent safety margin, true transparent alpha background and a very subtle neutral contact shadow. Natural satin aluminum/steel, graphite metal and black rubber, restrained muted navy detail only where appropriate. Clean maintained equipment with subtle material texture. No floor, backdrop, pedestal, branding, readable text, watermark, decorative glow, diagrams or exploded parts. Visually legible at a small website-card size. Illustration of equipment, not a claimed photograph of RemSD work. SUBJECT: one detached three-axle LOW-LOADER SEMITRAILER for transporting heavy equipment, with a raised front gooseneck, low flat loading deck, clearly visible rear three-axle bogie and short folded rear loading ramps. No tractor unit. The front kingpin/gooseneck and landing legs must be structurally plausible; exactly THREE rear axles, three visible near-side wheels with their far-side partners only as perspective requires. Natural dark muted navy steel frame, satin steel and restrained worn wood deck inserts, black rubber tires, tiny realistic amber reflectors without lettering. Three-quarter front-left elevated view with useful perspective foreshortening: show the complete trailer while keeping its silhouette compact enough for a landscape 21:13 thumbnail. All wheels, front tip and ramps fully visible with breathing room. NOT a box trailer, car trailer or passenger vehicle. No load, cargo, chains hanging loose, labels, markings or background.",
+      "generationFile": "exec-b4a6e800-eb05-445b-8edf-ee4f13a2299b.png",
+      "sourceSha256": "70919216acde38dd17f547efa7c05a6fc6c2c6ba07132741de74f111b486cf64",
+      "sourceSize": {
+        "width": 1595,
+        "height": 986
+      },
+      "sourceBounds": {
+        "left": 45,
+        "top": 208,
+        "width": 1514,
+        "height": 552
+      },
+      "renderedObjectSize": {
+        "width": 760,
+        "height": 277
+      },
+      "bytes": 36442,
+      "sha256": "fffaa2e5cb5f03c015ec407028ac8c355375d038dbb6f053c2ef503d9849a558",
+      "styleReference": "engine"
+    },
+    {
+      "name": "air-conditioning",
+      "output": "assets/img/v3-services-realistic/air-conditioning.webp",
+      "alt": "Иллюстрация компрессора кондиционера и манометрического коллектора",
+      "prompt": "Create ONE new photorealistic technical product illustration for a commercial TRUCK repair website. The attached engine image is a STYLE REFERENCE ONLY for natural materials, realistic detail, three-quarter camera angle and soft upper-left studio lighting. Do not include an engine or copy the reference subject. The new object must stand alone, centered, entirely visible, landscape 21:13 composition with 8 percent safety margin, true transparent alpha background and a very subtle neutral contact shadow. Natural satin aluminum/steel, graphite metal and black rubber, restrained muted navy detail only where appropriate. Clean maintained equipment with subtle material texture. No floor, backdrop, pedestal, branding, readable text, watermark, decorative glow, diagrams or exploded parts. Visually legible at a small website-card size. Illustration of equipment, not a claimed photograph of RemSD work. SUBJECT: a commercial vehicle AIR-CONDITIONING service component group: one realistic belt-driven automotive air-conditioning compressor in the foreground-left, with satin cast-aluminum body and a clearly visible black grooved clutch pulley, accompanied by one compact two-gauge analog manifold on the rear-right. The two round white gauge faces have simple dark graduations and needles, no readable words or brand. A short set of muted blue, dark red and yellow service hoses attached with plausible brass couplings curves neatly at the base; keep hose loops compact. Three-quarter front-left view slightly above; clearly distinguish the compressor from a full diesel engine and the small gauges from wheels. No refrigerant bottle, no technician, no workshop, no disconnected flying parts. All components and hoses entirely inside the image.",
+      "generationFile": "exec-0dd3ce3d-d396-427e-a8a5-7d39dc61ce59.png",
+      "sourceSha256": "29c1ea61c545465baa2a419979cda720165396d9a9449a71cdce1c56fbcd7321",
+      "sourceSize": {
+        "width": 1594,
+        "height": 987
+      },
+      "sourceBounds": {
+        "left": 100,
+        "top": 22,
+        "width": 1453,
+        "height": 883
+      },
+      "renderedObjectSize": {
+        "width": 757,
+        "height": 460
+      },
+      "bytes": 82754,
+      "sha256": "a5ac13e80dc4b56f7eef5253b0827108c0616724e50f57973ef8329e5598f08b",
+      "styleReference": "engine"
+    }
+  ],
+  "discarded": [
+    {
+      "name": "suspension",
+      "generationFile": "exec-aceb7a64-872d-4121-8f02-65a429124328.png",
+      "prompt": "Create ONE new photorealistic technical product illustration for a commercial TRUCK repair website. The attached engine image is a STYLE REFERENCE ONLY for natural materials, realistic detail, three-quarter camera angle and soft upper-left studio lighting. Do not include an engine or copy the reference subject. The new object must stand alone, centered, entirely visible, landscape 21:13 composition with 8 percent safety margin, true transparent alpha background and a very subtle neutral contact shadow. Natural satin aluminum/steel, graphite metal and black rubber, restrained muted navy detail only where appropriate. Clean maintained equipment with subtle material texture. No floor, backdrop, pedestal, branding, readable text, watermark, decorative glow, diagrams or exploded parts. Visually legible at a small website-card size. Illustration of equipment, not a claimed photograph of RemSD work. SUBJECT: a compact complete heavy TRUCK LEAF-SPRING SUSPENSION assembly, with two dark-steel longitudinal multi-leaf spring packs held by realistic U-bolts on a SHORT transverse axle beam, mounting eye bushings and stout frame brackets. Three-quarter front-left view slightly above, clearly visible layered curved leaves and fastening plates; the springs and beam make one coherent connected mechanical assembly. Show a partial central truck chassis frame section only as needed to support the brackets, with believable construction. Compact composition rather than a full vehicle chassis. Natural dark graphite steel, satin galvanized bolts, subtle navy-painted brackets. No wheels, tires, engine, brake discs, people, fake decorative coils, loose exploded parts or oversized central differential pumpkin.",
+      "reason": "Replaced with a simpler single leaf-spring assembly to clarify the perpendicular axle relationship."
+    }
+  ]
+}
