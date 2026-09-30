@@ -73,7 +73,7 @@ module.exports = function checkRepairTemplates({ root, dataDir, catalog, siteCon
     copy.sections.find((section) => section.type === "introProof").paragraphs = invalid;
     assert.throws(() => validatePageDefinition(copy, "invalid paragraphs", context), /paragraphs/);
   }
-  for (const key of ["intro", "bullets", "statement"]) {
+  for (const key of ["intro", "listIntro", "bullets", "outro", "statement"]) {
     const copy = structuredClone(paragraphPage);
     copy.sections.find((section) => section.type === "introProof")[key] = key === "bullets" ? ["old"] : "old";
     assert.throws(() => validatePageDefinition(copy, "mixed intro", context), /paragraphs нельзя совмещать/);
@@ -105,6 +105,24 @@ module.exports = function checkRepairTemplates({ root, dataDir, catalog, siteCon
     copy.sections.find((section) => section.type === "introProof").statement = invalid;
     assert.throws(() => validatePageDefinition(copy, "invalid statement", context), /statement/);
   }
+  const orderedIntro = structuredClone(listOnlyIntro);
+  orderedIntro.listIntro = "Вводная строка перед списком.";
+  orderedIntro.outro = "Заключительный абзац & детали.";
+  const orderedPage = structuredClone(listOnlyPage);
+  orderedPage.sections[orderedPage.sections.findIndex((section) => section.type === "introProof")] = orderedIntro;
+  validatePageDefinition(orderedPage, "intro with list lead and outro", context);
+  const orderedHtml = renderSection(orderedIntro, "../", siteConfig.site);
+  assert(orderedHtml.indexOf(orderedIntro.listIntro) < orderedHtml.indexOf('class="internal-intro__list"'), "Вводная строка должна предшествовать списку");
+  assert(orderedHtml.indexOf("Заключительный абзац &amp; детали.") > orderedHtml.indexOf("</ul>"), "Заключительный абзац должен следовать за списком и экранироваться");
+  for (const key of ["listIntro", "outro"]) {
+    for (const invalid of ["", null, "<b>HTML</b>"]) {
+      const copy = structuredClone(orderedPage);
+      copy.sections.find((section) => section.type === "introProof")[key] = invalid;
+      assert.throws(() => validatePageDefinition(copy, "invalid intro text", context), new RegExp(key));
+    }
+  }
+  delete orderedIntro.bullets;
+  assert.throws(() => validatePageDefinition(orderedPage, "list text without list", context), /требуется список bullets/);
   delete listOnlyIntro.bullets;
   assert.throws(() => validatePageDefinition(listOnlyPage, "intro without variant", context), /paragraphs/);
   const threeRelatedPage = resolvePageTemplate(reference, templates);
@@ -134,10 +152,10 @@ module.exports = function checkRepairTemplates({ root, dataDir, catalog, siteCon
   const newPriceCounts = { "remont-sedelnyh-tyagachey": 8, "remont-polupricepov-i-tralov": 4, "remont-avtobusov": 7, "remont-spectehniki": 8, "kuzovnoy-remont-gruzovoy-tehniki": 8 };
   const copyContracts = {
     "remont-sedelnyh-tyagachey": { omitSymptoms: true, paragraphs: 2, vehicles: 3, faq: 4, editorial: 3, related: 8, prices: [1500, 25000, 16000, 12000, 4000, 2500, 2000, 6000] },
-    "remont-avtobusov": { omitSymptoms: true, paragraphs: 2, vehicles: 6, faq: 3, editorial: 4, related: 8, prices: [1500, 25000, 16000, 4000, 2500, 2000, 6000] },
-    "remont-polupricepov-i-tralov": { omitSymptoms: true, paragraphs: 1, vehicles: 6, faq: 3, editorial: 4, related: 8, prices: [1500, 4000, 2500, 2000] },
-    "remont-spectehniki": { symptoms: 4, columns: 2, paragraphs: 1, vehicles: 6, faq: 3, editorial: 4, related: 10, prices: [3500, 5000, 8000, 2500, 15000, 85000, 45000, 3000] },
-    "kuzovnoy-remont-gruzovoy-tehniki": { omitSymptoms: true, withoutList: true, vehicles: 6, faq: 4, editorial: 3, related: 4, prices: [2000, 5500, 3500, 5000, 3000, 5000, 15000, 70000] },
+    "remont-avtobusov": { omitSymptoms: true, introBullets: 3, introOutro: true, vehicles: 6, faq: 3, editorial: 4, related: 8, prices: [1500, 25000, 16000, 4000, 2500, 2000, 6000] },
+    "remont-polupricepov-i-tralov": { omitSymptoms: true, introBullets: 5, introStatement: true, vehicles: 6, faq: 3, editorial: 4, related: 8, prices: [1500, 4000, 2500, 2000] },
+    "remont-spectehniki": { symptoms: 4, columns: 2, introBullets: 5, introStatement: true, vehicles: 6, faq: 3, editorial: 4, related: 10, prices: [3500, 5000, 8000, 2500, 15000, 85000, 45000, 3000] },
+    "kuzovnoy-remont-gruzovoy-tehniki": { omitSymptoms: true, paragraphs: 2, vehicles: 6, faq: 4, editorial: 3, related: 4, prices: [2000, 5500, 3500, 5000, 3000, 5000, 15000, 70000] },
   };
   const specialtyContracts = JSON.parse(fs.readFileSync(path.join(root, "tools/fixtures/special-equipment-contract.json"), "utf8"));
   const specialtyByPath = new Map(specialtyContracts.map((item) => [item.path, item]));
@@ -168,12 +186,16 @@ module.exports = function checkRepairTemplates({ root, dataDir, catalog, siteCon
       assert.deepEqual(section("priceExamples").items.map((item) => Number(item.price.replace(/\D/g, ""))), copyContract.prices);
       if (copyContract.paragraphs !== undefined) {
         assert.equal(intro.paragraphs.length, copyContract.paragraphs);
-        for (const key of ["intro", "bullets", "statement"]) assert.equal(intro[key], undefined);
+        for (const key of ["intro", "listIntro", "bullets", "outro", "statement"]) assert.equal(intro[key], undefined);
       }
-      if (copyContract.withoutList) {
-        assert.equal(intro.bullets, undefined);
+      if (copyContract.introBullets !== undefined) {
         assert.equal(intro.paragraphs, undefined);
-        assert(intro.intro && intro.statement);
+        assert.equal(intro.bullets.length, copyContract.introBullets);
+        assert(intro.intro && intro.listIntro);
+        assert.equal(Boolean(intro.outro), Boolean(copyContract.introOutro));
+        assert.equal(Boolean(intro.statement), Boolean(copyContract.introStatement));
+      }
+      if (page.path === "kuzovnoy-remont-gruzovoy-tehniki") {
         assert.deepEqual(section("relatedIndex").items.map((item) => item.href), ["remont-gruzovyh-avtomobiley", "remont-sedelnyh-tyagachey", "remont-polupricepov-i-tralov", "remont-spectehniki"]);
       }
     }

@@ -4,7 +4,7 @@
     "sections": 10,
     "faq": 5,
     "omitSymptoms": true,
-    "introParagraphs": 1,
+    "introParagraphs": 2,
     "costNote": false
   },
   {
@@ -12,7 +12,7 @@
     "sections": 10,
     "faq": 5,
     "omitSymptoms": true,
-    "introParagraphs": 1,
+    "introParagraphs": 2,
     "costNote": false
   },
   {
@@ -20,7 +20,7 @@
     "sections": 10,
     "faq": 5,
     "omitSymptoms": true,
-    "introParagraphs": 1,
+    "introParagraphs": 2,
     "costNote": false
   },
   {
@@ -28,7 +28,7 @@
     "sections": 10,
     "faq": 5,
     "omitSymptoms": true,
-    "introParagraphs": 1,
+    "introParagraphs": 2,
     "costNote": false
   },
   {
@@ -36,7 +36,7 @@
     "sections": 10,
     "faq": 5,
     "omitSymptoms": true,
-    "introParagraphs": 1,
+    "introParagraphs": 2,
     "costNote": false
   },
   {
@@ -44,7 +44,7 @@
     "sections": 10,
     "faq": 5,
     "omitSymptoms": true,
-    "introParagraphs": 1,
+    "introParagraphs": 2,
     "costNote": false
   },
   {
@@ -52,7 +52,7 @@
     "sections": 10,
     "faq": 5,
     "omitSymptoms": true,
-    "introParagraphs": 1,
+    "introParagraphs": 2,
     "costNote": false
   },
   {
@@ -60,7 +60,7 @@
     "sections": 10,
     "faq": 5,
     "omitSymptoms": true,
-    "introParagraphs": 1,
+    "introParagraphs": 2,
     "costNote": false
   },
   {
@@ -68,7 +68,7 @@
     "sections": 10,
     "faq": 5,
     "omitSymptoms": true,
-    "introParagraphs": 1,
+    "introParagraphs": 2,
     "costNote": false
   },
   {
@@ -76,7 +76,7 @@
     "sections": 10,
     "faq": 5,
     "omitSymptoms": true,
-    "introParagraphs": 1,
+    "introParagraphs": 2,
     "costNote": false
   },
   {
@@ -84,7 +84,7 @@
     "sections": 10,
     "faq": 5,
     "omitSymptoms": true,
-    "introParagraphs": 1,
+    "introParagraphs": 2,
     "costNote": false
   },
   {
@@ -128,7 +128,7 @@
     "sections": 10,
     "faq": 5,
     "omitSymptoms": true,
-    "introParagraphs": 1,
+    "introParagraphs": 2,
     "costNote": false,
     "modelTextOmitted": [
       0,
@@ -140,7 +140,7 @@
     "sections": 10,
     "faq": 5,
     "omitSymptoms": true,
-    "introParagraphs": 1,
+    "introParagraphs": 2,
     "costNote": false,
     "modelTextOmitted": []
   },
@@ -149,7 +149,7 @@
     "sections": 10,
     "faq": 5,
     "omitSymptoms": true,
-    "introParagraphs": 1,
+    "introParagraphs": 2,
     "costNote": false,
     "modelTextOmitted": []
   },
@@ -158,7 +158,7 @@
     "sections": 10,
     "faq": 5,
     "omitSymptoms": true,
-    "introParagraphs": 1,
+    "introParagraphs": 2,
     "costNote": false,
     "modelTextOmitted": [
       0,
@@ -170,18 +170,19 @@
     "sections": 10,
     "faq": 5,
     "omitSymptoms": true,
-    "introParagraphs": 1,
     "costNote": false,
     "modelTextOmitted": [
       0
-    ]
+    ],
+    "introBullets": 4,
+    "introOutro": true
   },
   {
     "route": "remont/iveco",
     "sections": 10,
     "faq": 5,
     "omitSymptoms": true,
-    "introParagraphs": 1,
+    "introParagraphs": 2,
     "costNote": false,
     "modelTextOmitted": []
   },
@@ -190,7 +191,7 @@
     "sections": 10,
     "faq": 5,
     "omitSymptoms": true,
-    "introParagraphs": 1,
+    "introParagraphs": 2,
     "costNote": false,
     "modelTextOmitted": [],
     "modelNote": "Запчасти подбираем по VIN и маркировке агрегата"
@@ -200,7 +201,7 @@
     "sections": 10,
     "faq": 5,
     "omitSymptoms": true,
-    "introParagraphs": 1,
+    "introParagraphs": 2,
     "costNote": false,
     "modelTextOmitted": [],
     "modelNote": "Запчасти подбираем по VIN и маркировке агрегата"

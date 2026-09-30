@@ -81,8 +81,17 @@ module.exports = function checkBrandPages({ root, dataDir, catalog, siteConfig }
     for (const [key, value] of Object.entries(template.brands)) assert.deepEqual(section("brandShowcase")[key], value, `${label}: общий каталог марок`);
     if (copyContract) {
       assert.equal(page.sections.length, copyContract.sections);
-      assert.equal(section("introProof").paragraphs.length, copyContract.introParagraphs);
-      for (const key of ["intro", "bullets", "statement"]) assert.equal(section("introProof")[key], undefined);
+      const intro = section("introProof");
+      if (copyContract.introParagraphs !== undefined) {
+        assert.equal(intro.paragraphs.length, copyContract.introParagraphs);
+        for (const key of ["intro", "listIntro", "bullets", "outro", "statement"]) assert.equal(intro[key], undefined);
+      } else {
+        assert.equal(intro.paragraphs, undefined);
+        assert.equal(intro.bullets.length, copyContract.introBullets);
+        assert(intro.intro && intro.listIntro);
+        assert.equal(Boolean(intro.outro), Boolean(copyContract.introOutro));
+        assert.equal(intro.statement, undefined);
+      }
       assert.equal(section("modelRange").note, copyContract.modelNote);
       section("modelRange").items.forEach((item, index) => {
         if ((copyContract.modelTextOmitted || []).includes(index)) assert.equal(item.text, undefined);
@@ -156,6 +165,10 @@ module.exports = function checkBrandPages({ root, dataDir, catalog, siteConfig }
     }
     for (const type of ["symptoms", "costEstimate"].filter((type) => section(type))) {
       assert.deepEqual(buttonLinks(sectionHtml(html, type)), [siteConfig.site.phoneHref], `${label}/${type}: кнопка звонка`);
+    }
+    const intro = section("introProof");
+    for (const text of [...(intro.paragraphs || []), intro.intro, intro.listIntro, ...(intro.bullets || []), intro.outro, intro.statement].filter((text) => text !== undefined)) {
+      requireTextInHtml(sectionHtml(html, "introProof"), text, `${label}/introProof`);
     }
     for (const item of section("serviceGrid").items) {
       for (const text of [item.title, item.text, ...(item.details || [])]) requireTextInHtml(sectionHtml(html, "serviceGrid"), text, `${label}/serviceGrid`);

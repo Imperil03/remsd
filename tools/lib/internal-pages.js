@@ -127,7 +127,7 @@ const SECTION_REGISTRY = {
     validate(section, label, context) {
       if (section.paragraphs !== undefined) {
         requireArray(section.paragraphs, `${label}.paragraphs`, { nonEmpty: true }).forEach((item, index) => requireText(item, `${label}.paragraphs[${index}]`));
-        for (const key of ["intro", "bullets", "statement"]) {
+        for (const key of ["intro", "listIntro", "bullets", "outro", "statement"]) {
           if (Object.hasOwn(section, key)) fail(`${label}: paragraphs нельзя совмещать с ${key}`);
         }
       } else {
@@ -136,6 +136,11 @@ const SECTION_REGISTRY = {
           requireArray(section.bullets, `${label}.bullets`, { nonEmpty: true }).forEach((item, index) => requireText(item, `${label}.bullets[${index}]`));
         }
         if (section.statement !== undefined) requireText(section.statement, `${label}.statement`);
+        for (const key of ["listIntro", "outro"]) {
+          if (section[key] === undefined) continue;
+          requireText(section[key], `${label}.${key}`);
+          if (section.bullets === undefined) fail(`${label}.${key}: требуется список bullets`);
+        }
         if (section.bullets === undefined && section.statement === undefined) fail(`${label}: без bullets и statement используйте paragraphs`);
       }
       validateAsset(section.image, `${label}.image`, context);
@@ -150,7 +155,9 @@ const SECTION_REGISTRY = {
       const copy = section.paragraphs
         ? section.paragraphs.map((paragraph) => `<p class="internal-intro__lead">${escapeHtml(paragraph)}</p>`).join("\n      ")
         : `<p class="internal-intro__lead">${escapeHtml(section.intro)}</p>
+      ${section.listIntro ? `<p class="internal-intro__lead">${escapeHtml(section.listIntro)}</p>` : ""}
       ${section.bullets ? `<ul class="internal-intro__list">${section.bullets.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>` : ""}
+      ${section.outro ? `<p class="internal-intro__lead">${escapeHtml(section.outro)}</p>` : ""}
       ${section.statement ? `<p class="internal-intro__statement">${escapeHtml(section.statement)}</p>` : ""}`;
       const stats = section.stats.map((item) => `<div><dt>${escapeHtml(item.label)}</dt><dd>${escapeHtml(item.value)}</dd></div>`).join("");
       return `<section class="internal-section internal-section--introProof" id="${escapeHtml(section.id)}" aria-labelledby="${escapeHtml(section.id)}-title">

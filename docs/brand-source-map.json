@@ -3366,6 +3366,35 @@
         "remont/volvo"
       ],
       "description": "Owner-requested two-file revision for the remaining twelve brand pages. Original Word provenance is retained; publishedCounts reflect the current edition."
+    },
+    {
+      "id": "2026-09-30-intro-copy",
+      "source": {
+        "fileName": "remsd-vvodnye-bloki-23-stranicy.md",
+        "sha256": "efa9e61ef59ee818c5e1bd03dfd92c2fa04567ca77a92b5375e08cf34881ad23"
+      },
+      "routes": [
+        "remont/foton",
+        "remont/isuzu",
+        "remont/mitsubishi-fuso",
+        "remont/sitrak",
+        "remont/gaz",
+        "remont/iveco",
+        "remont/renault-trucks",
+        "remont/volvo",
+        "remont/kamaz",
+        "remont/maz",
+        "remont/ural",
+        "remont/daf",
+        "remont/hino",
+        "remont/jac",
+        "remont/sany",
+        "remont/dongfeng",
+        "remont/howo",
+        "remont/man",
+        "remont/scania"
+      ],
+      "description": "Owner-approved replacement of the introProof heading and left text column only. Paragraphs, lists and highlighted closing text follow the Markdown; all other brand content and original Word provenance are preserved. Four additional repair routes are documented in docs/intro-copy-update.md."
     }
   ]
 }
