@@ -5,7 +5,7 @@
     "introBullets": 7,
     "omitSymptoms": true,
     "related": 4,
-    "faq": 2
+    "faq": 4
   },
   {
     "path": "remont-ekskavatorov",
@@ -13,7 +13,7 @@
     "introBullets": 7,
     "omitSymptoms": true,
     "related": 4,
-    "faq": 1
+    "faq": 4
   },
   {
     "path": "remont-pogruzchikov",
@@ -21,7 +21,7 @@
     "introBullets": 8,
     "omitSymptoms": true,
     "related": 4,
-    "faq": 1
+    "faq": 4
   },
   {
     "path": "remont-avtokranov",
@@ -29,7 +29,7 @@
     "introBullets": 7,
     "omitSymptoms": true,
     "related": 3,
-    "faq": 2
+    "faq": 4
   },
   {
     "path": "remont-manipulyatorov",
@@ -37,7 +37,7 @@
     "introBullets": 7,
     "omitSymptoms": true,
     "related": 3,
-    "faq": 1
+    "faq": 4
   },
   {
     "path": "remont-samosvalov",
@@ -45,7 +45,7 @@
     "introBullets": 8,
     "omitSymptoms": true,
     "related": 4,
-    "faq": 1
+    "faq": 4
   },
   {
     "path": "remont-truboukladchikov",
@@ -53,7 +53,7 @@
     "introBullets": 8,
     "omitSymptoms": true,
     "related": 4,
-    "faq": 1
+    "faq": 4
   },
   {
     "path": "remont-greyderov",
@@ -61,7 +61,7 @@
     "introBullets": 8,
     "omitSymptoms": true,
     "related": 4,
-    "faq": 2
+    "faq": 4
   },
   {
     "path": "remont-dorozhnyh-katkov",
@@ -69,7 +69,7 @@
     "introBullets": 7,
     "omitSymptoms": true,
     "related": 4,
-    "faq": 1
+    "faq": 4
   },
   {
     "path": "remont-traktorov",
@@ -77,6 +77,6 @@
     "introBullets": 9,
     "omitSymptoms": true,
     "related": 4,
-    "faq": 1
+    "faq": 4
   }
 ]
