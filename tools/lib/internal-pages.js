@@ -133,7 +133,8 @@ const SECTION_REGISTRY = {
         if (section.bullets !== undefined) {
           requireArray(section.bullets, `${label}.bullets`, { nonEmpty: true }).forEach((item, index) => requireText(item, `${label}.bullets[${index}]`));
         }
-        requireText(section.statement, `${label}.statement`);
+        if (section.statement !== undefined) requireText(section.statement, `${label}.statement`);
+        if (section.bullets === undefined && section.statement === undefined) fail(`${label}: без bullets и statement используйте paragraphs`);
       }
       validateAsset(section.image, `${label}.image`, context);
       requireText(section.imageAlt, `${label}.imageAlt`);
@@ -148,7 +149,7 @@ const SECTION_REGISTRY = {
         ? section.paragraphs.map((paragraph) => `<p class="internal-intro__lead">${escapeHtml(paragraph)}</p>`).join("\n      ")
         : `<p class="internal-intro__lead">${escapeHtml(section.intro)}</p>
       ${section.bullets ? `<ul class="internal-intro__list">${section.bullets.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>` : ""}
-      <p class="internal-intro__statement">${escapeHtml(section.statement)}</p>`;
+      ${section.statement ? `<p class="internal-intro__statement">${escapeHtml(section.statement)}</p>` : ""}`;
       const stats = section.stats.map((item) => `<div><dt>${escapeHtml(item.label)}</dt><dd>${escapeHtml(item.value)}</dd></div>`).join("");
       return `<section class="internal-section internal-section--introProof" id="${escapeHtml(section.id)}" aria-labelledby="${escapeHtml(section.id)}-title">
   <div class="container internal-intro">
@@ -405,6 +406,7 @@ const SECTION_REGISTRY = {
   },
   relatedIndex: {
     validate(section, label) {
+      if (section.columns !== undefined && section.columns !== 3) fail(`${label}.columns: допускается 3`);
       requireArray(section.items, `${label}.items`, { nonEmpty: true }).forEach((item, index) => {
         requireObject(item, `${label}.items[${index}]`);
         requireText(item.title, `${label}.items[${index}].title`);
@@ -422,7 +424,7 @@ const SECTION_REGISTRY = {
         return `<a class="internal-related-card internal-related-card--link" href="${rootPath}${escapeHtml(item.href)}/">${content}</a>`;
       }).join("");
       return `<section class="internal-section internal-section--relatedIndex" id="${escapeHtml(section.id)}" aria-labelledby="${escapeHtml(section.id)}-title">
-  <div class="container">${renderSectionHead(section)}<div class="internal-related-index" aria-label="${escapeHtml(section.ariaLabel || section.title)}">${items}</div></div>
+  <div class="container">${renderSectionHead(section)}<div class="internal-related-index${section.columns === 3 ? " internal-related-index--three-columns" : ""}" aria-label="${escapeHtml(section.ariaLabel || section.title)}">${items}</div></div>
 </section>`;
     },
   },

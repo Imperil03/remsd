@@ -61,7 +61,7 @@ module.exports = async function verifyRepairPage(page, viewport, definition, mat
       }).map((word) => word[0]);
     });
     return { overflow: document.documentElement.scrollWidth - innerWidth, hero: { left: hero.left, right: hero.right }, boundaries, clipped, brokenWords,
-      services: rows(".internal-service-card"), popular: rows(".internal-popular-work"), vehicles: rows(".internal-vehicle-card"), stages: rows(".internal-timeline__item"), symptoms: rows(".internal-symptoms li"),
+      services: rows(".internal-service-card"), popular: rows(".internal-popular-work"), vehicles: rows(".internal-vehicle-card"), stages: rows(".internal-timeline__item"), symptoms: rows(".internal-symptoms li"), related: rows(".internal-related-card"),
       serviceText: [...document.querySelectorAll(".internal-service-card p")].map((e) => parseFloat(getComputedStyle(e).fontSize)) };
   });
   assert(metrics.overflow <= 1, "Горизонтальная прокрутка");
@@ -75,6 +75,9 @@ module.exports = async function verifyRepairPage(page, viewport, definition, mat
   assert.deepEqual(metrics.stages, repeated(viewport.width >= 1280 ? 5 : 1, 5));
   if (sections.get("symptoms")?.columns === 2) {
     assert.deepEqual(metrics.symptoms, repeated(viewport.width <= 520 ? 1 : 2, 4), "Компактные признаки должны идти в две колонки или одну на узком экране");
+  }
+  if (sections.get("relatedIndex")?.columns === 3) {
+    assert.deepEqual(metrics.related, repeated(viewport.width <= 520 ? 1 : viewport.width <= 1020 ? 2 : 3, 3), "Три связанные услуги должны заполнять строку на широком экране");
   }
   assert(metrics.serviceText.every((size) => size >= 14), "Шрифт карточек уменьшен");
   if (viewport.width === 1120) {

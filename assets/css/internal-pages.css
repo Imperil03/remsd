@@ -1185,6 +1185,10 @@
   gap: 12px;
 }
 
+.internal-related-index--three-columns {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 .internal-related-card {
   position: relative;
   display: grid;

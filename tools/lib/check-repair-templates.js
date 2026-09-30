@@ -82,6 +82,30 @@ module.exports = function checkRepairTemplates({ root, dataDir, catalog, siteCon
   const missingIntro = structuredClone(highlightedPage);
   delete missingIntro.sections.find((section) => section.type === "introProof").intro;
   assert.throws(() => validatePageDefinition(missingIntro, "missing intro", context), /intro/);
+  const listOnlyPage = resolvePageTemplate(reference, templates);
+  const listOnlyIntro = listOnlyPage.sections.find((section) => section.type === "introProof");
+  delete listOnlyIntro.statement;
+  validatePageDefinition(listOnlyPage, "intro without statement", context);
+  const listOnlyHtml = renderSection(listOnlyIntro, "../", siteConfig.site);
+  assert(listOnlyHtml.includes('class="internal-intro__list"'));
+  assert(!listOnlyHtml.includes('class="internal-intro__statement"'), "Пустая выделенная фраза не должна выводиться");
+  for (const invalid of ["", null, "<b>HTML</b>"]) {
+    const copy = structuredClone(listOnlyPage);
+    copy.sections.find((section) => section.type === "introProof").statement = invalid;
+    assert.throws(() => validatePageDefinition(copy, "invalid statement", context), /statement/);
+  }
+  delete listOnlyIntro.bullets;
+  assert.throws(() => validatePageDefinition(listOnlyPage, "intro without variant", context), /paragraphs/);
+  const threeRelatedPage = resolvePageTemplate(reference, templates);
+  const threeRelated = threeRelatedPage.sections.find((section) => section.type === "relatedIndex");
+  threeRelated.items = threeRelated.items.slice(0, 3);
+  threeRelated.columns = 3;
+  validatePageDefinition(threeRelatedPage, "three related columns", context);
+  assert(renderSection(threeRelated, "../", siteConfig.site).includes("internal-related-index--three-columns"));
+  for (const invalid of [1, 2, "3", null]) {
+    threeRelated.columns = invalid;
+    assert.throws(() => validatePageDefinition(threeRelatedPage, "invalid related columns", context), /columns/);
+  }
   const twoColumnsPage = resolvePageTemplate(reference, templates);
   const twoColumnsSymptoms = twoColumnsPage.sections.find((section) => section.type === "symptoms");
   twoColumnsSymptoms.columns = 2;
@@ -113,10 +137,12 @@ module.exports = function checkRepairTemplates({ root, dataDir, catalog, siteCon
     const page = catalog.pages.find((item) => item.path === source.path);
     const isTractor = page.path === "remont-sedelnyh-tyagachey";
     const copyContract = copyContracts[page.path];
+    const specialty = specialtyByPath.get(page.path);
+    const omitSymptoms = copyContract?.omitSymptoms || specialty?.omitSymptoms;
     const section = (type) => page.sections.find((item) => item.type === type);
     assert.equal(page.template, undefined, "Полный PageDefinition не содержит template");
     assert.equal(page.omitSections, undefined);
-    if (copyContract?.omitSymptoms) {
+    if (omitSymptoms) {
       assert.deepEqual(source.omitSections, ["symptoms"]);
       assert.equal(page.sections.length, 10);
     } else {
@@ -148,7 +174,6 @@ module.exports = function checkRepairTemplates({ root, dataDir, catalog, siteCon
     assert.deepEqual(section("faq").contact, template.faqContact);
     for (const [key, value] of Object.entries(template.brands)) assert.deepEqual(section("brandShowcase")[key], value);
     assert.equal(section("serviceGrid").items.length, 6);
-    const specialty = specialtyByPath.get(page.path);
     const popularCount = specialty?.popularWorks ?? (page.path === reference.path || newPriceCounts[page.path] ? 16 : undefined);
     if (popularCount !== undefined) assert.equal(section("popularWorks").items.length, popularCount, `${page.path}: количество популярных работ`);
     assert.equal(section("vehicleTypes").items.length, copyContract?.vehicles ?? 6);
@@ -165,9 +190,14 @@ module.exports = function checkRepairTemplates({ root, dataDir, catalog, siteCon
       assert.equal(section("introProof").bullets.length, specialty.introBullets);
       assert.equal(section("editorialContent").blocks.length, 3);
       assert(section("editorialContent").lead);
-      assert.equal(section("symptoms").items.length, 8);
-      assert.equal(section("relatedIndex").items.length, 8);
-      assert.equal(section("faq").items.length, 5);
+      assert.equal(section("introProof").statement, undefined);
+      assert.equal(section("introProof").paragraphs, undefined);
+      assert.equal(section("symptoms"), undefined);
+      assert.equal(section("relatedIndex").items.length, specialty.related);
+      assert(section("relatedIndex").items.every((item) => item.href), "Остались статические карточки связанных услуг");
+      assert.equal(section("relatedIndex").columns, specialty.related === 3 ? 3 : undefined);
+      assert.equal(section("faq").items.length, specialty.faq);
+      assert.equal(section("faq").intro, undefined);
       assert.equal(section("priceExamples").items.length, 8);
       assert.match(section("priceExamples").note, /без запчастей и материалов/);
       assert.match(section("priceExamples").note, /после диагностики и дефектовки/);
@@ -183,6 +213,10 @@ module.exports = function checkRepairTemplates({ root, dataDir, catalog, siteCon
       assert.deepEqual(prices, [3500, 5000, 8000, 2500, 3000, 85000, ...(extras[page.path] || [45000, 25000])]);
       assert.equal(page.breadcrumbs.length, 3);
       assert.equal(page.breadcrumbs[1].href, "remont-spectehniki");
+      if (page.path === "remont-pogruzchikov") {
+        assert.equal(page.hero.h1, "Ремонт фронтальных погрузчиков в Сургуте");
+        assert.equal(page.metadata.title, "Ремонт фронтальных погрузчиков в Сургуте — РемСД");
+      }
       for (const card of section("vehicleTypes").items) {
         if (card.image.includes("/components/")) {
           assert.equal(card.imageWidth, 960);
@@ -194,11 +228,11 @@ module.exports = function checkRepairTemplates({ root, dataDir, catalog, siteCon
     const html = fs.readFileSync(path.join(root, "dist", page.path, "index.html"), "utf8");
     assert(!/5000\+|средний срок ремонта/i.test(html), `${page.path}: устаревшие факты`);
     const buttons = [...html.matchAll(/<a[^>]*class="[^"]*v3-button[^>]*href="([^"]+)"/g)];
-    assert.equal(buttons.length, copyContract?.omitSymptoms ? 3 : 4, `${page.path}: число CTA`);
-    if (copyContract?.omitSymptoms) {
+    assert.equal(buttons.length, omitSymptoms ? 3 : 4, `${page.path}: число CTA`);
+    if (omitSymptoms) {
       assert(!html.includes('id="repair-signs"'), "Удалённая секция осталась на странице");
     }
-    if (copyContract) {
+    if (copyContract || specialty) {
       assert.equal((html.match(/<th>Цена от<\/th>/g) || []).length, 2, "Общие заголовки таблиц изменены");
     }
     assert(buttons.every((match) => match[1] === siteConfig.site.phoneHref));
