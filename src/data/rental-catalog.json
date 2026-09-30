@@ -161,7 +161,10 @@
       "name": "Манипуляторы",
       "path": "arenda/manipulyatory",
       "text": "Перевозка груза с погрузкой и разгрузкой.",
-      "icon": "delivery",
+      "image": "assets/img/v3-structure/manipulator.webp",
+      "alt": "Грузовик с крано-манипуляторной установкой",
+      "imageWidth": 760,
+      "imageHeight": 560,
       "equipmentIds": []
     },
     {
@@ -171,7 +174,10 @@
       "name": "Перевозка негабаритных грузов",
       "path": "arenda/perevozka-negabarita",
       "text": "Подбор перевозки по габаритам, массе и маршруту.",
-      "icon": "delivery",
+      "image": "assets/img/v3-structure/category-trailers-trawls.webp",
+      "alt": "Низкорамный трал для перевозки техники",
+      "imageWidth": 760,
+      "imageHeight": 560,
       "equipmentIds": []
     },
     {
