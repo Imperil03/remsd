@@ -50,10 +50,14 @@ module.exports = function checkBrandPages({ root, dataDir, catalog, siteConfig }
   const provenanceByRoute = new Map(sourceMap.pages.map((page) => [page.route, page]));
   const copyContracts = JSON.parse(fs.readFileSync(path.join(root, "tools/fixtures/brand-copy-contract.json"), "utf8"));
   const copyByRoute = new Map(copyContracts.map((contract) => [contract.route, contract]));
-  assert.deepEqual([...copyByRoute.keys()].sort(), ["kamaz", "maz", "ural", "daf", "hino", "jac", "sany", "dongfeng", "howo", "man", "scania"].map((slug) => `remont/${slug}`).sort());
+  assert.deepEqual([...copyByRoute.keys()].sort(), BRAND_SLUGS.map((slug) => `remont/${slug}`).sort());
   const revision = sourceMap.revisions.find((item) => item.id === "2026-09-30-eleven-brands");
   assert(revision && /^[a-f0-9]{64}$/i.test(revision.source.sha256), "Не указан источник редакции марок");
-  assert.deepEqual([...revision.routes].sort(), [...copyByRoute.keys()].sort());
+  for (const item of sourceMap.revisions) {
+    assert(item.routes.every((route) => copyByRoute.has(route)), "Неизвестный маршрут в редакции");
+    for (const input of item.sources || [item.source]) assert(input && /^[a-f0-9]{64}$/i.test(input.sha256), "Не указан хэш источника редакции");
+  }
+  assert.deepEqual([...new Set(sourceMap.revisions.flatMap((item) => item.routes))].sort(), [...copyByRoute.keys()].sort());
   const home = fs.readFileSync(path.join(root, "dist/index.html"), "utf8");
   const homeShowcase = home.match(/<section\b[^>]*\bv3-truck-brands\b[^>]*>[\s\S]*?<\/section>/i)?.[0] || "";
   const homeHeader = home.match(/<header\b[^>]*\bv3-header\b[^>]*>[\s\S]*?<\/header>/i)?.[0] || "";
@@ -79,7 +83,11 @@ module.exports = function checkBrandPages({ root, dataDir, catalog, siteConfig }
       assert.equal(page.sections.length, copyContract.sections);
       assert.equal(section("introProof").paragraphs.length, copyContract.introParagraphs);
       for (const key of ["intro", "bullets", "statement"]) assert.equal(section("introProof")[key], undefined);
-      assert.equal(section("modelRange").note, undefined);
+      assert.equal(section("modelRange").note, copyContract.modelNote);
+      section("modelRange").items.forEach((item, index) => {
+        if ((copyContract.modelTextOmitted || []).includes(index)) assert.equal(item.text, undefined);
+        else assert(item.text, `${label}: потеряно описание модели`);
+      });
       assert.equal(section("costEstimate").note, undefined);
       assert.equal(section("costEstimate").items.length, 3);
       assert.equal(section("faq").intro, undefined);
@@ -128,6 +136,7 @@ module.exports = function checkBrandPages({ root, dataDir, catalog, siteConfig }
       assert(section("modelRange").items.every((item) => item.models === undefined), `${label}: нельзя добавлять отсутствующие в источнике модели`);
     }
     const heroClaims = JSON.stringify(source.hero);
+    if (slug === "volvo") assert.equal(page.hero.h1.replace(/\s+/g, " "), "Ремонт грузовиков Volvo в Сургуте");
     assert.equal(/официальн(?:ый|ого|ом|ым)\s+сервис/iu.test(heroClaims), OFFICIAL.has(slug), `${label}: официальный статус в hero только у КАМАЗ, МАЗ и УРАЛ`);
     assert(!/\d[\d\s\u00a0]*(?:₽|руб(?:лей|ля|ль)?\b)/iu.test(JSON.stringify(section("costEstimate"))), `${label}: в расчёт стоимости добавлены неподтверждённые суммы`);
     for (const item of section("relatedIndex").items) {
@@ -152,7 +161,7 @@ module.exports = function checkBrandPages({ root, dataDir, catalog, siteConfig }
       for (const text of [item.title, item.text, ...(item.details || [])]) requireTextInHtml(sectionHtml(html, "serviceGrid"), text, `${label}/serviceGrid`);
     }
     for (const item of section("modelRange").items) {
-      for (const text of [item.title, item.text, ...(item.models || [])]) requireTextInHtml(sectionHtml(html, "modelRange"), text, `${label}/modelRange`);
+      for (const text of [item.title, item.text, ...(item.models || [])].filter((text) => text !== undefined)) requireTextInHtml(sectionHtml(html, "modelRange"), text, `${label}/modelRange`);
     }
     for (const item of section("popularWorks").items) requireTextInHtml(sectionHtml(html, "popularWorks"), item.title, `${label}/popularWorks`);
     for (const item of section("costEstimate").items) {
@@ -188,10 +197,32 @@ module.exports = function checkBrandPages({ root, dataDir, catalog, siteConfig }
   validateMutation("modelRange", (section) => { section.items = []; }, /массив не должен быть пустым/);
   validateMutation("modelRange", (section) => { section.items[0].models = [""]; }, /строка/);
   validateMutation("modelRange", (section) => { section.items[0].models = "6520"; }, /массив/);
+  for (const text of ["", null, "<b>HTML</b>"]) validateMutation("modelRange", (section) => { section.items[0].text = text; }, /text/);
+  const modelPage = resolvePageTemplate(reference, templates);
+  const modelSection = modelPage.sections.find((section) => section.type === "modelRange");
+  delete modelSection.items[0].text;
+  validatePageDefinition(modelPage, "model list without text", context);
+  assert(renderSection(modelSection, "../../", siteConfig.site).includes("internal-model-range__models"));
+  assert(!renderSection(modelSection, "../../", siteConfig.site).includes("<p>"));
+  delete modelSection.items[0].models;
+  validatePageDefinition(modelPage, "title-only model item", context);
+  const titleOnlyHtml = renderSection(modelSection, "../../", siteConfig.site);
+  assert(titleOnlyHtml.includes("<h3>"));
+  assert(!titleOnlyHtml.includes("internal-model-range__body"));
+  const defaultBrandSource = structuredClone(reference);
+  delete defaultBrandSource.omitSections;
+  const repairSource = JSON.parse(fs.readFileSync(path.join(dataDir, "internal-pages/remont-gruzovyh-avtomobiley.json"), "utf8"));
+  const legacySigns = structuredClone(repairSource.sections.find((section) => section.type === "symptoms"));
+  legacySigns.id = "legacy-brand-signs";
+  defaultBrandSource.sections.splice(6, 0, legacySigns);
+  const defaultBrand = resolvePageTemplate(defaultBrandSource, templates);
+  validatePageDefinition(defaultBrand, "legacy default brand composition", context);
+  assert.equal(defaultBrand.sections.length, 11);
   validateMutation("costEstimate", (section) => { section.items = []; }, /массив не должен быть пустым/);
   for (const note of ["", null, "<b>HTML</b>"]) validateMutation("costEstimate", (section) => { section.note = note; }, /note/);
   const legacy = resolvePageTemplate(sources.find(({ page }) => page.path === "remont/volvo").page, templates);
   const legacyCost = legacy.sections.find((section) => section.type === "costEstimate");
+  legacyCost.note = "Примечание прежнего варианта стоимости.";
   assert(renderSection(legacyCost, "../../", siteConfig.site).includes("internal-cost-note"));
   delete legacyCost.note;
   validatePageDefinition(legacy, "optional cost note", context);

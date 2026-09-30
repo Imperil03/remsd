@@ -776,8 +776,8 @@
         "serviceGroups": 6,
         "popularWorks": 16,
         "features": 3,
-        "faq": 3,
-        "symptoms": 3
+        "faq": 5,
+        "symptoms": 0
       },
       "models": [
         "J6",
@@ -902,7 +902,9 @@
           ]
         }
       ],
-      "editorialNotes": []
+      "editorialNotes": [
+        "2026-09-30-remaining-twelve-brands: one-paragraph intro, omitted symptoms, five FAQ and revised local cost factors; model text changes limited to explicit source instructions."
+      ]
     },
     {
       "brand": "Foton",
@@ -922,8 +924,8 @@
         "serviceGroups": 6,
         "popularWorks": 16,
         "features": 3,
-        "faq": 3,
-        "symptoms": 3
+        "faq": 5,
+        "symptoms": 0
       },
       "models": [
         "Foton Auman",
@@ -1048,7 +1050,9 @@
           ]
         }
       ],
-      "editorialNotes": []
+      "editorialNotes": [
+        "2026-09-30-remaining-twelve-brands: one-paragraph intro, omitted symptoms, five FAQ and revised local cost factors; model text changes limited to explicit source instructions."
+      ]
     },
     {
       "brand": "ГАЗ",
@@ -1068,8 +1072,8 @@
         "serviceGroups": 6,
         "popularWorks": 17,
         "features": 3,
-        "faq": 3,
-        "symptoms": 4
+        "faq": 5,
+        "symptoms": 0
       },
       "models": [
         "ГАЗель Бизнес",
@@ -1196,7 +1200,9 @@
           ]
         }
       ],
-      "editorialNotes": []
+      "editorialNotes": [
+        "2026-09-30-remaining-twelve-brands: one-paragraph intro, omitted symptoms, five FAQ and revised local cost factors; model text changes limited to explicit source instructions."
+      ]
     },
     {
       "brand": "Hino",
@@ -1497,8 +1503,8 @@
         "serviceGroups": 6,
         "popularWorks": 15,
         "features": 3,
-        "faq": 3,
-        "symptoms": 3
+        "faq": 5,
+        "symptoms": 0
       },
       "models": [
         "Hyundai HD",
@@ -1614,7 +1620,9 @@
           ]
         }
       ],
-      "editorialNotes": []
+      "editorialNotes": [
+        "2026-09-30-remaining-twelve-brands: one-paragraph intro, omitted symptoms, five FAQ and revised local cost factors; model text changes limited to explicit source instructions."
+      ]
     },
     {
       "brand": "Isuzu",
@@ -1634,8 +1642,8 @@
         "serviceGroups": 6,
         "popularWorks": 15,
         "features": 3,
-        "faq": 3,
-        "symptoms": 3
+        "faq": 5,
+        "symptoms": 0
       },
       "models": [
         "N-серия",
@@ -1751,7 +1759,9 @@
           ]
         }
       ],
-      "editorialNotes": []
+      "editorialNotes": [
+        "2026-09-30-remaining-twelve-brands: one-paragraph intro, omitted symptoms, five FAQ and revised local cost factors; model text changes limited to explicit source instructions."
+      ]
     },
     {
       "brand": "Iveco",
@@ -1771,8 +1781,8 @@
         "serviceGroups": 6,
         "popularWorks": 16,
         "features": 3,
-        "faq": 3,
-        "symptoms": 2
+        "faq": 5,
+        "symptoms": 0
       },
       "models": [
         "Daily",
@@ -1892,7 +1902,9 @@
           ]
         }
       ],
-      "editorialNotes": []
+      "editorialNotes": [
+        "2026-09-30-remaining-twelve-brands: one-paragraph intro, omitted symptoms, five FAQ and revised local cost factors; model text changes limited to explicit source instructions."
+      ]
     },
     {
       "brand": "JAC",
@@ -2192,8 +2204,8 @@
         "serviceGroups": 6,
         "popularWorks": 13,
         "features": 3,
-        "faq": 3,
-        "symptoms": 3
+        "faq": 5,
+        "symptoms": 0
       },
       "models": [
         "Actros",
@@ -2311,7 +2323,9 @@
           ]
         }
       ],
-      "editorialNotes": []
+      "editorialNotes": [
+        "2026-09-30-remaining-twelve-brands: one-paragraph intro, omitted symptoms, five FAQ and revised local cost factors; model text changes limited to explicit source instructions."
+      ]
     },
     {
       "brand": "Mitsubishi Fuso",
@@ -2331,8 +2345,8 @@
         "serviceGroups": 6,
         "popularWorks": 15,
         "features": 3,
-        "faq": 3,
-        "symptoms": 3
+        "faq": 5,
+        "symptoms": 0
       },
       "models": [
         "Canter"
@@ -2448,7 +2462,8 @@
         }
       ],
       "editorialNotes": [
-        "Removed unsupported market-share generalisation from the introduction; service scope retained."
+        "Removed unsupported market-share generalisation from the introduction; service scope retained.",
+        "2026-09-30-remaining-twelve-brands: one-paragraph intro, omitted symptoms, five FAQ and revised local cost factors; model text changes limited to explicit source instructions."
       ]
     },
     {
@@ -2469,8 +2484,8 @@
         "serviceGroups": 6,
         "popularWorks": 13,
         "features": 3,
-        "faq": 3,
-        "symptoms": 3
+        "faq": 5,
+        "symptoms": 0
       },
       "models": [
         "T",
@@ -2588,7 +2603,9 @@
           ]
         }
       ],
-      "editorialNotes": []
+      "editorialNotes": [
+        "2026-09-30-remaining-twelve-brands: one-paragraph intro, omitted symptoms, five FAQ and revised local cost factors; model text changes limited to explicit source instructions."
+      ]
     },
     {
       "brand": "SANY",
@@ -2885,8 +2902,8 @@
         "serviceGroups": 6,
         "popularWorks": 15,
         "features": 3,
-        "faq": 3,
-        "symptoms": 3
+        "faq": 5,
+        "symptoms": 0
       },
       "models": [
         "F2000",
@@ -3006,7 +3023,9 @@
           ]
         }
       ],
-      "editorialNotes": []
+      "editorialNotes": [
+        "2026-09-30-remaining-twelve-brands: one-paragraph intro, omitted symptoms, five FAQ and revised local cost factors; model text changes limited to explicit source instructions."
+      ]
     },
     {
       "brand": "Sitrak",
@@ -3026,8 +3045,8 @@
         "serviceGroups": 6,
         "popularWorks": 13,
         "features": 3,
-        "faq": 3,
-        "symptoms": 3
+        "faq": 5,
+        "symptoms": 0
       },
       "models": [],
       "sourceSystemList": [
@@ -3141,7 +3160,8 @@
         }
       ],
       "editorialNotes": [
-        "No model names supplied; tractor and truck chassis types retained."
+        "No model names supplied; tractor and truck chassis types retained.",
+        "2026-09-30-remaining-twelve-brands: one-paragraph intro, omitted symptoms, five FAQ and revised local cost factors; model text changes limited to explicit source instructions."
       ]
     },
     {
@@ -3162,8 +3182,8 @@
         "serviceGroups": 6,
         "popularWorks": 14,
         "features": 3,
-        "faq": 3,
-        "symptoms": 4
+        "faq": 5,
+        "symptoms": 0
       },
       "models": [
         "FH",
@@ -3282,7 +3302,9 @@
           ]
         }
       ],
-      "editorialNotes": []
+      "editorialNotes": [
+        "2026-09-30-remaining-twelve-brands: one-paragraph intro, omitted symptoms, five FAQ and revised local cost factors; model text changes limited to explicit source instructions."
+      ]
     }
   ],
   "revisions": [
@@ -3316,6 +3338,34 @@
           "answer": "Все снятые детали, включая подшипники, регулировочные шайбы, крепёж и повреждённые элементы. Также полезны фотографии разборки и описание первоначальной неисправности. По неполному комплекту сложнее определить причину поломки и объём восстановления."
         }
       }
+    },
+    {
+      "id": "2026-09-30-remaining-twelve-brands",
+      "sources": [
+        {
+          "fileName": "remsd-8-marok-redaktura.md",
+          "sha256": "aa298c5dcc154a9a5e5ec453962148682c6ade79535f20871e3d256a5303cf0c"
+        },
+        {
+          "fileName": "remsd-gaz-iveco-renault-volvo-redaktura.md",
+          "sha256": "a05156a2475c8e784a8010b536879b9bf8b25d338c78ee027cca1e498a6a0c9a"
+        }
+      ],
+      "routes": [
+        "remont/faw",
+        "remont/hyundai",
+        "remont/mercedes-benz",
+        "remont/shacman",
+        "remont/foton",
+        "remont/isuzu",
+        "remont/mitsubishi-fuso",
+        "remont/sitrak",
+        "remont/gaz",
+        "remont/iveco",
+        "remont/renault-trucks",
+        "remont/volvo"
+      ],
+      "description": "Owner-requested two-file revision for the remaining twelve brand pages. Original Word provenance is retained; publishedCounts reflect the current edition."
     }
   ]
 }

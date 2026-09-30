@@ -247,7 +247,7 @@ const SECTION_REGISTRY = {
       requireArray(section.items, `${label}.items`, { nonEmpty: true }).forEach((item, index) => {
         requireObject(item, `${label}.items[${index}]`);
         requireText(item.title, `${label}.items[${index}].title`);
-        requireText(item.text, `${label}.items[${index}].text`);
+        if (item.text !== undefined) requireText(item.text, `${label}.items[${index}].text`);
         if (item.models !== undefined) {
           requireArray(item.models, `${label}.items[${index}].models`, { nonEmpty: true })
             .forEach((model, modelIndex) => requireText(model, `${label}.items[${index}].models[${modelIndex}]`));
@@ -260,8 +260,10 @@ const SECTION_REGISTRY = {
         const models = item.models
           ? `<ul class="internal-model-range__models">${item.models.map((model) => `<li>${escapeHtml(model)}</li>`).join("")}</ul>`
           : "";
+        const paragraph = item.text ? `<p>${escapeHtml(item.text)}</p>` : "";
+        const body = models || paragraph ? `<div class="internal-model-range__body">${models}${paragraph}</div>` : "";
         return `<article class="internal-model-range__item">
-  <h3>${escapeHtml(item.title)}</h3><div class="internal-model-range__body">${models}<p>${escapeHtml(item.text)}</p></div>
+  <h3>${escapeHtml(item.title)}</h3>${body}
 </article>`;
       }).join("\n");
       const note = section.note ? `<p class="internal-model-range__note">${escapeHtml(section.note)}</p>` : "";

@@ -86,5 +86,123 @@
     "omitSymptoms": true,
     "introParagraphs": 1,
     "costNote": false
+  },
+  {
+    "route": "remont/faw",
+    "sections": 10,
+    "faq": 5,
+    "omitSymptoms": true,
+    "introParagraphs": 1,
+    "costNote": false,
+    "modelTextOmitted": []
+  },
+  {
+    "route": "remont/hyundai",
+    "sections": 10,
+    "faq": 5,
+    "omitSymptoms": true,
+    "introParagraphs": 1,
+    "costNote": false,
+    "modelTextOmitted": []
+  },
+  {
+    "route": "remont/mercedes-benz",
+    "sections": 10,
+    "faq": 5,
+    "omitSymptoms": true,
+    "introParagraphs": 1,
+    "costNote": false,
+    "modelTextOmitted": []
+  },
+  {
+    "route": "remont/shacman",
+    "sections": 10,
+    "faq": 5,
+    "omitSymptoms": true,
+    "introParagraphs": 1,
+    "costNote": false,
+    "modelTextOmitted": []
+  },
+  {
+    "route": "remont/foton",
+    "sections": 10,
+    "faq": 5,
+    "omitSymptoms": true,
+    "introParagraphs": 1,
+    "costNote": false,
+    "modelTextOmitted": [
+      0,
+      1
+    ]
+  },
+  {
+    "route": "remont/isuzu",
+    "sections": 10,
+    "faq": 5,
+    "omitSymptoms": true,
+    "introParagraphs": 1,
+    "costNote": false,
+    "modelTextOmitted": []
+  },
+  {
+    "route": "remont/mitsubishi-fuso",
+    "sections": 10,
+    "faq": 5,
+    "omitSymptoms": true,
+    "introParagraphs": 1,
+    "costNote": false,
+    "modelTextOmitted": []
+  },
+  {
+    "route": "remont/sitrak",
+    "sections": 10,
+    "faq": 5,
+    "omitSymptoms": true,
+    "introParagraphs": 1,
+    "costNote": false,
+    "modelTextOmitted": [
+      0,
+      1
+    ]
+  },
+  {
+    "route": "remont/gaz",
+    "sections": 10,
+    "faq": 5,
+    "omitSymptoms": true,
+    "introParagraphs": 1,
+    "costNote": false,
+    "modelTextOmitted": [
+      0
+    ]
+  },
+  {
+    "route": "remont/iveco",
+    "sections": 10,
+    "faq": 5,
+    "omitSymptoms": true,
+    "introParagraphs": 1,
+    "costNote": false,
+    "modelTextOmitted": []
+  },
+  {
+    "route": "remont/renault-trucks",
+    "sections": 10,
+    "faq": 5,
+    "omitSymptoms": true,
+    "introParagraphs": 1,
+    "costNote": false,
+    "modelTextOmitted": [],
+    "modelNote": "Запчасти подбираем по VIN и маркировке агрегата"
+  },
+  {
+    "route": "remont/volvo",
+    "sections": 10,
+    "faq": 5,
+    "omitSymptoms": true,
+    "introParagraphs": 1,
+    "costNote": false,
+    "modelTextOmitted": [],
+    "modelNote": "Запчасти подбираем по VIN и маркировке агрегата"
   }
 ]
