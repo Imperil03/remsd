@@ -17,7 +17,7 @@
     "title": "Аренда спецтехники в Сургуте — техника и цены | РемСД",
     "description": "Аренда спецтехники с персоналом в Сургуте и ХМАО: автокраны, экскаваторы, погрузчики и другие машины. Характеристики, почасовые тарифы и условия аренды.",
     "serviceType": "Аренда спецтехники",
-    "socialImage": "assets/img/rental/hero.webp"
+    "socialImage": "assets/img/rental-hero/fleet-desktop.webp"
   },
   "breadcrumbs": [
     {
@@ -33,8 +33,8 @@
     "accent": "спецтехники",
     "lead": "Техника с персоналом для земляных, подъёмных, погрузочных и дорожных работ. Автокраны, экскаваторы, погрузчики и другие машины для объектов в Сургуте и ХМАО.",
     "ctaLabel": "Обсудить аренду",
-    "image": "assets/img/rental/hero.webp",
-    "mobileImage": "assets/img/rental/hero-mobile.webp",
+    "image": "assets/img/rental-hero/fleet-desktop.webp",
+    "mobileImage": "assets/img/rental-hero/fleet-mobile.webp",
     "facts": [
       {
         "icon": "delivery",

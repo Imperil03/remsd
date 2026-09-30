@@ -117,7 +117,7 @@ function createCssBundles(cssDir) {
     }
     fs.writeFileSync(path.join(cssDir, target), css, "utf8");
   }
-  return new Set(Object.values(bundles).flat());
+  return new Set([...Object.values(bundles).flat(), "rental-hero.css"]);
 }
 
 function getHtmlFiles(dir) {

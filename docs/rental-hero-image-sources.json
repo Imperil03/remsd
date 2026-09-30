@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "createdAt": "2026-09-30",
+  "kind": "generated-illustration",
+  "tool": "built-in image_gen",
+  "purpose": "Decorative rental-section hero; not a photograph of the RemSD fleet.",
+  "direction": {
+    "mode": "Persuade",
+    "scope": "Rental hero imagery only",
+    "composition": "Panoramic equipment scene with quiet space on the left; separate portrait composition for mobile.",
+    "preserve": "Existing typography, copy, controls, other page sections and real catalogue photographs."
+  },
+  "variants": [
+    {
+      "id": "desktop",
+      "source": "docs/references/rental-hero-desktop.png",
+      "output": "assets/img/rental-hero/fleet-desktop.webp",
+      "maxWidth": 2171,
+      "quality": 80,
+      "prompt": "Use case: ads-marketing. Asset: photorealistic background image for an established Russian heavy-equipment rental website, not a website mockup. Create a premium industrial editorial photograph in an ULTRAWIDE PANORAMIC 3:1 composition, preferably 3072 x 1024 pixels.\n\nScene: a spacious clean gravel and concrete equipment yard in a northern Russian industrial region, subdued steel-blue early morning sky, a very distant low treeline and modest hangar at the far right. No dramatic architecture, no power lines, no shipping containers in foreground. Natural cool light, subtle warm sunlight on the yellow machinery, realistic grounded shadows, restrained navy, steel and construction-yellow palette.\n\nSubjects: three mechanically plausible full-size machines parked separately with clear silhouette separation: a tracked excavator with its arm compactly folded and bucket resting low; a wheel loader with its bucket lowered; a truck-mounted mobile crane with its telescopic boom STOWED horizontally on its own carrier. Put all THREE COMPLETE machines in the RIGHT-HAND 40 percent of the panorama, a staggered three-quarter arrangement with the excavator foremost, wheel loader nearby and crane slightly behind. All wheels/tracks, buckets, booms and vehicles must be completely visible inside the image, with generous clear margins. No machine may be cut off by the edges. No suspended loads, no lifted vertical boom.\n\nComposition is critical: left 58 percent is calm, dark-ish unobstructed yard and sky reserved for website title and buttons, with no major subjects or distracting bright details there. Machinery is concentrated between x=61% and x=94%, y=30% and y=74%; keep useful empty sky above and ground below so a shorter panoramic crop remains safe. Camera at human eye level, photographed from sufficiently far away with natural proportions, no extreme wide-angle distortion, no toy-scale feel. This is one coherent photograph, not a collage or 3D render. Equipment should be sharp and recognizable yet not oversaturated. No people, text, logos, brand labels, watermarks, or graphical overlays. Do not paint any website text or gradient overlay into the image.",
+      "width": 2171,
+      "height": 724,
+      "bytes": 227034,
+      "sourceSha256": "c23c4440c94396b65f00a840a38c23f21751e816cb025506caaa9e0b0e6f0db0"
+    },
+    {
+      "id": "mobile",
+      "source": "docs/references/rental-hero-mobile.png",
+      "output": "assets/img/rental-hero/fleet-mobile.webp",
+      "maxWidth": 640,
+      "quality": 60,
+      "prompt": "Create a portrait website hero background derived from the supplied reference photograph. This is a MOBILE composition, very tall aspect ratio 1:2, ideally 1024 x 2048 pixels. Keep the reference's realistic industrial photography, cool steel-blue sky, restrained yellow equipment, natural textures and coherent perspective. This is a scene illustration, with no text or brand marks.\n\nRecompose rather than tightly crop: show one COMPLETE yellow tracked excavator as the main subject with its arm compactly folded and bucket on the ground, plus a smaller complete wheel loader slightly behind it if space permits. Do NOT show the crane if it crowds the frame. All tracks/wheels, cabin, boom and bucket must fit fully in view. Position the machines as a compact group in the lower-middle portion of the image, within the central 60% of the image width and between 43% and 69% of its height. Keep generous margins on both sides so a narrow phone crop still shows the complete excavator. Leave the top 42% as simple low-contrast blue-gray evening sky, and the bottom 25% as calm dark gravel ground. No tall boom, no huge foreground objects, no close-up crop, no text, logos, signage, people, watermark or website UI. The image will sit behind a website title, copy and controls, so avoid distracting bright spots. Mechanically believable full-sized heavy equipment, not toys or a 3D render.",
+      "width": 640,
+      "height": 505,
+      "bytes": 54406,
+      "sourceSha256": "6808fd0cb873d7333dfc8e4ac172141e83ef96c73e4281ebcb7449a89e95ea98",
+      "crop": {
+        "left": 0,
+        "top": 700,
+        "width": 887,
+        "height": 700
+      }
+    }
+  ]
+}

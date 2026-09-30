@@ -37,8 +37,8 @@
     "accent": "бетонного боя",
     "lead": "РемСД перерабатывает бетонный бой в крошку. Возможность работы с конкретным материалом и стоимость определяем по его составу, объёму и размерам фрагментов. Требования к результату согласуем до заказа.",
     "ctaLabel": "Обсудить переработку",
-    "image": "assets/img/rental/hero.webp",
-    "mobileImage": "assets/img/rental/hero-mobile.webp",
+    "image": "assets/img/rental-hero/fleet-desktop.webp",
+    "mobileImage": "assets/img/rental-hero/fleet-mobile.webp",
     "facts": [
       {
         "icon": "delivery",

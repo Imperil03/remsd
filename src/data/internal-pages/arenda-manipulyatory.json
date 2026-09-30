@@ -17,7 +17,7 @@
     "title": "Аренда манипулятора в Сургуте — РемСД",
     "description": "Аренда манипулятора в Сургуте. Перевозка груза с погрузкой и разгрузкой. Техника с персоналом, подбор по грузу и условия аренды.",
     "serviceType": "Аренда манипулятора",
-    "socialImage": "assets/img/rental/hero.webp"
+    "socialImage": "assets/img/rental-hero/fleet-desktop.webp"
   },
   "breadcrumbs": [
     {
@@ -37,8 +37,8 @@
     "accent": "манипулятора",
     "lead": "Манипулятор перевозит груз и выполняет погрузку и разгрузку крановой установкой. Возможность работы и стоимость зависят от массы и габаритов груза, необходимого вылета стрелы и маршрута.",
     "ctaLabel": "Обсудить аренду",
-    "image": "assets/img/rental/hero.webp",
-    "mobileImage": "assets/img/rental/hero-mobile.webp",
+    "image": "assets/img/rental-hero/fleet-desktop.webp",
+    "mobileImage": "assets/img/rental-hero/fleet-mobile.webp",
     "facts": [
       {
         "icon": "delivery",
