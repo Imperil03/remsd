@@ -1182,6 +1182,10 @@ a.v3-equipment-item:focus-visible {
   grid-column: auto;
 }
 
+.v3-proof-photo picture {
+  display: contents;
+}
+
 .v3-proof-photo::after {
   position: absolute;
   inset: auto 0 0;
@@ -1229,6 +1233,40 @@ a.v3-equipment-item:focus-visible {
 .v3-cert-card:focus-visible {
   outline: 2px solid rgba(47, 88, 168, 0.9);
   outline-offset: 4px;
+}
+
+@media (min-width: 1121px) {
+  .v3-company-proof__content {
+    gap: var(--space-4);
+    padding-top: 0;
+  }
+
+  .v3-company-proof__about-link {
+    margin-bottom: 0;
+  }
+
+  .v3-company-proof__content > .v3-company-facts {
+    margin-top: var(--space-4);
+  }
+
+  .v3-company-proof__media {
+    grid-auto-rows: minmax(0, 1fr);
+    min-height: 0;
+  }
+
+  .v3-company-proof .v3-proof-photo {
+    min-height: 0;
+  }
+
+  .v3-company-proof .v3-proof-photo img {
+    position: absolute;
+    inset: 0;
+    min-height: 0;
+  }
+
+  .v3-company-proof .v3-proof-photo--wide img {
+    object-position: 50% 45%;
+  }
 }
 
 .v3-cert-strip { display: grid; gap: 22px; margin-top: 40px; padding-top: 30px; border-top: 1px solid var(--border-default); }

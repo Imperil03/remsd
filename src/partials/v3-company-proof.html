@@ -40,7 +40,10 @@
 
       <div class="v3-company-proof__media" aria-label="Фотографии ремонтной базы РемСД">
         <button class="v3-proof-photo v3-proof-photo--wide" type="button" data-lightbox-item data-lightbox-group="v3-base" data-large-src="{{rootPath}}assets/img/gallery/large/maz-service-bay.webp" data-caption="Пост ремонта грузовой техники">
-          <img src="{{rootPath}}assets/img/gallery/thumb/maz-service-bay.webp" alt="Грузовая техника на посту ремонта РемСД" width="720" height="520" loading="lazy" decoding="async">
+          <picture>
+            <source media="(min-width: 1121px)" srcset="{{rootPath}}assets/img/gallery/large/maz-service-bay.webp" type="image/webp">
+            <img src="{{rootPath}}assets/img/gallery/thumb/maz-service-bay.webp" alt="Грузовая техника на посту ремонта РемСД" width="720" height="520" loading="lazy" decoding="async">
+          </picture>
           <span>Пост ремонта</span>
         </button>
         <button class="v3-proof-photo" type="button" data-lightbox-item data-lightbox-group="v3-base" data-large-src="{{rootPath}}assets/img/gallery/large/production-zone.webp" data-caption="Производственная зона РемСД">
