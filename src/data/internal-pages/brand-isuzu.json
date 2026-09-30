@@ -24,8 +24,8 @@
   "hero": {
     "image": "assets/img/hero-industrial-base-v3.webp",
     "mobileImage": "assets/img/hero-industrial-base-v3-mobile.webp",
-    "h1": "Ремонт Isuzu в Сургуте",
-    "accent": "в Сургуте",
+    "h1": "Ремонт Isuzu",
+    "accent": "Isuzu",
     "lead": "Диагностика и ремонт грузовых автомобилей Isuzu. Работаем с двигателем, топливной системой, КПП, сцеплением, мостами, ходовой частью, тормозами и электрооборудованием.",
     "ctaLabel": "Позвонить мастеру"
   },

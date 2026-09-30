@@ -24,8 +24,8 @@
   "hero": {
     "image": "assets/img/hero-industrial-base-v3.webp",
     "mobileImage": "assets/img/hero-industrial-base-v3-mobile.webp",
-    "h1": "Ремонт SANY в Сургуте",
-    "accent": "в Сургуте",
+    "h1": "Ремонт SANY",
+    "accent": "SANY",
     "lead": "Диагностика и ремонт грузовой и специальной техники SANY: двигателя, трансмиссии, ходовой, гидравлики и электрооборудования.",
     "ctaLabel": "Позвонить мастеру"
   },

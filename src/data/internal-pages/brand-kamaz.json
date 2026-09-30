@@ -24,8 +24,8 @@
   "hero": {
     "image": "assets/img/hero-industrial-base-v3.webp",
     "mobileImage": "assets/img/hero-industrial-base-v3-mobile.webp",
-    "h1": "Ремонт КАМАЗ в Сургуте",
-    "accent": "в Сургуте",
+    "h1": "Ремонт КАМАЗ",
+    "accent": "КАМАЗ",
     "lead": "Официальный сервис КАМАЗ. Диагностика, ТО и ремонт тягачей, самосвалов, бортовых автомобилей и шасси на базе РемСД.",
     "ctaLabel": "Позвонить мастеру"
   },

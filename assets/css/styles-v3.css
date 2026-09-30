@@ -85,13 +85,13 @@
 
 .v3-hero__content {
   align-self: start;
-  width: min(100%, 900px);
+  width: min(100%, 1100px);
   padding-block: calc(clamp(120px, 16vh, 188px) + 62px) 34px;
 }
 
 .v3-hero h1 {
   display: grid;
-  max-width: 900px;
+  max-width: 1100px;
   margin: 0;
   color: var(--text-inverse);
   font-family: "Geologica V3", var(--font-heading);
@@ -109,6 +109,7 @@
 .v3-hero-title__accent {
   position: relative;
   display: inline-block;
+  max-width: 100%;
   color: var(--action-primary);
 }
 

@@ -24,8 +24,8 @@
   "hero": {
     "image": "assets/img/hero-industrial-base-v3.webp",
     "mobileImage": "assets/img/hero-industrial-base-v3-mobile.webp",
-    "h1": "Ремонт МАЗ в Сургуте",
-    "accent": "в Сургуте",
+    "h1": "Ремонт МАЗ",
+    "accent": "МАЗ",
     "lead": "Официальный сервис МАЗ. Диагностика, ТО и ремонт тягачей, самосвалов, бортовых автомобилей и грузовых шасси.",
     "ctaLabel": "Позвонить мастеру"
   },

@@ -24,8 +24,8 @@
   "hero": {
     "image": "assets/img/hero-industrial-base-v3.webp",
     "mobileImage": "assets/img/hero-industrial-base-v3-mobile.webp",
-    "h1": "Ремонт грузовиков Mercedes-Benz в Сургуте",
-    "accent": "в Сургуте",
+    "h1": "Ремонт грузовиков Mercedes-Benz",
+    "accent": "Mercedes-Benz",
     "lead": "Диагностика и ремонт коммерческих автомобилей Mercedes-Benz. Двигатель, автоматизированная КПП, сцепление, ведущие мосты, пневматика, EBS, электрооборудование и SCR/AdBlue.",
     "ctaLabel": "Позвонить мастеру"
   },

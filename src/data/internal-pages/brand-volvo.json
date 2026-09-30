@@ -24,8 +24,8 @@
   "hero": {
     "image": "assets/img/hero-industrial-base-v3.webp",
     "mobileImage": "assets/img/hero-industrial-base-v3-mobile.webp",
-    "h1": "Ремонт грузовиков Volvo в Сургуте",
-    "accent": "в Сургуте",
+    "h1": "Ремонт грузовиков Volvo",
+    "accent": "Volvo",
     "lead": "Диагностика и ремонт грузовых автомобилей Volvo Trucks. Работаем с двигателем, трансмиссией, пневмоподвеской, тормозами и электрооборудованием.",
     "ctaLabel": "Позвонить мастеру"
   },

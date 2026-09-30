@@ -24,8 +24,8 @@
   "hero": {
     "image": "assets/img/hero-industrial-base-v3.webp",
     "mobileImage": "assets/img/hero-industrial-base-v3-mobile.webp",
-    "h1": "Ремонт FAW в Сургуте",
-    "accent": "в Сургуте",
+    "h1": "Ремонт FAW",
+    "accent": "FAW",
     "lead": "Диагностика и ремонт грузовых автомобилей FAW. Работаем с двигателем, КПП, сцеплением, карданной передачей, ведущими мостами, пневматикой, EBS, электрооборудованием и SCR/AdBlue.",
     "ctaLabel": "Позвонить мастеру"
   },

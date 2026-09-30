@@ -136,7 +136,7 @@ module.exports = function checkBrandPages({ root, dataDir, catalog, siteConfig }
       assert(section("modelRange").items.every((item) => item.models === undefined), `${label}: нельзя добавлять отсутствующие в источнике модели`);
     }
     const heroClaims = JSON.stringify(source.hero);
-    if (slug === "volvo") assert.equal(page.hero.h1.replace(/\s+/g, " "), "Ремонт грузовиков Volvo в Сургуте");
+    if (slug === "volvo") assert.equal(page.hero.h1.replace(/\s+/g, " "), "Ремонт грузовиков Volvo");
     assert.equal(/официальн(?:ый|ого|ом|ым)\s+сервис/iu.test(heroClaims), OFFICIAL.has(slug), `${label}: официальный статус в hero только у КАМАЗ, МАЗ и УРАЛ`);
     assert(!/\d[\d\s\u00a0]*(?:₽|руб(?:лей|ля|ль)?\b)/iu.test(JSON.stringify(section("costEstimate"))), `${label}: в расчёт стоимости добавлены неподтверждённые суммы`);
     for (const item of section("relatedIndex").items) {

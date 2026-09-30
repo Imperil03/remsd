@@ -24,8 +24,8 @@
   "hero": {
     "image": "assets/img/hero-industrial-base-v3.webp",
     "mobileImage": "assets/img/hero-industrial-base-v3-mobile.webp",
-    "h1": "Ремонт Foton в Сургуте",
-    "accent": "в Сургуте",
+    "h1": "Ремонт Foton",
+    "accent": "Foton",
     "lead": "Диагностика и ремонт грузовиков Foton Auman и Aumark. Ремонтируем двигатель, трансмиссию, ходовую и тормоза, устраняем неисправности электрооборудования.",
     "ctaLabel": "Позвонить мастеру"
   },

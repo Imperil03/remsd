@@ -88,6 +88,8 @@ async function verifyPage(page, route, label, { expectedStatus = 200 } = {}) {
     })),
   }));
   if (state.h1 !== 1) throw new Error(`${label}: найдено H1: ${state.h1}`);
+  const definition = internalCatalog.pages.find((candidate) => `/${candidate.path}/` === new URL(route, `http://${host}:${port}`).pathname.replace(/^\/remsd\//, "/"));
+  await require("./lib/verify-hero-heading")(page, definition);
   if (state.hrefHash) throw new Error(`${label}: найдено href=\"#\": ${state.hrefHash}`);
   if (state.overflow > 1) throw new Error(`${label}: горизонтальное переполнение ${state.overflow}px`);
   if (!state.title) throw new Error(`${label}: пустой title`);
@@ -933,7 +935,7 @@ async function run() {
         const brandReference = ["kamaz", "ural", "sany", "sitrak", "mitsubishi-fuso"].some((slug) => definition.path === `remont/${slug}`);
         const viewports = isCompany || isContact || isDocuments || isPolicy
           ? [...chromeViewports, { name: "company-header-1121", width: 1121, height: 900 }]
-          : isRepairTemplate || brandReference || (isBrand && requestedPaths.includes(definition.path)) || definition.rental ? chromeViewports : chromeViewports.filter((viewport) => [1440, 390].includes(viewport.width));
+          : isRepairTemplate || isBrand || definition.rental ? chromeViewports : chromeViewports.filter((viewport) => [1440, 390].includes(viewport.width));
         for (const viewport of viewports) {
           const context = await browser.newContext({ viewport });
           const page = await context.newPage();
@@ -982,7 +984,7 @@ async function run() {
   }
   console.log(requestedPaths.length
     ? `Focused browser verification passed: ${smokeRoutes.length} маршрутов, все назначенные ширины, FAQ, навигация, CTA и 404.`
-    : `Browser verification passed: общий chrome, главная и эталонный hub — 11 viewport; ${smokeRoutes.length} дополнительных маршрутов (repair-v1 и 5 эталонов brand: 11 viewport, остальные марки: 2), burger, FAQ, callbar, images, targets и 404.`);
+    : `Browser verification passed: общий chrome, главная и эталонный hub — 11 viewport; ${smokeRoutes.length} дополнительных маршрутов (repair-v1, все марки и аренда: 11 viewport), H1, burger, FAQ, callbar, images, targets и 404.`);
 }
 
 run().catch((error) => {

@@ -24,8 +24,8 @@
   "hero": {
     "image": "assets/img/hero-industrial-base-v3.webp",
     "mobileImage": "assets/img/hero-industrial-base-v3-mobile.webp",
-    "h1": "Ремонт Renault Trucks в Сургуте",
-    "accent": "в Сургуте",
+    "h1": "Ремонт Renault Trucks",
+    "accent": "Renault Trucks",
     "lead": "Ремонтируем двигатель, трансмиссию, пневмоподвеску, тормоза и электрооборудование грузовиков Renault Trucks. Диагностируем автоматизированные КПП и систему очистки выхлопа.",
     "ctaLabel": "Позвонить мастеру"
   },

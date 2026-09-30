@@ -24,8 +24,8 @@
   "hero": {
     "image": "assets/img/hero-industrial-base-v3.webp",
     "mobileImage": "assets/img/hero-industrial-base-v3-mobile.webp",
-    "h1": "Ремонт Mitsubishi Fuso в Сургуте",
-    "accent": "в Сургуте",
+    "h1": "Ремонт Mitsubishi Fuso",
+    "accent": "Mitsubishi Fuso",
     "lead": "Диагностика и ремонт коммерческих автомобилей Mitsubishi Fuso. Двигатель, топливная система, КПП, сцепление, ходовая часть, тормоза и автоэлектрика.",
     "ctaLabel": "Позвонить мастеру"
   },

@@ -527,7 +527,10 @@ function validatePageDefinition(page, label, context) {
     if (!page.sections?.every((section) => section.type === "policyText")) fail(`${label}: policy использует только policyText`);
   }
   (["contact", "documents"].includes(page.family) ? ["h1"] : ["h1", "lead", "ctaLabel"]).forEach((key) => requireText(hero[key], `${label}.hero.${key}`));
-  if (hero.accent !== undefined) requireText(hero.accent, `${label}.hero.accent`);
+  if (hero.accent !== undefined) {
+    requireText(hero.accent, `${label}.hero.accent`);
+    if (!hero.h1.endsWith(hero.accent)) fail(`${label}.hero.accent: выделение должно точно совпадать с окончанием H1`);
+  }
   if (!["contact", "documents"].includes(page.family)) {
     validateAsset(hero.image, `${label}.hero.image`, context);
     validateAsset(hero.mobileImage, `${label}.hero.mobileImage`, context);

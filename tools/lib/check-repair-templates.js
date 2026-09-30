@@ -225,7 +225,7 @@ module.exports = function checkRepairTemplates({ root, dataDir, catalog, siteCon
       assert.equal(page.breadcrumbs.length, 3);
       assert.equal(page.breadcrumbs[1].href, "remont-spectehniki");
       if (page.path === "remont-pogruzchikov") {
-        assert.equal(page.hero.h1, "Ремонт фронтальных погрузчиков в Сургуте");
+        assert.equal(page.hero.h1, "Ремонт фронтальных погрузчиков");
         assert.equal(page.metadata.title, "Ремонт фронтальных погрузчиков в Сургуте — РемСД");
       }
       for (const card of section("vehicleTypes").items) {

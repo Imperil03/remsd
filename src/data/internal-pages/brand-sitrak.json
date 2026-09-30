@@ -24,8 +24,8 @@
   "hero": {
     "image": "assets/img/hero-industrial-base-v3.webp",
     "mobileImage": "assets/img/hero-industrial-base-v3-mobile.webp",
-    "h1": "Ремонт Sitrak в Сургуте",
-    "accent": "в Сургуте",
+    "h1": "Ремонт Sitrak",
+    "accent": "Sitrak",
     "lead": "Диагностика и ремонт грузовых автомобилей Sitrak. Двигатель, автоматизированная КПП, сцепление, ведущие мосты, пневмоподвеска, EBS, электрооборудование и SCR/AdBlue.",
     "ctaLabel": "Позвонить мастеру"
   },

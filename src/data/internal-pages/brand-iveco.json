@@ -24,8 +24,8 @@
   "hero": {
     "image": "assets/img/hero-industrial-base-v3.webp",
     "mobileImage": "assets/img/hero-industrial-base-v3-mobile.webp",
-    "h1": "Ремонт Iveco в Сургуте",
-    "accent": "в Сургуте",
+    "h1": "Ремонт Iveco",
+    "accent": "Iveco",
     "lead": "Ремонт лёгких коммерческих автомобилей, среднетоннажных и тяжёлых грузовиков Iveco. Диагностируем двигатель, трансмиссию, тормоза, электрооборудование и систему очистки выхлопа.",
     "ctaLabel": "Позвонить мастеру"
   },

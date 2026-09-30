@@ -24,8 +24,8 @@
   "hero": {
     "image": "assets/img/hero-industrial-base-v3.webp",
     "mobileImage": "assets/img/hero-industrial-base-v3-mobile.webp",
-    "h1": "Ремонт Shacman в Сургуте",
-    "accent": "в Сургуте",
+    "h1": "Ремонт Shacman",
+    "accent": "Shacman",
     "lead": "Диагностика и ремонт грузовых автомобилей Shacman. Двигатель, КПП, сцепление, мосты, ходовая часть, пневматика, тормоза, электрооборудование и SCR/AdBlue.",
     "ctaLabel": "Позвонить мастеру"
   },

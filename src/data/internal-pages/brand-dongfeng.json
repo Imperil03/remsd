@@ -24,8 +24,8 @@
   "hero": {
     "image": "assets/img/hero-industrial-base-v3.webp",
     "mobileImage": "assets/img/hero-industrial-base-v3-mobile.webp",
-    "h1": "Ремонт Dongfeng в Сургуте",
-    "accent": "в Сургуте",
+    "h1": "Ремонт Dongfeng",
+    "accent": "Dongfeng",
     "lead": "Диагностика и ремонт грузовых автомобилей Dongfeng. Двигатель, КПП, сцепление, мосты, ходовая часть, пневматика, тормозная система, электрооборудование и SCR/AdBlue.",
     "ctaLabel": "Позвонить мастеру"
   },

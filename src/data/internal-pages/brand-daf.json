@@ -24,8 +24,8 @@
   "hero": {
     "image": "assets/img/hero-industrial-base-v3.webp",
     "mobileImage": "assets/img/hero-industrial-base-v3-mobile.webp",
-    "h1": "Ремонт DAF в Сургуте",
-    "accent": "в Сургуте",
+    "h1": "Ремонт DAF",
+    "accent": "DAF",
     "lead": "Диагностика и ремонт грузовых автомобилей DAF. Работаем с двигателями PACCAR, топливной системой, КПП, сцеплением, ведущими мостами, пневматикой, EBS, электрооборудованием и SCR/AdBlue.",
     "ctaLabel": "Позвонить мастеру"
   },

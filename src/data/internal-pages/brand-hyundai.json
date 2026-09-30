@@ -24,8 +24,8 @@
   "hero": {
     "image": "assets/img/hero-industrial-base-v3.webp",
     "mobileImage": "assets/img/hero-industrial-base-v3-mobile.webp",
-    "h1": "Ремонт грузовых автомобилей Hyundai в Сургуте",
-    "accent": "в Сургуте",
+    "h1": "Ремонт грузовых автомобилей Hyundai",
+    "accent": "Hyundai",
     "lead": "Диагностика и ремонт коммерческих автомобилей Hyundai. Двигатель, топливная система, КПП, сцепление, карданная передача, мосты, ходовая часть, тормоза и электрооборудование.",
     "ctaLabel": "Позвонить мастеру"
   },

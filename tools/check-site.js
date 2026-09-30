@@ -23,6 +23,12 @@ const failures = [];
 const fail = (message) => failures.push(message);
 
 try {
+  require("./lib/check-hero-headings")({ root, catalog: internalCatalog });
+} catch (error) {
+  fail(`H1: ${error.message}`);
+}
+
+try {
   require("./lib/check-repair-templates")({ root, dataDir, catalog: internalCatalog, siteConfig });
 } catch (error) {
   fail(`repair-v1: ${error.message}`);
@@ -161,6 +167,8 @@ if (!fs.existsSync(distDir)) {
     else if (description) descriptions.set(description, relative);
     const h1Count = count(html, /<h1\b/gi);
     if (h1Count !== 1) fail(`${relative}: ожидается один H1, найдено ${h1Count}`);
+    const h1Text = html.match(/<h1\b[^>]*>([\s\S]*?)<\/h1>/i)?.[1].replace(/<[^>]+>/g, "") || "";
+    if (/Сургут/iu.test(h1Text)) fail(`${relative}: город не должен упоминаться в H1`);
     if (mode === "preview" && !/<meta[^>]+name=["']robots["'][^>]+noindex/i.test(html)) fail(`${relative}: preview не закрыт noindex`);
     if (mode === "production" && /<meta[^>]+name=["']robots["'][^>]+noindex/i.test(html)) fail(`${relative}: production содержит noindex`);
     if (mode === "production" && !/<link[^>]+rel=["']canonical["']/i.test(html)) fail(`${relative}: production не содержит canonical`);

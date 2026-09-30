@@ -24,8 +24,8 @@
   "hero": {
     "image": "assets/img/hero-industrial-base-v3.webp",
     "mobileImage": "assets/img/hero-industrial-base-v3-mobile.webp",
-    "h1": "Ремонт JAC в Сургуте",
-    "accent": "в Сургуте",
+    "h1": "Ремонт JAC",
+    "accent": "JAC",
     "lead": "Диагностика и ремонт грузовых автомобилей JAC. Двигатель, топливная система, КПП, сцепление, карданная передача, мосты, ходовая часть, тормоза и электрооборудование.",
     "ctaLabel": "Позвонить мастеру"
   },
