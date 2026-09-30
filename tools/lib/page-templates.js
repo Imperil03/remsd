@@ -24,14 +24,14 @@ function loadPageTemplates(dataDir) {
 function resolvePageTemplate(source, templates, label = "page") {
   const page = structuredClone(source);
   if (page.template === undefined) {
-    if (Object.hasOwn(page, "omitSections")) fail(`${label}.omitSections: нужен шаблон repair-v1`);
+    if (Object.hasOwn(page, "omitSections")) fail(`${label}.omitSections: нужен шаблон repair-v1 или brand-v1`);
     return page;
   }
   const template = templates[page.template];
   if (!Object.hasOwn(templates, page.template) || !template) fail(`${label}: неизвестный шаблон «${page.template}»`);
   if (!page.hero || !Array.isArray(page.sections)) fail(`${label}: шаблону нужны hero и sections`);
   const omitted = page.omitSections === undefined ? [] : page.omitSections;
-  if (Object.hasOwn(page, "omitSections") && page.template !== "repair-v1") fail(`${label}.omitSections: доступно только для repair-v1`);
+  if (Object.hasOwn(page, "omitSections") && !["repair-v1", "brand-v1"].includes(page.template)) fail(`${label}.omitSections: доступно только для repair-v1 и brand-v1`);
   if (!Array.isArray(omitted) || omitted.some((type) => type !== "symptoms") || new Set(omitted).size !== omitted.length) {
     fail(`${label}.omitSections: допускается только symptoms без повторений`);
   }

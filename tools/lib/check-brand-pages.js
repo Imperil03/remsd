@@ -2,7 +2,7 @@ const assert = require("node:assert/strict");
 const fs = require("fs");
 const path = require("path");
 const { loadPageTemplates, resolvePageTemplate } = require("./page-templates");
-const { escapeHtml, validatePageDefinition } = require("./internal-pages");
+const { escapeHtml, validatePageDefinition, renderSection } = require("./internal-pages");
 
 const BRAND_SLUGS = [
   "kamaz", "maz", "ural", "daf", "dongfeng", "faw", "foton", "gaz", "hino", "howo", "hyundai",
@@ -48,6 +48,12 @@ module.exports = function checkBrandPages({ root, dataDir, catalog, siteConfig }
   assert.match(sourceMap.source.sha256, /^[a-f0-9]{64}$/i, "Карта переноса должна идентифицировать исходный Word по SHA-256");
   assert.deepEqual(sourceMap.pages.map((page) => page.route).sort(), BRAND_SLUGS.map((slug) => `remont/${slug}`).sort(), "Карта переноса должна охватывать все 23 марки");
   const provenanceByRoute = new Map(sourceMap.pages.map((page) => [page.route, page]));
+  const copyContracts = JSON.parse(fs.readFileSync(path.join(root, "tools/fixtures/brand-copy-contract.json"), "utf8"));
+  const copyByRoute = new Map(copyContracts.map((contract) => [contract.route, contract]));
+  assert.deepEqual([...copyByRoute.keys()].sort(), ["kamaz", "maz", "ural", "daf", "hino", "jac", "sany", "dongfeng", "howo", "man", "scania"].map((slug) => `remont/${slug}`).sort());
+  const revision = sourceMap.revisions.find((item) => item.id === "2026-09-30-eleven-brands");
+  assert(revision && /^[a-f0-9]{64}$/i.test(revision.source.sha256), "Не указан источник редакции марок");
+  assert.deepEqual([...revision.routes].sort(), [...copyByRoute.keys()].sort());
   const home = fs.readFileSync(path.join(root, "dist/index.html"), "utf8");
   const homeShowcase = home.match(/<section\b[^>]*\bv3-truck-brands\b[^>]*>[\s\S]*?<\/section>/i)?.[0] || "";
   const homeHeader = home.match(/<header\b[^>]*\bv3-header\b[^>]*>[\s\S]*?<\/header>/i)?.[0] || "";
@@ -59,10 +65,33 @@ module.exports = function checkBrandPages({ root, dataDir, catalog, siteConfig }
     const page = catalog.pages.find((item) => item.path === source.path);
     const section = (type) => page.sections.find((item) => item.type === type);
     const provenance = provenanceByRoute.get(source.path);
+    const copyContract = copyByRoute.get(source.path);
+    const sectionOrder = copyContract?.omitSymptoms ? SECTION_ORDER.filter((type) => type !== "symptoms") : SECTION_ORDER;
     assert.equal(file, `brand-${slug}.json`, `${label}: имя исходного файла`);
     assert.equal(source.template, "brand-v1", `${label}: нужен общий шаблон brand-v1`);
     assert.equal(source.entityRef, `brand-${slug}`, `${label}: неверная сущность марки`);
-    assert.deepEqual(page.sections.map((item) => item.type), SECTION_ORDER, `${label}: порядок блоков`);
+    assert.deepEqual(page.sections.map((item) => item.type), sectionOrder, `${label}: порядок блоков`);
+    assert.deepEqual(source.omitSections, copyContract?.omitSymptoms ? ["symptoms"] : undefined, `${label}: незапланированное исключение секции`);
+    assert.deepEqual(page.hero.facts, template.heroFacts, `${label}: общие преимущества`);
+    assert.deepEqual(section("introProof").stats, template.proofStats, `${label}: общие условия работы`);
+    for (const [key, value] of Object.entries(template.brands)) assert.deepEqual(section("brandShowcase")[key], value, `${label}: общий каталог марок`);
+    if (copyContract) {
+      assert.equal(page.sections.length, copyContract.sections);
+      assert.equal(section("introProof").paragraphs.length, copyContract.introParagraphs);
+      for (const key of ["intro", "bullets", "statement"]) assert.equal(section("introProof")[key], undefined);
+      assert.equal(section("modelRange").note, undefined);
+      assert.equal(section("costEstimate").note, undefined);
+      assert.equal(section("costEstimate").items.length, 3);
+      assert.equal(section("faq").intro, undefined);
+      if (revision.faqOverrides[slug]) {
+        const normalized = Object.fromEntries(Object.entries(section("faq").items[2]).map(([key, value]) => [key, value.replace(/\s+/g, " ")]));
+        assert.deepEqual(normalized, revision.faqOverrides[slug], `${label}: согласованная замена FAQ`);
+      }
+    } else {
+      assert.equal(section("introProof").paragraphs, undefined);
+      assert.equal(section("introProof").bullets.length, 4);
+      assert(section("introProof").statement && section("modelRange").note && section("costEstimate").note);
+    }
     assert.deepEqual(section("workStages").items, templates["repair-v1"].workStages, `${label}: этапы должны быть общими`);
     assert.deepEqual(section("faq").contact, templates["repair-v1"].faqContact, `${label}: контакт FAQ должен быть общим`);
     assert.equal(section("workStages").items.length, 5, `${label}: пять этапов`);
@@ -71,7 +100,7 @@ module.exports = function checkBrandPages({ root, dataDir, catalog, siteConfig }
       ["serviceGroups", "serviceGrid", "items"], ["popularWorks", "popularWorks", "items"],
       ["features", "editorialContent", "blocks"], ["faq", "faq", "items"], ["symptoms", "symptoms", "items"],
     ]) {
-      assert.equal(section(type)[itemsKey].length, provenance.publishedCounts[key], `${label}: ${key} не совпадает с картой переноса`);
+      assert.equal(section(type)?.[itemsKey]?.length || 0, provenance.publishedCounts[key], `${label}: ${key} не совпадает с картой переноса`);
       if (["serviceGroups", "popularWorks", "features"].includes(key)) {
         assert.equal(provenance.publishedCounts[key], provenance.sourceCounts[key], `${label}: потеряны элементы исходника ${key}`);
       }
@@ -92,7 +121,8 @@ module.exports = function checkBrandPages({ root, dataDir, catalog, siteConfig }
     assert(workCount >= 13 && workCount <= 17, `${label}: количество работ должно сохранять исходник`);
     assert.equal(section("editorialContent").blocks.length, 3, `${label}: три технических подраздела`);
     const faqCount = section("faq").items.length;
-    assert(faqCount >= 3 && faqCount <= 4, `${label}: 3–4 вопроса FAQ`);
+    if (copyContract) assert.equal(faqCount, copyContract.faq, `${label}: пять согласованных FAQ`);
+    else assert(faqCount >= 3 && faqCount <= 4, `${label}: 3–4 вопроса FAQ`);
     assert(section("modelRange").items.length, `${label}: отсутствуют модели или типы техники`);
     if (["sany", "sitrak"].includes(slug)) {
       assert(section("modelRange").items.every((item) => item.models === undefined), `${label}: нельзя добавлять отсутствующие в источнике модели`);
@@ -106,15 +136,16 @@ module.exports = function checkBrandPages({ root, dataDir, catalog, siteConfig }
 
     const html = fs.readFileSync(path.join(root, "dist", page.path, "index.html"), "utf8");
     const main = html.match(/<main\b[^>]*>[\s\S]*?<\/main>/i)?.[0] || "";
-    assert.deepEqual(buttonLinks(main), Array(4).fill(siteConfig.site.phoneHref), `${label}: четыре основные кнопки звонка`);
-    assert.equal((main.match(/<section\b[^>]*\binternal-section\b/g) || []).length, 11, `${label}: 11 отрендеренных смысловых блоков`);
-    assert.equal((main.match(/<aside\b[^>]*\binternal-inline-cta\b/g) || []).length, 2, `${label}: две встроенные панели звонка`);
-    for (const type of SECTION_ORDER) {
+    assert.deepEqual(buttonLinks(main), Array(copyContract ? 3 : 4).fill(siteConfig.site.phoneHref), `${label}: основные кнопки звонка`);
+    assert.equal((main.match(/<section\b[^>]*\binternal-section\b/g) || []).length, sectionOrder.length, `${label}: число отрендеренных смысловых блоков`);
+    assert.equal((main.match(/<aside\b[^>]*\binternal-inline-cta\b/g) || []).length, copyContract ? 1 : 2, `${label}: встроенные панели звонка`);
+    if (copyContract) assert.equal(sectionHtml(html, "symptoms"), "", `${label}: удалённые симптомы остались в HTML`);
+    for (const type of sectionOrder) {
       const rendered = sectionHtml(html, type);
       assert(rendered, `${label}: отсутствует HTML секции ${type}`);
       requireTextInHtml(rendered, section(type).title, `${label}/${type}`);
     }
-    for (const type of ["symptoms", "costEstimate"]) {
+    for (const type of ["symptoms", "costEstimate"].filter((type) => section(type))) {
       assert.deepEqual(buttonLinks(sectionHtml(html, type)), [siteConfig.site.phoneHref], `${label}/${type}: кнопка звонка`);
     }
     for (const item of section("serviceGrid").items) {
@@ -127,7 +158,8 @@ module.exports = function checkBrandPages({ root, dataDir, catalog, siteConfig }
     for (const item of section("costEstimate").items) {
       for (const text of [item.title, item.text]) requireTextInHtml(sectionHtml(html, "costEstimate"), text, `${label}/costEstimate`);
     }
-    requireTextInHtml(sectionHtml(html, "costEstimate"), section("costEstimate").note, `${label}/costEstimate`);
+    if (section("costEstimate").note) requireTextInHtml(sectionHtml(html, "costEstimate"), section("costEstimate").note, `${label}/costEstimate`);
+    else assert(!sectionHtml(html, "costEstimate").includes("internal-cost-note"), `${label}: пустое примечание стоимости`);
     const faqHtml = sectionHtml(html, "faq");
     assert.equal((faqHtml.match(/<details>/g) || []).length, faqCount, `${label}: каждый вопрос FAQ должен раскрываться`);
     for (const item of section("faq").items) {
@@ -157,7 +189,13 @@ module.exports = function checkBrandPages({ root, dataDir, catalog, siteConfig }
   validateMutation("modelRange", (section) => { section.items[0].models = [""]; }, /строка/);
   validateMutation("modelRange", (section) => { section.items[0].models = "6520"; }, /массив/);
   validateMutation("costEstimate", (section) => { section.items = []; }, /массив не должен быть пустым/);
-  validateMutation("costEstimate", (section) => { delete section.note; }, /строка/);
+  for (const note of ["", null, "<b>HTML</b>"]) validateMutation("costEstimate", (section) => { section.note = note; }, /note/);
+  const legacy = resolvePageTemplate(sources.find(({ page }) => page.path === "remont/volvo").page, templates);
+  const legacyCost = legacy.sections.find((section) => section.type === "costEstimate");
+  assert(renderSection(legacyCost, "../../", siteConfig.site).includes("internal-cost-note"));
+  delete legacyCost.note;
+  validatePageDefinition(legacy, "optional cost note", context);
+  assert(!renderSection(legacyCost, "../../", siteConfig.site).includes("internal-cost-note"));
   validateMutation("costEstimate", (section) => { delete section.cta.buttonLabel; }, /строка/);
   validateMutation("serviceGrid", (section) => { section.items[0].details = [""]; }, /строка/);
   validateMutation("serviceGrid", (section) => { section.items[0].details = "Ремонт двигателя"; }, /массив/);

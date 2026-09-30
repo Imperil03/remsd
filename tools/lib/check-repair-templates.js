@@ -46,7 +46,18 @@ module.exports = function checkRepairTemplates({ root, dataDir, catalog, siteCon
   assert.throws(() => resolvePageTemplate(undeclared, templates), /порядок секций/);
   assert.throws(() => resolvePageTemplate({ ...reference, omitSections: ["symptoms"] }, templates), /порядок секций/);
   const brandSource = sources.find((page) => page.template === "brand-v1");
-  assert.throws(() => resolvePageTemplate({ ...brandSource, omitSections: ["symptoms"] }, templates), /omitSections/);
+  const brandWithoutSymptoms = structuredClone(brandSource);
+  brandWithoutSymptoms.omitSections = ["symptoms"];
+  brandWithoutSymptoms.sections = brandWithoutSymptoms.sections.filter((section) => section.type !== "symptoms");
+  const reducedBrand = resolvePageTemplate(brandWithoutSymptoms, templates);
+  validatePageDefinition(reducedBrand, "brand without symptoms", context);
+  assert.equal(reducedBrand.sections.length, 10);
+  assert.deepEqual(reducedBrand.sections.find((section) => section.type === "workStages").items, template.workStages);
+  assert.throws(() => resolvePageTemplate({ ...brandWithoutSymptoms, omitSections: ["modelRange"] }, templates), /omitSections/);
+  const undeclaredBrand = structuredClone(brandWithoutSymptoms);
+  delete undeclaredBrand.omitSections;
+  assert.throws(() => resolvePageTemplate(undeclaredBrand, templates), /порядок секций/);
+  assert.throws(() => resolvePageTemplate({ ...reference, template: "other", omitSections: ["symptoms"] }, { ...templates, other: template }), /omitSections/);
 
   const paragraphPage = resolvePageTemplate(reference, templates);
   const paragraphIntro = paragraphPage.sections.find((section) => section.type === "introProof");

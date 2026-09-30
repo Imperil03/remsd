@@ -1,0 +1,90 @@
+[
+  {
+    "route": "remont/kamaz",
+    "sections": 10,
+    "faq": 5,
+    "omitSymptoms": true,
+    "introParagraphs": 1,
+    "costNote": false
+  },
+  {
+    "route": "remont/maz",
+    "sections": 10,
+    "faq": 5,
+    "omitSymptoms": true,
+    "introParagraphs": 1,
+    "costNote": false
+  },
+  {
+    "route": "remont/ural",
+    "sections": 10,
+    "faq": 5,
+    "omitSymptoms": true,
+    "introParagraphs": 1,
+    "costNote": false
+  },
+  {
+    "route": "remont/daf",
+    "sections": 10,
+    "faq": 5,
+    "omitSymptoms": true,
+    "introParagraphs": 1,
+    "costNote": false
+  },
+  {
+    "route": "remont/hino",
+    "sections": 10,
+    "faq": 5,
+    "omitSymptoms": true,
+    "introParagraphs": 1,
+    "costNote": false
+  },
+  {
+    "route": "remont/jac",
+    "sections": 10,
+    "faq": 5,
+    "omitSymptoms": true,
+    "introParagraphs": 1,
+    "costNote": false
+  },
+  {
+    "route": "remont/sany",
+    "sections": 10,
+    "faq": 5,
+    "omitSymptoms": true,
+    "introParagraphs": 1,
+    "costNote": false
+  },
+  {
+    "route": "remont/dongfeng",
+    "sections": 10,
+    "faq": 5,
+    "omitSymptoms": true,
+    "introParagraphs": 1,
+    "costNote": false
+  },
+  {
+    "route": "remont/howo",
+    "sections": 10,
+    "faq": 5,
+    "omitSymptoms": true,
+    "introParagraphs": 1,
+    "costNote": false
+  },
+  {
+    "route": "remont/man",
+    "sections": 10,
+    "faq": 5,
+    "omitSymptoms": true,
+    "introParagraphs": 1,
+    "costNote": false
+  },
+  {
+    "route": "remont/scania",
+    "sections": 10,
+    "faq": 5,
+    "omitSymptoms": true,
+    "introParagraphs": 1,
+    "costNote": false
+  }
+]

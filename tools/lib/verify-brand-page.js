@@ -3,11 +3,13 @@ const assert = require("node:assert/strict");
 module.exports = async function verifyBrandPage(page, viewport, definition, materializePage) {
   await materializePage(page);
   const sections = new Map(definition.sections.map((section) => [section.type, section]));
-  assert.equal(await page.locator(".internal-section").count(), 11);
+  assert.equal(await page.locator(".internal-section").count(), definition.sections.length);
   assert.equal(await page.locator(".internal-model-range__item").count(), sections.get("modelRange").items.length);
   assert.equal(await page.locator(".internal-cost-factor").count(), sections.get("costEstimate").items.length);
   assert.equal(await page.locator(".internal-price-table, form").count(), 0);
-  assert.equal(await page.locator("main a.v3-button").count(), 4);
+  assert.equal(await page.locator("main a.v3-button").count(), sections.has("symptoms") ? 4 : 3);
+  assert.equal(await page.locator(".internal-faq details").count(), sections.get("faq").items.length);
+  assert.equal(await page.locator(".internal-cost-note").count(), sections.get("costEstimate").note ? 1 : 0);
   assert.equal(await page.locator('.internal-section--brandShowcase [aria-current="page"]').count(), 1);
   assert.equal(await page.locator('.internal-section--brandShowcase a[href*="remont/"]').count(), 22);
   assert.equal(await page.locator('[data-site-nav] a[aria-current="page"]').count(), 1);
@@ -35,10 +37,17 @@ module.exports = async function verifyBrandPage(page, viewport, definition, mate
   const count = sections.get("serviceGrid").items.length;
   assert.deepEqual(metrics.rows, Array.from({ length: Math.ceil(count / columns) }, (_, i) => Math.min(columns, count - i * columns)), "Сетка направлений марки");
   assert(metrics.targets.every((target) => target.width >= 44 && target.height >= 44), "Кнопка или вопрос меньше 44px");
-  const summary = page.locator(".internal-faq summary").first();
-  await summary.focus();
-  assert.notEqual(await summary.evaluate((element) => getComputedStyle(element).outlineStyle), "none", "Нет keyboard focus FAQ");
-  await summary.press("Enter");
-  assert(await page.locator(".internal-faq details").first().getAttribute("open") !== null, "FAQ не раскрывается с клавиатуры");
-  await summary.press("Enter");
+  for (const summary of await page.locator(".internal-faq summary").all()) {
+    await summary.focus();
+    assert.notEqual(await summary.evaluate((element) => getComputedStyle(element).outlineStyle), "none", "Нет keyboard focus FAQ");
+    await summary.press("Enter");
+    assert(await summary.evaluate((element) => element.parentElement.open), "FAQ не раскрывается с клавиатуры");
+    const answer = await summary.evaluate((element) => {
+      const text = element.parentElement.querySelector("p");
+      return { width: text.clientWidth, contentWidth: text.scrollWidth };
+    });
+    assert(answer.contentWidth <= answer.width + 1, "Ответ FAQ обрезан");
+    await summary.press("Space");
+    assert(!await summary.evaluate((element) => element.parentElement.open), "FAQ не закрывается с клавиатуры");
+  }
 };

@@ -32,8 +32,8 @@
         "serviceGroups": 6,
         "popularWorks": 17,
         "features": 3,
-        "faq": 3,
-        "symptoms": 5
+        "faq": 5,
+        "symptoms": 0
       },
       "models": [
         "КАМАЗ-5490",
@@ -161,7 +161,9 @@
           ]
         }
       ],
-      "editorialNotes": []
+      "editorialNotes": [
+        "2026-09-30-eleven-brands: one-paragraph intro, omitted symptoms, five FAQ, revised local cost factors and no repeated model/cost notes; shared data and model lists preserved."
+      ]
     },
     {
       "brand": "МАЗ",
@@ -181,8 +183,8 @@
         "serviceGroups": 6,
         "popularWorks": 17,
         "features": 3,
-        "faq": 4,
-        "symptoms": 5
+        "faq": 5,
+        "symptoms": 0
       },
       "models": [
         "МАЗ-5440",
@@ -309,7 +311,9 @@
           ]
         }
       ],
-      "editorialNotes": []
+      "editorialNotes": [
+        "2026-09-30-eleven-brands: one-paragraph intro, omitted symptoms, five FAQ, revised local cost factors and no repeated model/cost notes; shared data and model lists preserved."
+      ]
     },
     {
       "brand": "УРАЛ",
@@ -329,8 +333,8 @@
         "serviceGroups": 7,
         "popularWorks": 15,
         "features": 3,
-        "faq": 3,
-        "symptoms": 4
+        "faq": 5,
+        "symptoms": 0
       },
       "models": [
         "УРАЛ NEXT",
@@ -454,7 +458,9 @@
           ]
         }
       ],
-      "editorialNotes": []
+      "editorialNotes": [
+        "2026-09-30-eleven-brands: one-paragraph intro, omitted symptoms, five FAQ, revised local cost factors and no repeated model/cost notes; shared data and model lists preserved."
+      ]
     },
     {
       "brand": "DAF",
@@ -474,8 +480,8 @@
         "serviceGroups": 6,
         "popularWorks": 16,
         "features": 3,
-        "faq": 3,
-        "symptoms": 4
+        "faq": 5,
+        "symptoms": 0
       },
       "models": [
         "DAF XF",
@@ -600,7 +606,9 @@
           ]
         }
       ],
-      "editorialNotes": []
+      "editorialNotes": [
+        "2026-09-30-eleven-brands: one-paragraph intro, omitted symptoms, five FAQ, revised local cost factors and no repeated model/cost notes; shared data and model lists preserved."
+      ]
     },
     {
       "brand": "Dongfeng",
@@ -620,8 +628,8 @@
         "serviceGroups": 6,
         "popularWorks": 15,
         "features": 3,
-        "faq": 3,
-        "symptoms": 3
+        "faq": 5,
+        "symptoms": 0
       },
       "models": [
         "GX",
@@ -746,7 +754,9 @@
           ]
         }
       ],
-      "editorialNotes": []
+      "editorialNotes": [
+        "2026-09-30-eleven-brands: one-paragraph intro, omitted symptoms, five FAQ, revised local cost factors and no repeated model/cost notes; shared data and model lists preserved."
+      ]
     },
     {
       "brand": "FAW",
@@ -1206,8 +1216,8 @@
         "serviceGroups": 6,
         "popularWorks": 15,
         "features": 3,
-        "faq": 3,
-        "symptoms": 5
+        "faq": 5,
+        "symptoms": 0
       },
       "models": [
         "Hino 300",
@@ -1324,7 +1334,9 @@
           ]
         }
       ],
-      "editorialNotes": []
+      "editorialNotes": [
+        "2026-09-30-eleven-brands: one-paragraph intro, omitted symptoms, five FAQ, revised local cost factors and no repeated model/cost notes; shared data and model lists preserved."
+      ]
     },
     {
       "brand": "HOWO",
@@ -1344,8 +1356,8 @@
         "serviceGroups": 6,
         "popularWorks": 16,
         "features": 3,
-        "faq": 3,
-        "symptoms": 3
+        "faq": 5,
+        "symptoms": 0
       },
       "models": [
         "A7",
@@ -1463,7 +1475,9 @@
           ]
         }
       ],
-      "editorialNotes": []
+      "editorialNotes": [
+        "2026-09-30-eleven-brands: one-paragraph intro, omitted symptoms, five FAQ, revised local cost factors and no repeated model/cost notes; shared data and model lists preserved."
+      ]
     },
     {
       "brand": "Hyundai",
@@ -1898,8 +1912,8 @@
         "serviceGroups": 6,
         "popularWorks": 15,
         "features": 3,
-        "faq": 3,
-        "symptoms": 3
+        "faq": 5,
+        "symptoms": 0
       },
       "models": [
         "JAC N-серия"
@@ -2015,7 +2029,9 @@
           ]
         }
       ],
-      "editorialNotes": []
+      "editorialNotes": [
+        "2026-09-30-eleven-brands: one-paragraph intro, omitted symptoms, five FAQ, revised local cost factors and no repeated model/cost notes; shared data and model lists preserved."
+      ]
     },
     {
       "brand": "MAN",
@@ -2035,8 +2051,8 @@
         "serviceGroups": 6,
         "popularWorks": 15,
         "features": 3,
-        "faq": 3,
-        "symptoms": 3
+        "faq": 5,
+        "symptoms": 0
       },
       "models": [
         "TGL",
@@ -2154,7 +2170,9 @@
           ]
         }
       ],
-      "editorialNotes": []
+      "editorialNotes": [
+        "2026-09-30-eleven-brands: one-paragraph intro, omitted symptoms, five FAQ, revised local cost factors and no repeated model/cost notes; shared data and model lists preserved."
+      ]
     },
     {
       "brand": "Mercedes-Benz",
@@ -2590,8 +2608,8 @@
         "serviceGroups": 5,
         "popularWorks": 13,
         "features": 3,
-        "faq": 3,
-        "symptoms": 3
+        "faq": 5,
+        "symptoms": 0
       },
       "models": [],
       "sourceSystemList": [
@@ -2704,7 +2722,8 @@
         }
       ],
       "editorialNotes": [
-        "SANY explicitly separated into truck chassis and special machinery; no models invented."
+        "SANY explicitly separated into truck chassis and special machinery; no models invented.",
+        "2026-09-30-eleven-brands: one-paragraph intro, omitted symptoms, five FAQ, revised local cost factors and no repeated model/cost notes; shared data and model lists preserved."
       ]
     },
     {
@@ -2725,8 +2744,8 @@
         "serviceGroups": 6,
         "popularWorks": 14,
         "features": 3,
-        "faq": 3,
-        "symptoms": 4
+        "faq": 5,
+        "symptoms": 0
       },
       "models": [
         "P",
@@ -2844,7 +2863,9 @@
           ]
         }
       ],
-      "editorialNotes": []
+      "editorialNotes": [
+        "2026-09-30-eleven-brands: one-paragraph intro, omitted symptoms, five FAQ, revised local cost factors and no repeated model/cost notes; shared data and model lists preserved."
+      ]
     },
     {
       "brand": "Shacman",
@@ -3262,6 +3283,39 @@
         }
       ],
       "editorialNotes": []
+    }
+  ],
+  "revisions": [
+    {
+      "id": "2026-09-30-eleven-brands",
+      "source": {
+        "fileName": "remsd-11-marok-redaktura.md",
+        "sha256": "83e4cf3b9fb30e91bfd285d95f382399572540db1da0227056910885cebf3fa2"
+      },
+      "routes": [
+        "remont/kamaz",
+        "remont/maz",
+        "remont/ural",
+        "remont/daf",
+        "remont/hino",
+        "remont/jac",
+        "remont/sany",
+        "remont/dongfeng",
+        "remont/howo",
+        "remont/man",
+        "remont/scania"
+      ],
+      "description": "Owner-approved 11-page copy revision; two FAQ replacements for KAMAZ and JAC approved separately. Source Word mapping below records original provenance; publishedCounts reflect the current edition.",
+      "faqOverrides": {
+        "kamaz": {
+          "question": "Нужно ли менять сцепление, если коробку уже сняли для ремонта?",
+          "answer": "Необязательно. Состояние сцепления оценивают отдельно. При снятой КПП проверяют его детали и включают замену в перечень работ, если обнаружены износ или повреждения."
+        },
+        "jac": {
+          "question": "Что передать вместе с КПП, которую уже разобрали в другом сервисе?",
+          "answer": "Все снятые детали, включая подшипники, регулировочные шайбы, крепёж и повреждённые элементы. Также полезны фотографии разборки и описание первоначальной неисправности. По неполному комплекту сложнее определить причину поломки и объём восстановления."
+        }
+      }
     }
   ]
 }

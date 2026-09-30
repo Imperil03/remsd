@@ -386,7 +386,7 @@ const SECTION_REGISTRY = {
         requireText(item.text, `${label}.items[${index}].text`);
         requireText(item.icon, `${label}.items[${index}].icon`);
       });
-      requireText(section.note, `${label}.note`);
+      if (section.note !== undefined) requireText(section.note, `${label}.note`);
       validateCta(section.cta, `${label}.cta`);
     },
     render(section, { site }) {
@@ -398,7 +398,7 @@ const SECTION_REGISTRY = {
       return `<section class="internal-section internal-section--costEstimate" id="${escapeHtml(section.id)}" aria-labelledby="${escapeHtml(section.id)}-title">
   <div class="container">${renderSectionHead(section)}
     <div class="internal-cost-layout"><div class="internal-cost-main">
-      <ul class="internal-cost-factors">${items}</ul><p class="internal-cost-note">${escapeHtml(section.note)}</p>
+      <ul class="internal-cost-factors">${items}</ul>${section.note ? `<p class="internal-cost-note">${escapeHtml(section.note)}</p>` : ""}
     </div>${cta}</div>
   </div>
 </section>`;

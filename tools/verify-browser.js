@@ -932,7 +932,7 @@ async function run() {
         const brandReference = ["kamaz", "ural", "sany", "sitrak", "mitsubishi-fuso"].some((slug) => definition.path === `remont/${slug}`);
         const viewports = isCompany || isContact || isDocuments
           ? [...chromeViewports, { name: "company-header-1121", width: 1121, height: 900 }]
-          : isRepairTemplate || brandReference || definition.rental ? chromeViewports : chromeViewports.filter((viewport) => [1440, 390].includes(viewport.width));
+          : isRepairTemplate || brandReference || (isBrand && requestedPaths.includes(definition.path)) || definition.rental ? chromeViewports : chromeViewports.filter((viewport) => [1440, 390].includes(viewport.width));
         for (const viewport of viewports) {
           const context = await browser.newContext({ viewport });
           const page = await context.newPage();
