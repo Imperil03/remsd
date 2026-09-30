@@ -1269,6 +1269,25 @@ body.is-nav-open {
   gap: 28px;
 }
 
+.v3-footer__legal {
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--border-inverse);
+  font-size: var(--type-small-size);
+}
+
+.v3-footer__legal a {
+  display: inline-block;
+  min-height: var(--control-height-compact);
+  padding-block: 10px;
+  color: var(--text-inverse);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.v3-footer__legal a:hover { color: var(--action-primary); }
+.v3-footer__legal a:focus-visible { outline: var(--focus-ring); outline-offset: 4px; }
+.v3-footer__legal p { margin: 0; }
+
 .v3-footer__bottom {
   display: flex;
   align-items: center;

@@ -61,6 +61,7 @@
     "arenda-mini-traktory.json",
     "arenda-manipulyatory.json",
     "arenda-perevozka-negabarita.json",
-    "arenda-pererabotka-betona.json"
+    "arenda-pererabotka-betona.json",
+    "policy.json"
   ]
 }

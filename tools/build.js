@@ -29,7 +29,7 @@ const iconVersion = createHash("sha256")
   .update(fs.readFileSync(path.join(assetsDir, "img", "favicon.png")))
   .update(fs.readFileSync(path.join(assetsDir, "img", "apple-touch-icon.png")))
   .digest("hex").slice(0, 12);
-const assetVersion = process.env.ASSET_VERSION || "20260930-rental-menu-spacing-v1";
+const assetVersion = process.env.ASSET_VERSION || "20260930-policy-v1";
 
 function fail(message) {
   throw new Error(`[build] ${message}`);
@@ -105,6 +105,7 @@ function createCssBundles(cssDir) {
     "company.css": ["design-system.css", "styles.css", "site-chrome.css", "company-page.css", "document-ui.css"],
     "contact.css": ["design-system.css", "styles.css", "site-chrome.css", "contact-page.css"],
     "certificates.css": ["design-system.css", "styles.css", "site-chrome.css", "document-ui.css", "certificates-page.css"],
+    "policy.css": ["design-system.css", "styles.css", "site-chrome.css", "policy-page.css"],
   };
   for (const [target, sources] of Object.entries(bundles)) {
     let css = sources.map((source) => fs.readFileSync(path.join(cssDir, source), "utf8")).join("\n");
@@ -291,7 +292,7 @@ function buildInternalStructuredData(page, config, baseUrl) {
     return jsonLdScript({
       "@context": "https://schema.org",
       "@graph": [
-        { "@type": page.family === "documents" ? "CollectionPage" : page.family === "contact" ? "ContactPage" : "AboutPage", "@id": `${url}#page`, url, name: page.metadata.title,
+        { "@type": page.layout === "policy" ? "WebPage" : page.family === "documents" ? "CollectionPage" : page.family === "contact" ? "ContactPage" : "AboutPage", "@id": `${url}#page`, url, name: page.metadata.title,
           description: page.metadata.description, inLanguage: config.site.language,
           about: { "@id": `${baseUrl}#organization` }, breadcrumb: { "@id": `${url}#breadcrumb` } },
         { "@type": "BreadcrumbList", "@id": `${url}#breadcrumb`, itemListElement: breadcrumbs },
@@ -459,8 +460,9 @@ function buildInternalPages(pages, partials, config, mode, baseUrl, writtenRoute
     const closingPhone = `<a class="v3-button v3-button--primary" href="${escapeHtml(config.site.phoneHref)}">${escapeHtml(page.closingCta?.buttonLabel || "")}</a>`;
     const isCompany = page.family === "company";
     const isContact = page.family === "contact";
-    const isDocuments = page.family === "documents";
-    const surface = isDocuments ? "certificates" : isContact ? "contact" : isCompany ? "company" : "internal";
+    const isPolicy = page.layout === "policy";
+    const isDocuments = page.family === "documents" && !isPolicy;
+    const surface = isPolicy ? "policy" : isDocuments ? "certificates" : isContact ? "contact" : isCompany ? "company" : "internal";
     const template = fs.readFileSync(path.join(templatesDir, `${surface}-page.html`), "utf8");
     const internalCriticalFile = path.join(assetsDir, "css", `${page.rental ? "rental" : surface}-critical.css`);
     const target = outputFileForRoute(page.path);
@@ -488,6 +490,9 @@ function buildInternalPages(pages, partials, config, mode, baseUrl, writtenRoute
       heroImage: escapeHtml(page.hero.image || ""),
       heroMobileImage: escapeHtml(page.hero.mobileImage || ""),
       h1: renderCatalogHeroTitle(page.hero),
+      policyDate: isPolicy ? escapeHtml(page.updatedAt) : "",
+      policyDateLabel: isPolicy ? new Intl.DateTimeFormat("ru-RU", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(page.updatedAt)) : "",
+      policyContents: isPolicy ? page.sections.map((section) => `<li><a href="#${escapeHtml(section.id)}">${escapeHtml(section.title)}</a></li>`).join("") : "",
       lead: escapeHtml(page.hero.lead || ""),
       heroCtaLabel: escapeHtml(page.hero.ctaLabel || ""),
       heroFacts: page.hero.facts ? renderCatalogHeroFacts(page.hero) : "",

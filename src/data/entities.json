@@ -2,6 +2,12 @@
   "schemaVersion": 1,
   "entities": [
     {
+      "id": "proof-privacy-policy",
+      "type": "proof",
+      "name": "Политика обработки персональных данных",
+      "description": "Порядок обработки персональных данных ООО «РЕМСД» и контакты для обращений субъектов."
+    },
+    {
       "id": "location-remsd-base",
       "type": "location",
       "name": "Ремонтная база РемСД",

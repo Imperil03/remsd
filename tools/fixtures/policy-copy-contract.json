@@ -1,0 +1,21 @@
+{
+  "sourceUrl": "https://alexandrov.digital/policy/",
+  "fetchedAt": "2026-09-30",
+  "sourceTextSha256": "e15bbf1c27ef1cd542614bb70897ed3e755d0a8ac804718a103ab0854f822dad",
+  "textSha256": "a2ef55ea22c211d88ca0081a5e5941082c7b071b8787018949224535b324d283",
+  "replacements": [
+    {
+      "from": "ИП Александров Дмитрий Николаевич",
+      "to": "ООО «РЕМСД»"
+    },
+    {
+      "from": "https://alexandrov.digital/",
+      "to": "https://remsd.ru/"
+    },
+    {
+      "from": "Imperil@yandex.ru",
+      "to": "info@remsd.ru"
+    }
+  ],
+  "sectionCount": 12
+}

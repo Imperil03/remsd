@@ -62,13 +62,13 @@ if ((tokenCss.match(/:root\s*\{/g) || []).length !== 1) {
   fail(`${tokenFile}: должен содержать ровно один :root`);
 }
 
-const consumerCssFiles = ["styles.css", "site-chrome.css", "styles-v3.css", "internal-pages.css", "company-page.css", "contact-page.css", "document-ui.css", "certificates-page.css"];
+const consumerCssFiles = ["styles.css", "site-chrome.css", "styles-v3.css", "internal-pages.css", "company-page.css", "contact-page.css", "document-ui.css", "certificates-page.css", "policy-page.css"];
 for (const file of consumerCssFiles) {
   const source = fs.readFileSync(path.join(cssDir, file), "utf8");
   if (/:root\s*\{/.test(source)) fail(`assets/css/${file}: глобальные токены разрешены только в design-system.css`);
 }
 
-for (const file of ["styles-v3.css", "internal-pages.css", "company-page.css", "contact-page.css", "document-ui.css", "certificates-page.css"]) {
+for (const file of ["styles-v3.css", "internal-pages.css", "company-page.css", "contact-page.css", "document-ui.css", "certificates-page.css", "policy-page.css"]) {
   const source = fs.readFileSync(path.join(cssDir, file), "utf8");
   const sharedChromeSelector = source.match(/\.(?:v3-(?:header|nav|logo|footer)|main-nav|mobile-callbar|skip-link)[\w-]*/);
   if (sharedChromeSelector) {
@@ -194,6 +194,7 @@ const expectedBundles = {
   "company.css": ["design-system.css", "styles.css", "site-chrome.css", "company-page.css", "document-ui.css"],
   "contact.css": ["design-system.css", "styles.css", "site-chrome.css", "contact-page.css"],
   "certificates.css": ["design-system.css", "styles.css", "site-chrome.css", "document-ui.css", "certificates-page.css"],
+  "policy.css": ["design-system.css", "styles.css", "site-chrome.css", "policy-page.css"],
 };
 const buildSource = read("tools/build.js");
 for (const [bundle, expected] of Object.entries(expectedBundles)) {
@@ -217,7 +218,7 @@ function htmlFiles(dir) {
   });
 }
 
-const physicalLayers = /assets\/css\/(?:design-system|styles|site-chrome|styles-v3|internal-pages|company-page|contact-page|document-ui|certificates-page)\.css/;
+const physicalLayers = /assets\/css\/(?:design-system|styles|site-chrome|styles-v3|internal-pages|company-page|contact-page|document-ui|certificates-page|policy-page)\.css/;
 for (const file of htmlFiles(srcDir)) {
   const source = fs.readFileSync(file, "utf8");
   if (physicalLayers.test(source)) {

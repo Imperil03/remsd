@@ -2,6 +2,13 @@
   "schemaVersion": 1,
   "relations": [
     {
+      "id": "rel-remsd-privacy-policy",
+      "subject": "organization-remsd",
+      "predicate": "publishes",
+      "predicateLabel": "публикует политику обработки персональных данных",
+      "object": "proof-privacy-policy"
+    },
+    {
       "id": "rel-remsd-base",
       "subject": "organization-remsd",
       "predicate": "hasLocation",

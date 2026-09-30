@@ -22,6 +22,9 @@
 - `company.css = design-system.css + styles.css + site-chrome.css + company-page.css + document-ui.css`.
 - `contact.css = design-system.css + styles.css + site-chrome.css + contact-page.css`.
 - `certificates.css = design-system.css + styles.css + site-chrome.css + document-ui.css + certificates-page.css`.
+- `policy.css = design-system.css + styles.css + site-chrome.css + policy-page.css`.
+
+Политика `/policy/` использует семейство `documents` с `layout: "policy"`, обычную текстовую шапку, раскрываемое содержание и секции `policyText`. Это самостоятельный текстовый документ с JSON-LD `WebPage`; каталог сертификатов и viewer к нему не подключаются. Абзацы, списки и таблица источника сохраняются по контракту `docs/privacy-policy.md`. В общем футере есть ссылка на политику и дословный текст об отсутствии публичной оферты.
 
 Страница контактов имеет отдельную композицию из телефонного справочника, проезда и реквизитов, без заключительной рекламной CTA. На 720 px и ниже блоки идут в один столбец. Контракт данных, PDF, копирования и карты — `docs/contact-page.md`. Шрифты `contact.css` также исключаются из отложенного бандла при наличии эквивалентных inline-объявлений.
 

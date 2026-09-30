@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{title}}</title>
+    <meta name="description" content="{{description}}">
+    <link rel="preload" as="font" href="{{rootPath}}assets/fonts/montserrat-variable-cyrillic.woff2" type="font/woff2" crossorigin>
+    <link rel="preload" as="font" href="{{rootPath}}assets/fonts/source-sans-3-variable-cyrillic.woff2" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="{{rootPath}}assets/css/policy.css?v={{assetVersion}}">
+  </head>
+  <body class="policy-page">
+    <a class="skip-link" href="#main-content">К основному содержанию</a>
+    <div class="site-header-rail">{{v3-header}}</div>
+    <main id="main-content" tabindex="-1">
+      <header class="policy-hero">
+        <div class="container">
+          {{breadcrumbs}}
+          <h1>{{h1}}</h1>
+          <p>Редакция от <time datetime="{{policyDate}}">{{policyDateLabel}}</time></p>
+        </div>
+      </header>
+      <div class="container policy-layout">
+        <details class="policy-contents">
+          <summary>Содержание политики</summary>
+          <nav aria-label="Содержание политики"><ol>{{policyContents}}</ol></nav>
+        </details>
+        <div class="policy-copy">{{sections}}</div>
+      </div>
+    </main>
+    {{v3-footer}}
+    <script src="{{rootPath}}assets/js/main.js?v={{assetVersion}}" defer></script>
+  </body>
+</html>

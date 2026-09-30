@@ -6,6 +6,7 @@ const { createCompanySections } = require("./company-sections");
 const { createContactSections } = require("./contact-sections");
 const { createDocumentSections } = require("./documents");
 const { createRentalSections } = require("./rental-sections");
+const { createPolicySections } = require("./policy-sections");
 
 const PAGE_FAMILIES = new Set(["hub", "service", "brand", "company", "contact", "documents"]);
 const ENTITY_TYPE_BY_FAMILY = { hub: "service", service: "service", brand: "brand", company: "organization", contact: "location", documents: "proof" };
@@ -117,6 +118,7 @@ function renderInlineCta({ id, modifier, cta }, site) {
 }
 
 const SECTION_REGISTRY = {
+  ...createPolicySections({ requireArray, requireText, escapeHtml }),
   ...createRentalSections({ requireArray, requireText, validateAsset, escapeHtml, renderSectionHead }),
   ...createCompanySections({ requireObject, requireArray, requireText, validateAsset, escapeHtml, normalizeRoute }),
   ...createContactSections({ requireText, validateAsset, escapeHtml }),
@@ -517,6 +519,11 @@ function validatePageDefinition(page, label, context) {
   }
   if (page.rental !== undefined && typeof page.rental !== "boolean") fail(`${label}.rental: ожидается boolean`);
   if (page.rental && !/^arenda(?:\/|$)/.test(page.path)) fail(`${label}.rental: страница должна находиться в разделе arenda`);
+  if (page.layout !== undefined) {
+    if (page.layout !== "policy" || page.family !== "documents") fail(`${label}.layout: policy разрешён только для documents`);
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(page.updatedAt || "") || Number.isNaN(Date.parse(page.updatedAt))) fail(`${label}.updatedAt: нужна дата редакции`);
+    if (!page.sections?.every((section) => section.type === "policyText")) fail(`${label}: policy использует только policyText`);
+  }
   (["contact", "documents"].includes(page.family) ? ["h1"] : ["h1", "lead", "ctaLabel"]).forEach((key) => requireText(hero[key], `${label}.hero.${key}`));
   if (hero.accent !== undefined) requireText(hero.accent, `${label}.hero.accent`);
   if (!["contact", "documents"].includes(page.family)) {

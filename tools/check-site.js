@@ -14,6 +14,7 @@ const dataDir = path.join(root, "src", "data");
 const assetsDir = path.join(root, "assets");
 const siteConfig = JSON.parse(fs.readFileSync(path.join(dataDir, "site-config.json"), "utf8"));
 const internalCatalog = loadInternalPageCatalog({ root, dataDir, assetsDir, siteConfig });
+require("./lib/check-policy-page")({ root, catalog: internalCatalog, siteConfig });
 const expectedHtml = ["404.html", "index.html", ...internalCatalog.pages.map((page) => `${page.path}/index.html`)].sort();
 const referenceRoute = internalCatalog.manifest.referenceByFamily.hub;
 const internalFile = `${referenceRoute}/index.html`;
@@ -129,11 +130,11 @@ if (!fs.existsSync(distDir)) {
     fail(`сборка должна содержать ровно ${expectedHtml.join(", ")}; найдено: ${actualHtml.join(", ")}`);
   }
   const publicCss = fs.readdirSync(path.join(distDir, "assets", "css")).filter((file) => file.endsWith(".css")).sort();
-  const expectedCss = ["base.css", "certificates.css", "company.css", "contact.css", "home-critical.css", "home.css", "internal.css"];
+  const expectedCss = ["base.css", "certificates.css", "company.css", "contact.css", "home-critical.css", "home.css", "internal.css", "policy.css"];
   if (JSON.stringify(publicCss) !== JSON.stringify(expectedCss)) {
     fail(`публичный CSS должен содержать только ${expectedCss.join(", ")}; найдено: ${publicCss.join(", ")}`);
   }
-  const cssLimits = { "base.css": 45 * 1024, "certificates.css": 55 * 1024, "company.css": 60 * 1024, "contact.css": 55 * 1024, "home.css": 85 * 1024, "internal.css": 70 * 1024 };
+  const cssLimits = { "base.css": 45 * 1024, "certificates.css": 55 * 1024, "company.css": 60 * 1024, "contact.css": 55 * 1024, "home.css": 85 * 1024, "internal.css": 70 * 1024, "policy.css": 50 * 1024 };
   for (const [file, limit] of Object.entries(cssLimits)) {
     const size = fs.statSync(path.join(distDir, "assets", "css", file)).size;
     if (size > limit) fail(`${file}: ${size} байт превышает лимит ${limit} байт`);
@@ -181,7 +182,7 @@ if (!fs.existsSync(distDir)) {
   for (const page of internalCatalog.pages) {
     const relative = `${page.path}/index.html`;
     const html = fs.readFileSync(path.join(distDir, relative), "utf8");
-    for (const type of ["BreadcrumbList", page.family === "documents" ? "CollectionPage" : page.family === "contact" ? "ContactPage" : page.family === "company" ? "AboutPage" : "Service", "LocalBusiness", "AutoRepair"]) {
+    for (const type of ["BreadcrumbList", page.layout === "policy" ? "WebPage" : page.family === "documents" ? "CollectionPage" : page.family === "contact" ? "ContactPage" : page.family === "company" ? "AboutPage" : "Service", "LocalBusiness", "AutoRepair"]) {
       if (!typesByPage.get(relative)?.has(type)) fail(`${relative}: JSON-LD не содержит ${type}`);
     }
     for (const forbidden of ["FAQPage", "Offer", "AggregateRating", "Review"]) {
