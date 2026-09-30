@@ -30,13 +30,21 @@ module.exports = async function verifyRentalPage(page, viewport, definition, mat
   const metrics = await page.evaluate(() => {
     const clipped = [...document.querySelectorAll('main h1, main h2, main h3, main p, main dt, main dd, main th, main td')].filter((el) => el.clientWidth > 0 && el.scrollWidth > el.clientWidth + 1).map((el) => el.textContent.trim());
     const photos = [...document.querySelectorAll('.rental-category img, .rental-machine img')].filter((el) => !el.complete || !el.naturalWidth).map((el) => el.src);
+    const heroImage = document.querySelector('.internal-hero__media img');
+    const heroPhoto = document.querySelector('.internal-hero__media').getBoundingClientRect();
+    const lastHeroAction = document.querySelector('.internal-hero .rental-messenger').getBoundingClientRect();
+    const firstFact = document.querySelector('.internal-hero__facts > div').getBoundingClientRect();
+    const heroImageReady = heroImage.complete && heroImage.naturalWidth > 0;
+    const mobileHeroPhotoClear = innerWidth > 720 || (heroPhoto.top >= lastHeroAction.bottom && heroPhoto.bottom <= firstFact.top);
     // Shared header controls have their own viewport contract in verifyNavigation.
     const shortTargets = [...document.querySelectorAll('main a, main summary')].filter((el) => {const r=el.getBoundingClientRect(); return r.width>0 && r.height>0 && !el.closest('[inert], .site-header-rail') && !el.classList.contains('skip-link') && (r.width<44 || r.height<44);}).map((el) => el.textContent.trim());
-    return {overflow:document.documentElement.scrollWidth-innerWidth,clipped,photos,shortTargets};
+    return {overflow:document.documentElement.scrollWidth-innerWidth,clipped,photos,shortTargets,heroImageReady,mobileHeroPhotoClear};
   });
   assert(metrics.overflow <= 1, 'Горизонтальная прокрутка');
   assert.deepEqual(metrics.clipped, [], `Обрезанный текст: ${metrics.clipped.join('; ')}`);
   assert.deepEqual(metrics.photos, [], 'Фотографии не загрузились');
+  assert(metrics.heroImageReady, 'Изображение первого экрана не загрузилось');
+  assert(metrics.mobileHeroPhotoClear, 'На телефоне изображение первого экрана пересекается с действиями или контактами');
   assert.deepEqual(metrics.shortTargets, [], `Цели меньше 44px: ${metrics.shortTargets.join('; ')}`);
   const summary=page.locator('.internal-faq summary').first();
   if(await summary.count()) {

@@ -42,6 +42,7 @@ const targets = [
 
 if (internalCatalog.pages.some((page) => page.path === "arenda")) targets.push({
   name: "rental", file: "arenda/index.html", css: "internal.css", fontSources: ["styles.css"],
+  extraSources: ["rental-hero.css"],
   heroClass: "internal-hero", bodyClass: "internal-page internal-page--hub internal-page--rental",
   output: "rental-critical.css", prepend: ".internal-page main>:not(.internal-hero){content-visibility:hidden;contain-intrinsic-block-size:900px}",
 });
@@ -76,6 +77,7 @@ if (internalCatalog.manifest.referenceByFamily.documents) {
 // Read canonical sources rather than previously generated critical CSS or bundles,
 // which may already omit definitions supplied by the inline critical stylesheet.
 for (const target of targets) {
+  target.extraCss = (target.extraSources || []).map((file) => fs.readFileSync(path.join(root, "assets", "css", file), "utf8")).join("\n");
   target.fontFaces = extractFontFaces(target.fontSources
     .map((file) => fs.readFileSync(path.join(root, "assets", "css", file), "utf8"))
     .join("\n"));
@@ -88,7 +90,7 @@ function criticalShell(target) {
   if (!hero) throw new Error(`Не удалось выделить первый экран ${target.name}`);
   const fontFaces = target.fontFaces.replaceAll("../fonts/", "./assets/fonts/");
   const extra = target.extraClass ? html.match(new RegExp(`<section class="[^"]*${target.extraClass}[^"]*"[\\s\\S]*?<\\/section>`))?.[0] || "" : "";
-  return `<!doctype html><html lang="ru"><head><meta charset="utf-8"><base href="/"><style>${fontFaces}</style><link rel="stylesheet" href="./assets/css/${target.css}"></head><body class="${target.bodyClass}"><main>${hero}${extra}</main></body></html>`;
+  return `<!doctype html><html lang="ru"><head><meta charset="utf-8"><base href="/"><style>${fontFaces}</style><link rel="stylesheet" href="./assets/css/${target.css}"><style>${target.extraCss}</style></head><body class="${target.bodyClass}"><main>${hero}${extra}</main></body></html>`;
 }
 
 function resolveRequest(url) {
@@ -187,6 +189,8 @@ async function generateTarget(browser, target) {
   criticalRoot.append(postcss.parse(target.prepend));
   criticalRoot.append(postcss.parse(target.fontFaces));
   criticalRoot.append(keepUsedNodes(parsed, ranges));
+  // Small hero-only layers stay inline on their own surface, outside shared bundles.
+  if (target.extraCss) criticalRoot.append(postcss.parse(target.extraCss));
   const normalized = criticalRoot.toString()
     .replaceAll("./assets/fonts/", "../fonts/")
     .replaceAll("./assets/img/", "../img/");

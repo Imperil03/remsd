@@ -37,8 +37,8 @@
     "accent": "трубоукладчика",
     "lead": "Трубоукладчик поднимает и удерживает трубные секции при сборке, а также опускает трубопровод в траншею. РемСД предлагает в аренду трубоукладчик 90 т; стоимость рассчитывается по запросу.",
     "ctaLabel": "Обсудить аренду",
-    "image": "assets/img/rental/hero.webp",
-    "mobileImage": "assets/img/rental/hero-mobile.webp",
+    "image": "assets/img/rental-hero/fleet-desktop.webp",
+    "mobileImage": "assets/img/rental-hero/fleet-mobile.webp",
     "facts": [
       {
         "icon": "delivery",

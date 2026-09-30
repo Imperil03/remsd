@@ -51,7 +51,11 @@ async function main() {
     }
     console.log(`Prepared ${output} (${info.width}×${info.height})`);
   }
-  fs.writeFileSync(path.join(root, "docs/rental-image-sources.json"), JSON.stringify({ schemaVersion: 1, sourcePage, capturedAt: "2026-09-26", images, hero: { sourceImageId: "crane-50", outputs: ["assets/img/rental/hero.webp", "assets/img/rental/hero-mobile.webp"] } }, null, 2) + "\n");
+  const heroRecord = "docs/rental-hero-image-sources.json";
+  const hero = fs.existsSync(path.join(root, heroRecord))
+    ? { sourceRecord: heroRecord, kind: "generated-illustration", outputs: JSON.parse(fs.readFileSync(path.join(root, heroRecord), "utf8")).variants.map((item) => item.output) }
+    : { sourceImageId: "crane-50", outputs: ["assets/img/rental/hero.webp", "assets/img/rental/hero-mobile.webp"] };
+  fs.writeFileSync(path.join(root, "docs/rental-image-sources.json"), JSON.stringify({ schemaVersion: 1, sourcePage, capturedAt: "2026-09-26", images, hero }, null, 2) + "\n");
   for (const item of [...catalog.categories, ...catalog.equipment]) {
     const media = images.find((image) => image.output === item.image);
     if (media) { item.imageWidth = media.width; item.imageHeight = media.height; }

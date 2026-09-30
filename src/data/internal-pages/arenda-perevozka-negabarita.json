@@ -17,7 +17,7 @@
     "title": "Перевозка негабаритных грузов в Сургуте — РемСД",
     "description": "Перевозка негабаритных грузов в Сургуте. Подбор перевозки по габаритам, массе и маршруту. Расчёт стоимости и условия заказа.",
     "serviceType": "Перевозка негабаритных грузов",
-    "socialImage": "assets/img/rental/hero.webp"
+    "socialImage": "assets/img/rental-hero/fleet-desktop.webp"
   },
   "breadcrumbs": [
     {
@@ -37,8 +37,8 @@
     "accent": "негабаритных грузов",
     "lead": "РемСД предлагает перевозку негабаритных грузов в Сургуте и ХМАО. Длина, ширина, высота и масса груза определяют выбор транспорта; маршрут и условия подъезда влияют на возможность перевозки.",
     "ctaLabel": "Обсудить перевозку",
-    "image": "assets/img/rental/hero.webp",
-    "mobileImage": "assets/img/rental/hero-mobile.webp",
+    "image": "assets/img/rental-hero/fleet-desktop.webp",
+    "mobileImage": "assets/img/rental-hero/fleet-mobile.webp",
     "facts": [
       {
         "icon": "delivery",

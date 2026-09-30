@@ -167,10 +167,11 @@
     }
   ],
   "hero": {
-    "sourceImageId": "crane-50",
+    "sourceRecord": "docs/rental-hero-image-sources.json",
+    "kind": "generated-illustration",
     "outputs": [
-      "assets/img/rental/hero.webp",
-      "assets/img/rental/hero-mobile.webp"
+      "assets/img/rental-hero/fleet-desktop.webp",
+      "assets/img/rental-hero/fleet-mobile.webp"
     ]
   }
 }
