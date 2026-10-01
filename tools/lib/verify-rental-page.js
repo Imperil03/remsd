@@ -14,11 +14,27 @@ module.exports = async function verifyRentalPage(page, viewport, definition, mat
   // The callbar can become hidden after materialization scrolls back to the top.
   // Check its stored caption independently of that transient visibility state.
   assert.equal(await page.locator('[data-mobile-callbar] .mobile-callbar__text').textContent(), definition.mobileCallbar.text);
-  for (const cta of await page.locator('main a.v3-button').all()) assert.equal(await cta.getAttribute('href'), 'tel:+79224488822');
+  for (const cta of await page.locator('main a.v3-button').all()) {
+    assert.equal(await cta.getAttribute('href'), 'tel:+79224488822');
+    assert.equal(await cta.getAttribute('aria-label'), 'Запросить расчёт по телефону');
+    assert.equal(await cta.locator('.v3-button__icon').count(), 1);
+  }
   if (definition.path === "arenda") {
     assert.equal(await page.locator(".rental-categories--equipment .rental-category").count(), 9);
     assert.equal(await page.locator(".rental-categories--service .rental-category").count(), 2);
     assert.equal(await page.locator(".rental-rate-table tbody tr").count(), 9);
+    assert.equal(await page.locator('.rental-price [data-rental-card-price]').count(), 9);
+    assert.equal(await page.locator('.rental-price [data-rental-card-rate]').count(), 6);
+    assert.deepEqual(await page.locator('main > .rental-jump a').evaluateAll((links) => links.map((link) => link.hash)), ['#catalog', '#prices', '#conditions', '#additional-services']);
+    const cards = await page.locator('.rental-categories--equipment .rental-category').evaluateAll((items) => items.map((item) => {
+      const photo = item.querySelector('img').getBoundingClientRect();
+      const copy = item.querySelector('.rental-category__copy').getBoundingClientRect();
+      const price = item.querySelector('[data-rental-card-price]');
+      const styles = getComputedStyle(price);
+      return {horizontal: copy.left >= photo.right - 1, priceSize: parseFloat(styles.fontSize), priceWeight: Number(styles.fontWeight)};
+    }));
+    assert(cards.every((card) => card.horizontal === (viewport.width <= 520)), 'Мобильные карточки должны быть горизонтальными, desktop/tablet — вертикальными');
+    assert(cards.every((card) => card.priceSize >= 17 && card.priceWeight >= 700), 'Цена и статус должны иметь один читаемый типографический вес');
   } else {
     const category = catalog.categories.find((item) => item.path === definition.path);
     assert.equal(await page.locator(".rental-machine").count(), category.equipmentIds.length);

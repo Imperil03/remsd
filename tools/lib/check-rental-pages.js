@@ -52,6 +52,15 @@ module.exports = function checkRentalPages({ root, catalog }) {
     }
     assert(html.includes('href="https://wa.me/79224488822"'));
     assert(html.includes(page.mobileCallbar.text));
+    assert.equal((withoutHeader.match(/class="v3-button__icon"/g) || []).length, 2, `${page.path}: обе телефонные кнопки должны содержать общую иконку`);
+    assert.equal((withoutHeader.match(/aria-label="Запросить расчёт по телефону"/g) || []).length, 2, `${page.path}: действие должно объяснять телефонный запрос`);
+    if (page.path === "arenda") {
+      assert.equal((main.match(/data-rental-card-price/g) || []).length, 9, "Каждой категории нужна строка цены или статуса");
+      assert.equal((main.match(/data-rental-card-rate/g) || []).length, 6, "Только шесть категорий имеют опубликованные ставки");
+      assert.equal((main.match(/<strong data-rental-card-price>Цена по запросу<\/strong>/g) || []).length, 3, "Неподтверждённые ставки остаются по запросу");
+      const jump = main.match(/<nav class="rental-jump"[\s\S]*?<\/nav>/)[0];
+      assert.deepEqual([...jump.matchAll(/href="#([^"]+)"/g)].map((match) => match[1]), ["catalog", "prices", "conditions", "additional-services"]);
+    }
     for (const match of html.matchAll(/<use\b[^>]*href="#(internal-icon-[^"]+)"/g)) assert(html.includes(`id="${match[1]}"`), `${page.path}: удалена используемая пиктограмма ${match[1]}`);
     assert(html.includes('data-equipment-id=') || !page.sections.some((section) => section.type === "equipmentCatalog"));
     const schema = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map((match) => JSON.parse(match[1]));

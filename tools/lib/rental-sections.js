@@ -99,9 +99,12 @@ function createRentalSections({ requireArray, requireText, validateAsset, escape
           const priced = machines.flatMap((machine) => machine.rates.map((rate) => ({ machine, rate })));
           const minimum = priced.reduce((lowest, entry) => !lowest || entry.rate.amount < lowest.rate.amount ? entry : lowest, null);
           const priceOnly = minimum && /^\s*(?:от\s+)?\d[\d\s]*₽\/ч\.?\s*$/iu.test(item.text);
-          const description = priceOnly ? "" : esc(item.text);
-          const rateText = minimum ? `${description ? "<br>" : ""}<strong data-rental-card-rate>От ${esc(formatRate(minimum.rate))}</strong>${machines.some((machine) => !machine.rates.length) ? `<br>${esc(minimum.machine.name)}` : ""}` : "";
-          return `<a class="rental-category" href="${rootPath}${esc(item.path)}/">${photo(item, rootPath, "rental-category__photo")}<div class="rental-category__copy"><h3>${esc(item.name)}</h3><p>${description}${rateText}</p><span class="rental-category__link">Подробнее<svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 10h13m-5-5 5 5-5 5"/></svg></span></div></a>`;
+          const description = priceOnly ? "" : esc(item.kind === "equipment" ? item.text.replace(/\s*Цена по запросу\.?\s*/iu, "").trim() : item.text);
+          const rateText = item.kind === "equipment" ? `<p class="rental-price"><strong data-rental-card-price${minimum ? " data-rental-card-rate" : ""}>${minimum ? `От ${esc(formatRate(minimum.rate))}` : "Цена по запросу"}</strong>${minimum && machines.some((machine) => !machine.rates.length) ? `<br>${esc(minimum.machine.name)}` : ""}</p>` : "";
+          // Keep the snow-clearing attachment visible in the existing portrait photo.
+          const preview = item.id === "mini-traktory" ? { ...item, thumbnail: item.image, thumbnailWidth: item.imageWidth, thumbnailHeight: item.imageHeight } : item;
+          const photoClass = `rental-category__photo${item.id === "mini-traktory" ? " rental-photo--full" : ""}`;
+          return `<a class="rental-category" href="${rootPath}${esc(item.path)}/">${photo(preview, rootPath, photoClass)}<div class="rental-category__copy"><h3>${esc(item.name)}</h3>${description ? `<p>${description}</p>` : ""}${rateText}<span class="rental-category__link">Подробнее<svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 10h13m-5-5 5 5-5 5"/></svg></span></div></a>`;
         }).join("\n");
         return wrap(section, `<div class="rental-categories rental-categories--${section.kind}">${items}</div>`);
       },

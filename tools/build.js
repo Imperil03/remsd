@@ -29,7 +29,7 @@ const iconVersion = createHash("sha256")
   .update(fs.readFileSync(path.join(assetsDir, "img", "favicon.png")))
   .update(fs.readFileSync(path.join(assetsDir, "img", "apple-touch-icon.png")))
   .digest("hex").slice(0, 12);
-const assetVersion = process.env.ASSET_VERSION || "20261001-rental-details-v1";
+const assetVersion = process.env.ASSET_VERSION || "20261001-rental-ui-polish-v1";
 
 function fail(message) {
   throw new Error(`[build] ${message}`);
@@ -458,7 +458,15 @@ function buildInternalPages(pages, partials, config, mode, baseUrl, writtenRoute
   for (const page of pages) {
     const messenger = page.rental ? readJson(path.join(dataDir, "contact-details.json")).messengers.find((item) => item.href.startsWith("https://wa.me/")) : null;
     const rentalMessenger = messenger ? `<a class="rental-messenger" href="${escapeHtml(messenger.href)}">${escapeHtml(messenger.label)}</a>` : "";
-    const closingPhone = `<a class="v3-button v3-button--primary" href="${escapeHtml(config.site.phoneHref)}">${escapeHtml(page.closingCta?.buttonLabel || "")}</a>`;
+    const phoneIcon = page.rental ? partials["v3-phone-icon"] : "";
+    const closingPhoneLabel = page.rental ? ` aria-label="${escapeHtml(`${page.closingCta?.buttonLabel || ""} по телефону`)}"` : "";
+    const closingPhone = `<a class="v3-button v3-button--primary" href="${escapeHtml(config.site.phoneHref)}"${closingPhoneLabel}>${phoneIcon}${escapeHtml(page.closingCta?.buttonLabel || "")}</a>`;
+    const rentalJumpLinks = page.rental ? page.sections.flatMap((section) => {
+      if (["rentalCatalog", "equipmentCatalog", "rentalRates"].includes(section.type)) return [{ id: section.id, label: section.type === "rentalRates" ? "Цены" : section.kind === "service" ? "Услуги" : "Техника" }];
+      if (section.type === "rentalOrder") return [{ id: section.id, label: section.navigationLabel }];
+      if (["applications", "conditions"].includes(section.id)) return [{ id: section.id, label: section.id === "applications" ? "Применение" : "Условия" }];
+      return [];
+    }) : [];
     const isCompany = page.family === "company";
     const isContact = page.family === "contact";
     const isPolicy = page.layout === "policy";
@@ -482,7 +490,7 @@ function buildInternalPages(pages, partials, config, mode, baseUrl, writtenRoute
       surfaceContract: page.rental ? "<!-- THESIS: choose equipment by task, specifications and an explicit rate. OWN-WORLD: RemSD Industrial Editorial, navy, white and amber, incumbent type and 1312px guide. STORY: purpose, machine, rate, conditions, contact. FIRST VIEWPORT: incumbent photo hero, concise service answer and a phone action; catalog follows. FORM: approved catalogue-first structure; code-led extension. FINISH: independent content and visual review, source records and responsive verification. -->" : "",
       rentalMessenger,
       closingActions: page.rental ? `<div class="rental-close-actions">${closingPhone}${rentalMessenger}</div>` : closingPhone,
-      rentalNavigation: page.rental ? `<nav class="rental-jump" aria-label="Разделы страницы"><div class="container">${page.sections.filter((section) => ["rentalCatalog", "equipmentCatalog", "rentalRates"].includes(section.type)).map((section) => `<a href="#${escapeHtml(section.id)}">${section.type === "rentalRates" ? "Цены" : section.kind === "service" ? "Услуги" : "Техника"}</a>`).join("")}<a href="#${escapeHtml(page.sections.find((section) => section.type === "rentalOrder")?.id || (page.sections.some((section) => section.id === "applications") ? "applications" : "conditions"))}">${escapeHtml(page.sections.find((section) => section.type === "rentalOrder")?.navigationLabel || (page.sections.some((section) => section.id === "applications") ? "Применение" : "Условия"))}</a>${page.path !== "arenda" ? `<a href="${rootPath}arenda/">Весь каталог</a>` : ""}</div></nav>` : "",
+      rentalNavigation: page.rental ? `<nav class="rental-jump" aria-label="Разделы страницы"><div class="container">${rentalJumpLinks.map((item) => `<a href="#${escapeHtml(item.id)}">${escapeHtml(item.label)}</a>`).join("")}${page.path !== "arenda" ? `<a href="${rootPath}arenda/">Весь каталог</a>` : ""}</div></nav>` : "",
       callbarLabel: escapeHtml(page.mobileCallbar?.label || "Быстрый звонок мастеру"),
       callbarText: escapeHtml(page.mobileCallbar?.text || "Нужен ремонт?"),
       callbarButton: escapeHtml(page.mobileCallbar?.buttonLabel || "Позвонить мастеру"),
@@ -496,6 +504,8 @@ function buildInternalPages(pages, partials, config, mode, baseUrl, writtenRoute
       policyContents: isPolicy ? page.sections.map((section) => `<li><a href="#${escapeHtml(section.id)}">${escapeHtml(section.title)}</a></li>`).join("") : "",
       lead: escapeHtml(page.hero.lead || ""),
       heroCtaLabel: escapeHtml(page.hero.ctaLabel || ""),
+      heroCtaIcon: phoneIcon,
+      heroCtaAttributes: page.rental ? ` aria-label="${escapeHtml(`${page.hero.ctaLabel || ""} по телефону`)}"` : "",
       heroFacts: page.hero.facts ? renderCatalogHeroFacts(page.hero) : "",
       heroImageAlt: escapeHtml(page.hero.imageAlt || ""),
       heroImageCaption: escapeHtml(page.hero.imageCaption || ""),
