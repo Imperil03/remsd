@@ -71,9 +71,16 @@ function createRentalSections({ requireArray, requireText, validateAsset, escape
         requireArray(select(section, catalog), label, { nonEmpty: true });
       },
       render(section, { rootPath, routeByEntity }) {
-        const items = select(section, loadRentalCatalog()).map((item) => {
+        const catalog = loadRentalCatalog();
+        const items = select(section, catalog).map((item) => {
           if (routeByEntity.get(item.entityRef) !== item.path) throw new Error(`Категория ${item.id} не опубликована`);
-          return `<a class="rental-category" href="${rootPath}${esc(item.path)}/">${photo(item, rootPath, "rental-category__photo")}<div class="rental-category__copy"><h3>${esc(item.name)}</h3><p>${esc(item.text)}</p><span class="rental-category__link">Подробнее<svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 10h13m-5-5 5 5-5 5"/></svg></span></div></a>`;
+          const machines = item.kind === "equipment" ? item.equipmentIds.map((id) => catalog.equipment.find((machine) => machine.id === id)) : [];
+          const priced = machines.flatMap((machine) => machine.rates.map((rate) => ({ machine, rate })));
+          const minimum = priced.reduce((lowest, entry) => !lowest || entry.rate.amount < lowest.rate.amount ? entry : lowest, null);
+          const priceOnly = minimum && /^\s*(?:от\s+)?\d[\d\s]*₽\/ч\.?\s*$/iu.test(item.text);
+          const description = priceOnly ? "" : esc(item.text);
+          const rateText = minimum ? `${description ? "<br>" : ""}<strong data-rental-card-rate>От ${esc(formatRate(minimum.rate))}</strong>${machines.some((machine) => !machine.rates.length) ? `<br>${esc(minimum.machine.name)}` : ""}` : "";
+          return `<a class="rental-category" href="${rootPath}${esc(item.path)}/">${photo(item, rootPath, "rental-category__photo")}<div class="rental-category__copy"><h3>${esc(item.name)}</h3><p>${description}${rateText}</p><span class="rental-category__link">Подробнее<svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 10h13m-5-5 5 5-5 5"/></svg></span></div></a>`;
         }).join("\n");
         return wrap(section, `<div class="rental-categories rental-categories--${section.kind}">${items}</div>`);
       },
