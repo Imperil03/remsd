@@ -5,9 +5,15 @@ on:
     branches:
       - main
   workflow_dispatch:
+    inputs:
+      full_checks:
+        description: Run all browser and Lighthouse checks
+        type: boolean
+        default: true
 
 permissions:
   contents: read
+  deployments: read
   pages: write
   id-token: write
 
@@ -18,6 +24,8 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      site_changed: ${{ steps.checks.outputs.site_changed }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -27,13 +35,25 @@ jobs:
         with:
           node-version: 22
 
+      - name: Verify check-selection rules
+        run: node tools/test-ci-scope.js
+
+      - name: Select affected routes
+        id: checks
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CI_FULL_CHECKS: ${{ inputs.full_checks == true }}
+        run: node tools/select-ci-scope.js
+
       - name: Configure GitHub Pages
+        if: steps.checks.outputs.site_changed == 'true'
         uses: actions/configure-pages@v5
 
       - name: Install dependencies
         run: npm ci
 
       - name: Install browser runtime
+        if: steps.checks.outputs.mode != 'none'
         run: npx playwright install --with-deps chromium
 
       - name: Build indexable test version
@@ -43,24 +63,33 @@ jobs:
         run: npm run verify
 
       - name: Verify browser scenarios
+        if: steps.checks.outputs.mode != 'none'
+        env:
+          BROWSER_ROUTES: ${{ steps.checks.outputs.routes }}
         run: npm run test:browser
 
       - name: Verify Lighthouse thresholds
+        if: steps.checks.outputs.mode != 'none'
+        env:
+          LIGHTHOUSE_ROUTES: ${{ steps.checks.outputs.routes }}
         run: npm run test:lighthouse
 
       - name: Build and validate noindex preview
+        if: steps.checks.outputs.site_changed == 'true'
         env:
           SITE_MODE: preview
           SITE_URL: https://imperil03.github.io/remsd/
         run: npm run verify
 
       - name: Upload Pages artifact
+        if: steps.checks.outputs.site_changed == 'true'
         uses: actions/upload-pages-artifact@v3
         with:
           path: dist
 
   deploy:
     needs: build
+    if: needs.build.outputs.site_changed == 'true'
     runs-on: ubuntu-latest
     environment:
       name: github-pages

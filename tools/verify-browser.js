@@ -4,6 +4,7 @@ const path = require("path");
 const { chromium } = require("playwright");
 const { loadInternalPageCatalog } = require("./lib/internal-pages");
 const verifyMenuHover = require("./lib/verify-menu-hover");
+const { selectBrowserScope } = require("./lib/browser-scope");
 
 const root = path.resolve(__dirname, "..");
 const distDir = path.join(root, "dist");
@@ -16,11 +17,8 @@ const siteConfig = JSON.parse(fs.readFileSync(path.join(dataDir, "site-config.js
 const internalCatalog = loadInternalPageCatalog({ root, dataDir, assetsDir: path.join(root, "assets"), siteConfig });
 const referencePath = internalCatalog.manifest.referenceByFamily.hub;
 const internalRoute = `/${referencePath}/`;
-const requestedPaths = (process.env.BROWSER_ROUTES || "").split(",").map((route) => route.trim().replace(/^\/+|\/+$/g, "")).filter(Boolean);
-for (const route of requestedPaths) {
-  if (!internalCatalog.pages.some((page) => page.path === route) || route === referencePath) throw new Error(`BROWSER_ROUTES: неизвестный дополнительный маршрут ${route}`);
-}
-const smokeRoutes = internalCatalog.pages.filter((page) => page.path !== referencePath && (!requestedPaths.length || requestedPaths.includes(page.path))).map((page) => `/${page.path}/`);
+const browserScope = selectBrowserScope(internalCatalog.pages.map((page) => page.path), referencePath, process.env.BROWSER_ROUTES);
+const smokeRoutes = browserScope.additional.map((route) => `/${route}/`);
 const repairTemplatePaths = new Set(internalCatalog.manifest.pages
   .map((file) => JSON.parse(fs.readFileSync(path.join(dataDir, "internal-pages", file), "utf8")))
   .filter((page) => page.template === "repair-v1")
@@ -249,9 +247,10 @@ async function verifySharedChrome(browser, viewport) {
 }
 
 async function verifyMenuHoverMatrix(browser) {
-  const representativePath = requestedPaths[0] || internalCatalog.manifest.referenceByFamily.brand;
-  const routes = [...new Set(["/", internalRoute, ...(representativePath ? [`/${representativePath}/`] : [])])];
-  for (const width of [1440, 1298, 1992]) {
+  const representativePath = internalCatalog.manifest.referenceByFamily.brand;
+  const routes = browserScope.focused ? browserScope.routes : [...new Set(["/", internalRoute, ...(representativePath ? [`/${representativePath}/`] : [])])];
+  const widths = browserScope.focused ? [1440] : [1440, 1298, 1992];
+  for (const width of widths) {
     const context = await browser.newContext({ viewport: { width, height: width === 1992 ? 1200 : 900 } });
     try {
       for (const route of routes) {
@@ -270,7 +269,7 @@ async function verifyMenuHoverMatrix(browser) {
       await context.close();
     }
   }
-  console.log(`Desktop hover checked: ${routes.length} страниц, 1440/1298/1992 px, ремонт и аренда.`);
+  console.log(`Desktop hover checked: ${routes.length} страниц, ${widths.join("/")} px, ремонт и аренда.`);
 }
 
 async function verifyHomeLayout(page, viewport) {
@@ -819,11 +818,12 @@ async function run() {
   const server = await startServer();
   const browser = await chromium.launch({ headless: true });
   try {
-    // Keep pointer-only coverage in focused runs too: keyboard focus in the
-    // existing navigation check can conceal a dropdown's dead hover gap.
+    // Focused runs retain pointer coverage on the requested pages only.
     await verifyMenuHoverMatrix(browser);
-    await require("./lib/verify-document-navigation")(browser, `http://${host}:${port}/`, resultDir);
-    for (const width of [1440, 390]) {
+    if (!browserScope.focused || browserScope.routes.some((route) => internalCatalog.pages.some((page) => page.family === "documents" && route === `/${page.path}/`))) {
+      await require("./lib/verify-document-navigation")(browser, `http://${host}:${port}/`, resultDir);
+    }
+    if (browserScope.home) for (const width of [1440, 390]) {
       const context = await browser.newContext({ viewport: { width, height: 900 } });
       for (const route of ["/index.html", "/remsd/", "/remsd/index.html", "/#v3-company-proof-title", "/#v3-contact-title", "/remsd/#v3-contact-title"]) {
         const page = await context.newPage();
@@ -845,9 +845,11 @@ async function run() {
       { name: "mobile-390", width: 390, height: 844 },
       { name: "mobile-320", width: 320, height: 760 },
     ];
-    if (!requestedPaths.length) {
+    if (!browserScope.focused) {
       for (const viewport of chromeViewports) await verifySharedChrome(browser, viewport);
+    }
 
+    if (browserScope.home) {
       const homeViewports = [
         { name: "wide-1992", width: 1992, height: 1200 },
         { name: "desktop", width: 1440, height: 900 },
@@ -881,6 +883,9 @@ async function run() {
         await context.close();
       }
 
+    }
+
+    if (browserScope.reference) {
       const internalViewports = chromeViewports;
       for (const viewport of internalViewports) {
         const context = await browser.newContext({ viewport });
@@ -982,8 +987,8 @@ async function run() {
     await browser.close();
     await new Promise((resolve) => server.close(resolve));
   }
-  console.log(requestedPaths.length
-    ? `Focused browser verification passed: ${smokeRoutes.length} маршрутов, все назначенные ширины, FAQ, навигация, CTA и 404.`
+  console.log(browserScope.focused
+    ? `Focused browser verification passed: ${browserScope.routes.length} маршрутов, все назначенные ширины, FAQ, навигация, CTA и 404.`
     : `Browser verification passed: общий chrome, главная и эталонный hub — 11 viewport; ${smokeRoutes.length} дополнительных маршрутов (repair-v1, все марки и аренда: 11 viewport), H1, burger, FAQ, callbar, images, targets и 404.`);
 }
 
