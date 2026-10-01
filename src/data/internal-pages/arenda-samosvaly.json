@@ -37,8 +37,8 @@
     "accent": "самосвала",
     "lead": "Самосвал перевозит сыпучие материалы — песок, щебень и грунт — между местами погрузки и разгрузки. Продолжительность заказа зависит от объёма перевозки, маршрута и времени загрузки транспорта.",
     "ctaLabel": "Обсудить аренду",
-    "image": "assets/img/rental-hero/fleet-desktop.webp",
-    "mobileImage": "assets/img/rental-hero/fleet-mobile.webp",
+    "image": "assets/img/rental-hero/topics/samosvaly-desktop.webp",
+    "mobileImage": "assets/img/rental-hero/topics/samosvaly-mobile.webp",
     "facts": [
       {
         "icon": "delivery",

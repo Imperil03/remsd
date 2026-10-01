@@ -37,8 +37,8 @@
     "accent": "негабаритных грузов",
     "lead": "РемСД предлагает перевозку негабаритных грузов в Сургуте и ХМАО. Длина, ширина, высота и масса груза определяют выбор транспорта; маршрут и условия подъезда влияют на возможность перевозки.",
     "ctaLabel": "Обсудить перевозку",
-    "image": "assets/img/rental-hero/fleet-desktop.webp",
-    "mobileImage": "assets/img/rental-hero/fleet-mobile.webp",
+    "image": "assets/img/rental-hero/topics/perevozka-negabarita-desktop.webp",
+    "mobileImage": "assets/img/rental-hero/topics/perevozka-negabarita-mobile.webp",
     "facts": [
       {
         "icon": "delivery",

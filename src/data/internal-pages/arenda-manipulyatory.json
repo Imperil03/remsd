@@ -37,8 +37,8 @@
     "accent": "манипулятора",
     "lead": "Манипулятор перевозит груз и выполняет погрузку и разгрузку крановой установкой. Возможность работы и стоимость зависят от массы и габаритов груза, необходимого вылета стрелы и маршрута.",
     "ctaLabel": "Обсудить аренду",
-    "image": "assets/img/rental-hero/fleet-desktop.webp",
-    "mobileImage": "assets/img/rental-hero/fleet-mobile.webp",
+    "image": "assets/img/rental-hero/topics/manipulyatory-desktop.webp",
+    "mobileImage": "assets/img/rental-hero/topics/manipulyatory-mobile.webp",
     "facts": [
       {
         "icon": "delivery",

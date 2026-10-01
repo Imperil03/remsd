@@ -1,0 +1,462 @@
+{
+  "schemaVersion": 1,
+  "createdAt": "2026-10-01",
+  "kind": "generated-illustration",
+  "tool": "built-in image_gen",
+  "purpose": "Thematic decorative hero imagery for 11 rental detail pages; not evidence of a specific machine in the RemSD fleet.",
+  "styleReference": "docs/references/rental-hero-desktop.png",
+  "pages": [
+    {
+      "id": "avtokrany",
+      "path": "arenda/avtokrany",
+      "title": "Аренда автокрана"
+    },
+    {
+      "id": "ekskavatory",
+      "path": "arenda/ekskavatory",
+      "title": "Аренда экскаватора"
+    },
+    {
+      "id": "frontalnye-pogruzchiki",
+      "path": "arenda/frontalnye-pogruzchiki",
+      "title": "Аренда фронтального погрузчика"
+    },
+    {
+      "id": "buldozery",
+      "path": "arenda/buldozery",
+      "title": "Аренда бульдозера"
+    },
+    {
+      "id": "truboukladchiki",
+      "path": "arenda/truboukladchiki",
+      "title": "Аренда трубоукладчика"
+    },
+    {
+      "id": "avtogreydery",
+      "path": "arenda/avtogreydery",
+      "title": "Аренда автогрейдера"
+    },
+    {
+      "id": "samosvaly",
+      "path": "arenda/samosvaly",
+      "title": "Аренда самосвала"
+    },
+    {
+      "id": "mini-traktory",
+      "path": "arenda/mini-traktory",
+      "title": "Аренда мини-трактора"
+    },
+    {
+      "id": "manipulyatory",
+      "path": "arenda/manipulyatory",
+      "title": "Аренда манипулятора"
+    },
+    {
+      "id": "perevozka-negabarita",
+      "path": "arenda/perevozka-negabarita",
+      "title": "Перевозка негабаритных грузов"
+    },
+    {
+      "id": "pererabotka-betona",
+      "path": "arenda/pererabotka-betona",
+      "title": "Переработка бетонного боя"
+    }
+  ],
+  "variants": [
+    {
+      "id": "avtokrany-desktop",
+      "page": "arenda/avtokrany",
+      "device": "desktop",
+      "source": "docs/references/rental-topic-heroes/avtokrany.png",
+      "output": "assets/img/rental-hero/topics/avtokrany-desktop.webp",
+      "maxWidth": 2172,
+      "quality": 76,
+      "prompt": "Create a NEW photorealistic industrial editorial photograph for the hero of a Russian heavy-equipment rental/service page. The first reference is ONLY the established photographic style, natural lighting and colour palette; do not copy its three-machine lineup. ULTRAWIDE PANORAMIC composition, approximately 3:1 aspect ratio (about 2176x736 or 3072x1024). One coherent believable photograph, natural full-scale machinery, no toy-like CGI.\n\nMatch the restrained cool steel-blue early-morning sky, distant northern treeline, quiet industrial setting, yellow machinery and realistic graphite/steel materials. Use soft natural light with a little warm light on the equipment, not theatrical flares. Keep the LEFT 50 percent of the frame empty and low-contrast (sky, ground and distant unobtrusive background) for the website heading. The COMPLETE main subject and all important attachments must fit between x=53% and x=95%, y=20% and y=78%, with visible sky and ground margins. Camera far enough away that wheels/tracks, booms, blades, buckets and load are not cut off. A right-half crop will be used for the phone version, so no essential subject part may cross x=50%. No close-up foreground objects. Do not put scenery, signs or bright clutter behind the left-side text area.\n\nSUBJECT:\nA single full-size yellow truck-mounted TELESCOPIC MOBILE CRANE, four-axle 8x8 carrier, separate operator cab and driving cab, long straight telescopic boom completely retracted and stowed HORIZONTALLY over the carrier, with small hook block lowered close to the front. Parked on a level industrial hardstand, all tires visible, no load suspended. This must be a mobile crane, not a knuckle-boom flatbed or crawler crane.\n\nNo people, text, manufacturer logos, model numbers, labels, watermarks, website graphics, painted gradients or collage panels. The site adds its own dark overlay; keep the photo naturally exposed and readable. Mechanical anatomy, grounded tires/tracks, shadows, hydraulics and perspective must be convincing. Make the subject easy to recognize at small website size.",
+      "width": 2172,
+      "height": 724,
+      "bytes": 198688,
+      "sourceSha256": "5246116f558951d723d0a36a1f49e483a95e21f9e9538d5b7f2e511d39672828"
+    },
+    {
+      "id": "avtokrany-mobile",
+      "page": "arenda/avtokrany",
+      "device": "mobile",
+      "source": "docs/references/rental-topic-heroes/avtokrany.png",
+      "output": "assets/img/rental-hero/topics/avtokrany-mobile.webp",
+      "maxWidth": 640,
+      "quality": 62,
+      "prompt": "Create a NEW photorealistic industrial editorial photograph for the hero of a Russian heavy-equipment rental/service page. The first reference is ONLY the established photographic style, natural lighting and colour palette; do not copy its three-machine lineup. ULTRAWIDE PANORAMIC composition, approximately 3:1 aspect ratio (about 2176x736 or 3072x1024). One coherent believable photograph, natural full-scale machinery, no toy-like CGI.\n\nMatch the restrained cool steel-blue early-morning sky, distant northern treeline, quiet industrial setting, yellow machinery and realistic graphite/steel materials. Use soft natural light with a little warm light on the equipment, not theatrical flares. Keep the LEFT 50 percent of the frame empty and low-contrast (sky, ground and distant unobtrusive background) for the website heading. The COMPLETE main subject and all important attachments must fit between x=53% and x=95%, y=20% and y=78%, with visible sky and ground margins. Camera far enough away that wheels/tracks, booms, blades, buckets and load are not cut off. A right-half crop will be used for the phone version, so no essential subject part may cross x=50%. No close-up foreground objects. Do not put scenery, signs or bright clutter behind the left-side text area.\n\nSUBJECT:\nA single full-size yellow truck-mounted TELESCOPIC MOBILE CRANE, four-axle 8x8 carrier, separate operator cab and driving cab, long straight telescopic boom completely retracted and stowed HORIZONTALLY over the carrier, with small hook block lowered close to the front. Parked on a level industrial hardstand, all tires visible, no load suspended. This must be a mobile crane, not a knuckle-boom flatbed or crawler crane.\n\nNo people, text, manufacturer logos, model numbers, labels, watermarks, website graphics, painted gradients or collage panels. The site adds its own dark overlay; keep the photo naturally exposed and readable. Mechanical anatomy, grounded tires/tracks, shadows, hydraulics and perspective must be convincing. Make the subject easy to recognize at small website size.",
+      "cropRegion": "right-53-percent-full-height",
+      "crop": {
+        "left": 1020,
+        "top": 0,
+        "width": 1152,
+        "height": 724
+      },
+      "width": 640,
+      "height": 402,
+      "bytes": 48858,
+      "sourceSha256": "5246116f558951d723d0a36a1f49e483a95e21f9e9538d5b7f2e511d39672828"
+    },
+    {
+      "id": "ekskavatory-desktop",
+      "page": "arenda/ekskavatory",
+      "device": "desktop",
+      "source": "docs/references/rental-topic-heroes/ekskavatory.png",
+      "output": "assets/img/rental-hero/topics/ekskavatory-desktop.webp",
+      "maxWidth": 2172,
+      "quality": 76,
+      "prompt": "Create a NEW photorealistic industrial editorial photograph for the hero of a Russian heavy-equipment rental/service page. The first reference is ONLY the established photographic style, natural lighting and colour palette; do not copy its three-machine lineup. ULTRAWIDE PANORAMIC composition, approximately 3:1 aspect ratio (about 2176x736 or 3072x1024). One coherent believable photograph, natural full-scale machinery, no toy-like CGI.\n\nMatch the restrained cool steel-blue early-morning sky, distant northern treeline, quiet industrial setting, yellow machinery and realistic graphite/steel materials. Use soft natural light with a little warm light on the equipment, not theatrical flares. Keep the LEFT 50 percent of the frame empty and low-contrast (sky, ground and distant unobtrusive background) for the website heading. The COMPLETE main subject and all important attachments must fit between x=53% and x=95%, y=20% and y=78%, with visible sky and ground margins. Camera far enough away that wheels/tracks, booms, blades, buckets and load are not cut off. A right-half crop will be used for the phone version, so no essential subject part may cross x=50%. No close-up foreground objects. Do not put scenery, signs or bright clutter behind the left-side text area.\n\nSUBJECT:\nOne full-size yellow TRACKED EXCAVATOR with normal steel digging bucket, articulated boom compactly folded and bucket resting low beside a shallow freshly dug trench. Three-quarter view shows the cab, both tracks and the COMPLETE arm, bucket and counterweight. No crusher attachment, no other machines.\n\nNo people, text, manufacturer logos, model numbers, labels, watermarks, website graphics, painted gradients or collage panels. The site adds its own dark overlay; keep the photo naturally exposed and readable. Mechanical anatomy, grounded tires/tracks, shadows, hydraulics and perspective must be convincing. Make the subject easy to recognize at small website size.",
+      "width": 2172,
+      "height": 724,
+      "bytes": 198524,
+      "sourceSha256": "98c8846aa0614c897efd9abbd67052bc3abcace7d066fff6523054f8d29c61b1"
+    },
+    {
+      "id": "ekskavatory-mobile",
+      "page": "arenda/ekskavatory",
+      "device": "mobile",
+      "source": "docs/references/rental-topic-heroes/ekskavatory.png",
+      "output": "assets/img/rental-hero/topics/ekskavatory-mobile.webp",
+      "maxWidth": 640,
+      "quality": 62,
+      "prompt": "Create a NEW photorealistic industrial editorial photograph for the hero of a Russian heavy-equipment rental/service page. The first reference is ONLY the established photographic style, natural lighting and colour palette; do not copy its three-machine lineup. ULTRAWIDE PANORAMIC composition, approximately 3:1 aspect ratio (about 2176x736 or 3072x1024). One coherent believable photograph, natural full-scale machinery, no toy-like CGI.\n\nMatch the restrained cool steel-blue early-morning sky, distant northern treeline, quiet industrial setting, yellow machinery and realistic graphite/steel materials. Use soft natural light with a little warm light on the equipment, not theatrical flares. Keep the LEFT 50 percent of the frame empty and low-contrast (sky, ground and distant unobtrusive background) for the website heading. The COMPLETE main subject and all important attachments must fit between x=53% and x=95%, y=20% and y=78%, with visible sky and ground margins. Camera far enough away that wheels/tracks, booms, blades, buckets and load are not cut off. A right-half crop will be used for the phone version, so no essential subject part may cross x=50%. No close-up foreground objects. Do not put scenery, signs or bright clutter behind the left-side text area.\n\nSUBJECT:\nOne full-size yellow TRACKED EXCAVATOR with normal steel digging bucket, articulated boom compactly folded and bucket resting low beside a shallow freshly dug trench. Three-quarter view shows the cab, both tracks and the COMPLETE arm, bucket and counterweight. No crusher attachment, no other machines.\n\nNo people, text, manufacturer logos, model numbers, labels, watermarks, website graphics, painted gradients or collage panels. The site adds its own dark overlay; keep the photo naturally exposed and readable. Mechanical anatomy, grounded tires/tracks, shadows, hydraulics and perspective must be convincing. Make the subject easy to recognize at small website size.",
+      "cropRegion": "right-53-percent-full-height",
+      "crop": {
+        "left": 1020,
+        "top": 0,
+        "width": 1152,
+        "height": 724
+      },
+      "width": 640,
+      "height": 402,
+      "bytes": 44754,
+      "sourceSha256": "98c8846aa0614c897efd9abbd67052bc3abcace7d066fff6523054f8d29c61b1"
+    },
+    {
+      "id": "frontalnye-pogruzchiki-desktop",
+      "page": "arenda/frontalnye-pogruzchiki",
+      "device": "desktop",
+      "source": "docs/references/rental-topic-heroes/frontalnye-pogruzchiki.png",
+      "output": "assets/img/rental-hero/topics/frontalnye-pogruzchiki-desktop.webp",
+      "maxWidth": 2172,
+      "quality": 76,
+      "prompt": "Create a NEW photorealistic industrial editorial photograph for the hero of a Russian heavy-equipment rental/service page. The first reference is ONLY the established photographic style, natural lighting and colour palette; do not copy its three-machine lineup. ULTRAWIDE PANORAMIC composition, approximately 3:1 aspect ratio (about 2176x736 or 3072x1024). One coherent believable photograph, natural full-scale machinery, no toy-like CGI.\n\nMatch the restrained cool steel-blue early-morning sky, distant northern treeline, quiet industrial setting, yellow machinery and realistic graphite/steel materials. Use soft natural light with a little warm light on the equipment, not theatrical flares. Keep the LEFT 50 percent of the frame empty and low-contrast (sky, ground and distant unobtrusive background) for the website heading. The COMPLETE main subject and all important attachments must fit between x=53% and x=95%, y=20% and y=78%, with visible sky and ground margins. Camera far enough away that wheels/tracks, booms, blades, buckets and load are not cut off. A right-half crop will be used for the phone version, so no essential subject part may cross x=50%. No close-up foreground objects. Do not put scenery, signs or bright clutter behind the left-side text area.\n\nSUBJECT:\nOne large yellow articulated WHEEL LOADER with four large black rubber tires and a wide steel loading bucket held low, beside a small neat sand and crushed-stone stockpile. Three-quarter front view clearly shows the bucket, cab, articulated chassis and complete vehicle. Not an excavator or bulldozer.\n\nNo people, text, manufacturer logos, model numbers, labels, watermarks, website graphics, painted gradients or collage panels. The site adds its own dark overlay; keep the photo naturally exposed and readable. Mechanical anatomy, grounded tires/tracks, shadows, hydraulics and perspective must be convincing. Make the subject easy to recognize at small website size.",
+      "width": 2172,
+      "height": 724,
+      "bytes": 212144,
+      "sourceSha256": "cedfadc4e9da6ebe7e81c16a1f6124e687b24bb4bf776ec98b4c59ca7b559e3e"
+    },
+    {
+      "id": "frontalnye-pogruzchiki-mobile",
+      "page": "arenda/frontalnye-pogruzchiki",
+      "device": "mobile",
+      "source": "docs/references/rental-topic-heroes/frontalnye-pogruzchiki.png",
+      "output": "assets/img/rental-hero/topics/frontalnye-pogruzchiki-mobile.webp",
+      "maxWidth": 640,
+      "quality": 62,
+      "prompt": "Create a NEW photorealistic industrial editorial photograph for the hero of a Russian heavy-equipment rental/service page. The first reference is ONLY the established photographic style, natural lighting and colour palette; do not copy its three-machine lineup. ULTRAWIDE PANORAMIC composition, approximately 3:1 aspect ratio (about 2176x736 or 3072x1024). One coherent believable photograph, natural full-scale machinery, no toy-like CGI.\n\nMatch the restrained cool steel-blue early-morning sky, distant northern treeline, quiet industrial setting, yellow machinery and realistic graphite/steel materials. Use soft natural light with a little warm light on the equipment, not theatrical flares. Keep the LEFT 50 percent of the frame empty and low-contrast (sky, ground and distant unobtrusive background) for the website heading. The COMPLETE main subject and all important attachments must fit between x=53% and x=95%, y=20% and y=78%, with visible sky and ground margins. Camera far enough away that wheels/tracks, booms, blades, buckets and load are not cut off. A right-half crop will be used for the phone version, so no essential subject part may cross x=50%. No close-up foreground objects. Do not put scenery, signs or bright clutter behind the left-side text area.\n\nSUBJECT:\nOne large yellow articulated WHEEL LOADER with four large black rubber tires and a wide steel loading bucket held low, beside a small neat sand and crushed-stone stockpile. Three-quarter front view clearly shows the bucket, cab, articulated chassis and complete vehicle. Not an excavator or bulldozer.\n\nNo people, text, manufacturer logos, model numbers, labels, watermarks, website graphics, painted gradients or collage panels. The site adds its own dark overlay; keep the photo naturally exposed and readable. Mechanical anatomy, grounded tires/tracks, shadows, hydraulics and perspective must be convincing. Make the subject easy to recognize at small website size.",
+      "cropRegion": "right-53-percent-full-height",
+      "crop": {
+        "left": 1020,
+        "top": 0,
+        "width": 1152,
+        "height": 724
+      },
+      "width": 640,
+      "height": 402,
+      "bytes": 45252,
+      "sourceSha256": "cedfadc4e9da6ebe7e81c16a1f6124e687b24bb4bf776ec98b4c59ca7b559e3e"
+    },
+    {
+      "id": "buldozery-desktop",
+      "page": "arenda/buldozery",
+      "device": "desktop",
+      "source": "docs/references/rental-topic-heroes/buldozery.png",
+      "output": "assets/img/rental-hero/topics/buldozery-desktop.webp",
+      "maxWidth": 2172,
+      "quality": 76,
+      "prompt": "Create a NEW photorealistic industrial editorial photograph for the hero of a Russian heavy-equipment rental/service page. The first reference is ONLY the established photographic style, natural lighting and colour palette; do not copy its three-machine lineup. ULTRAWIDE PANORAMIC composition, approximately 3:1 aspect ratio (about 2176x736 or 3072x1024). One coherent believable photograph, natural full-scale machinery, no toy-like CGI.\n\nMatch the restrained cool steel-blue early-morning sky, distant northern treeline, quiet industrial setting, yellow machinery and realistic graphite/steel materials. Use soft natural light with a little warm light on the equipment, not theatrical flares. Keep the LEFT 50 percent of the frame empty and low-contrast (sky, ground and distant unobtrusive background) for the website heading. The COMPLETE main subject and all important attachments must fit between x=53% and x=95%, y=20% and y=78%, with visible sky and ground margins. Camera far enough away that wheels/tracks, booms, blades, buckets and load are not cut off. A right-half crop will be used for the phone version, so no essential subject part may cross x=50%. No close-up foreground objects. Do not put scenery, signs or bright clutter behind the left-side text area.\n\nSUBJECT:\nOne heavy yellow TRACKED BULLDOZER with a broad steel front dozer blade lowered onto a freshly levelled earth pad. Three-quarter front view shows the substantial blade, cab, engine body and crawler tracks, the complete machine and every extremity. No digging boom and no loader bucket.\n\nNo people, text, manufacturer logos, model numbers, labels, watermarks, website graphics, painted gradients or collage panels. The site adds its own dark overlay; keep the photo naturally exposed and readable. Mechanical anatomy, grounded tires/tracks, shadows, hydraulics and perspective must be convincing. Make the subject easy to recognize at small website size.",
+      "width": 2172,
+      "height": 724,
+      "bytes": 201196,
+      "sourceSha256": "e27979a85492eb7f0101938bf57b7fd5ba476ac302c37ab50548c05ad8270f22"
+    },
+    {
+      "id": "buldozery-mobile",
+      "page": "arenda/buldozery",
+      "device": "mobile",
+      "source": "docs/references/rental-topic-heroes/buldozery.png",
+      "output": "assets/img/rental-hero/topics/buldozery-mobile.webp",
+      "maxWidth": 640,
+      "quality": 62,
+      "prompt": "Create a NEW photorealistic industrial editorial photograph for the hero of a Russian heavy-equipment rental/service page. The first reference is ONLY the established photographic style, natural lighting and colour palette; do not copy its three-machine lineup. ULTRAWIDE PANORAMIC composition, approximately 3:1 aspect ratio (about 2176x736 or 3072x1024). One coherent believable photograph, natural full-scale machinery, no toy-like CGI.\n\nMatch the restrained cool steel-blue early-morning sky, distant northern treeline, quiet industrial setting, yellow machinery and realistic graphite/steel materials. Use soft natural light with a little warm light on the equipment, not theatrical flares. Keep the LEFT 50 percent of the frame empty and low-contrast (sky, ground and distant unobtrusive background) for the website heading. The COMPLETE main subject and all important attachments must fit between x=53% and x=95%, y=20% and y=78%, with visible sky and ground margins. Camera far enough away that wheels/tracks, booms, blades, buckets and load are not cut off. A right-half crop will be used for the phone version, so no essential subject part may cross x=50%. No close-up foreground objects. Do not put scenery, signs or bright clutter behind the left-side text area.\n\nSUBJECT:\nOne heavy yellow TRACKED BULLDOZER with a broad steel front dozer blade lowered onto a freshly levelled earth pad. Three-quarter front view shows the substantial blade, cab, engine body and crawler tracks, the complete machine and every extremity. No digging boom and no loader bucket.\n\nNo people, text, manufacturer logos, model numbers, labels, watermarks, website graphics, painted gradients or collage panels. The site adds its own dark overlay; keep the photo naturally exposed and readable. Mechanical anatomy, grounded tires/tracks, shadows, hydraulics and perspective must be convincing. Make the subject easy to recognize at small website size.",
+      "cropRegion": "right-53-percent-full-height",
+      "crop": {
+        "left": 1020,
+        "top": 0,
+        "width": 1152,
+        "height": 724
+      },
+      "width": 640,
+      "height": 402,
+      "bytes": 43194,
+      "sourceSha256": "e27979a85492eb7f0101938bf57b7fd5ba476ac302c37ab50548c05ad8270f22"
+    },
+    {
+      "id": "truboukladchiki-desktop",
+      "page": "arenda/truboukladchiki",
+      "device": "desktop",
+      "source": "docs/references/rental-topic-heroes/truboukladchiki.png",
+      "output": "assets/img/rental-hero/topics/truboukladchiki-desktop.webp",
+      "maxWidth": 2172,
+      "quality": 76,
+      "prompt": "Create a NEW photorealistic industrial editorial photograph for the hero of a Russian heavy-equipment rental/service page. The first reference is ONLY the established photographic style, natural lighting and colour palette; do not copy its three-machine lineup. ULTRAWIDE PANORAMIC composition, approximately 3:1 aspect ratio (about 2176x736 or 3072x1024). One coherent believable photograph, natural full-scale machinery, no toy-like CGI.\n\nMatch the restrained cool steel-blue early-morning sky, distant northern treeline, quiet industrial setting, yellow machinery and realistic graphite/steel materials. Use soft natural light with a little warm light on the equipment, not theatrical flares. Keep the LEFT 50 percent of the frame empty and low-contrast (sky, ground and distant unobtrusive background) for the website heading. The COMPLETE main subject and all important attachments must fit between x=53% and x=95%, y=20% and y=78%, with visible sky and ground margins. Camera far enough away that wheels/tracks, booms, blades, buckets and load are not cut off. A right-half crop will be used for the phone version, so no essential subject part may cross x=50%. No close-up foreground objects. Do not put scenery, signs or bright clutter behind the left-side text area.\n\nSUBJECT:\nOne mechanically realistic yellow TRACKED SIDEBOOM PIPELAYER. Crawler undercarriage, offset SIDE-mounted triangular boom with real cables and hook blocks, opposite counterweight, like the type in the second reference. It is holding a short black steel pipe section close to the ground next to a shallow trench. The pipe, boom tip, cables, counterweight and full tracked machine all fit inside the right-hand subject area. Modest low boom angle, no huge vertical extension. Not an excavator, no digging bucket.\n\nNo people, text, manufacturer logos, model numbers, labels, watermarks, website graphics, painted gradients or collage panels. The site adds its own dark overlay; keep the photo naturally exposed and readable. Mechanical anatomy, grounded tires/tracks, shadows, hydraulics and perspective must be convincing. Make the subject easy to recognize at small website size.",
+      "subjectReference": "assets/img/rental/pipelayer.webp",
+      "width": 2158,
+      "height": 729,
+      "bytes": 194092,
+      "sourceSha256": "f13429c19e1b7b69fb7d4c8135d1932d9455ba4cbea65b0d87347964f9800c43"
+    },
+    {
+      "id": "truboukladchiki-mobile",
+      "page": "arenda/truboukladchiki",
+      "device": "mobile",
+      "source": "docs/references/rental-topic-heroes/truboukladchiki.png",
+      "output": "assets/img/rental-hero/topics/truboukladchiki-mobile.webp",
+      "maxWidth": 640,
+      "quality": 62,
+      "prompt": "Create a NEW photorealistic industrial editorial photograph for the hero of a Russian heavy-equipment rental/service page. The first reference is ONLY the established photographic style, natural lighting and colour palette; do not copy its three-machine lineup. ULTRAWIDE PANORAMIC composition, approximately 3:1 aspect ratio (about 2176x736 or 3072x1024). One coherent believable photograph, natural full-scale machinery, no toy-like CGI.\n\nMatch the restrained cool steel-blue early-morning sky, distant northern treeline, quiet industrial setting, yellow machinery and realistic graphite/steel materials. Use soft natural light with a little warm light on the equipment, not theatrical flares. Keep the LEFT 50 percent of the frame empty and low-contrast (sky, ground and distant unobtrusive background) for the website heading. The COMPLETE main subject and all important attachments must fit between x=53% and x=95%, y=20% and y=78%, with visible sky and ground margins. Camera far enough away that wheels/tracks, booms, blades, buckets and load are not cut off. A right-half crop will be used for the phone version, so no essential subject part may cross x=50%. No close-up foreground objects. Do not put scenery, signs or bright clutter behind the left-side text area.\n\nSUBJECT:\nOne mechanically realistic yellow TRACKED SIDEBOOM PIPELAYER. Crawler undercarriage, offset SIDE-mounted triangular boom with real cables and hook blocks, opposite counterweight, like the type in the second reference. It is holding a short black steel pipe section close to the ground next to a shallow trench. The pipe, boom tip, cables, counterweight and full tracked machine all fit inside the right-hand subject area. Modest low boom angle, no huge vertical extension. Not an excavator, no digging bucket.\n\nNo people, text, manufacturer logos, model numbers, labels, watermarks, website graphics, painted gradients or collage panels. The site adds its own dark overlay; keep the photo naturally exposed and readable. Mechanical anatomy, grounded tires/tracks, shadows, hydraulics and perspective must be convincing. Make the subject easy to recognize at small website size.",
+      "cropRegion": "right-53-percent-full-height",
+      "subjectReference": "assets/img/rental/pipelayer.webp",
+      "crop": {
+        "left": 1014,
+        "top": 0,
+        "width": 1144,
+        "height": 729
+      },
+      "width": 640,
+      "height": 408,
+      "bytes": 42420,
+      "sourceSha256": "f13429c19e1b7b69fb7d4c8135d1932d9455ba4cbea65b0d87347964f9800c43"
+    },
+    {
+      "id": "avtogreydery-desktop",
+      "page": "arenda/avtogreydery",
+      "device": "desktop",
+      "source": "docs/references/rental-topic-heroes/avtogreydery.png",
+      "output": "assets/img/rental-hero/topics/avtogreydery-desktop.webp",
+      "maxWidth": 2172,
+      "quality": 76,
+      "prompt": "Create a NEW photorealistic industrial editorial photograph for the hero of a Russian heavy-equipment rental/service page. The first reference is ONLY the established photographic style, natural lighting and colour palette; do not copy its three-machine lineup. ULTRAWIDE PANORAMIC composition, approximately 3:1 aspect ratio (about 2176x736 or 3072x1024). One coherent believable photograph, natural full-scale machinery, no toy-like CGI.\n\nMatch the restrained cool steel-blue early-morning sky, distant northern treeline, quiet industrial setting, yellow machinery and realistic graphite/steel materials. Use soft natural light with a little warm light on the equipment, not theatrical flares. Keep the LEFT 50 percent of the frame empty and low-contrast (sky, ground and distant unobtrusive background) for the website heading. The COMPLETE main subject and all important attachments must fit between x=53% and x=95%, y=20% and y=78%, with visible sky and ground margins. Camera far enough away that wheels/tracks, booms, blades, buckets and load are not cut off. A right-half crop will be used for the phone version, so no essential subject part may cross x=50%. No close-up foreground objects. Do not put scenery, signs or bright clutter behind the left-side text area.\n\nSUBJECT:\nOne yellow SIX-WHEELED MOTOR GRADER, long articulated chassis, one front steering axle and tandem rear wheels, operator cab near the rear, engine at the back and angled mouldboard blade UNDER the middle of the long frame. Parked diagonally on a compacted gravel access road. Entire vehicle, front wheels, central grading blade and rear tandem visible. No front loader bucket.\n\nNo people, text, manufacturer logos, model numbers, labels, watermarks, website graphics, painted gradients or collage panels. The site adds its own dark overlay; keep the photo naturally exposed and readable. Mechanical anatomy, grounded tires/tracks, shadows, hydraulics and perspective must be convincing. Make the subject easy to recognize at small website size.",
+      "width": 2172,
+      "height": 724,
+      "bytes": 203120,
+      "sourceSha256": "6e2e1d00d0ec484c3ebcd1e267b76b3ffdd05be30321f1c31013f22755679f0f"
+    },
+    {
+      "id": "avtogreydery-mobile",
+      "page": "arenda/avtogreydery",
+      "device": "mobile",
+      "source": "docs/references/rental-topic-heroes/avtogreydery.png",
+      "output": "assets/img/rental-hero/topics/avtogreydery-mobile.webp",
+      "maxWidth": 640,
+      "quality": 62,
+      "prompt": "Create a NEW photorealistic industrial editorial photograph for the hero of a Russian heavy-equipment rental/service page. The first reference is ONLY the established photographic style, natural lighting and colour palette; do not copy its three-machine lineup. ULTRAWIDE PANORAMIC composition, approximately 3:1 aspect ratio (about 2176x736 or 3072x1024). One coherent believable photograph, natural full-scale machinery, no toy-like CGI.\n\nMatch the restrained cool steel-blue early-morning sky, distant northern treeline, quiet industrial setting, yellow machinery and realistic graphite/steel materials. Use soft natural light with a little warm light on the equipment, not theatrical flares. Keep the LEFT 50 percent of the frame empty and low-contrast (sky, ground and distant unobtrusive background) for the website heading. The COMPLETE main subject and all important attachments must fit between x=53% and x=95%, y=20% and y=78%, with visible sky and ground margins. Camera far enough away that wheels/tracks, booms, blades, buckets and load are not cut off. A right-half crop will be used for the phone version, so no essential subject part may cross x=50%. No close-up foreground objects. Do not put scenery, signs or bright clutter behind the left-side text area.\n\nSUBJECT:\nOne yellow SIX-WHEELED MOTOR GRADER, long articulated chassis, one front steering axle and tandem rear wheels, operator cab near the rear, engine at the back and angled mouldboard blade UNDER the middle of the long frame. Parked diagonally on a compacted gravel access road. Entire vehicle, front wheels, central grading blade and rear tandem visible. No front loader bucket.\n\nNo people, text, manufacturer logos, model numbers, labels, watermarks, website graphics, painted gradients or collage panels. The site adds its own dark overlay; keep the photo naturally exposed and readable. Mechanical anatomy, grounded tires/tracks, shadows, hydraulics and perspective must be convincing. Make the subject easy to recognize at small website size.",
+      "cropRegion": "right-53-percent-full-height",
+      "crop": {
+        "left": 1020,
+        "top": 0,
+        "width": 1152,
+        "height": 724
+      },
+      "width": 640,
+      "height": 402,
+      "bytes": 45088,
+      "sourceSha256": "6e2e1d00d0ec484c3ebcd1e267b76b3ffdd05be30321f1c31013f22755679f0f"
+    },
+    {
+      "id": "samosvaly-desktop",
+      "page": "arenda/samosvaly",
+      "device": "desktop",
+      "source": "docs/references/rental-topic-heroes/samosvaly.png",
+      "output": "assets/img/rental-hero/topics/samosvaly-desktop.webp",
+      "maxWidth": 2172,
+      "quality": 76,
+      "prompt": "Create a NEW photorealistic industrial editorial photograph for the hero of a Russian heavy-equipment rental/service page. The first reference is ONLY the established photographic style, natural lighting and colour palette; do not copy its three-machine lineup. ULTRAWIDE PANORAMIC composition, approximately 3:1 aspect ratio (about 2176x736 or 3072x1024). One coherent believable photograph, natural full-scale machinery, no toy-like CGI.\n\nMatch the restrained cool steel-blue early-morning sky, distant northern treeline, quiet industrial setting, yellow machinery and realistic graphite/steel materials. Use soft natural light with a little warm light on the equipment, not theatrical flares. Keep the LEFT 50 percent of the frame empty and low-contrast (sky, ground and distant unobtrusive background) for the website heading. The COMPLETE main subject and all important attachments must fit between x=53% and x=95%, y=20% and y=78%, with visible sky and ground margins. Camera far enough away that wheels/tracks, booms, blades, buckets and load are not cut off. A right-half crop will be used for the phone version, so no essential subject part may cross x=50%. No close-up foreground objects. Do not put scenery, signs or bright clutter behind the left-side text area.\n\nSUBJECT:\nOne robust three-axle 6x4 TIPPER DUMP TRUCK with a clean white cab and muted yellow steel dump body. The dump body is lowered in its normal road position, carrying a modest load of gravel. Full truck seen in three-quarter front-side view, all wheels and rear body in frame, on a gravel industrial logistics pad. No raised body, no crane.\n\nNo people, text, manufacturer logos, model numbers, labels, watermarks, website graphics, painted gradients or collage panels. The site adds its own dark overlay; keep the photo naturally exposed and readable. Mechanical anatomy, grounded tires/tracks, shadows, hydraulics and perspective must be convincing. Make the subject easy to recognize at small website size.",
+      "width": 2172,
+      "height": 724,
+      "bytes": 176002,
+      "sourceSha256": "e244c22e9926e553b88a1868dacb64d44adee6074a4098786c23d8e41479bede"
+    },
+    {
+      "id": "samosvaly-mobile",
+      "page": "arenda/samosvaly",
+      "device": "mobile",
+      "source": "docs/references/rental-topic-heroes/samosvaly.png",
+      "output": "assets/img/rental-hero/topics/samosvaly-mobile.webp",
+      "maxWidth": 640,
+      "quality": 62,
+      "prompt": "Create a NEW photorealistic industrial editorial photograph for the hero of a Russian heavy-equipment rental/service page. The first reference is ONLY the established photographic style, natural lighting and colour palette; do not copy its three-machine lineup. ULTRAWIDE PANORAMIC composition, approximately 3:1 aspect ratio (about 2176x736 or 3072x1024). One coherent believable photograph, natural full-scale machinery, no toy-like CGI.\n\nMatch the restrained cool steel-blue early-morning sky, distant northern treeline, quiet industrial setting, yellow machinery and realistic graphite/steel materials. Use soft natural light with a little warm light on the equipment, not theatrical flares. Keep the LEFT 50 percent of the frame empty and low-contrast (sky, ground and distant unobtrusive background) for the website heading. The COMPLETE main subject and all important attachments must fit between x=53% and x=95%, y=20% and y=78%, with visible sky and ground margins. Camera far enough away that wheels/tracks, booms, blades, buckets and load are not cut off. A right-half crop will be used for the phone version, so no essential subject part may cross x=50%. No close-up foreground objects. Do not put scenery, signs or bright clutter behind the left-side text area.\n\nSUBJECT:\nOne robust three-axle 6x4 TIPPER DUMP TRUCK with a clean white cab and muted yellow steel dump body. The dump body is lowered in its normal road position, carrying a modest load of gravel. Full truck seen in three-quarter front-side view, all wheels and rear body in frame, on a gravel industrial logistics pad. No raised body, no crane.\n\nNo people, text, manufacturer logos, model numbers, labels, watermarks, website graphics, painted gradients or collage panels. The site adds its own dark overlay; keep the photo naturally exposed and readable. Mechanical anatomy, grounded tires/tracks, shadows, hydraulics and perspective must be convincing. Make the subject easy to recognize at small website size.",
+      "cropRegion": "right-53-percent-full-height",
+      "crop": {
+        "left": 1020,
+        "top": 0,
+        "width": 1152,
+        "height": 724
+      },
+      "width": 640,
+      "height": 402,
+      "bytes": 40736,
+      "sourceSha256": "e244c22e9926e553b88a1868dacb64d44adee6074a4098786c23d8e41479bede"
+    },
+    {
+      "id": "mini-traktory-desktop",
+      "page": "arenda/mini-traktory",
+      "device": "desktop",
+      "source": "docs/references/rental-topic-heroes/mini-traktory.png",
+      "output": "assets/img/rental-hero/topics/mini-traktory-desktop.webp",
+      "maxWidth": 2172,
+      "quality": 76,
+      "prompt": "Create a NEW photorealistic industrial editorial photograph for the hero of a Russian heavy-equipment rental/service page. The first reference is ONLY the established photographic style, natural lighting and colour palette; do not copy its three-machine lineup. ULTRAWIDE PANORAMIC composition, approximately 3:1 aspect ratio (about 2176x736 or 3072x1024). One coherent believable photograph, natural full-scale machinery, no toy-like CGI.\n\nMatch the restrained cool steel-blue early-morning sky, distant northern treeline, quiet industrial setting, yellow machinery and realistic graphite/steel materials. Use soft natural light with a little warm light on the equipment, not theatrical flares. Keep the LEFT 50 percent of the frame empty and low-contrast (sky, ground and distant unobtrusive background) for the website heading. The COMPLETE main subject and all important attachments must fit between x=53% and x=95%, y=20% and y=78%, with visible sky and ground margins. Camera far enough away that wheels/tracks, booms, blades, buckets and load are not cut off. A right-half crop will be used for the phone version, so no essential subject part may cross x=50%. No close-up foreground objects. Do not put scenery, signs or bright clutter behind the left-side text area.\n\nSUBJECT:\nOne compact yellow SKID-STEER UTILITY LOADER used for snow clearing, with four equal-size sturdy rubber tires, enclosed dark-glass cab and a front snow-plough blade lowered onto light packed snow. Match the equipment TYPE of the second reference, but create a three-quarter exterior view with the complete machine and attachment visible. This is a compact municipal mini-tractor/skid-steer, NOT a farm tractor with giant rear tires. Clean snowy industrial yard with small cleared snow banks, no people.\n\nNo people, text, manufacturer logos, model numbers, labels, watermarks, website graphics, painted gradients or collage panels. The site adds its own dark overlay; keep the photo naturally exposed and readable. Mechanical anatomy, grounded tires/tracks, shadows, hydraulics and perspective must be convincing. Make the subject easy to recognize at small website size.",
+      "subjectReference": "assets/img/rental/mini-tractor.webp",
+      "width": 2172,
+      "height": 724,
+      "bytes": 139720,
+      "sourceSha256": "ed5768060536d5c200f753a2171cc7ccea855be2f2bceafada65740b1c078af8"
+    },
+    {
+      "id": "mini-traktory-mobile",
+      "page": "arenda/mini-traktory",
+      "device": "mobile",
+      "source": "docs/references/rental-topic-heroes/mini-traktory.png",
+      "output": "assets/img/rental-hero/topics/mini-traktory-mobile.webp",
+      "maxWidth": 640,
+      "quality": 62,
+      "prompt": "Create a NEW photorealistic industrial editorial photograph for the hero of a Russian heavy-equipment rental/service page. The first reference is ONLY the established photographic style, natural lighting and colour palette; do not copy its three-machine lineup. ULTRAWIDE PANORAMIC composition, approximately 3:1 aspect ratio (about 2176x736 or 3072x1024). One coherent believable photograph, natural full-scale machinery, no toy-like CGI.\n\nMatch the restrained cool steel-blue early-morning sky, distant northern treeline, quiet industrial setting, yellow machinery and realistic graphite/steel materials. Use soft natural light with a little warm light on the equipment, not theatrical flares. Keep the LEFT 50 percent of the frame empty and low-contrast (sky, ground and distant unobtrusive background) for the website heading. The COMPLETE main subject and all important attachments must fit between x=53% and x=95%, y=20% and y=78%, with visible sky and ground margins. Camera far enough away that wheels/tracks, booms, blades, buckets and load are not cut off. A right-half crop will be used for the phone version, so no essential subject part may cross x=50%. No close-up foreground objects. Do not put scenery, signs or bright clutter behind the left-side text area.\n\nSUBJECT:\nOne compact yellow SKID-STEER UTILITY LOADER used for snow clearing, with four equal-size sturdy rubber tires, enclosed dark-glass cab and a front snow-plough blade lowered onto light packed snow. Match the equipment TYPE of the second reference, but create a three-quarter exterior view with the complete machine and attachment visible. This is a compact municipal mini-tractor/skid-steer, NOT a farm tractor with giant rear tires. Clean snowy industrial yard with small cleared snow banks, no people.\n\nNo people, text, manufacturer logos, model numbers, labels, watermarks, website graphics, painted gradients or collage panels. The site adds its own dark overlay; keep the photo naturally exposed and readable. Mechanical anatomy, grounded tires/tracks, shadows, hydraulics and perspective must be convincing. Make the subject easy to recognize at small website size.",
+      "cropRegion": "right-53-percent-full-height",
+      "subjectReference": "assets/img/rental/mini-tractor.webp",
+      "crop": {
+        "left": 1020,
+        "top": 0,
+        "width": 1152,
+        "height": 724
+      },
+      "width": 640,
+      "height": 402,
+      "bytes": 32734,
+      "sourceSha256": "ed5768060536d5c200f753a2171cc7ccea855be2f2bceafada65740b1c078af8"
+    },
+    {
+      "id": "manipulyatory-desktop",
+      "page": "arenda/manipulyatory",
+      "device": "desktop",
+      "source": "docs/references/rental-topic-heroes/manipulyatory.png",
+      "output": "assets/img/rental-hero/topics/manipulyatory-desktop.webp",
+      "maxWidth": 2172,
+      "quality": 76,
+      "prompt": "Create a NEW photorealistic industrial editorial photograph for the hero of a Russian heavy-equipment rental/service page. The first reference is ONLY the established photographic style, natural lighting and colour palette; do not copy its three-machine lineup. ULTRAWIDE PANORAMIC composition, approximately 3:1 aspect ratio (about 2176x736 or 3072x1024). One coherent believable photograph, natural full-scale machinery, no toy-like CGI.\n\nMatch the restrained cool steel-blue early-morning sky, distant northern treeline, quiet industrial setting, yellow machinery and realistic graphite/steel materials. Use soft natural light with a little warm light on the equipment, not theatrical flares. Keep the LEFT 50 percent of the frame empty and low-contrast (sky, ground and distant unobtrusive background) for the website heading. The COMPLETE main subject and all important attachments must fit between x=53% and x=95%, y=20% and y=78%, with visible sky and ground margins. Camera far enough away that wheels/tracks, booms, blades, buckets and load are not cut off. A right-half crop will be used for the phone version, so no essential subject part may cross x=50%. No close-up foreground objects. Do not put scenery, signs or bright clutter behind the left-side text area.\n\nSUBJECT:\nOne white-cab rigid flatbed truck with a blue articulated KNUCKLE-BOOM LOADER CRANE mounted immediately behind the cab. Compact folded jointed boom, visible hydraulic cylinders, small hook held low above the flatbed. Stabilizer outriggers deployed on a level logistics pad, one modest pallet of building materials on the open flatbed. Complete cab, folded crane, flatbed, outriggers and all wheels visible in three-quarter side view. This is a lorry loader, NOT a telescopic mobile crane.\n\nNo people, text, manufacturer logos, model numbers, labels, watermarks, website graphics, painted gradients or collage panels. The site adds its own dark overlay; keep the photo naturally exposed and readable. Mechanical anatomy, grounded tires/tracks, shadows, hydraulics and perspective must be convincing. Make the subject easy to recognize at small website size.",
+      "width": 2172,
+      "height": 724,
+      "bytes": 172292,
+      "sourceSha256": "591ed488e2630b78e17fd4ea9fcf95af09c950a5ab52cf7e94524bd037eb4603"
+    },
+    {
+      "id": "manipulyatory-mobile",
+      "page": "arenda/manipulyatory",
+      "device": "mobile",
+      "source": "docs/references/rental-topic-heroes/manipulyatory.png",
+      "output": "assets/img/rental-hero/topics/manipulyatory-mobile.webp",
+      "maxWidth": 640,
+      "quality": 62,
+      "prompt": "Create a NEW photorealistic industrial editorial photograph for the hero of a Russian heavy-equipment rental/service page. The first reference is ONLY the established photographic style, natural lighting and colour palette; do not copy its three-machine lineup. ULTRAWIDE PANORAMIC composition, approximately 3:1 aspect ratio (about 2176x736 or 3072x1024). One coherent believable photograph, natural full-scale machinery, no toy-like CGI.\n\nMatch the restrained cool steel-blue early-morning sky, distant northern treeline, quiet industrial setting, yellow machinery and realistic graphite/steel materials. Use soft natural light with a little warm light on the equipment, not theatrical flares. Keep the LEFT 50 percent of the frame empty and low-contrast (sky, ground and distant unobtrusive background) for the website heading. The COMPLETE main subject and all important attachments must fit between x=53% and x=95%, y=20% and y=78%, with visible sky and ground margins. Camera far enough away that wheels/tracks, booms, blades, buckets and load are not cut off. A right-half crop will be used for the phone version, so no essential subject part may cross x=50%. No close-up foreground objects. Do not put scenery, signs or bright clutter behind the left-side text area.\n\nSUBJECT:\nOne white-cab rigid flatbed truck with a blue articulated KNUCKLE-BOOM LOADER CRANE mounted immediately behind the cab. Compact folded jointed boom, visible hydraulic cylinders, small hook held low above the flatbed. Stabilizer outriggers deployed on a level logistics pad, one modest pallet of building materials on the open flatbed. Complete cab, folded crane, flatbed, outriggers and all wheels visible in three-quarter side view. This is a lorry loader, NOT a telescopic mobile crane.\n\nNo people, text, manufacturer logos, model numbers, labels, watermarks, website graphics, painted gradients or collage panels. The site adds its own dark overlay; keep the photo naturally exposed and readable. Mechanical anatomy, grounded tires/tracks, shadows, hydraulics and perspective must be convincing. Make the subject easy to recognize at small website size.",
+      "cropRegion": "right-53-percent-full-height",
+      "crop": {
+        "left": 1020,
+        "top": 0,
+        "width": 1152,
+        "height": 724
+      },
+      "width": 640,
+      "height": 402,
+      "bytes": 41724,
+      "sourceSha256": "591ed488e2630b78e17fd4ea9fcf95af09c950a5ab52cf7e94524bd037eb4603"
+    },
+    {
+      "id": "perevozka-negabarita-desktop",
+      "page": "arenda/perevozka-negabarita",
+      "device": "desktop",
+      "source": "docs/references/rental-topic-heroes/perevozka-negabarita.png",
+      "output": "assets/img/rental-hero/topics/perevozka-negabarita-desktop.webp",
+      "maxWidth": 2172,
+      "quality": 76,
+      "prompt": "Create a NEW photorealistic industrial editorial photograph for the hero of a Russian heavy-equipment rental/service page. The first reference is ONLY the established photographic style, natural lighting and colour palette; do not copy its three-machine lineup. ULTRAWIDE PANORAMIC composition, approximately 3:1 aspect ratio (about 2176x736 or 3072x1024). One coherent believable photograph, natural full-scale machinery, no toy-like CGI.\n\nMatch the restrained cool steel-blue early-morning sky, distant northern treeline, quiet industrial setting, yellow machinery and realistic graphite/steel materials. Use soft natural light with a little warm light on the equipment, not theatrical flares. Keep the LEFT 50 percent of the frame empty and low-contrast (sky, ground and distant unobtrusive background) for the website heading. The COMPLETE main subject and all important attachments must fit between x=53% and x=95%, y=20% and y=78%, with visible sky and ground margins. Camera far enough away that wheels/tracks, booms, blades, buckets and load are not cut off. A right-half crop will be used for the phone version, so no essential subject part may cross x=50%. No close-up foreground objects. Do not put scenery, signs or bright clutter behind the left-side text area.\n\nSUBJECT:\nA complete heavy white tractor unit coupled to a steel-blue LOW-LOADER TRAILER, carrying one yellow tracked bulldozer secured with plausible transport chains. Entire loaded transport combination visible, including tractor cab, low trailer deck, ramps, all tractor and trailer axles, and complete transported machine. Three-quarter front-side diagonal perspective keeps the long combination compact, wholly within the right-hand 46% of the panorama. Parked in an open logistics staging area. Not a normal box semitrailer; the low deck and oversize equipment load must read clearly.\n\nNo people, text, manufacturer logos, model numbers, labels, watermarks, website graphics, painted gradients or collage panels. The site adds its own dark overlay; keep the photo naturally exposed and readable. Mechanical anatomy, grounded tires/tracks, shadows, hydraulics and perspective must be convincing. Make the subject easy to recognize at small website size.",
+      "width": 2172,
+      "height": 724,
+      "bytes": 188896,
+      "sourceSha256": "9564405b00c76e34b15c292607adecaba27b336820cae811b57caeae3acb49ef"
+    },
+    {
+      "id": "perevozka-negabarita-mobile",
+      "page": "arenda/perevozka-negabarita",
+      "device": "mobile",
+      "source": "docs/references/rental-topic-heroes/perevozka-negabarita.png",
+      "output": "assets/img/rental-hero/topics/perevozka-negabarita-mobile.webp",
+      "maxWidth": 640,
+      "quality": 62,
+      "prompt": "Create a NEW photorealistic industrial editorial photograph for the hero of a Russian heavy-equipment rental/service page. The first reference is ONLY the established photographic style, natural lighting and colour palette; do not copy its three-machine lineup. ULTRAWIDE PANORAMIC composition, approximately 3:1 aspect ratio (about 2176x736 or 3072x1024). One coherent believable photograph, natural full-scale machinery, no toy-like CGI.\n\nMatch the restrained cool steel-blue early-morning sky, distant northern treeline, quiet industrial setting, yellow machinery and realistic graphite/steel materials. Use soft natural light with a little warm light on the equipment, not theatrical flares. Keep the LEFT 50 percent of the frame empty and low-contrast (sky, ground and distant unobtrusive background) for the website heading. The COMPLETE main subject and all important attachments must fit between x=53% and x=95%, y=20% and y=78%, with visible sky and ground margins. Camera far enough away that wheels/tracks, booms, blades, buckets and load are not cut off. A right-half crop will be used for the phone version, so no essential subject part may cross x=50%. No close-up foreground objects. Do not put scenery, signs or bright clutter behind the left-side text area.\n\nSUBJECT:\nA complete heavy white tractor unit coupled to a steel-blue LOW-LOADER TRAILER, carrying one yellow tracked bulldozer secured with plausible transport chains. Entire loaded transport combination visible, including tractor cab, low trailer deck, ramps, all tractor and trailer axles, and complete transported machine. Three-quarter front-side diagonal perspective keeps the long combination compact, wholly within the right-hand 46% of the panorama. Parked in an open logistics staging area. Not a normal box semitrailer; the low deck and oversize equipment load must read clearly.\n\nNo people, text, manufacturer logos, model numbers, labels, watermarks, website graphics, painted gradients or collage panels. The site adds its own dark overlay; keep the photo naturally exposed and readable. Mechanical anatomy, grounded tires/tracks, shadows, hydraulics and perspective must be convincing. Make the subject easy to recognize at small website size.",
+      "cropRegion": "right-53-percent-full-height",
+      "crop": {
+        "left": 1020,
+        "top": 0,
+        "width": 1152,
+        "height": 724
+      },
+      "width": 640,
+      "height": 402,
+      "bytes": 44568,
+      "sourceSha256": "9564405b00c76e34b15c292607adecaba27b336820cae811b57caeae3acb49ef"
+    },
+    {
+      "id": "pererabotka-betona-desktop",
+      "page": "arenda/pererabotka-betona",
+      "device": "desktop",
+      "source": "docs/references/rental-topic-heroes/pererabotka-betona.png",
+      "output": "assets/img/rental-hero/topics/pererabotka-betona-desktop.webp",
+      "maxWidth": 2172,
+      "quality": 76,
+      "prompt": "Edit this existing panoramic industrial photograph. Keep its exact 3:1 wide composition, colour palette, light, background landscape, ground, tracked excavator body position, concrete piles and open empty left half. Change ONLY the working pose of the excavator boom and crusher bucket: fold/lower the boom so its HIGHEST point is no higher than 25 percent down from the top of the frame (about y=180 in a 724-pixel image). Leave a clearly generous band of sky above every part of the machinery. The current boom is too close to the top for a short website banner crop. Keep a mechanically plausible boom/dipper/crusher arrangement; bring the crusher bucket closer to the concrete pile, still visibly processing the broken concrete with a small stream of crushed fragments. The crusher bucket must remain clearly distinct from a normal digging bucket. Entire excavator, boom, crusher and tracks visible inside the right-hand half, no part outside the image. Do not enlarge or move the machine closer to the camera. No text, logos, people, watermark, new objects or collage. Maintain the realistic photograph, not a 3D render.",
+      "subjectReference": "assets/img/rental/concrete.webp",
+      "width": 2172,
+      "height": 724,
+      "bytes": 189180,
+      "sourceSha256": "1cd3f86ab6bb211bed3ad73228967f74105a2b46497ecb4eeec015aa9bac4abe",
+      "initialGenerationPrompt": "Create a NEW photorealistic industrial editorial photograph for the hero of a Russian heavy-equipment rental/service page. The first reference is ONLY the established photographic style, natural lighting and colour palette; do not copy its three-machine lineup. ULTRAWIDE PANORAMIC composition, approximately 3:1 aspect ratio (about 2176x736 or 3072x1024). One coherent believable photograph, natural full-scale machinery, no toy-like CGI.\n\nMatch the restrained cool steel-blue early-morning sky, distant northern treeline, quiet industrial setting, yellow machinery and realistic graphite/steel materials. Use soft natural light with a little warm light on the equipment, not theatrical flares. Keep the LEFT 50 percent of the frame empty and low-contrast (sky, ground and distant unobtrusive background) for the website heading. The COMPLETE main subject and all important attachments must fit between x=53% and x=95%, y=20% and y=78%, with visible sky and ground margins. Camera far enough away that wheels/tracks, booms, blades, buckets and load are not cut off. A right-half crop will be used for the phone version, so no essential subject part may cross x=50%. No close-up foreground objects. Do not put scenery, signs or bright clutter behind the left-side text area.\n\nSUBJECT:\nOne full-size yellow TRACKED EXCAVATOR fitted with a BOX-SHAPED CRUSHER BUCKET for recycling concrete, like the attachment/activity in the second reference. The heavy steel crusher bucket is held low over a modest pile of broken grey concrete, with smaller crushed aggregate below and a separate neat processed aggregate pile nearby. Entire tracked machine, compactly folded boom, attachment and concrete material remain clearly visible in one coherent three-quarter scene. No ordinary digging bucket in place of the crusher. No collage, no unrelated vehicles, no enormous mobile crushing plant.\n\nNo people, text, manufacturer logos, model numbers, labels, watermarks, website graphics, painted gradients or collage panels. The site adds its own dark overlay; keep the photo naturally exposed and readable. Mechanical anatomy, grounded tires/tracks, shadows, hydraulics and perspective must be convincing. Make the subject easy to recognize at small website size.",
+      "editPurpose": "Lowered the boom for headroom in an ultrawide desktop hero crop."
+    },
+    {
+      "id": "pererabotka-betona-mobile",
+      "page": "arenda/pererabotka-betona",
+      "device": "mobile",
+      "source": "docs/references/rental-topic-heroes/pererabotka-betona.png",
+      "output": "assets/img/rental-hero/topics/pererabotka-betona-mobile.webp",
+      "maxWidth": 640,
+      "quality": 62,
+      "prompt": "Edit this existing panoramic industrial photograph. Keep its exact 3:1 wide composition, colour palette, light, background landscape, ground, tracked excavator body position, concrete piles and open empty left half. Change ONLY the working pose of the excavator boom and crusher bucket: fold/lower the boom so its HIGHEST point is no higher than 25 percent down from the top of the frame (about y=180 in a 724-pixel image). Leave a clearly generous band of sky above every part of the machinery. The current boom is too close to the top for a short website banner crop. Keep a mechanically plausible boom/dipper/crusher arrangement; bring the crusher bucket closer to the concrete pile, still visibly processing the broken concrete with a small stream of crushed fragments. The crusher bucket must remain clearly distinct from a normal digging bucket. Entire excavator, boom, crusher and tracks visible inside the right-hand half, no part outside the image. Do not enlarge or move the machine closer to the camera. No text, logos, people, watermark, new objects or collage. Maintain the realistic photograph, not a 3D render.",
+      "cropRegion": "right-53-percent-full-height",
+      "subjectReference": "assets/img/rental/concrete.webp",
+      "crop": {
+        "left": 1020,
+        "top": 0,
+        "width": 1152,
+        "height": 724
+      },
+      "width": 640,
+      "height": 402,
+      "bytes": 45148,
+      "sourceSha256": "1cd3f86ab6bb211bed3ad73228967f74105a2b46497ecb4eeec015aa9bac4abe",
+      "initialGenerationPrompt": "Create a NEW photorealistic industrial editorial photograph for the hero of a Russian heavy-equipment rental/service page. The first reference is ONLY the established photographic style, natural lighting and colour palette; do not copy its three-machine lineup. ULTRAWIDE PANORAMIC composition, approximately 3:1 aspect ratio (about 2176x736 or 3072x1024). One coherent believable photograph, natural full-scale machinery, no toy-like CGI.\n\nMatch the restrained cool steel-blue early-morning sky, distant northern treeline, quiet industrial setting, yellow machinery and realistic graphite/steel materials. Use soft natural light with a little warm light on the equipment, not theatrical flares. Keep the LEFT 50 percent of the frame empty and low-contrast (sky, ground and distant unobtrusive background) for the website heading. The COMPLETE main subject and all important attachments must fit between x=53% and x=95%, y=20% and y=78%, with visible sky and ground margins. Camera far enough away that wheels/tracks, booms, blades, buckets and load are not cut off. A right-half crop will be used for the phone version, so no essential subject part may cross x=50%. No close-up foreground objects. Do not put scenery, signs or bright clutter behind the left-side text area.\n\nSUBJECT:\nOne full-size yellow TRACKED EXCAVATOR fitted with a BOX-SHAPED CRUSHER BUCKET for recycling concrete, like the attachment/activity in the second reference. The heavy steel crusher bucket is held low over a modest pile of broken grey concrete, with smaller crushed aggregate below and a separate neat processed aggregate pile nearby. Entire tracked machine, compactly folded boom, attachment and concrete material remain clearly visible in one coherent three-quarter scene. No ordinary digging bucket in place of the crusher. No collage, no unrelated vehicles, no enormous mobile crushing plant.\n\nNo people, text, manufacturer logos, model numbers, labels, watermarks, website graphics, painted gradients or collage panels. The site adds its own dark overlay; keep the photo naturally exposed and readable. Mechanical anatomy, grounded tires/tracks, shadows, hydraulics and perspective must be convincing. Make the subject easy to recognize at small website size.",
+      "editPurpose": "Lowered the boom for headroom in an ultrawide desktop hero crop."
+    }
+  ]
+}

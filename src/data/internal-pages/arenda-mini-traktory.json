@@ -37,8 +37,8 @@
     "accent": "мини-трактора",
     "lead": "Мини-трактор используют для уборки снега и подметания территории. Для работ предусмотрены снегоуборочный шнек, лопата и метла: оборудование выбирают в зависимости от задачи и покрытия площадки.",
     "ctaLabel": "Обсудить аренду",
-    "image": "assets/img/rental-hero/fleet-desktop.webp",
-    "mobileImage": "assets/img/rental-hero/fleet-mobile.webp",
+    "image": "assets/img/rental-hero/topics/mini-traktory-desktop.webp",
+    "mobileImage": "assets/img/rental-hero/topics/mini-traktory-mobile.webp",
     "facts": [
       {
         "icon": "delivery",
