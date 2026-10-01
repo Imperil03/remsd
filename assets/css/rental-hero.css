@@ -3,6 +3,8 @@
 @media (max-width: 720px) {
   .internal-page--rental .internal-hero { --rental-hero-image-height: clamp(200px, 56vw, 400px); }
   .internal-page--rental .internal-hero__media { inset: auto 0 200px; height: var(--rental-hero-image-height); mask-image: linear-gradient(180deg, transparent, #000 8%, #000 92%, transparent); }
+  /* The hub's two facts occupy 123px, plus the shell's 22px bottom padding. */
+  .internal-page--rental.internal-page--hub .internal-hero__media { bottom: 145px; }
   .internal-page--rental .internal-hero__media img { object-position: center 40%; }
   .internal-page--rental .internal-hero__content { padding-bottom: calc(var(--rental-hero-image-height) + 34px); }
   .internal-page--rental .internal-hero::after { background: linear-gradient(180deg, rgba(3, 7, 14, 0.1), rgba(3, 7, 14, 0.18) 80%, rgba(3, 7, 14, 0.7)); }
