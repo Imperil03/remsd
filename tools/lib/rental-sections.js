@@ -29,7 +29,8 @@ function createRentalSections({ requireArray, requireText, validateAsset, escape
       if (ids.has(item.id)) throw new Error(`rental: дублируется ${item.id}`);
       ids.add(item.id);
       requireText(item.name, `${item.id}.name`);
-      requireText(item.text, `${item.id}.text`);
+      if (item.text !== undefined) requireText(item.text, `${item.id}.text`);
+      if (item.detailNote !== undefined) requireText(item.detailNote, `${item.id}.detailNote`);
       if (item.image) {
         validateAsset(item.image, `${item.id}.image`, context);
         requireText(item.alt, `${item.id}.alt`);
@@ -50,6 +51,7 @@ function createRentalSections({ requireArray, requireText, validateAsset, escape
       }
     }
     for (const category of catalog.categories) {
+      requireText(category.text, `${category.id}.text`);
       if (!["equipment", "service"].includes(category.kind)) throw new Error(`${category.id}: неверная группа`);
       if (!/^arenda\/[a-z0-9-]+$/.test(category.path)) throw new Error(`${category.id}: неверный маршрут`);
       if (!context.entityMap.has(category.entityRef)) throw new Error(`${category.id}: отсутствует entityRef`);
@@ -61,8 +63,27 @@ function createRentalSections({ requireArray, requireText, validateAsset, escape
   const photo = (item, rootPath, className) => item.image
     ? `<img class="${className}" src="${rootPath}${esc(item.thumbnail || item.image)}" alt="${esc(item.alt)}" width="${item.thumbnailWidth || item.imageWidth}" height="${item.thumbnailHeight || item.imageHeight}" loading="lazy" decoding="async">`
     : `<div class="${className} rental-photo--empty" aria-hidden="true"><svg><use href="#internal-icon-${esc(item.icon || "delivery")}"></use></svg></div>`;
-  const terms = (catalog) => `<p class="rental-terms">${esc(catalog.terms)}</p>`;
   return {
+    rentalOrder: {
+      validate(section, label) {
+        requireText(section.navigationLabel, `${label}.navigationLabel`);
+        requireArray(section.paragraphs, `${label}.paragraphs`, { nonEmpty: true }).forEach((text, index) => requireText(text, `${label}.paragraphs[${index}]`));
+      },
+      render(section) {
+        return `<section class="internal-section internal-section--editorialContent" id="${esc(section.id)}" aria-labelledby="${esc(section.id)}-title"><div class="container internal-editorial"><header><h2 id="${esc(section.id)}-title">${esc(section.title)}</h2></header><div class="internal-editorial__body"><article>${section.paragraphs.map((text) => `<p>${esc(text)}</p>`).join("")}</article></div></div></section>`;
+      },
+    },
+    rentalLinks: {
+      validate(section, label) {
+        requireArray(section.items, `${label}.items`, { nonEmpty: true }).forEach((item, index) => {
+          requireText(item.title, `${label}.items[${index}].title`);
+          if (!/^arenda(?:\/[a-z0-9-]+)?$/.test(item.href || "")) throw new Error(`${label}: нужна внутренняя ссылка раздела аренды`);
+        });
+      },
+      render(section, { rootPath }) {
+        return `<section class="internal-section internal-section--relatedIndex" id="${esc(section.id)}" aria-labelledby="${esc(section.id)}-title"><div class="container">${renderSectionHead(section)}</div><nav class="rental-jump" aria-label="${esc(section.title)}"><div class="container">${section.items.map((item) => `<a href="${rootPath}${esc(item.href)}/">${esc(item.title)}</a>`).join("")}</div></nav></section>`;
+      },
+    },
     rentalCatalog: {
       validate(section, label, context) {
         const catalog = loadRentalCatalog(context.root);
@@ -96,10 +117,10 @@ function createRentalSections({ requireArray, requireText, validateAsset, escape
         const equipment = select(section, catalog);
         const items = equipment.map((item) => {
           const specs = (item.specs || []).map((spec) => `<div><dt>${esc(spec.label)}</dt><dd>${esc(spec.value)}</dd></div>`).join("");
-          const rates = item.rates.length ? item.rates.map((rate) => `<div><dt>${esc(rate.label)}</dt><dd>${esc(formatRate(rate))}</dd></div>`).join("") : "<div><dt>Стоимость аренды</dt><dd>По запросу</dd></div>";
-          return `<article class="rental-machine" id="machine-${esc(item.id)}" data-equipment-id="${esc(item.id)}">${photo(item, rootPath, "rental-machine__photo")}<div class="rental-machine__body"><h3>${esc(item.name)}</h3><p>${esc(item.text)}</p>${specs ? `<dl class="rental-specs">${specs}</dl>` : ""}<dl class="rental-machine__rates">${rates}</dl>${item.note ? `<p class="rental-machine__note">${esc(item.note)}</p>` : ""}</div></article>`;
+          const rates = item.rates.length ? item.rates.map((rate) => `<div><dt>${esc(rate.label)}</dt><dd>от ${esc(formatRate(rate))}</dd></div>`).join("") : "<div><dt>Стоимость аренды</dt><dd>по запросу</dd></div>";
+          return `<article class="rental-machine" id="machine-${esc(item.id)}" data-equipment-id="${esc(item.id)}">${photo(item, rootPath, "rental-machine__photo")}<div class="rental-machine__body"><h3>${esc(item.name)}</h3>${item.text ? `<p>${esc(item.text)}</p>` : ""}${specs ? `<dl class="rental-specs">${specs}</dl>` : ""}<dl class="rental-machine__rates">${rates}</dl>${item.detailNote ? `<p class="rental-machine__note">${esc(item.detailNote)}</p>` : ""}</div></article>`;
         }).join("\n");
-        return wrap(section, `<div class="rental-machines${equipment.length === 1 ? " rental-machines--single" : ""}">${items}</div>${terms(catalog)}<p class="rental-availability">Наличие техники на нужные даты уточните по телефону или в WhatsApp.</p>`);
+        return wrap(section, `<div class="rental-machines${equipment.length === 1 ? " rental-machines--single" : ""}">${items}</div>`);
       },
     },
     rentalRates: {

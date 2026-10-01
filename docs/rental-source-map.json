@@ -15,7 +15,7 @@
     "90 т из квиза не публикуются как универсальный предел перевозки.",
     "Навесное оборудование гусеничного экскаватора не получает автоматически ставку 4500 ₽/ч.",
     "Не переносятся обещания ответа за 60 секунд, наличие сейчас и ремонтные гарантии.",
-    "С 01.10.2026 на главной аренды разрешена подтверждённая скидка при сроке от 15 дней без придуманного процента."
+    "С 01.10.2026 на главной аренды и девяти дочерних страницах техники разрешена скидка при сроке от 15 дней без придуманного процента; на перевозку и переработку она не переносится."
   ],
   "technicalReferences": [
     "https://www.cat.com/en_US/articles/for-owners/motor-grader-operating-tips-part-2.html",
@@ -23,6 +23,16 @@
     "https://www-assets.liebherr.com/media/bu-media/lhbu-emt/brochures/pipe-layers/rl-46-rl-56-rl-66-stage-iiia-stage-iv-stage-v-en.pdf"
   ],
   "revisions": [
+    {
+      "id": "2026-10-01-rental-detail-copy",
+      "fileName": "remsd-rental-detail-pages-agent-task.txt",
+      "sha256": "42ed29832fa01e6e8cbe693dfdd938ae0079ff7a15b34b0ee1ccd10d01b62678",
+      "routes": ["arenda/avtokrany", "arenda/ekskavatory", "arenda/frontalnye-pogruzchiki", "arenda/buldozery", "arenda/truboukladchiki", "arenda/avtogreydery", "arenda/samosvaly", "arenda/mini-traktory", "arenda/manipulyatory", "arenda/perevozka-negabarita", "arenda/pererabotka-betona"],
+      "ownerConfirmation": "Готовая редакция подтверждает аренду техники с машинистами или водителями и без; H1, фотографии и числовые ставки сохраняются.",
+      "pricingDecision": "Числовые ставки карточек оформлены как «от» без изменения машины и комплектации. Ставки не приписываются одновременно вариантам с персоналом и без него.",
+      "hoursDecision": "График проекта 08:00–22:00 сохранён; расхождение с исходным сайтом отмечено в отчёте.",
+      "report": "docs/rental-detail-copy-update.md"
+    },
     {
       "id": "2026-10-01-rental-hub-copy",
       "fileName": "remsd-arenda-text-and-edits.txt",

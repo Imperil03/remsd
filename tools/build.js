@@ -29,7 +29,7 @@ const iconVersion = createHash("sha256")
   .update(fs.readFileSync(path.join(assetsDir, "img", "favicon.png")))
   .update(fs.readFileSync(path.join(assetsDir, "img", "apple-touch-icon.png")))
   .digest("hex").slice(0, 12);
-const assetVersion = process.env.ASSET_VERSION || "20261001-rental-card-rates-v1";
+const assetVersion = process.env.ASSET_VERSION || "20261001-rental-details-v1";
 
 function fail(message) {
   throw new Error(`[build] ${message}`);
@@ -482,7 +482,7 @@ function buildInternalPages(pages, partials, config, mode, baseUrl, writtenRoute
       surfaceContract: page.rental ? "<!-- THESIS: choose equipment by task, specifications and an explicit rate. OWN-WORLD: RemSD Industrial Editorial, navy, white and amber, incumbent type and 1312px guide. STORY: purpose, machine, rate, conditions, contact. FIRST VIEWPORT: incumbent photo hero, concise service answer and a phone action; catalog follows. FORM: approved catalogue-first structure; code-led extension. FINISH: independent content and visual review, source records and responsive verification. -->" : "",
       rentalMessenger,
       closingActions: page.rental ? `<div class="rental-close-actions">${closingPhone}${rentalMessenger}</div>` : closingPhone,
-      rentalNavigation: page.rental ? `<nav class="rental-jump" aria-label="Разделы страницы"><div class="container">${page.sections.filter((section) => ["rentalCatalog", "equipmentCatalog", "rentalRates"].includes(section.type)).map((section) => `<a href="#${escapeHtml(section.id)}">${section.type === "rentalRates" ? "Цены" : section.kind === "service" ? "Услуги" : "Техника"}</a>`).join("")}<a href="#${page.sections.some((section) => section.id === "applications") ? "applications" : "conditions"}">${page.sections.some((section) => section.id === "applications") ? "Применение" : "Условия"}</a>${page.path !== "arenda" ? `<a href="${rootPath}arenda/">Весь каталог</a>` : ""}</div></nav>` : "",
+      rentalNavigation: page.rental ? `<nav class="rental-jump" aria-label="Разделы страницы"><div class="container">${page.sections.filter((section) => ["rentalCatalog", "equipmentCatalog", "rentalRates"].includes(section.type)).map((section) => `<a href="#${escapeHtml(section.id)}">${section.type === "rentalRates" ? "Цены" : section.kind === "service" ? "Услуги" : "Техника"}</a>`).join("")}<a href="#${escapeHtml(page.sections.find((section) => section.type === "rentalOrder")?.id || (page.sections.some((section) => section.id === "applications") ? "applications" : "conditions"))}">${escapeHtml(page.sections.find((section) => section.type === "rentalOrder")?.navigationLabel || (page.sections.some((section) => section.id === "applications") ? "Применение" : "Условия"))}</a>${page.path !== "arenda" ? `<a href="${rootPath}arenda/">Весь каталог</a>` : ""}</div></nav>` : "",
       callbarLabel: escapeHtml(page.mobileCallbar?.label || "Быстрый звонок мастеру"),
       callbarText: escapeHtml(page.mobileCallbar?.text || "Нужен ремонт?"),
       callbarButton: escapeHtml(page.mobileCallbar?.buttonLabel || "Позвонить мастеру"),

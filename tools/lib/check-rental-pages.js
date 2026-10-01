@@ -34,7 +34,22 @@ module.exports = function checkRentalPages({ root, catalog }) {
       assert.equal(page.closingCta.buttonLabel, "Запросить расчёт");
       assert(!page.hero.facts.some((fact) => fact.label === "Связь"));
       assert.equal(page.hero.facts.find((fact) => fact.label === "Приём звонков").value, "08:00–22:00");
-    } else assert(!/скидк/i.test(withoutHeader), `${page.path}: неподтверждённая скидка`);
+    } else {
+      const category = rental.categories.find((item) => item.path === page.path);
+      const discount = "При аренде от 15 дней предоставляем скидку.";
+      if (category.kind === "equipment") {
+        assert.equal(withoutHeader.split(discount).length - 1, 1, `${page.path}: согласованная скидка должна быть указана один раз`);
+        assert.match(page.hero.lead, /(?:с машинист(?:ом|ами)|с водителем).+без/);
+      } else assert(!/скидк/i.test(withoutHeader), `${page.path}: скидка не относится к услуге`);
+      assert(!/скидк[^.]*\d+\s*%/i.test(withoutHeader), "Нельзя придумывать процент скидки");
+      assert.equal(page.hero.ctaLabel, "Запросить расчёт");
+      assert.equal(page.closingCta.buttonLabel, "Запросить расчёт");
+      assert.deepEqual(page.hero.facts.map((fact) => fact.icon), ["clock"]);
+      assert.equal(page.hero.facts[0].value, "08:00–22:00");
+      assert(!page.sections.some((section) => section.type === "faq" || section.type === "editorialContent"));
+      assert.equal(page.sections.filter((section) => section.type === "rentalOrder").length, 1);
+      assert(!/rental-terms|rental-availability|Нужна помощь с выбором/.test(withoutHeader));
+    }
     assert(html.includes('href="https://wa.me/79224488822"'));
     assert(html.includes(page.mobileCallbar.text));
     for (const match of html.matchAll(/<use\b[^>]*href="#(internal-icon-[^"]+)"/g)) assert(html.includes(`id="${match[1]}"`), `${page.path}: удалена используемая пиктограмма ${match[1]}`);
