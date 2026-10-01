@@ -46,6 +46,7 @@ function createRentalSections({ requireArray, requireText, validateAsset, escape
       for (const rate of item.rates || []) {
         requireText(rate.label, `${item.id}.rate.label`);
         if (!Number.isInteger(rate.amount) || rate.amount <= 0) throw new Error(`${item.id}: некорректный тариф`);
+        if (rate.note !== undefined) requireText(rate.note, `${item.id}.rate.note`);
       }
     }
     for (const category of catalog.categories) {
@@ -72,7 +73,7 @@ function createRentalSections({ requireArray, requireText, validateAsset, escape
       render(section, { rootPath, routeByEntity }) {
         const items = select(section, loadRentalCatalog()).map((item) => {
           if (routeByEntity.get(item.entityRef) !== item.path) throw new Error(`Категория ${item.id} не опубликована`);
-          return `<a class="rental-category" href="${rootPath}${esc(item.path)}/">${photo(item, rootPath, "rental-category__photo")}<div class="rental-category__copy"><h3>${esc(item.name)}</h3><p>${esc(item.text)}</p><span class="rental-category__link">${item.kind === "equipment" && item.equipmentIds.length ? "Техника и тарифы" : "Об услуге"}<svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 10h13m-5-5 5 5-5 5"/></svg></span></div></a>`;
+          return `<a class="rental-category" href="${rootPath}${esc(item.path)}/">${photo(item, rootPath, "rental-category__photo")}<div class="rental-category__copy"><h3>${esc(item.name)}</h3><p>${esc(item.text)}</p><span class="rental-category__link">Подробнее<svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 10h13m-5-5 5 5-5 5"/></svg></span></div></a>`;
         }).join("\n");
         return wrap(section, `<div class="rental-categories rental-categories--${section.kind}">${items}</div>`);
       },
@@ -100,9 +101,10 @@ function createRentalSections({ requireArray, requireText, validateAsset, escape
         const catalog = loadRentalCatalog();
         const rows = catalog.equipment.flatMap((item) => item.rates.map((rate) => {
           const category = catalog.categories.find((entry) => entry.equipmentIds.includes(item.id));
-          return `<tr><th scope="row"><a href="${rootPath}${esc(category.path)}/#machine-${esc(item.id)}">${esc(item.name)}${rate.label === "Аренда" ? "" : ` — ${esc(rate.label.toLocaleLowerCase("ru"))}`}</a>${item.note ? `<span class="rental-rate-note">${esc(item.note)}</span>` : ""}</th><td>${esc(formatRate(rate))}</td></tr>`;
+          const note = rate.note || item.note;
+          return `<tr><th scope="row"><a href="${rootPath}${esc(category.path)}/#machine-${esc(item.id)}">${esc(item.name)}${rate.label === "Аренда" ? "" : ` ${esc(rate.label.toLocaleLowerCase("ru"))}`}</a>${note ? `<span class="rental-rate-note">${esc(note)}</span>` : ""}</th><td>${esc(formatRate(rate).replace(/\/ч$/, ""))}</td></tr>`;
         })).join("\n");
-        return wrap(section, `<table class="rental-rate-table"><caption class="visually-hidden">Почасовая стоимость техники и комплектаций</caption><thead><tr><th scope="col">Техника и комплектация</th><th scope="col">Тариф</th></tr></thead><tbody>${rows}</tbody></table>${terms(catalog)}`);
+        return wrap(section, `<table class="rental-rate-table"><caption class="visually-hidden">Почасовая стоимость техники и оборудования</caption><thead><tr><th scope="col">Техника и оборудование</th><th scope="col">Цена за час</th></tr></thead><tbody>${rows}</tbody></table>`);
       },
     },
   };

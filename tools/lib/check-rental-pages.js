@@ -24,7 +24,17 @@ module.exports = function checkRentalPages({ root, catalog }) {
     const main = html.match(/<main\b[\s\S]*?<\/main>/)[0];
     const withoutHeader = main.replace(/<div class="site-header-rail">[\s\S]*?<\/header>\s*<\/div>/, "");
     assert(!/<form\b/.test(html));
-    assert(!/Записаться на диагностику|Позвонить мастеру|На все работы|60 секунд|скидк/i.test(withoutHeader), `${page.path}: ремонтный или неподтверждённый текст`);
+    assert(!/Записаться на диагностику|Позвонить мастеру|На все работы|60 секунд/i.test(withoutHeader), `${page.path}: ремонтный или неподтверждённый текст`);
+    if (page.path === "arenda") {
+      assert.match(page.hero.lead, /При аренде от 15 дней предоставляем скидку\./);
+      assert(!/скидк[^.]*\d+\s*%/i.test(withoutHeader), "Нельзя придумывать процент скидки");
+      assert.deepEqual(page.sections.map((section) => section.id), ["catalog", "prices", "conditions", "additional-services"]);
+      assert(!page.sections.some((section) => section.type === "faq"));
+      assert.equal(page.hero.ctaLabel, "Запросить расчёт");
+      assert.equal(page.closingCta.buttonLabel, "Запросить расчёт");
+      assert(!page.hero.facts.some((fact) => fact.label === "Связь"));
+      assert.equal(page.hero.facts.find((fact) => fact.label === "Приём звонков").value, "08:00–22:00");
+    } else assert(!/скидк/i.test(withoutHeader), `${page.path}: неподтверждённая скидка`);
     assert(html.includes('href="https://wa.me/79224488822"'));
     assert(html.includes(page.mobileCallbar.text));
     for (const match of html.matchAll(/<use\b[^>]*href="#(internal-icon-[^"]+)"/g)) assert(html.includes(`id="${match[1]}"`), `${page.path}: удалена используемая пиктограмма ${match[1]}`);

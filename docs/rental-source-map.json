@@ -14,12 +14,26 @@
     "18/22/90 т сохранены как наименования источника без переопределения смысла параметров.",
     "90 т из квиза не публикуются как универсальный предел перевозки.",
     "Навесное оборудование гусеничного экскаватора не получает автоматически ставку 4500 ₽/ч.",
-    "Не переносятся скидки, обещания ответа за 60 секунд, наличие сейчас и ремонтные гарантии."
+    "Не переносятся обещания ответа за 60 секунд, наличие сейчас и ремонтные гарантии.",
+    "С 01.10.2026 на главной аренды разрешена подтверждённая скидка при сроке от 15 дней без придуманного процента."
   ],
   "technicalReferences": [
     "https://www.cat.com/en_US/articles/for-owners/motor-grader-operating-tips-part-2.html",
     "https://www.cat.com/en_US/articles/ci-articles/wheel-loader-bucket-breakdown.html",
     "https://www-assets.liebherr.com/media/bu-media/lhbu-emt/brochures/pipe-layers/rl-46-rl-56-rl-66-stage-iiia-stage-iv-stage-v-en.pdf"
+  ],
+  "revisions": [
+    {
+      "id": "2026-10-01-rental-hub-copy",
+      "fileName": "remsd-arenda-text-and-edits.txt",
+      "sha256": "cef8a29224603d651884b27e25cd68dedb53a9f1d49ce65450b0ed4de3fa0402",
+      "route": "arenda",
+      "ownerConfirmation": "Владелец отдельно подтвердил формулировку «с водителями и без».",
+      "publicSource": "https://remsd.ru/arenda",
+      "sourceFacts": ["Скидка при заказе сроком от 15 дней без указанного процента", "График действующего сайта 09:00–20:00"],
+      "hoursDecision": "График макета 08:00–22:00 сохранён по указанию задания; расхождение записано в отчёте.",
+      "report": "docs/rental-copy-update.md"
+    }
   ],
   "pages": [
     "arenda",

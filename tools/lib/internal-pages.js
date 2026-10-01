@@ -310,7 +310,7 @@ const SECTION_REGISTRY = {
   },
   editorialContent: {
     validate(section, label) {
-      requireText(section.lead, `${label}.lead`);
+      if (section.lead !== undefined) requireText(section.lead, `${label}.lead`);
       requireArray(section.blocks, `${label}.blocks`, { nonEmpty: true }).forEach((item, index) => {
         requireObject(item, `${label}.blocks[${index}]`);
         requireText(item.title, `${label}.blocks[${index}].title`);
@@ -320,7 +320,7 @@ const SECTION_REGISTRY = {
     render(section) {
       const blocks = section.blocks.map((item) => `<article><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.text)}</p></article>`).join("");
       return `<section class="internal-section internal-section--editorialContent" id="${escapeHtml(section.id)}" aria-labelledby="${escapeHtml(section.id)}-title">
-  <div class="container internal-editorial"><header><h2 id="${escapeHtml(section.id)}-title">${escapeHtml(section.title)}</h2><p>${escapeHtml(section.lead)}</p></header><div class="internal-editorial__body">${blocks}</div></div>
+  <div class="container internal-editorial"><header><h2 id="${escapeHtml(section.id)}-title">${escapeHtml(section.title)}</h2>${section.lead ? `<p>${escapeHtml(section.lead)}</p>` : ""}</header><div class="internal-editorial__body">${blocks}</div></div>
 </section>`;
     },
   },
