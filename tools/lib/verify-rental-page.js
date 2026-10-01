@@ -25,6 +25,9 @@ module.exports = async function verifyRentalPage(page, viewport, definition, mat
     assert.equal(await page.locator(".rental-rate-table tbody tr").count(), 9);
     assert.equal(await page.locator('.rental-price [data-rental-card-price]').count(), 9);
     assert.equal(await page.locator('.rental-price [data-rental-card-rate]').count(), 6);
+    assert.deepEqual(await page.locator('.rental-categories--equipment h3').allTextContents(), catalog.categories.filter((item) => item.kind === 'equipment').map((item) => item.cardTitle || item.name));
+    assert.equal(await page.locator('.rental-category__link').count(), 0);
+    assert.equal(await page.locator('#additional-services h2').textContent(), 'Услуги');
     assert.deepEqual(await page.locator('main > .rental-jump a').evaluateAll((links) => links.map((link) => link.hash)), ['#catalog', '#prices', '#conditions', '#additional-services']);
     const cards = await page.locator('.rental-categories--equipment .rental-category').evaluateAll((items) => items.map((item) => {
       const photo = item.querySelector('img').getBoundingClientRect();
@@ -34,7 +37,7 @@ module.exports = async function verifyRentalPage(page, viewport, definition, mat
       return {horizontal: copy.left >= photo.right - 1, priceSize: parseFloat(styles.fontSize), priceWeight: Number(styles.fontWeight)};
     }));
     assert(cards.every((card) => card.horizontal === (viewport.width <= 520)), 'Мобильные карточки должны быть горизонтальными, desktop/tablet — вертикальными');
-    assert(cards.every((card) => card.priceSize >= 17 && card.priceWeight >= 700), 'Цена и статус должны иметь один читаемый типографический вес');
+    assert(cards.every((card) => card.priceSize >= 20 && card.priceWeight >= 700), 'Цена и статус должны иметь один увеличенный типографический вес');
   } else {
     const category = catalog.categories.find((item) => item.path === definition.path);
     assert.equal(await page.locator(".rental-machine").count(), category.equipmentIds.length);

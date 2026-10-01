@@ -18,16 +18,15 @@
 .rental-categories--service { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .rental-category { display: flex; flex-direction: column; overflow: hidden; color: var(--text-primary); border: 1px solid var(--border-default); border-radius: var(--radius-md); transition: border-color var(--duration-fast) var(--ease-standard); }
 .rental-category:hover { border-color: var(--action-secondary); }
+.rental-category:is(:hover, :focus-visible) h3 { color: var(--action-secondary); }
 .rental-category__photo { width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; background: var(--surface-page); }
 .rental-category__copy, .rental-machine__body { display: flex; flex: 1; flex-direction: column; min-width: 0; }
 .rental-category__copy { align-items: flex-start; padding: var(--space-6); }
 .rental-category h3, .rental-machine h3 { margin: 0; font-family: var(--font-heading); font-size: 22px; line-height: 1.3; font-weight: 750; overflow-wrap: anywhere; }
-.rental-category p { margin: var(--space-3) 0 var(--space-5); color: var(--text-secondary); }
-p.rental-price { margin-top: auto; min-height: 3em; }
-.rental-price strong { color: var(--text-primary); }
-.rental-price + .rental-category__link { margin-top: 0; }
+.rental-category p { margin: var(--space-3) 0 0; color: var(--text-secondary); }
+p.rental-price { margin-top: var(--space-4); }
+.rental-price strong { color: var(--text-primary); font-size: 20px; }
 .rental-photo--full { object-fit: contain; }
-.rental-category__link { display: inline-flex; align-items: center; gap: var(--space-2); margin-top: auto; color: var(--action-secondary); font-weight: 650; }
 .rental-photo--empty { display: grid; place-items: center; background: var(--surface-page); }
 .rental-photo--empty svg { width: 88px; height: 88px; fill: none; stroke: var(--action-secondary); stroke-width: 1.5; }
 .rental-categories--service .rental-category { flex-direction: row; }
@@ -83,7 +82,7 @@ p.rental-price { margin-top: auto; min-height: 3em; }
   .rental-categories--equipment .rental-category__photo { width: 32%; flex-shrink: 0; }
   .rental-categories--equipment .rental-category__copy { padding: var(--space-4); }
   .rental-categories--equipment h3 { font-size: 18px; overflow-wrap: normal; }
-  p.rental-price { margin-top: var(--space-3); min-height: 0; }
+  p.rental-price { margin-top: var(--space-3); }
   .rental-photo--full { aspect-ratio: auto; }
   .rental-categories--service .rental-category { flex-direction: column; }
   .rental-categories--service .rental-category__photo { width: 100%; aspect-ratio: 16 / 9; max-height: 220px; }

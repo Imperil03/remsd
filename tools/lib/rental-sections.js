@@ -29,6 +29,7 @@ function createRentalSections({ requireArray, requireText, validateAsset, escape
       if (ids.has(item.id)) throw new Error(`rental: дублируется ${item.id}`);
       ids.add(item.id);
       requireText(item.name, `${item.id}.name`);
+      if (item.cardTitle !== undefined) requireText(item.cardTitle, `${item.id}.cardTitle`);
       if (item.text !== undefined) requireText(item.text, `${item.id}.text`);
       if (item.detailNote !== undefined) requireText(item.detailNote, `${item.id}.detailNote`);
       if (item.image) {
@@ -104,7 +105,7 @@ function createRentalSections({ requireArray, requireText, validateAsset, escape
           // Keep the snow-clearing attachment visible in the existing portrait photo.
           const preview = item.id === "mini-traktory" ? { ...item, thumbnail: item.image, thumbnailWidth: item.imageWidth, thumbnailHeight: item.imageHeight } : item;
           const photoClass = `rental-category__photo${item.id === "mini-traktory" ? " rental-photo--full" : ""}`;
-          return `<a class="rental-category" href="${rootPath}${esc(item.path)}/">${photo(preview, rootPath, photoClass)}<div class="rental-category__copy"><h3>${esc(item.name)}</h3>${description ? `<p>${description}</p>` : ""}${rateText}<span class="rental-category__link">Подробнее<svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 10h13m-5-5 5 5-5 5"/></svg></span></div></a>`;
+          return `<a class="rental-category" href="${rootPath}${esc(item.path)}/">${photo(preview, rootPath, photoClass)}<div class="rental-category__copy"><h3>${esc(item.cardTitle || item.name)}</h3>${description ? `<p>${description}</p>` : ""}${rateText}</div></a>`;
         }).join("\n");
         return wrap(section, `<div class="rental-categories rental-categories--${section.kind}">${items}</div>`);
       },
