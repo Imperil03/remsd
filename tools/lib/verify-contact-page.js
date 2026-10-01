@@ -15,17 +15,28 @@ module.exports = async function verifyContactPage(page, viewport, definition, ma
   assert.equal(await page.locator(".contacts-primary__phone").getAttribute("href"), site.phoneHref);
   assert.equal(await page.locator(".contacts-messenger").getAttribute("href"), details.messengers[0].href);
   assert.equal(await page.locator(".contacts-map iframe").getAttribute("src"), details.map.embedUrl);
+  assert.deepEqual(await page.locator('.contacts-shortcuts a').evaluateAll((links) => links.map((link) => link.hash)), ['#kak-dobratsya', '#rekvizity']);
+  for (const item of details.departments) assert((await page.locator(`.contacts-department a[href="${item.href}"]`).getAttribute('aria-label')).includes(item.label));
   const state = await page.evaluate(() => {
     const clipped = [...document.querySelectorAll("main h1, main h2, main p, main th, main td, main caption, main a")]
       .filter((e) => e.clientWidth > 0 && e.scrollWidth > e.clientWidth + 1).map((e) => e.textContent.trim());
     return { clipped, overflow: document.documentElement.scrollWidth - innerWidth,
       headerGap: document.querySelector('.internal-breadcrumbs').getBoundingClientRect().top - document.querySelector('.v3-header').getBoundingClientRect().bottom,
-      columns: getComputedStyle(document.querySelector(".contacts-channels")).gridTemplateColumns.split(" ").length };
+      columns: getComputedStyle(document.querySelector(".contacts-channels")).gridTemplateColumns.split(" ").length,
+      departmentLabelSize: parseFloat(getComputedStyle(document.querySelector('.contacts-department h2')).fontSize),
+      personSize: parseFloat(getComputedStyle(document.querySelector('.contacts-department p')).fontSize),
+      departmentColumns: getComputedStyle(document.querySelector('.contacts-department')).gridTemplateColumns.split(' ').length,
+      mapBottomGap: Math.abs(document.querySelector('.contacts-map').getBoundingClientRect().bottom-document.querySelector('.contacts-entrance').getBoundingClientRect().bottom),
+      addressDecoration: getComputedStyle(document.querySelector('.contacts-address-link')).textDecorationLine };
   });
   assert.deepEqual(state.clipped, [], `Текст не помещается: ${state.clipped.join("; ")}`);
   assert(state.overflow <= 1, `Переполнение ${state.overflow}px`);
   assert(state.headerGap >= 20, `Содержимое страницы перекрыто шапкой: ${state.headerGap}px`);
   assert.equal(state.columns, viewport.width <= 720 ? 1 : 2);
+  assert(state.departmentLabelSize >= 16 && state.personSize >= 14, 'Названия отделов и имена должны оставаться читаемыми');
+  if (viewport.width <= 520) assert.equal(state.departmentColumns, 1, 'На телефоне номер располагается под названием отдела');
+  if (viewport.width > 720) assert(state.mapBottomGap <= 1, `Низ карты и фото не выровнен: ${state.mapBottomGap}px`);
+  assert.equal(state.addressDecoration, 'underline', 'Адрес должен быть заметной ссылкой к проезду');
   for (const locator of [".contacts-primary__phone", ".contacts-email", ".contacts-messenger", ".contacts-download", ".contacts-copy"]) {
     const b = await page.locator(locator).boundingBox();
     assert(b.width >= 44 && b.height >= 44, `Малая область нажатия ${locator}`);

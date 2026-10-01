@@ -4,7 +4,7 @@ const { details, requisiteRows, bankRows, cardText } = require("./contact-detail
 
 function renderContactChannels(site, esc) {
   const messenger = details.messengers.map((item) => `<a class="contacts-messenger" href="${esc(item.href)}" target="_blank" rel="noopener">${esc(item.label)}<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10"/></svg></a>`).join("");
-  const departments = details.departments.map((item) => `<div class="contacts-department"><div><h2>${esc(item.label)}</h2>${item.person ? `<p>${esc(item.person)}</p>` : ""}</div><a href="${esc(item.href)}">${esc(item.phone)}</a></div>`).join("");
+  const departments = details.departments.map((item) => `<div class="contacts-department"><div><h2>${esc(item.label)}</h2>${item.person ? `<p>${esc(item.person)}</p>` : ""}</div><a href="${esc(item.href)}" aria-label="${esc(`Позвонить: ${item.label}, ${item.phone}`)}">${esc(item.phone)}</a></div>`).join("");
   return `<div class="contacts-channels"><div class="contacts-primary"><p class="contacts-primary__label">Мастер · запись на ремонт</p><a class="contacts-primary__phone" href="${esc(site.phoneHref)}">${esc(site.phone)}</a><div class="contacts-primary__links"><a class="contacts-email" href="mailto:${esc(site.email)}">${esc(site.email)}</a>${messenger}</div><p class="contacts-hours">${esc(site.openingHours.label)}</p></div><div class="contacts-departments" aria-label="Телефоны отделов">${departments}</div></div>`;
 }
 
