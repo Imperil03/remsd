@@ -26,7 +26,9 @@ Reduced motion оставляет значения состояний и ста�
 
 Проверены быстрый open/close/reopen, клавиатура, синхронные hidden/inert/ARIA, уникальность ID, очистка временных копий, reduced motion, отсутствие overflow, видимость полного горизонтального скана и загрузка изображения возле deadline. Native desktop/mobile подтвердили галереи и целый документ.
 
-Все JSON из src/data неизменны; 57 HTML отличаются только подключением модуля и cache-buster. Verify и diff-check прошли. Версия — `20261002-site-motion-v1`; публикация ожидает один полный CI.
+Все JSON из src/data неизменны; 57 HTML отличаются только подключением модуля и cache-buster. Verify и diff-check прошли. Версия — `20261002-site-motion-v1`.
+
+Коммит [ceec01f](https://github.com/Imperil03/remsd/commit/ceec01f362bdb7377308dca7e86db35077eee808) опубликован после успешного [workflow 37016761150](https://github.com/Imperil03/remsd/actions/runs/37016761150), с первого запуска. Полный build/gate занял 19 мин 33 с, deployment — 12 с. Lighthouse 56 маршрутов: Performance ≥98, остальные категории 100, CLS 0. Все 57 публичных HTML и три общих JS совпали с проверенной сборкой; версия и noindex сохранены. Native desktop/mobile подтвердили просмотр фотографии и полного документа, закрытие и отсутствие overflow. Finish review: ship; эта итерация завершена.
 
 ## Независимое ревью
 
