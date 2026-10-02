@@ -10,7 +10,9 @@
 
 По файлу владельца `remsd-title-description-before-after.xlsx` заменены 31 title и 54 description на 54 страницах. Все 57 URL листов сверены; сертификаты, политика и 404 сохраняют оба тега. Формулировки — точные значения колонки «Новый», значения с пометкой «Оставить» сохранены. Источник, SHA-256 и границы — `docs/meta-tags-update.md`. Главная использует `src/pages/index.html`, внутренние страницы — `metadata` PageDefinition; внешняя таблица для сборки не нужна.
 
-Verify, проверка всех 85 замен и сравнение 57 HTML прошли. Open Graph/Twitter синхронизированы существующим генератором; body, прочие данные и robots сохранены. CSS/JS/critical и версия ресурсов прежние. Dist — preview без sitemap. Публикация ожидает штатные проверки GitHub Actions и проверку публичных мета-тегов.
+Verify, проверка всех 85 замен и сравнение 57 HTML прошли. Open Graph/Twitter синхронизированы существующим генератором; body, прочие данные и robots сохранены. CSS/JS/critical и версия ресурсов прежние. Dist — preview без sitemap.
+
+Коммит [`9d694b0`](https://github.com/Imperil03/remsd/commit/9d694b080a3d62ce30b3741d96d8b1c28ec551a0) опубликован через успешный [workflow 37017685635](https://github.com/Imperil03/remsd/actions/runs/37017685635): адресные browser/Lighthouse 54 маршрутов и deployment прошли. Все 57 публичных страниц ответили HTTP 200; их title/description сверены с Excel, HTML полностью совпал со сборкой. Предыдущие анимации и их документы сохранены. Открытых работ по замене мета-тегов нет.
 
 ## Текущий выпуск: animate контактов, 02.10.2026
 
