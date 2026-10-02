@@ -247,6 +247,14 @@ The 11 thematic pairs live in `assets/img/rental-hero/topics/`; their sources, g
 
 ## Do's and Don'ts
 
+### Contact motion — 02.10.2026
+
+Mode Operate: movement acknowledges an action, not page loading. The authored moment is a 180 ms line-drawn SVG check after a successful requisites copy; the unchanged live-region message confirms the actual clipboard result. Pending and failed writes do not show success, repeated use cancels the previous stroke, and reduced motion leaves a static check. Clipboard completion never waits for animation.
+
+A nearest-scroll keeps the feedback visible when needed; the mobile scroll margin clears the existing callbar and safe area. Reduced motion jumps directly to the visible result. This does not change layout, copied content or the callbar itself.
+
+The existing address/requisites anchors mark their destination with a 64 × 2 px amber underline, arriving in 260 ms without moving layout. WhatsApp's existing external-link arrow shifts 2 px outward, the PDF icon 2 px downward on pointer hover/keyboard focus; link colors use the existing fast transition. No loops, section entrances, dependency, global chrome change or initially hidden content is added. Reduced motion retains destination/state markers while removing spatial and stroke movement. The current fonts, dimensions, data, map and PDF remain authoritative.
+
 ### Do:
 
 - **Do** использовать реальные фотографии техники, базы и документов.

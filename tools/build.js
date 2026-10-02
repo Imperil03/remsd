@@ -29,7 +29,7 @@ const iconVersion = createHash("sha256")
   .update(fs.readFileSync(path.join(assetsDir, "img", "favicon.png")))
   .update(fs.readFileSync(path.join(assetsDir, "img", "apple-touch-icon.png")))
   .digest("hex").slice(0, 12);
-const assetVersion = process.env.ASSET_VERSION || "20261001-contacts-polish-v1";
+const assetVersion = process.env.ASSET_VERSION || "20261001-contacts-motion-v1";
 
 function fail(message) {
   throw new Error(`[build] ${message}`);

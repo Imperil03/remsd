@@ -46,13 +46,58 @@ module.exports = async function verifyContactPage(page, viewport, definition, ma
     await page.locator("[data-copy-requisites]").click();
     await page.waitForFunction(() => document.querySelector("[data-copy-status]").textContent === "Реквизиты скопированы");
     assert.equal((await page.evaluate(() => navigator.clipboard.readText())).replaceAll("\r\n", "\n"), cardText(site));
+    assert.equal(await page.locator("[data-copy-status]").getAttribute("data-copy-state"), "success");
+    assert(await page.locator("[data-copy-check]").isVisible(), "После копирования видна отметка подтверждения");
+    await page.waitForFunction(() => {
+      const result = document.querySelector('[data-copy-status]').getBoundingClientRect();
+      const callbar = document.querySelector('[data-mobile-callbar]');
+      const limit = callbar && callbar.getAttribute('aria-hidden') !== 'true' ? Math.min(innerHeight, callbar.getBoundingClientRect().top) : innerHeight;
+      return result.top >= 0 && result.bottom <= limit - 8;
+    });
+    await page.screenshot({ path: path.join(__dirname, `../../test-results/browser/contacts-copy-success-${viewport.width}.png`), fullPage: false });
+    if (viewport.width === 1440) {
+      // Repeated keyboard use and reduced motion retain the same real outcome.
+      await page.locator("[data-copy-requisites]").focus();
+      await page.keyboard.press("Enter");
+      await page.waitForFunction(() => document.querySelector('[data-copy-status]').dataset.copyState === 'success' && !document.querySelector('[data-copy-requisites]').disabled);
+      await page.emulateMedia({ reducedMotion: "reduce" });
+      await page.locator("[data-copy-requisites]").focus();
+      await page.keyboard.press("Enter");
+      await page.waitForFunction(() => document.querySelector('[data-copy-status]').dataset.copyState === 'success' && !document.querySelector('[data-copy-requisites]').disabled);
+      assert.equal(await page.locator('[data-copy-check] path').evaluate((element) => element.getAnimations().length), 0, 'Reduced motion сохраняет статическую отметку без рисования');
+      await page.locator('.contacts-shortcuts a[href="#rekvizity"]').click();
+      assert.equal(await page.locator('#rekvizity-title').evaluate((element) => getComputedStyle(element, '::after').animationName), 'none');
+      await page.locator('.contacts-download').focus();
+      assert.equal(await page.locator('.contacts-download svg').evaluate((element) => getComputedStyle(element).transform), 'none');
+      await page.evaluate(() => {
+        window.contactCopyOriginalWrite = navigator.clipboard.writeText;
+        Object.defineProperty(navigator.clipboard, 'writeText', { configurable: true, value: async () => { throw new Error('Clipboard blocked for test'); } });
+      });
+      try {
+        await page.locator('[data-copy-requisites]').click();
+        await page.waitForFunction(() => document.querySelector('[data-copy-status]').dataset.copyState === 'error');
+        assert(await page.locator('[data-copy-check]').isHidden(), 'Ошибка не показывает отметку успеха');
+        assert(await page.locator('[data-copy-requisites]').isEnabled(), 'После ошибки можно повторить копирование');
+        assert.match(await page.locator('[data-copy-message]').textContent(), /Не удалось скопировать/);
+      } finally {
+        await page.evaluate(() => {
+          Object.defineProperty(navigator.clipboard, 'writeText', { configurable: true, value: window.contactCopyOriginalWrite });
+          delete window.contactCopyOriginalWrite;
+        });
+        await page.emulateMedia({ reducedMotion: "no-preference" });
+      }
+    }
     const downloaded = page.waitForEvent("download");
     await page.locator(".contacts-download").focus();
     await page.keyboard.press("Enter");
     const download = await downloaded;
     assert.equal(download.suggestedFilename(), "Реквизиты-РемСД.pdf");
     assert.deepEqual(fs.readFileSync(await download.path()), fs.readFileSync(path.join(__dirname, "../../assets/documents/remsd-requisites.pdf")));
-    await page.locator(".contacts-copy-status").evaluate((e) => { e.textContent = ""; });
+    await page.locator(".contacts-copy-status").evaluate((e) => {
+      e.querySelector('[data-copy-message]').textContent = '';
+      e.querySelector('[data-copy-check]').setAttribute('hidden', '');
+      delete e.dataset.copyState;
+    });
     await page.evaluate(() => window.scrollTo(0, 0));
   }
 };
