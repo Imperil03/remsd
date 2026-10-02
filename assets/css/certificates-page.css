@@ -1,7 +1,7 @@
 .certificates-page { background: var(--surface-card); color: var(--text-primary); }
 .certificates-page main { outline: none; }
 .certificates-page main > :not(.certificates-hero) { content-visibility: visible; contain-intrinsic-block-size: none; }
-.certificates-page :is(a, button):focus-visible { outline: var(--focus-ring); outline-offset: 4px; }
+.certificates-page main :is(a, button):not(:where(.site-header-rail *, .skip-link, .v3-button)):focus-visible { outline: var(--focus-ring); outline-offset: 4px; }
 .certificates-hero { position: relative; padding-block: 152px 56px; color: var(--text-inverse); background: var(--surface-dark); }
 .certificates-hero .internal-breadcrumbs ol { display: flex; flex-wrap: wrap; gap: 8px 12px; margin: 0 0 24px; padding: 0; list-style: none; font-size: 13px; color: #bdc8d5; }
 .certificates-hero .internal-breadcrumbs li { display: flex; align-items: center; gap: 12px; }

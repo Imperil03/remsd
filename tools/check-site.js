@@ -170,8 +170,9 @@ if (!fs.existsSync(distDir)) {
     const h1Text = html.match(/<h1\b[^>]*>([\s\S]*?)<\/h1>/i)?.[1].replace(/<[^>]+>/g, "") || "";
     if (/Сургут/iu.test(h1Text)) fail(`${relative}: город не должен упоминаться в H1`);
     if (mode === "preview" && !/<meta[^>]+name=["']robots["'][^>]+noindex/i.test(html)) fail(`${relative}: preview не закрыт noindex`);
-    if (mode === "production" && /<meta[^>]+name=["']robots["'][^>]+noindex/i.test(html)) fail(`${relative}: production содержит noindex`);
-    if (mode === "production" && !/<link[^>]+rel=["']canonical["']/i.test(html)) fail(`${relative}: production не содержит canonical`);
+    if (mode === "production" && relative !== "404.html" && /<meta[^>]+name=["']robots["'][^>]+noindex/i.test(html)) fail(`${relative}: production содержит noindex`);
+    if (relative === "404.html" && !/<meta[^>]+name=["']robots["'][^>]+noindex/i.test(html)) fail("404.html: необходим noindex");
+    if (mode === "production" && relative !== "404.html" && !/<link[^>]+rel=["']canonical["']/i.test(html)) fail(`${relative}: production не содержит canonical`);
     typesByPage.set(relative, parseStructuredTypes(html, relative));
 
     for (const match of html.matchAll(/href\s*=\s*["']([^"']+)["']/gi)) {

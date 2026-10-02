@@ -8,6 +8,12 @@ function loadRentalCatalog(projectRoot = root) {
 function formatRate(rate) {
   return `${new Intl.NumberFormat("ru-RU").format(rate.amount)} ₽/ч`;
 }
+function validateRentalRoutes(catalog, pages) {
+  for (const category of catalog.categories) {
+    const page = pages.find(page => page.path === category.path);
+    if (!page || !page.rental || page.family !== "service" || page.entityRef !== category.entityRef) throw new Error(`${category.id}: категория аренды должна ссылаться на опубликованную service-страницу с тем же path и entityRef`);
+  }
+}
 function createRentalSections({ requireArray, requireText, validateAsset, escapeHtml: esc, renderSectionHead }) {
   const select = (section, catalog) => {
     if (section.type === "equipmentCatalog") {
@@ -23,6 +29,8 @@ function createRentalSections({ requireArray, requireText, validateAsset, escape
   };
   function validateCatalog(catalog, context) {
     if (catalog.schemaVersion !== 1) throw new Error("rental-catalog: неизвестная версия");
+    requireArray(catalog.categories, "rental.categories", { nonEmpty: true });
+    requireArray(catalog.equipment, "rental.equipment", { nonEmpty: true });
     const ids = new Set();
     for (const item of [...catalog.categories, ...catalog.equipment]) {
       requireText(item.id, "rental.id");
@@ -56,7 +64,17 @@ function createRentalSections({ requireArray, requireText, validateAsset, escape
       if (!["equipment", "service"].includes(category.kind)) throw new Error(`${category.id}: неверная группа`);
       if (!/^arenda\/[a-z0-9-]+$/.test(category.path)) throw new Error(`${category.id}: неверный маршрут`);
       if (!context.entityMap.has(category.entityRef)) throw new Error(`${category.id}: отсутствует entityRef`);
+      requireArray(category.equipmentIds, `${category.id}.equipmentIds`);
+      if (new Set(category.equipmentIds).size !== category.equipmentIds.length) throw new Error(`${category.id}: дублируются equipmentIds`);
+      if (category.kind === "service" && category.equipmentIds.length) throw new Error(`${category.id}: услуга не содержит варианты техники`);
       for (const id of category.equipmentIds) if (!catalog.equipment.some((item) => item.id === id)) throw new Error(`${category.id}: неизвестный вариант ${id}`);
+    }
+    const paths = catalog.categories.map(category => category.path);
+    if (new Set(paths).size !== paths.length) throw new Error("rental.categories: дублируются маршруты");
+    for (const machine of catalog.equipment) {
+      requireArray(machine.rates, `${machine.id}.rates`);
+      const categories = catalog.categories.filter(category => category.equipmentIds.includes(machine.id));
+      if (categories.length !== 1) throw new Error(`${machine.id}: техника должна принадлежать ровно одной категории`);
     }
     requireText(catalog.terms, "rental.terms");
   }
@@ -141,4 +159,4 @@ function createRentalSections({ requireArray, requireText, validateAsset, escape
     },
   };
 }
-module.exports = { createRentalSections, loadRentalCatalog, formatRate };
+module.exports = { createRentalSections, loadRentalCatalog, formatRate, validateRentalRoutes };

@@ -70,7 +70,9 @@ for (const file of consumerCssFiles) {
 
 for (const file of ["styles-v3.css", "internal-pages.css", "rental-hero.css", "company-page.css", "contact-page.css", "document-ui.css", "certificates-page.css", "policy-page.css"]) {
   const source = fs.readFileSync(path.join(cssDir, file), "utf8");
-  const sharedChromeSelector = source.match(/\.(?:v3-(?:header|nav|logo|footer)|main-nav|mobile-callbar|skip-link)[\w-]*/);
+  // Excluding shared controls from a content rule does not style those controls.
+  const targetSource = source.replace(/:not\(:where\([^)]*\)\)/g, "");
+  const sharedChromeSelector = targetSource.match(/\.(?:v3-(?:header|nav|logo|footer)|main-nav|mobile-callbar|skip-link)[\w-]*/);
   if (sharedChromeSelector) {
     fail(`assets/css/${file}: ${sharedChromeSelector[0]} принадлежит только site-chrome.css`);
   }

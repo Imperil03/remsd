@@ -15,7 +15,11 @@
 - `/o-kompanii/` — база, команда, условия ремонта и превью документов РемСД, `company`.
 - `/kontakty/` — телефоны отделов, WhatsApp, карта и реквизиты с PDF, `contact`.
 - `/sertifikaty/` — пять комплектов документов в трёх группах, `documents`.
+- `/arenda/` и 11 дочерних страниц техники/услуг — самостоятельный раздел аренды.
+- `/policy/` — политика обработки персональных данных.
 - `/404.html` — служебная страница ошибки.
+
+Состав публикации: 56 содержательных маршрутов и 404. Точный список — manifest, а не дублируемый вручную каталог в документации.
 
 Будущие услуги, марки и разделы показываются только как неинтерактивные элементы, пока для них не создан и не опубликован отдельный `PageDefinition`.
 
@@ -45,6 +49,7 @@
 - `src/templates/company-page.html` и `tools/lib/company-sections.js` — отдельная композиция и секции компании.
 - `src/templates/certificates-page.html` и `tools/lib/documents.js` — каталог сертификатов и общие превью документов.
 - `src/partials/v3-header.html`, `main-nav.html`, `v3-footer.html` — общая шапка, навигация и футер.
+- `tools/lib/site-context.js` — общие контакты из site-config с сохранением вариантов записи адреса и HTML-экранированием.
 - `assets/css/design-system.css` — единственный источник глобальных токенов.
 - `assets/css/styles.css` — только variable fonts, reset, `body` и `.container`.
 - `assets/css/site-chrome.css` — навигация, skip-link, mobile callbar, единая `.v3-button`, шапка, футер и 404.
@@ -60,8 +65,9 @@
 - `company.css = base + company page + document UI`;
 - `contact.css = base + contact page`;
 - `certificates.css = base + document UI + certificates page`.
+- `policy.css = base + policy page`.
 
-Поддерживаемые секции: `introProof`, `serviceGrid`, `popularWorks`, `vehicleTypes`, `brandShowcase`, `editorialContent`, `symptoms`, `workStages`, `priceExamples`, `relatedIndex`, `faq`. В `repair-v1` зафиксированы 11 секций, у страниц без `template` набор и порядок остаются свободными.
+Типы секций определены реестром `tools/lib/internal-pages.js`: ремонт, марки, аренда и служебные страницы имеют свои модули. `repair-v1` и `brand-v1` поддерживают утверждённое исключение symptoms; реальные количества блоков и CTA берутся из определений страниц. Без `template` сохраняется свободная композиция в пределах соответствующего семейства.
 
 Лимиты несжатых minified-бандлов: `base.css ≤45 KB`, `home.css ≤85 KB`, `internal.css ≤70 KB`, `company.css ≤60 KB`, `contact.css ≤55 KB`, `certificates.css ≤55 KB`.
 
@@ -69,11 +75,13 @@
 
 ## Команды
 
+Node.js ≥22.19; CI использует Node 22. Обычные правки проверяются адресно по `docs/testing-policy.md`. Памятка редактору — `docs/maintenance.md`.
+
 ```powershell
 npm ci
 npx playwright install chromium
 npm run verify
-npm run test:browser
+npm run test:maintenance
 git diff --check
 ```
 

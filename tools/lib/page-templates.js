@@ -29,6 +29,8 @@ function resolvePageTemplate(source, templates, label = "page") {
   }
   const template = templates[page.template];
   if (!Object.hasOwn(templates, page.template) || !template) fail(`${label}: неизвестный шаблон «${page.template}»`);
+  if (page.template === "repair-v1" && (page.rental || !["hub", "service"].includes(page.family))) fail(`${label}: repair-v1 требует неарендное семейство hub/service`);
+  if (page.template === "brand-v1" && (page.rental || page.family !== "brand")) fail(`${label}: brand-v1 требует неарендное семейство brand`);
   if (!page.hero || !Array.isArray(page.sections)) fail(`${label}: шаблону нужны hero и sections`);
   const omitted = page.omitSections === undefined ? [] : page.omitSections;
   if (Object.hasOwn(page, "omitSections") && !["repair-v1", "brand-v1"].includes(page.template)) fail(`${label}.omitSections: доступно только для repair-v1 и brand-v1`);

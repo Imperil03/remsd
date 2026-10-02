@@ -27,6 +27,8 @@
 - `docs/project-history.md` — краткая хронология решений и ключевые коммиты.
 - `docs/design-guideline.md` — визуальное направление и иерархия источников.
 - `docs/design-system.md` и `DESIGN.md` — кодовый и машиночитаемый дизайн-контракт.
+- `docs/maintenance.md` — единые источники фактов/текстов, результат технической доводки и проверки.
+- `docs/seo-launch.md` — production-origin gate и подготовленная карта старых адресов; перенос домена требует отдельного запуска.
 - `docs/references/internal-hub-block-reference.png` — утверждённый референс композиции блоков эталонного hub; его плотность, брендинг и реквизиты не копируются.
 - `src/data/site-config.json`, `entities.json`, `relations.json`, `internal-pages/index.json` и отдельные файлы в `internal-pages/` — типизированная модель сайта и внутренних страниц.
 - `src/data/page-templates.json` — единственный источник общих данных `repair-v1`; не копировать их в JSON страниц.

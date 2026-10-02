@@ -31,6 +31,7 @@ function classifyChanges({ files, pages, assetRoutes = () => [], versionOnly = f
   for (const file of files) {
     if (/^(docs\/|\.agent\/|\.impeccable\/)/.test(file) || /^(AGENTS|README|DESIGN|PRODUCT)\.md$/.test(file) || file === ".gitignore") continue;
     if (file === ".github/workflows/deploy-pages.yml" || /^tools\/(select-ci-scope\.js|test-ci-scope\.js|lib\/(ci-scope|browser-scope)\.js)$/.test(file) || file === "tools/verify-browser.js") continue;
+    if (["tools/check-syntax.js", "tools/check-release.js", "tools/test-maintenance.js", "tools/lib/browser-errors.js"].includes(file)) continue;
     if (file.startsWith("dist/")) { generated = true; continue; }
     siteChanged = true;
     if (file === "tools/build.js" && versionOnly) continue;

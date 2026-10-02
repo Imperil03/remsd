@@ -3,6 +3,7 @@ const path = require("path");
 const { createHash } = require("crypto");
 const { transform: transformCss } = require("lightningcss");
 const { removeCoveredFontFaces } = require("./lib/font-faces");
+const { siteContext } = require("./lib/site-context");
 const { loadPageTemplates } = require("./lib/page-templates");
 const { renderOfficialBrands, renderBrandMatrix, renderBrandNavigation } = require("./lib/brand-catalog");
 const { renderCompanyMediaData } = require("./lib/company-sections");
@@ -29,7 +30,7 @@ const iconVersion = createHash("sha256")
   .update(fs.readFileSync(path.join(assetsDir, "img", "favicon.png")))
   .update(fs.readFileSync(path.join(assetsDir, "img", "apple-touch-icon.png")))
   .digest("hex").slice(0, 12);
-const assetVersion = process.env.ASSET_VERSION || "20261002-site-motion-v1";
+const assetVersion = process.env.ASSET_VERSION || "20261002-maintenance-v1";
 
 function fail(message) {
   throw new Error(`[build] ${message}`);
@@ -342,8 +343,8 @@ function buildInternalStructuredData(page, config, baseUrl) {
 function metadataBlock({ title, description, socialImage }, route, rootPath, config, mode, baseUrl) {
   const pageUrl = route === "404" ? toAbsoluteUrl(baseUrl, "404.html", { file: true }) : toAbsoluteUrl(baseUrl, route);
   const imageUrl = assetUrl(baseUrl, socialImage || config.site.defaultSocialImage);
-  const robots = mode === "preview" ? "noindex,nofollow,noarchive" : "index,follow,max-image-preview:large";
-  const canonical = mode === "production" ? `\n    <link rel="canonical" href="${escapeHtml(pageUrl)}">` : "";
+  const robots = mode === "preview" ? "noindex,nofollow,noarchive" : route === "404" ? "noindex,follow" : "index,follow,max-image-preview:large";
+  const canonical = mode === "production" && route !== "404" ? `\n    <link rel="canonical" href="${escapeHtml(pageUrl)}">` : "";
   return `    <link rel="icon" type="image/png" href="${rootPath}assets/img/favicon.png?v=${iconVersion}">
     <link rel="apple-touch-icon" href="${rootPath}assets/img/apple-touch-icon.png?v=${iconVersion}">
     <meta name="robots" content="${robots}">${canonical}
@@ -441,6 +442,7 @@ function buildStaticPages(staticFiles, partials, config, mode, baseUrl, writtenR
         .replaceAll("../img/", `${rootPath}assets/img/`)
       : "";
     const rendered = render(fs.readFileSync(source, "utf8"), partials, {
+      ...siteContext(config.site, escapeHtml),
       rootPath,
       assetVersion,
       callbarLabel: "Быстрый звонок мастеру",
@@ -482,6 +484,7 @@ function buildInternalPages(pages, partials, config, mode, baseUrl, writtenRoute
         .replaceAll("../img/", `${rootPath}assets/img/`)
       : "";
     let rendered = render(template, partials, {
+      ...siteContext(config.site, escapeHtml),
       rootPath,
       assetVersion,
       internalStyles: internalCriticalCss ? `<style data-critical-styles>${internalCriticalCss}</style>` : "",

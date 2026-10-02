@@ -38,6 +38,9 @@ jobs:
       - name: Verify check-selection rules
         run: node tools/test-ci-scope.js
 
+      - name: Check JavaScript syntax
+        run: node tools/check-syntax.js
+
       - name: Select affected routes
         id: checks
         env:
@@ -51,6 +54,9 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Verify maintenance contracts
+        run: npm run test:maintenance
 
       - name: Install browser runtime
         if: steps.checks.outputs.mode != 'none'

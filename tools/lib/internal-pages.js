@@ -5,7 +5,7 @@ const { renderOfficialBrands, renderBrandMatrix } = require("./brand-catalog");
 const { createCompanySections } = require("./company-sections");
 const { createContactSections } = require("./contact-sections");
 const { createDocumentSections } = require("./documents");
-const { createRentalSections } = require("./rental-sections");
+const { createRentalSections, loadRentalCatalog, validateRentalRoutes } = require("./rental-sections");
 const { createPolicySections } = require("./policy-sections");
 
 const PAGE_FAMILIES = new Set(["hub", "service", "brand", "company", "contact", "documents"]);
@@ -528,6 +528,8 @@ function validatePageDefinition(page, label, context) {
   }
   if (page.rental !== undefined && typeof page.rental !== "boolean") fail(`${label}.rental: ожидается boolean`);
   if (page.rental && !/^arenda(?:\/|$)/.test(page.path)) fail(`${label}.rental: страница должна находиться в разделе arenda`);
+  if (/^arenda(?:\/|$)/.test(page.path) && page.rental !== true) fail(`${label}.rental: раздел arenda требует rental: true`);
+  if (page.rental && !["hub", "service"].includes(page.family)) fail(`${label}.rental: разрешены только hub и service`);
   if (page.layout !== undefined) {
     if (page.layout !== "policy" || page.family !== "documents") fail(`${label}.layout: policy разрешён только для documents`);
     if (!/^\d{4}-\d{2}-\d{2}$/.test(page.updatedAt || "") || Number.isNaN(Date.parse(page.updatedAt))) fail(`${label}.updatedAt: нужна дата редакции`);
@@ -573,6 +575,26 @@ function validatePageDefinition(page, label, context) {
       fail(`${label}.sections[${index}].link.targetSectionId: секция ${section.link.targetSectionId} не найдена`);
     }
   });
+  // Validate the shape consumed by templates before build removes dist/.
+  const surfaceTypes = {
+    company: ["companyFacts", "companyStory", "companyBase", "companyTeam", "companyApproach", "companyDocuments"],
+    contact: ["contactLocation", "contactRequisites"],
+    documents: page.layout === "policy" ? ["policyText"] : ["documentCatalog"],
+  };
+  const ownedTypes = new Set(Object.values(surfaceTypes).flat().concat("policyText", "documentCatalog"));
+  const rentalTypes = new Set(["rentalCatalog", "equipmentCatalog", "rentalRates", "rentalOrder", "rentalLinks"]);
+  for (const section of page.sections) {
+    if (surfaceTypes[page.family] && !surfaceTypes[page.family].includes(section.type)) fail(`${label}: ${section.type} не принадлежит семейству ${page.family}`);
+    if (!surfaceTypes[page.family] && ownedTypes.has(section.type)) fail(`${label}: ${section.type} требует соответствующего служебного семейства`);
+    if (!page.rental && rentalTypes.has(section.type)) fail(`${label}: ${section.type} требует rental: true`);
+  }
+  const requiredSections = page.family === "company" ? [["companyDocuments", "documents"]]
+    : page.family === "contact" ? [["contactLocation", "kak-dobratsya"], ["contactRequisites", "rekvizity"]]
+      : page.family === "documents" && page.layout !== "policy" ? [["documentCatalog", null]] : [];
+  for (const [type, id] of requiredSections) {
+    const sections = page.sections.filter(section => section.type === type);
+    if (sections.length !== 1 || (id && sections[0].id !== id)) fail(`${label}: нужна одна секция ${type}${id ? ` с id ${id}` : ""}`);
+  }
   if (!["contact", "documents"].includes(page.family)) validateCta(page.closingCta, `${label}.closingCta`);
   if (page.family === "company") requireText(page.closingCta.mapLabel, `${label}.closingCta.mapLabel`);
   validateNoHtml(page, label);
@@ -627,6 +649,7 @@ function loadInternalPageCatalog({ root, dataDir, assetsDir, siteConfig }) {
     if (page.family !== family) fail(`internal-pages/index.json.referenceByFamily.${family}: маршрут относится к ${page.family}`);
     references[family] = route;
   }
+  if (pages.some(page => page.rental)) validateRentalRoutes(loadRentalCatalog(root),pages);
   return { manifest, pages, contentModel };
 }
 

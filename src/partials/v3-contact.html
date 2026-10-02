@@ -11,13 +11,13 @@
           <div>
             <dt>Адрес базы</dt>
             <dd>
-              г. Сургут, ул. Домостроителей, 13
-              <a class="v3-contact__map-link" href="https://yandex.ru/maps/?text=%D0%A1%D1%83%D1%80%D0%B3%D1%83%D1%82%2C%20%D1%83%D0%BB.%20%D0%94%D0%BE%D0%BC%D0%BE%D1%81%D1%82%D1%80%D0%BE%D0%B8%D1%82%D0%B5%D0%BB%D0%B5%D0%B9%2C%2013" target="_blank" rel="noopener">Открыть в Яндекс Картах</a>
+              {{siteAddress}}
+              <a class="v3-contact__map-link" href="{{siteMapUrl}}" target="_blank" rel="noopener">Открыть в Яндекс Картах</a>
             </dd>
           </div>
           <div>
             <dt>Телефон мастера</dt>
-            <dd><a href="tel:+79224488822">+7 (922) 448-88-22</a></dd>
+            <dd><a href="{{sitePhoneHref}}">{{sitePhone}}</a></dd>
           </div>
           <div>
             <dt>Что сообщить</dt>
@@ -30,7 +30,7 @@
         </dl>
 
         <div class="v3-contact__actions">
-          <a class="v3-button v3-button--primary" href="tel:+79224488822">
+          <a class="v3-button v3-button--primary" href="{{sitePhoneHref}}">
             Позвонить мастеру
             <svg class="v3-button__icon" viewBox="0 0 24 24" aria-hidden="true">
               <path d="M7 17 17 7"></path>
@@ -44,7 +44,7 @@
       <div class="v3-contact__map" aria-label="Карта проезда к ремонтной базе РемСД">
         <iframe
           title="РемСД на Яндекс.Картах"
-          src="https://yandex.ru/map-widget/v1/?text=%D0%A1%D1%83%D1%80%D0%B3%D1%83%D1%82%2C%20%D1%83%D0%BB.%20%D0%94%D0%BE%D0%BC%D0%BE%D1%81%D1%82%D1%80%D0%BE%D0%B8%D1%82%D0%B5%D0%BB%D0%B5%D0%B9%2C%2013&z=16"
+          src="{{siteMapEmbedUrl}}"
           width="640"
           height="460"
           loading="lazy"
@@ -53,7 +53,7 @@
         </iframe>
         <div class="v3-contact__map-marker" aria-hidden="true">
           <span>РемСД</span>
-          <strong>ул. Домостроителей, 13</strong>
+          <strong>{{siteStreet}}</strong>
         </div>
       </div>
     </div>

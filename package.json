@@ -2,6 +2,9 @@
   "scripts": {
     "build": "node tools/build.js",
     "check": "node tools/check-site.js && node tools/check-design-system.js",
+    "check:release": "node tools/check-release.js",
+    "check:syntax": "node tools/check-syntax.js",
+    "test:maintenance": "node tools/test-maintenance.js",
     "generate:critical": "node tools/generate-home-critical-css.js",
     "test:browser": "node tools/verify-browser.js",
     "test:lighthouse": "node tools/verify-lighthouse.js",
@@ -12,11 +15,12 @@
     "prepare:rental": "node tools/prepare-rental-media.js",
     "preview": "node tools/serve-preview.js"
   },
+  "engines": { "node": ">=22.19.0" },
   "devDependencies": {
-    "lighthouse": "^12.6.1",
+    "lighthouse": "^13.5.0",
     "lightningcss": "^1.32.0",
     "playwright": "^1.60.0",
-    "postcss": "^8.5.17",
-    "sharp": "^0.34.5"
+    "postcss": "^8.5.28",
+    "sharp": "^0.35.5"
   }
 }

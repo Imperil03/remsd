@@ -1,6 +1,6 @@
 .company-page { background: var(--surface-card); }
 .company-page main > :not(.company-hero):not(.company-facts) { content-visibility: visible; contain-intrinsic-block-size: none; }
-.company-page :is(a, button):focus-visible { outline: var(--focus-ring); outline-offset: 4px; }
+.company-page main :is(a, button):not(:where(.site-header-rail *, .skip-link, .v3-button)):focus-visible { outline: var(--focus-ring); outline-offset: 4px; }
 .company-page h1, .company-page h2, .company-page h3 { text-wrap: balance; }
 .company-page h2 { margin: 0; font-size: clamp(30px, 3.1vw, 42px); font-weight: 800; line-height: 1.13; letter-spacing: -0.025em; }
 .company-page h3 { margin: 0; font-size: 20px; line-height: 1.3; font-weight: 750; }

@@ -3,12 +3,10 @@
   "defaultMode": "preview",
   "modes": {
     "preview": {
-      "baseUrl": "https://imperil03.github.io/remsd/",
-      "indexable": false
+      "baseUrl": "https://imperil03.github.io/remsd/"
     },
     "production": {
-      "baseUrl": "https://remsd.ru/",
-      "indexable": true
+      "baseUrl": "https://remsd.ru/"
     }
   },
   "site": {

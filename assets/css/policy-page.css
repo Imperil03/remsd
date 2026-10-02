@@ -1,6 +1,6 @@
 .policy-page { background: var(--surface-card); color: var(--text-primary); }
 .policy-page main { outline: none; }
-.policy-page :is(a, summary):focus-visible { outline: var(--focus-ring); outline-offset: 4px; }
+.policy-page main :is(a, summary):not(:where(.site-header-rail *, .skip-link, .v3-button)):focus-visible { outline: var(--focus-ring); outline-offset: 4px; }
 .policy-hero { padding-block: 152px var(--space-12); color: var(--text-inverse); background: var(--surface-dark); }
 .policy-hero .internal-breadcrumbs ol { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); margin: 0 0 var(--space-6); padding: 0; list-style: none; color: #bdc8d5; font-size: var(--type-small-size); }
 .policy-hero .internal-breadcrumbs li { display: flex; align-items: center; gap: var(--space-3); }

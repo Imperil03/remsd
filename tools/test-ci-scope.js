@@ -52,6 +52,10 @@ check("CI and docs-only changes do not republish or invoke browsers", () => {
   const result = classify([".github/workflows/deploy-pages.yml", "tools/select-ci-scope.js", "tools/verify-browser.js", "tools/test-ci-scope.js", "tools/lib/ci-scope.js", "AGENTS.md", "docs/testing-policy.md"]);
   assert.deepEqual({ mode: result.mode, routes: result.routes, siteChanged: result.siteChanged }, { mode: "none", routes: [], siteChanged: false });
 });
+check("Maintenance infrastructure does not invoke expensive gates", () => {
+  const result=classify(["tools/check-syntax.js", "tools/check-release.js", "tools/test-maintenance.js", "tools/lib/browser-errors.js"]);
+  assert.deepEqual({mode:result.mode,routes:result.routes,siteChanged:result.siteChanged},{mode:"none",routes:[],siteChanged:false});
+});
 check("A version bump cannot conceal another build change, including CRLF", () => {
   const before = 'const assetVersion = process.env.ASSET_VERSION || "old";\r\nconst code = 1;\r\n';
   assert(assetVersionOnly(before, before.replace("old", "new")));

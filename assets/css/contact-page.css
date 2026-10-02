@@ -6,12 +6,13 @@
 .contacts-page h1, .contacts-page h2 { font-family: var(--font-heading); letter-spacing: -0.025em; text-wrap: balance; }
 .contacts-page h2 { font-size: clamp(28px, 3vw, 40px); font-weight: 850; line-height: 1.18; }
 .contacts-page a { text-underline-offset: .22em; }
-.contacts-page a:focus-visible, .contacts-page button:focus-visible { outline: var(--focus-ring); outline-offset: 5px; }
+.contacts-page main :is(a, button):not(:where(.site-header-rail *, .skip-link, .v3-button)):focus-visible { outline: var(--focus-ring); outline-offset: 5px; }
 .contacts-hero { position: relative; padding-top: 152px; color: var(--text-inverse); background: var(--surface-dark); }
 .contacts-hero__inner { padding-bottom: 72px; }
 .contacts-hero .internal-breadcrumbs ol { display: flex; gap: 10px; padding: 0; margin: 0 0 32px; list-style: none; color: #c4d0df; font-size: 14px; }
 .contacts-hero .internal-breadcrumbs li + li::before { content: "/"; margin-right: 10px; color: var(--action-primary); }
-.contacts-hero .internal-breadcrumbs a { color: inherit; text-decoration: none; }
+.contacts-hero .internal-breadcrumbs a { position: relative; color: inherit; text-decoration: none; }
+.contacts-hero .internal-breadcrumbs a::before { position: absolute; top: 50%; left: 50%; width: 100%; min-width: 44px; height: 44px; transform: translate(-50%, -50%); content: ""; }
 .contacts-hero .internal-breadcrumbs a:hover { color: var(--text-inverse); text-decoration: underline; }
 .contacts-hero__heading { display: flex; align-items: baseline; justify-content: space-between; gap: 24px; margin-bottom: 46px; }
 .contacts-hero h1 { font-size: clamp(36px, 4.2vw, 60px); line-height: 1.08; font-weight: 900; }

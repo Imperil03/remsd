@@ -5,6 +5,12 @@ const { chromium } = require("playwright");
 const { loadInternalPageCatalog } = require("./lib/internal-pages");
 const verifyMenuHover = require("./lib/verify-menu-hover");
 const { selectBrowserScope } = require("./lib/browser-scope");
+const { monitorBrowserErrors } = require("./lib/browser-errors");
+const pageErrorMonitors = new WeakMap();
+async function closeCheckedContext(context) {
+  try { for (const page of context.pages()) pageErrorMonitors.get(page)?.assert(); }
+  finally { await context.close(); }
+}
 
 const root = path.resolve(__dirname, "..");
 const distDir = path.join(root, "dist");
@@ -67,14 +73,15 @@ function startServer() {
 }
 
 async function verifyPage(page, route, label, { expectedStatus = 200 } = {}) {
-  const errors = [];
-  page.on("console", (message) => {
-    if (message.type() === "error") errors.push(`console: ${message.text()}`);
-  });
-  page.on("pageerror", (error) => errors.push(`pageerror: ${error.message}`));
+  let monitor = pageErrorMonitors.get(page);
+  if (!monitor) { monitor = monitorBrowserErrors(page); pageErrorMonitors.set(page,monitor); }
+  // A reused context must not discard errors from its preceding scenario.
+  monitor.assert();
+  monitor.begin(label,expectedStatus);
   const response = await page.goto(`http://${host}:${port}${route}`, { waitUntil: "domcontentloaded" });
   if (response?.status() !== expectedStatus) throw new Error(`${label}: HTTP ${response?.status()}, ожидался ${expectedStatus}`);
-  await page.waitForTimeout(150);
+  await page.waitForFunction(() => [...document.querySelectorAll('link[rel="stylesheet"]')].every(link => link.sheet && link.media !== "print"));
+  await page.evaluate(() => document.fonts.ready);
   const state = await page.evaluate(() => ({
     h1: document.querySelectorAll("h1").length,
     hrefHash: document.querySelectorAll('a[href="#"]').length,
@@ -98,9 +105,6 @@ async function verifyPage(page, route, label, { expectedStatus = 200 } = {}) {
   if (["/", "/index.html", "/remsd/", "/remsd/index.html"].includes(requestPath) && state.currentNavLinks.length) {
     throw new Error(`${label}: при загрузке главной не должно быть активного пункта меню`);
   }
-  const relevantErrors = expectedStatus === 404
-    ? errors.filter((error) => !/^console: Failed to load resource: the server responded with a status of 404/.test(error))
-    : errors;
   if (expectedStatus === 404) {
     const assetsOk = await page.evaluate(() => {
       const headerLogo = document.querySelector(".v3-header img");
@@ -108,7 +112,7 @@ async function verifyPage(page, route, label, { expectedStatus = 200 } = {}) {
     });
     if (!assetsOk) throw new Error(`${label}: не загрузились CSS или изображения служебной страницы`);
   }
-  if (relevantErrors.length) throw new Error(`${label}: ${relevantErrors.join("; ")}`);
+  monitor.assert();
 }
 
 async function verifyNavigation(page, collapsed) {
@@ -243,7 +247,7 @@ async function verifySharedChrome(browser, viewport) {
   if (!internal.activeLine || Math.abs(internal.activeLine.height - 2) > 0.5 || internal.activeLine.opacity < 0.99 || internal.activeLine.backgroundColor !== "rgb(245, 162, 26)") {
     throw new Error(`Общий chrome ${viewport.width}: активный раздел не отмечен янтарной линией (${JSON.stringify(internal.activeLine)})`);
   }
-  await context.close();
+  await closeCheckedContext(context);
 }
 
 async function verifyMenuHoverMatrix(browser) {
@@ -263,10 +267,11 @@ async function verifyMenuHoverMatrix(browser) {
           await page.evaluate(() => document.fonts.ready);
         } else await page.waitForLoadState("networkidle");
         await verifyMenuHover(page, { label: `Hover ${route} ${width}px` });
+        pageErrorMonitors.get(page)?.assert();
         await page.close();
       }
     } finally {
-      await context.close();
+      await closeCheckedContext(context);
     }
   }
   console.log(`Desktop hover checked: ${routes.length} страниц, ${widths.join("/")} px, ремонт и аренда.`);
@@ -829,9 +834,10 @@ async function run() {
       for (const route of ["/index.html", "/remsd/", "/remsd/index.html", "/#v3-company-proof-title", "/#v3-contact-title", "/remsd/#v3-contact-title"]) {
         const page = await context.newPage();
         await verifyPage(page, route, `Активный пункт ${route} ${width}`);
+        pageErrorMonitors.get(page)?.assert();
         await page.close();
       }
-      await context.close();
+      await closeCheckedContext(context);
     }
     const chromeViewports = [
       { name: "wide-1992", width: 1992, height: 1200 },
@@ -881,7 +887,7 @@ async function run() {
         });
         await page.waitForTimeout(50);
         await page.locator(".v3-hero").screenshot({ path: path.join(resultDir, `home-${viewport.name}.png`) });
-        await context.close();
+        await closeCheckedContext(context);
       }
 
     }
@@ -919,7 +925,7 @@ async function run() {
           await page.locator("#truck-brands").screenshot({ path: path.join(reviewDir, "internal-mobile-brands.png") });
           await page.locator("#truck-repair-surgut").screenshot({ path: path.join(reviewDir, "internal-mobile-editorial.png") });
         }
-        await context.close();
+        await closeCheckedContext(context);
       }
 
     }
@@ -968,7 +974,7 @@ async function run() {
               await page.locator(`#${id}`).screenshot({ path: path.join(resultDir, `${fileSlug}-${viewport.width}-${id}.png`), style: "[data-mobile-callbar] { visibility: hidden !important; }" });
             }
           }
-          await context.close();
+          await closeCheckedContext(context);
         }
         console.log(`Browser checked ${definition.path} (${viewports.length} widths)`);
       }
@@ -983,7 +989,7 @@ async function run() {
     const page404Context = await browser.newContext({ viewport: { width: 390, height: 844 } });
     const page404 = await page404Context.newPage();
     await verifyPage(page404, "/route-that-must-not-exist/", "404", { expectedStatus: 404 });
-    await page404Context.close();
+    await closeCheckedContext(page404Context);
   } finally {
     await browser.close();
     await new Promise((resolve) => server.close(resolve));

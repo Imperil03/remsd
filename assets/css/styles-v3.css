@@ -1596,7 +1596,6 @@ a.v3-equipment-item:focus-visible {
   }
 
   .v3-hero {
-    min-height: 100vh;
     min-height: 100svh;
   }
 
@@ -1612,7 +1611,6 @@ a.v3-equipment-item:focus-visible {
 
   .v3-hero__shell {
     width: min(100% - 28px, 520px);
-    min-height: 100vh;
     min-height: 100svh;
     padding-block: 12px 24px;
   }
@@ -1661,10 +1659,6 @@ a.v3-equipment-item:focus-visible {
 
   .v3-proof strong {
     font-size: 10px;
-  }
-
-  .v3-section__inner {
-    padding-block: 48px;
   }
 
   .v3-section-heading h2 {
@@ -1773,17 +1767,7 @@ a.v3-equipment-item:focus-visible {
     padding: 14px;
   }
 
-  .v3-company-proof__media {
-    grid-template-columns: 1fr;
-    grid-auto-rows: auto;
-  }
-
-  .v3-proof-photo--wide {
-    grid-column: auto;
-  }
-
   .v3-proof-photo img {
-    aspect-ratio: 4 / 3;
     height: auto;
     min-height: 0;
   }
@@ -1807,18 +1791,6 @@ a.v3-equipment-item:focus-visible {
     min-height: 320px;
   }
 
-  .v3-category-card {
-    min-height: 292px;
-  }
-
-  .v3-category-card strong {
-    font-size: 25px;
-  }
-
-  .v3-brand-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
   .v3-brand-card,
   .v3-brand-card--official {
     grid-column: auto;
@@ -1832,24 +1804,8 @@ a.v3-equipment-item:focus-visible {
     padding: 12px 9px 10px;
   }
 
-  .v3-brand-card--official a,
-  .v3-brand-card--official .v3-brand-card__body {
-    grid-template-columns: none;
-    grid-template-rows: minmax(56px, 1fr) auto auto;
-    align-content: stretch;
-    min-height: 138px;
-    gap: 4px;
-    padding: 12px 9px 9px;
-  }
-
   .v3-brand-card__logo {
     min-height: 58px;
-  }
-
-  .v3-brand-card--official .v3-brand-card__logo {
-    grid-row: auto;
-    min-height: 54px;
-    justify-items: center;
   }
 
   .v3-brand-card__logo img {
@@ -1857,21 +1813,9 @@ a.v3-equipment-item:focus-visible {
     height: 54px;
   }
 
-  .v3-brand-card--official .v3-brand-card__logo img {
-    width: min(122px, 94%);
-    height: 50px;
-  }
-
   .v3-brand-card__name {
     min-height: 30px;
     font-size: 10.5px;
-  }
-
-  .v3-brand-card--official .v3-brand-card__name {
-    min-height: 28px;
-    align-self: auto;
-    justify-items: center;
-    text-align: center;
   }
 
   .v3-brand-card__status {
@@ -1881,11 +1825,6 @@ a.v3-equipment-item:focus-visible {
     line-height: 1.12;
     text-align: center;
     white-space: normal;
-  }
-
-  .v3-brand-card--official .v3-brand-card__status {
-    align-self: auto;
-    justify-self: center;
   }
 
   .v3-brand-card__status::before {

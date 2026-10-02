@@ -65,6 +65,12 @@ components:
 
 # Design System: РемСД
 
+## Current implementation — 2026-10-02
+
+The manifest publishes 55 internal pages plus Home and 404. Current PageDefinitions, not historical counts in this document, own composition and copy. Shared shell contacts come from site-config; tokens, fonts, 1312px guide and page-family layouts remain unchanged. Content focus rules exclude shared chrome, skip-link and v3-button. Menu chevrons follow actual open state, and standalone menu targets are at least 44px. See docs/maintenance.md and docs/seo-launch.md. Technical cleanup is not a redesign.
+
+The 23 brand pages currently have ten sections and three primary phone buttons. Repair-v1 permits approved omission of symptoms; only the reference hub's exact four-button contract applies to that reference. Intro copy follows the latest page JSON, including the 23-page Markdown revision. Dated authoring passages below describe the evolution, not instructions to restore superseded copy.
+
 ## Overview
 
 **Creative North Star: "Industrial Editorial"**

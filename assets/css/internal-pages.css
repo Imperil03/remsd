@@ -100,7 +100,7 @@ p.rental-price { margin-top: var(--space-4); }
   background: var(--action-primary);
 }
 
-.internal-page :where(a, button, summary):focus-visible {
+.internal-page main :where(a, button, summary):not(:where(.site-header-rail *, .skip-link, .v3-button)):focus-visible {
   outline: var(--focus-ring);
   outline-offset: 4px;
 }
