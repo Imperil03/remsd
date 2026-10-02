@@ -247,6 +247,12 @@ The 11 thematic pairs live in `assets/img/rental-hero/topics/`; their sources, g
 
 ## Do's and Don'ts
 
+### Shared motion — 02.10.2026
+
+Motion explains a relationship or action, never page loading. The focal sequence is the same real photo/document moving from its chosen thumbnail into the viewer and back, with uniform scaling and meaningful cover/contain cropping. Menus, disclosure states and anchor destinations use quiet supporting transitions; static cards and legal copy do not acquire entrance choreography.
+
+The shared helper keeps native semantics immediate and treats motion as optional. Existing type, spacing, imagery, source copy and CSS bundles stay unchanged. Reduced motion retains static state feedback. See `docs/site-motion.md` for timings, ownership, interruption/cleanup rules and test coverage.
+
 ### Contact motion — 02.10.2026
 
 Mode Operate: movement acknowledges an action, not page loading. The authored moment is a 180 ms line-drawn SVG check after a successful requisites copy; the unchanged live-region message confirms the actual clipboard result. Pending and failed writes do not show success, repeated use cancels the previous stroke, and reduced motion leaves a static check. Clipboard completion never waits for animation.

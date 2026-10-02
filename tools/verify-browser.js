@@ -818,6 +818,7 @@ async function run() {
   const server = await startServer();
   const browser = await chromium.launch({ headless: true });
   try {
+    if (!browserScope.focused) await require('./lib/verify-site-motion')(browser, `http://${host}:${port}/`, resultDir, internalCatalog);
     // Focused runs retain pointer coverage on the requested pages only.
     await verifyMenuHoverMatrix(browser);
     if (!browserScope.focused || browserScope.routes.some((route) => internalCatalog.pages.some((page) => page.family === "documents" && route === `/${page.path}/`))) {
@@ -992,7 +993,15 @@ async function run() {
     : `Browser verification passed: общий chrome, главная и эталонный hub — 11 viewport; ${smokeRoutes.length} дополнительных маршрутов (repair-v1, все марки и аренда: 11 viewport), H1, burger, FAQ, callbar, images, targets и 404.`);
 }
 
-run().catch((error) => {
+async function runMotionOnly() {
+  fs.mkdirSync(resultDir, { recursive: true });
+  const server = await startServer();
+  const browser = await chromium.launch({ headless: true });
+  try { await require('./lib/verify-site-motion')(browser, `http://${host}:${port}/`, resultDir, internalCatalog); }
+  finally { await browser.close(); await new Promise((resolve) => server.close(resolve)); }
+}
+
+(process.env.BROWSER_MOTION_ONLY === '1' ? runMotionOnly() : run()).catch((error) => {
   console.error(error.message);
   process.exit(1);
 });

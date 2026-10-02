@@ -59,6 +59,10 @@ const setMenuPanelState = (item, isOpen, { restoreFocus = false } = {}) => {
 
   cancelMenuClose(item);
 
+  const changed = item.classList.contains("is-panel-open") !== isOpen;
+  const closing = changed && !isOpen ? window.REMSDMotion?.snapshot(panel) : null;
+  if (changed) window.REMSDMotion?.cancel(panel);
+
   item.classList.toggle("is-panel-open", isOpen);
   trigger.setAttribute("aria-expanded", String(isOpen));
   panel.hidden = !isOpen;
@@ -76,6 +80,10 @@ const setMenuPanelState = (item, isOpen, { restoreFocus = false } = {}) => {
   if (!isOpen && restoreFocus) {
     trigger.focus();
   }
+  if (changed) {
+    if (isOpen) window.REMSDMotion?.panelEnter(panel);
+    else window.REMSDMotion?.panelExit(panel, closing);
+  }
 };
 
 const closeMenuPanels = ({ except = null, restoreFocus = false } = {}) => {
@@ -89,7 +97,11 @@ const closeMenuPanels = ({ except = null, restoreFocus = false } = {}) => {
 const setNavState = (isOpen, { moveFocus = false, restoreFocus = false } = {}) => {
   if (!(navToggle instanceof HTMLButtonElement) || !(siteNav instanceof HTMLElement)) return;
 
-  navIsOpen = navMediaQuery.matches && isOpen;
+  const nextOpen = navMediaQuery.matches && isOpen;
+  const changed = navIsOpen !== nextOpen;
+  const closing = changed && !nextOpen ? window.REMSDMotion?.snapshot(siteNav) : null;
+  if (changed) window.REMSDMotion?.cancel(siteNav);
+  navIsOpen = nextOpen;
   siteNav.classList.toggle("is-open", navIsOpen);
   siteNav.hidden = navMediaQuery.matches && !navIsOpen;
   siteNav.toggleAttribute("inert", navMediaQuery.matches && !navIsOpen);
@@ -115,6 +127,10 @@ const setNavState = (isOpen, { moveFocus = false, restoreFocus = false } = {}) =
 
   if (!navIsOpen && restoreFocus) {
     navToggle.focus();
+  }
+  if (changed) {
+    if (navIsOpen) window.REMSDMotion?.panelEnter(siteNav);
+    else window.REMSDMotion?.panelExit(siteNav, closing);
   }
 };
 
@@ -205,7 +221,7 @@ if (navToggle instanceof HTMLButtonElement && siteNav instanceof HTMLElement) {
   });
 
   document.addEventListener("keydown", (event) => {
-    if (event.key !== "Escape" || document.body.classList.contains("is-lightbox-open")) return;
+    if (event.key !== "Escape" || document.body.classList.contains("is-lightbox-open") || document.body.classList.contains("is-company-viewer-open")) return;
 
     const openItem = menuItems.find((item) => item.classList.contains("is-panel-open"));
     if (openItem) {
@@ -334,6 +350,7 @@ if (mediaLightbox instanceof HTMLElement && lightboxItems.length) {
   };
 
   const renderLightbox = () => {
+    window.REMSDMotion?.cancel(mediaLightbox);
     const data = getItemData(activeItems[activeIndex]);
     lightboxImage.src = data.src;
     lightboxImage.alt = data.alt;
@@ -345,10 +362,13 @@ if (mediaLightbox instanceof HTMLElement && lightboxItems.length) {
   const moveLightbox = (step) => {
     activeIndex = (activeIndex + step + activeItems.length) % activeItems.length;
     renderLightbox();
+    window.REMSDMotion?.viewerStep(mediaLightbox, lightboxImage, step);
   };
 
   const closeLightbox = () => {
     if (mediaLightbox.hidden) return;
+    const capture = window.REMSDMotion?.captureMedia(mediaLightbox, lightboxImage);
+    const destination = activeItems[activeIndex];
     mediaLightbox.hidden = true;
     mediaLightbox.setAttribute("inert", "");
     document.body.classList.remove("is-lightbox-open");
@@ -359,9 +379,11 @@ if (mediaLightbox instanceof HTMLElement && lightboxItems.length) {
     if (previousFocus instanceof HTMLElement && document.contains(previousFocus)) {
       previousFocus.focus();
     }
+    window.REMSDMotion?.viewerExit(mediaLightbox, capture, destination);
   };
 
   const openLightbox = (item) => {
+    const origin = window.REMSDMotion?.thumbnail(item);
     const group = item.dataset.lightboxGroup || "default";
     activeItems = lightboxItems.filter((candidate) => (candidate.dataset.lightboxGroup || "default") === group);
     activeIndex = activeItems.indexOf(item);
@@ -376,6 +398,7 @@ if (mediaLightbox instanceof HTMLElement && lightboxItems.length) {
     nextButton.hidden = activeItems.length < 2;
     updateMobileCallbar();
     closeButton.focus();
+    window.REMSDMotion?.viewerEnter(mediaLightbox, lightboxImage, origin);
   };
 
   lightboxItems.forEach((item) => {
