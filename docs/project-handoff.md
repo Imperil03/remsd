@@ -4,7 +4,7 @@
 
 На /kontakty/ завершена сдержанная обратная связь в существующем Industrial Editorial: SVG-отметка после реального копирования, маркер целевого раздела при переходе по якорю, отклик существующих иконок WhatsApp/PDF и цвета ссылок. Результат копирования при необходимости показывается через nearest-scroll с запасом над callbar; reduced motion сохраняет статические подтверждения. Данные, тексты, PDF, фото, карта, chrome и геометрия сохранены. Подробности — docs/contact-page.md; версия `20261001-contacts-motion-v1`.
 
-Verify, адресный browser на 12 ширинах, клавиатурное/повторное копирование, отказ Clipboard API, reduced motion, видимость сообщения и desktop/mobile-проверка прошли. 56 остальных HTML меняют только cache-buster; исходные данные и общие CSS/JS сверены. Публикация ожидает адресный CI, полный прогон не нужен.
+Verify, адресный browser на 12 ширинах, клавиатурное/повторное копирование, отказ Clipboard API, reduced motion, видимость сообщения и desktop/mobile-проверка прошли. 56 остальных HTML меняют только cache-buster; исходные данные и общие CSS/JS сверены. Коммит [d562be8](https://github.com/Imperil03/remsd/commit/d562be88c52fa468589a227fb015988aca3cc2e6) опубликован через [workflow 37003581775](https://github.com/Imperil03/remsd/actions/runs/37003581775): один маршрут, build/gate 1 мин 26 с, deployment 11 с, Lighthouse 100/100/100/100 и CLS 0. Публичные HTML/CSS/JS/PDF и native desktop/mobile сверены; noindex сохранён. Итерация завершена, полного прогона и новых UI-правок не требуется.
 
 ## Проверки публикации: адресный CI, 01.10.2026
 
