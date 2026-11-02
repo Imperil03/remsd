@@ -587,6 +587,9 @@ function main() {
   minifyCssFiles(outputCssDir);
 
   const partials = readPartials(buildHomeStructuredData(config, baseUrl));
+  if (mode !== "production" || baseUrl !== config.modes.production.baseUrl) {
+    partials["yandex-metrika"] = "";
+  }
   const brands = loadPageTemplates(dataDir)["repair-v1"].brands;
   const brandContext = { rootPath: "{{rootPath}}", routeByEntity: new Map(internalPages.map((page) => [page.entityRef, page.path])) };
   partials["home-official-brands"] = renderOfficialBrands(brands, brandContext);
