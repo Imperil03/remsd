@@ -8,3 +8,8 @@ test-results/
 .agent/skills/*
 .agent/skills/**/__pycache__/
 .agent/skills/**/*.pyc
+
+# Existing search ownership files belong only on the production domain.
+/.local/
+/dist/google*.html
+/dist/yandex_*.html

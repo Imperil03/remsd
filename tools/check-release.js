@@ -1,5 +1,6 @@
 const fs = require("node:fs");
 const path = require("node:path");
+const { loadSiteVerification, checkSiteVerification } = require("./lib/site-verification");
 const root = path.resolve(__dirname, "..");
 
 const decode = value => value.replaceAll("&amp;", "&").replaceAll("&quot;", '"').replaceAll("&#039;", "'").replaceAll("&#39;", "'");
@@ -9,7 +10,9 @@ function assertSiteUrl(value, baseUrl, label) {
   const base = new URL(baseUrl);
   if (url.origin !== base.origin || !url.pathname.startsWith(base.pathname)) throw new Error(`${label}: URL не принадлежит ${baseUrl}`);
 }
-function checkRelease(distDir, baseUrl) {
+
+function checkRelease(distDir, baseUrl, verification = new Map()) {
+  checkSiteVerification(distDir, verification);
   const base = new URL(baseUrl);
   if (base.protocol !== "https:" || base.hostname === "localhost" || /^[\d.]+$/.test(base.hostname)) throw new Error("Release требует публичный HTTPS origin");
   const files = directory => fs.readdirSync(directory, {withFileTypes:true}).flatMap(entry => {
@@ -19,6 +22,7 @@ function checkRelease(distDir, baseUrl) {
   const expected = new Set();
   for (const file of files(distDir)) {
     const relative = path.relative(distDir,file).replaceAll(path.sep,"/");
+    if (verification.has(relative)) continue;
     const html = fs.readFileSync(file,"utf8");
     const canonical = html.match(/<link\b[^>]*rel="canonical"[^>]*href="([^"]+)"/i)?.[1];
     const robots = html.match(/<meta\b[^>]*name="robots"[^>]*content="([^"]+)"/i)?.[1] || "";
@@ -61,7 +65,7 @@ function checkRelease(distDir, baseUrl) {
 if (require.main === module) {
   try {
     const config = JSON.parse(fs.readFileSync(path.join(root,"src/data/site-config.json"),"utf8"));
-    console.log(`Production release origins OK: ${checkRelease(path.join(root,"dist"),config.modes.production.baseUrl)} pages; 404 noindex.`);
+    console.log(`Production release origins OK: ${checkRelease(path.join(root,"dist"),config.modes.production.baseUrl,loadSiteVerification(root))} pages; 404 noindex.`);
   } catch (error) {console.error(`[release] ${error.message}`); process.exitCode=1;}
 }
 module.exports = { checkRelease, assertSiteUrl };

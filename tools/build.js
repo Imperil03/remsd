@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const { loadSiteVerification } = require("./lib/site-verification");
 const { createHash } = require("crypto");
 const { transform: transformCss } = require("lightningcss");
 const { removeCoveredFontFaces } = require("./lib/font-faces");
@@ -568,6 +569,8 @@ function main() {
   const baseUrl = process.env.SITE_URL || config.modes[mode].baseUrl;
   if (!baseUrl.endsWith("/")) fail("SITE_URL должен оканчиваться слешем");
 
+  const publicProduction = mode === "production" && baseUrl === config.modes.production.baseUrl;
+  const verification = publicProduction ? loadSiteVerification(root) : new Map();
   const staticFiles = getHtmlFiles(pagesDir);
   const staticRoutes = new Set(staticFiles.map(routeFromSource));
   const internalRoutes = new Set(internalPages.map((page) => page.path));
@@ -587,7 +590,7 @@ function main() {
   minifyCssFiles(outputCssDir);
 
   const partials = readPartials(buildHomeStructuredData(config, baseUrl));
-  if (mode !== "production" || baseUrl !== config.modes.production.baseUrl) {
+  if (!publicProduction) {
     partials["yandex-metrika"] = "";
   }
   const brands = loadPageTemplates(dataDir)["repair-v1"].brands;
@@ -609,6 +612,7 @@ function main() {
   buildStaticPages(staticFiles, partials, config, mode, baseUrl, writtenRoutes);
   buildInternalPages(internalPages, partials, config, mode, baseUrl, writtenRoutes);
   writeSeoFiles(mode, baseUrl, finalRoutes);
+  for (const [name, data] of verification) fs.writeFileSync(path.join(distDir, name), data);
   console.log(`Built dist/ in ${mode} mode: ${writtenRoutes.size} HTML pages${mode === "production" ? " with sitemap" : " without sitemap"}.`);
 }
 

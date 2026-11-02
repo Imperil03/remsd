@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const { loadSiteVerification, checkSiteVerification } = require("./lib/site-verification");
 const {
   loadContentModel,
   loadInternalPageCatalog,
@@ -130,7 +131,11 @@ function sectionHtml(html, modifier) {
 if (!fs.existsSync(distDir)) {
   fail("dist/ не найден: сначала выполните сборку");
 } else {
-  const htmlFiles = getFiles(distDir).filter((file) => file.endsWith(".html"));
+  const productionUrl = siteConfig.modes.production.baseUrl;
+  const publicProduction = mode === "production" && (process.env.SITE_URL || productionUrl) === productionUrl;
+  const verification = publicProduction ? loadSiteVerification(root) : new Map();
+  checkSiteVerification(distDir, verification);
+  const htmlFiles = getFiles(distDir).filter((file) => file.endsWith(".html") && !verification.has(relativeFromDist(file)));
   const actualHtml = htmlFiles.map(relativeFromDist).sort();
   if (JSON.stringify(actualHtml) !== JSON.stringify(expectedHtml)) {
     fail(`сборка должна содержать ровно ${expectedHtml.join(", ")}; найдено: ${actualHtml.join(", ")}`);
